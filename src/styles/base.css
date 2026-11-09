@@ -1,0 +1,11 @@
+/*
+ * Themis base stylesheet. StyleX's compiled atomic CSS is appended to this file at build time,
+ * so the package ships a single stylesheet: `import 'themis-ds/styles.css'`.
+ * Keep this file tiny — component styles belong in StyleX.
+ */
+:where([data-themis-mode]),
+:where([data-themis-mode]) *,
+:where([data-themis-mode]) ::before,
+:where([data-themis-mode]) ::after {
+  box-sizing: border-box;
+}

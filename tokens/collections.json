@@ -1,0 +1,47 @@
+{
+  "$description": "Per Figma collection: mode order and default mode (Figma's DTCG export includes neither). The default mode's values are baked into the StyleX vars; the other modes become themes. A collection with \"media\" is responsive instead of themed: each listed mode applies automatically inside its media query, mobile-first from the default mode.",
+  "colorTheme": {
+    "modes": [
+      "light demo",
+      "dark demo",
+      "themis config"
+    ],
+    "defaultMode": "light demo"
+  },
+  "radius": {
+    "modes": [
+      "none",
+      "small",
+      "medium",
+      "large"
+    ],
+    "defaultMode": "medium"
+  },
+  "borderWidth": {
+    "modes": [
+      "none",
+      "small",
+      "medium",
+      "large"
+    ],
+    "defaultMode": "medium"
+  },
+  "fontTheme": {
+    "modes": [
+      "demo",
+      "inkling",
+      "themis"
+    ],
+    "defaultMode": "demo"
+  },
+  "typography": {
+    "modes": [
+      "mobile",
+      "desktop"
+    ],
+    "defaultMode": "mobile",
+    "media": {
+      "desktop": "(min-width: 768px)"
+    }
+  }
+}

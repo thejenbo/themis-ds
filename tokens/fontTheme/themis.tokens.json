@@ -1,0 +1,43 @@
+{
+  "font": {
+    "family": {
+      "heading": {
+        "$type": "string",
+        "$value": "Space Mono",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:1731:7415",
+          "com.figma.scopes": [
+            "FONT_FAMILY"
+          ],
+          "com.figma.type": "string",
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:3fe64a6786bb1ec5dd103890109c31d53ef539ef/-1:-1",
+            "targetVariableName": "font/family/Space Mono",
+            "targetVariableSetId": "VariableCollectionId:67feeb7f7d2e7c02df49c449eb4cd492c38d76a3/-1:-1",
+            "targetVariableSetName": "Primitives"
+          }
+        }
+      },
+      "body": {
+        "$type": "string",
+        "$value": "Space Mono",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:1731:7414",
+          "com.figma.scopes": [
+            "FONT_FAMILY"
+          ],
+          "com.figma.type": "string",
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:3fe64a6786bb1ec5dd103890109c31d53ef539ef/-1:-1",
+            "targetVariableName": "font/family/Space Mono",
+            "targetVariableSetId": "VariableCollectionId:67feeb7f7d2e7c02df49c449eb4cd492c38d76a3/-1:-1",
+            "targetVariableSetName": "Primitives"
+          }
+        }
+      }
+    }
+  },
+  "$extensions": {
+    "com.figma.modeName": "themis"
+  }
+}

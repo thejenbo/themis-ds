@@ -1,0 +1,89 @@
+{
+  "border": {
+    "radius": {
+      "xs": {
+        "$type": "number",
+        "$value": 2,
+        "$extensions": {
+          "com.figma.variableId": "VariableID:1732:7459",
+          "com.figma.scopes": [
+            "CORNER_RADIUS"
+          ],
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:71591a99fc4eadb589d0ca3f73afb9851a4c3de3/-1:-1",
+            "targetVariableName": "border/radius/2",
+            "targetVariableSetId": "VariableCollectionId:67feeb7f7d2e7c02df49c449eb4cd492c38d76a3/-1:-1",
+            "targetVariableSetName": "Primitives"
+          }
+        }
+      },
+      "sm": {
+        "$type": "number",
+        "$value": 2,
+        "$extensions": {
+          "com.figma.variableId": "VariableID:1732:7458",
+          "com.figma.scopes": [
+            "CORNER_RADIUS"
+          ],
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:71591a99fc4eadb589d0ca3f73afb9851a4c3de3/-1:-1",
+            "targetVariableName": "border/radius/2",
+            "targetVariableSetId": "VariableCollectionId:67feeb7f7d2e7c02df49c449eb4cd492c38d76a3/-1:-1",
+            "targetVariableSetName": "Primitives"
+          }
+        }
+      },
+      "md": {
+        "$type": "number",
+        "$value": 4,
+        "$extensions": {
+          "com.figma.variableId": "VariableID:1732:7457",
+          "com.figma.scopes": [
+            "CORNER_RADIUS"
+          ],
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:fbb3a07cea744d8452fe49fad3cbafd41150e84a/-1:-1",
+            "targetVariableName": "border/radius/4",
+            "targetVariableSetId": "VariableCollectionId:67feeb7f7d2e7c02df49c449eb4cd492c38d76a3/-1:-1",
+            "targetVariableSetName": "Primitives"
+          }
+        }
+      },
+      "lg": {
+        "$type": "number",
+        "$value": 6,
+        "$extensions": {
+          "com.figma.variableId": "VariableID:1956:14087",
+          "com.figma.scopes": [
+            "CORNER_RADIUS"
+          ],
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:8ed52167280ede4020da9292c405c9f491d9db70/-1:-1",
+            "targetVariableName": "border/radius/6",
+            "targetVariableSetId": "VariableCollectionId:67feeb7f7d2e7c02df49c449eb4cd492c38d76a3/-1:-1",
+            "targetVariableSetName": "Primitives"
+          }
+        }
+      },
+      "full": {
+        "$type": "number",
+        "$value": 9999,
+        "$extensions": {
+          "com.figma.variableId": "VariableID:1732:7456",
+          "com.figma.scopes": [
+            "CORNER_RADIUS"
+          ],
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:c4a34901b31c463a5974a10f2af2164793ee1b57/-1:-1",
+            "targetVariableName": "border/radius/9999",
+            "targetVariableSetId": "VariableCollectionId:67feeb7f7d2e7c02df49c449eb4cd492c38d76a3/-1:-1",
+            "targetVariableSetName": "Primitives"
+          }
+        }
+      }
+    }
+  },
+  "$extensions": {
+    "com.figma.modeName": "small"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "font": {
+    "family": {
+      "heading": {
+        "$type": "string",
+        "$value": "Playfair Display",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:1731:7415",
+          "com.figma.scopes": [
+            "FONT_FAMILY"
+          ],
+          "com.figma.type": "string",
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:8b15287ec8232526b2d387d639525c0b7a3b2cd7/-1:-1",
+            "targetVariableName": "font/family/Playfair Display",
+            "targetVariableSetId": "VariableCollectionId:67feeb7f7d2e7c02df49c449eb4cd492c38d76a3/-1:-1",
+            "targetVariableSetName": "Primitives"
+          }
+        }
+      },
+      "body": {
+        "$type": "string",
+        "$value": "Montserrat",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:1731:7414",
+          "com.figma.scopes": [
+            "FONT_FAMILY"
+          ],
+          "com.figma.type": "string",
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:61c45ac71ebdb16d288e434164cf7ed978ce06ea/-1:-1",
+            "targetVariableName": "font/family/Montserrat",
+            "targetVariableSetId": "VariableCollectionId:67feeb7f7d2e7c02df49c449eb4cd492c38d76a3/-1:-1",
+            "targetVariableSetName": "Primitives"
+          }
+        }
+      }
+    }
+  },
+  "$extensions": {
+    "com.figma.modeName": "demo"
+  }
+}
