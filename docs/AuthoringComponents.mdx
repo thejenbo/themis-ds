@@ -23,3 +23,19 @@ Each component lives in `src/components/<Name>/` and contains exactly these file
    `npm run manifest` fails when any of them refers to something that does not exist.
 6. **Write one story per meaningful state.** Add `play` functions for behaviour. Every story runs axe, and a violation fails `npm test`.
 7. **Use `xstyle` for layout only.** Consumers may set margin, flex and grid placement through it, never colour or type.
+8. **Reuse the shared interaction helpers** in `src/utils/` instead of restyling states by hand:
+
+   | Helper | What it does | Uses |
+   | --- | --- | --- |
+   | `stateLayer` (`state-layer.stylex.ts`) | Hover/press overlay whose darken/lighten direction is calculated from the Surface colour. | The Surface's `::before` |
+   | `focusRing` (`focus-ring.ts`) | 2px black/white dashed ring outside the element. See Foundations / Focus ring. | The element's `outline` and `::before` |
+   | `touchTarget` (`touch-target.ts`) | 44×44px touch area on touch screens. See Foundations / Touch targets. | The element's `::after` |
+   | `pressMotion` (`press-motion.ts`) | Shrinks the visible layers to `scale.pressed` while pressed. See Foundations / Motion. | The Surface's `transform` |
+   | `interactiveCursor` (`interactive-cursor.ts`) | `pointer` when enabled, `not-allowed` when disabled, `progress` while pending. | The element's `cursor` |
+
+   Every clickable control uses `interactiveCursor`. The exceptions are elements with their own conventional
+   cursor: text inputs (`text`), draggable items (`grab`/`grabbing`), resize handles and the like.
+
+   Keep the clickable element and the visible Surface separate, as Button does: the element never changes size,
+   and the Surface carries the fill, State Layer and press shrink. Document what the component animates in the
+   docs' `motion` field.

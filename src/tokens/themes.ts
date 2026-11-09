@@ -5,6 +5,7 @@ import { border as borderWidth_border } from './borderWidth.stylex';
 import { color as colorTheme_color } from './colorTheme.stylex';
 import { font as fontTheme_font } from './fontTheme.stylex';
 import { border as radius_border } from './radius.stylex';
+import { dropShadow as shadows_dropShadow } from './shadows.stylex';
 
 const borderWidth_border_none = stylex.createTheme(borderWidth_border, {
   "widthXs": "0px",
@@ -112,35 +113,49 @@ const fontTheme_font_themis = stylex.createTheme(fontTheme_font, {
 });
 
 const radius_border_none = stylex.createTheme(radius_border, {
-  "radiusXs": "0px",
-  "radiusSm": "0px",
-  "radiusMd": "0px",
-  "radiusLg": "0px",
+  "radiusXs": "0",
+  "radiusSm": "0",
+  "radiusMd": "0",
+  "radiusLg": "0",
   "radiusFull": "9999px",
 });
 
 const radius_border_small = stylex.createTheme(radius_border, {
-  "radiusXs": "2px",
-  "radiusSm": "2px",
-  "radiusMd": "4px",
-  "radiusLg": "6px",
+  "radiusXs": "0.125rem",
+  "radiusSm": "0.125rem",
+  "radiusMd": "0.25rem",
+  "radiusLg": "0.375rem",
   "radiusFull": "9999px",
 });
 
 const radius_border_medium = stylex.createTheme(radius_border, {
-  "radiusXs": "4px",
-  "radiusSm": "6px",
-  "radiusMd": "10px",
-  "radiusLg": "20px",
+  "radiusXs": "0.25rem",
+  "radiusSm": "0.375rem",
+  "radiusMd": "0.625rem",
+  "radiusLg": "1.25rem",
   "radiusFull": "9999px",
 });
 
 const radius_border_large = stylex.createTheme(radius_border, {
-  "radiusXs": "20px",
-  "radiusSm": "20px",
-  "radiusMd": "20px",
-  "radiusLg": "30px",
+  "radiusXs": "1.25rem",
+  "radiusSm": "1.25rem",
+  "radiusMd": "1.25rem",
+  "radiusLg": "1.875rem",
   "radiusFull": "9999px",
+});
+
+const shadows_dropShadow_default = stylex.createTheme(shadows_dropShadow, {
+  "blurDefault": "4px",
+  "colorDefault": "#0000004d",
+  "xDefault": "0px",
+  "yDefault": "4px",
+});
+
+const shadows_dropShadow_off = stylex.createTheme(shadows_dropShadow, {
+  "blurDefault": "0px",
+  "colorDefault": "#00000000",
+  "xDefault": "0px",
+  "yDefault": "0px",
 });
 
 /** Modes of each multi-mode collection, in Figma order. */
@@ -149,6 +164,7 @@ export const collectionModes = {
   "colorTheme": ["light demo","dark demo","themis config"],
   "fontTheme": ["demo","inkling","themis"],
   "radius": ["none","small","medium","large"],
+  "shadows": ["default","off"],
 } as const;
 
 export type ThemeCollection = keyof typeof collectionModes;
@@ -162,6 +178,7 @@ export const defaultModes = {
   "colorTheme": "light demo",
   "fontTheme": "demo",
   "radius": "medium",
+  "shadows": "default",
 } as const satisfies Required<Modes>;
 
 /** Theme overrides per collection and mode. Spread into `stylex.props(...)` on a container. */
@@ -187,5 +204,9 @@ export const themes: { [C in ThemeCollection]: Record<ModeOf<C>, readonly stylex
     "small": [radius_border_small],
     "medium": [radius_border_medium],
     "large": [radius_border_large],
+  },
+  "shadows": {
+    "default": [shadows_dropShadow_default],
+    "off": [shadows_dropShadow_off],
   },
 };

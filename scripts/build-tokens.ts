@@ -23,15 +23,23 @@ const TOKENS_DIR = path.join(ROOT, 'tokens');
 const OUT_DIR = path.join(ROOT, 'src/tokens');
 const DEFAULT_MODE_NAMES = ['default', 'light', 'base', 'mode 1', 'mode-1', 'value'];
 /**
- * Figma exports every FLOAT variable as `$type: "number"` with no unit. Tokens under these path prefixes are
- * lengths, so their numbers compile to px. Everything else of type `number` stays unitless (opacity, z-index…).
+ * Figma exports every FLOAT variable as `$type: "number"` with no unit, in px. Tokens under these path prefixes get
+ * a unit; everything else of type `number` stays unitless (scale, opacity…), rounded to 4 decimals.
+ *
+ * REM_PATHS scale with the user's browser text size (Figma px ÷ 16). PX_PATHS stay fixed: hairlines and shadows
+ * should stay crisp. Values of 1000px or more (e.g. a 9999px "full" radius) stay px.
  */
-const PX_NUMBER_PATHS = ['spacing', 'border.width', 'border.radius', 'font.size', 'font.line height', 'drop shadow.blur', 'drop shadow.x', 'drop shadow.y'];
-const isPxNumber = (p: string[]) => PX_NUMBER_PATHS.some((prefix) => `${p.join('.')}.`.startsWith(`${prefix}.`));
+const REM_PATHS = ['spacing', 'border.radius', 'font.size', 'font.line height'];
+const PX_PATHS = ['border.width', 'drop shadow.blur', 'drop shadow.x', 'drop shadow.y'];
+const MS_PATHS = ['duration'];
+const ROOT_FONT_SIZE = 16;
+const under = (prefixes: string[], p: string[]) => prefixes.some((prefix) => `${p.join('.')}.`.startsWith(`${prefix}.`));
 
-/** Map Figma's loose types onto DTCG ones: px lengths exported as numbers, font families exported as strings. */
+/** Map Figma's loose types onto DTCG ones: lengths and durations exported as numbers, font families as strings. */
 function cssTypeOf(t: { type: string | undefined; path: string[]; extensions?: { [k: string]: unknown } }) {
-  if (t.type === 'number' && isPxNumber(t.path)) return 'dimension';
+  if (t.type === 'number' && under(REM_PATHS, t.path)) return 'remDimension';
+  if (t.type === 'number' && under(PX_PATHS, t.path)) return 'dimension';
+  if (t.type === 'number' && under(MS_PATHS, t.path)) return 'duration';
   const scopes = t.extensions?.['com.figma.scopes'];
   const isFamilyPath = t.path[0] === 'font' && t.path[1] === 'family';
   if (t.type === 'string' && (isFamilyPath || (Array.isArray(scopes) && scopes.includes('FONT_FAMILY')))) return 'fontFamily';
@@ -254,7 +262,12 @@ function toCss(type: string | undefined, v: Json): [string, string][] {
     case 'fontWeight': return [['', String(v)]];
     case 'duration': return [['', duration(v)]];
     case 'cubicBezier': return [['', `cubic-bezier(${(v as number[]).join(', ')})`]];
-    case 'number': return [['', String(v)]];
+    case 'number': return [['', String(typeof v === 'number' ? Math.round(v * 1e4) / 1e4 : v)]];
+    case 'remDimension': {
+      const px = Number(v);
+      if (!Number.isFinite(px)) throw new Error(`Bad length: ${JSON.stringify(v)}`);
+      return [['', px === 0 ? '0' : px >= 1000 ? `${px}px` : `${Math.round((px / ROOT_FONT_SIZE) * 1e4) / 1e4}rem`]];
+    }
     case 'shadow': return [['', shadow(v)]];
     case 'typography': {
       const t = v as JsonObject;
@@ -293,7 +306,7 @@ interface CatalogueEntry {
   type: string | undefined;
   description?: string;
   stylex: { file: string; export: string; key: string };
-  modes: Record<string, { value: string; aliasOf?: string[] }>;
+  modes: Record<string, { value: string; px?: string; aliasOf?: string[] }>;
   extensions?: JsonObject;
 }
 
@@ -331,7 +344,9 @@ for (const t of raw) {
       };
       catalogue.push(entry);
     }
-    entry.modes[t.mode] = { value: css, ...(resolved.aliasOf ? { aliasOf: resolved.aliasOf } : {}) };
+    // Keep Figma's px next to converted rem values so docs can show both.
+    const px = cssType === 'remDimension' && css.endsWith('rem') ? `${resolved.value}px` : undefined;
+    entry.modes[t.mode] = { value: css, ...(px ? { px } : {}), ...(resolved.aliasOf ? { aliasOf: resolved.aliasOf } : {}) };
   }
 }
 

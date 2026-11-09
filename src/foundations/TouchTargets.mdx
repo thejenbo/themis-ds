@@ -1,0 +1,38 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+
+import * as TouchTargets from './TouchTargets.stories';
+
+<Meta of={TouchTargets} />
+
+# Touch targets
+
+On touch screens, every Themis control can be tapped anywhere within **at least 44×44px**, even when it looks
+smaller. The visible size and the layout don't change: an invisible area extends around the control's centre.
+
+- It applies on devices whose main input is touch (`@media (pointer: coarse)`), at every size.
+- Visible sizes never go below 24×24px, so the WCAG 2.5.8 minimum (AA) is met everywhere, with or without touch.
+- Built with `touchTarget` from `src/utils/touch-target.ts`. Components using it set `data-themis-touch-target`.
+
+## Playground
+
+Red boxes show the touch areas. Here they're drawn on every device; in real use they're invisible and touch-only.
+
+<Canvas of={TouchTargets.Playground} />
+<Controls of={TouchTargets.Playground} />
+
+## Spacing rule
+
+Neighbouring touch areas must not overlap, or a tap between two controls could hit either one. Each control's
+area reaches `(44 − visible size) ÷ 2` beyond its edge, so the gap between two stacked controls must be at least
+**44px minus their height** (for two controls of the same size).
+
+| Size | Height (mobile / desktop) | Minimum gap (mobile / desktop) | Use spacing token |
+| --- | --- | --- | --- |
+| micro | 24px / 28px | 20px / 16px | `spacing.md` (24px) |
+| small | 32px / 36px | 12px / 8px | `spacing.sm` (16px) |
+| medium | 40px / 44px | 4px / 0px | `spacing.2xs` (4px) or more |
+
+Side by side, labelled buttons are usually wider than 44px, so their areas only extend vertically. Controls
+narrower than 44px, such as icon-only buttons, need the same gap horizontally.
+
+<Canvas of={TouchTargets.SpacingRule} />

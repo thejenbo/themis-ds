@@ -1,0 +1,52 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import tokenData from '../src/tokens/tokens.json';
+
+<Meta title="Foundations/Motion" />
+
+# Motion
+
+Motion in Themis is short and functional: it confirms that something responded, and never delays the user.
+Every duration and curve comes from the **System Tokens - Motion** collection in Figma (`tokens/motion`), so
+code and prototypes stay in step.
+
+<table>
+  <thead>
+    <tr><th>Token</th><th>Value</th><th>Use for</th></tr>
+  </thead>
+  <tbody>
+    {tokenData.tokens.filter((t) => t.collection === 'motion').map((t) => (
+      <tr key={t.id}>
+        <td><code>{t.id}</code></td>
+        <td><code>{Object.values(t.modes)[0].value}</code></td>
+        <td>{t.description}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+## Principles
+
+- **Respond fast, settle slower.** Feedback to an action starts instantly (`duration.fast`); returning to rest can
+  take a little longer (`duration.slow`). A CSS transition uses the duration of the state it's moving *to*.
+- **One curve.** Use `easing.standard` for every state transition, so everything moves with the same character.
+- **Animate opacity and transform only.** They're cheap for the browser and don't shift the layout.
+- **Theme changes don't animate.** Switching colour theme or picking a new brand colour changes things instantly.
+
+## Pressed controls
+
+A pressed control shrinks to `scale.pressed` (0.96), for pointer and keyboard presses alike. Only the visible
+layers shrink: the clickable area keeps its size, so a press near the edge isn't cancelled. Use `pressMotion`
+from `src/utils/press-motion.ts`.
+
+Figma can't scale variables, so pressed states aren't drawn as variants. Each component's docs list what it
+animates under **Motion**.
+
+## Reduced motion
+
+When the user asks for reduced motion (`prefers-reduced-motion: reduce`), nothing moves or changes size.
+Colour and opacity changes stay, because they carry meaning (such as "this is hovered") without movement.
+
+## Matching it in Figma prototypes
+
+Figma can't bind prototype transitions to variables. Set Smart Animate to **Custom bezier** `0.2, 0, 0, 1`
+and use the durations above.

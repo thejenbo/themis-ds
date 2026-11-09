@@ -1,8 +1,31 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, fn, userEvent } from 'storybook/test';
+import type { ReactNode } from 'react';
+import { expect, fn, userEvent, waitFor } from 'storybook/test';
 
-import { Button } from './Button';
+import { ThemeProvider } from '../../theme/ThemeProvider';
+import { collectionModes } from '../../tokens/themes';
+import { Button, type ButtonSize, type ButtonVariant } from './Button';
 import docs from './Button.docs';
+
+/** Stand-in icon until the icon library exists. Button accepts any ReactNode. */
+function HeartIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinejoin="round">
+      <path d="M12 20s-7-4.4-9.3-9A5.1 5.1 0 0 1 12 5.6 5.1 5.1 0 0 1 21.3 11C19 15.6 12 20 12 20Z" />
+    </svg>
+  );
+}
+
+const VARIANTS: ButtonVariant[] = ['default', 'outline', 'subtle'];
+const SIZES: ButtonSize[] = ['micro', 'small', 'medium'];
+
+const row = (children: ReactNode) => (
+  <div style={{ display: 'flex', gap: 16, alignItems: 'center', flexWrap: 'wrap' }}>{children}</div>
+);
+
+/** The State Layer pseudo-element of a button's Surface. */
+const surfaceOf = (button: HTMLElement) => button.querySelector<HTMLElement>('[data-themis-part="surface"]')!;
+const layerStyle = (button: HTMLElement) => getComputedStyle(surfaceOf(button), '::before');
 
 const meta = {
   title: 'Actions/Button',
@@ -13,80 +36,182 @@ const meta = {
     docs: { description: { component: docs.summary } },
   },
   args: {
-    children: 'Save changes',
+    children: 'Click me',
     onPress: fn(),
   },
   argTypes: {
-    variant: { control: 'inline-radio', options: ['primary', 'secondary'] },
-    size: { control: 'inline-radio', options: ['sm', 'md', 'lg'] },
+    variant: { control: 'inline-radio', options: VARIANTS },
+    size: { control: 'inline-radio', options: SIZES },
+    tone: { control: 'inline-radio', options: ['brand'] },
+    iconLeft: { control: false },
+    iconRight: { control: false },
   },
 } satisfies Meta<typeof Button>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** Default button. Use the controls to explore every prop. */
+/** Default button. Use the controls to explore every prop, and the toolbar to switch themes. */
 export const Playground: Story = {};
 
-/** `primary` for the main action in a region, `secondary` for everything else. */
+/** `default` for the main action, `outline` for secondary actions, `subtle` for low-priority ones. */
 export const Variants: Story = {
-  render: (args) => (
-    <div style={{ display: 'flex', gap: 12 }}>
-      <Button {...args} variant="primary">Primary</Button>
-      <Button {...args} variant="secondary">Secondary</Button>
-    </div>
-  ),
+  render: (args) => row(VARIANTS.map((v) => <Button key={v} {...args} variant={v}>{v[0]!.toUpperCase() + v.slice(1)}</Button>)),
 };
 
-/** `sm` for dense UIs, `md` by default, `lg` for prominent calls to action. */
+/**
+ * All sizes share one label size, so height follows the typography tokens:
+ * 24/32/40px on mobile and 28/36/44px from 768px wide.
+ */
 export const Sizes: Story = {
+  render: (args) => row(SIZES.map((s) => <Button key={s} {...args} size={s}>{s[0]!.toUpperCase() + s.slice(1)}</Button>)),
+};
+
+/** Icons are decorative and hidden from screen readers, so the label must make sense alone. */
+export const WithIcons: Story = {
+  render: (args) =>
+    row(
+      <>
+        <Button {...args} iconLeft={<HeartIcon />}>Save</Button>
+        <Button {...args} iconRight={<HeartIcon />}>Save</Button>
+        <Button {...args} variant="outline" iconLeft={<HeartIcon />}>Save</Button>
+        <Button {...args} variant="subtle" iconRight={<HeartIcon />}>Save</Button>
+      </>,
+    ),
+  play: async ({ canvas }) => {
+    const buttons = canvas.getAllByRole('button', { name: 'Save' });
+    await expect(buttons).toHaveLength(4);
+  },
+};
+
+/**
+ * Every variant and size, mirroring the Figma "Button - Brand" frame, in each colour theme.
+ * Hover and focus come from interaction: hover a button or Tab to it.
+ */
+export const ThemeMatrix: Story = {
+  tags: ['!autodocs'],
+  parameters: { layout: 'fullscreen' },
   render: (args) => (
-    <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-      <Button {...args} size="sm">Small</Button>
-      <Button {...args} size="md">Medium</Button>
-      <Button {...args} size="lg">Large</Button>
+    <div style={{ display: 'grid', gap: 16 }}>
+      {collectionModes.colorTheme.map((theme) => (
+        <ThemeProvider key={theme} modes={{ colorTheme: theme }}>
+          <div style={{ padding: 16, display: 'grid', gap: 12 }}>
+            <strong>{theme}</strong>
+            {SIZES.map((size) =>
+              VARIANTS.map((variant) => (
+                <div key={`${size}-${variant}`}>
+                  {row(
+                    <>
+                      <Button {...args} size={size} variant={variant}>Click me</Button>
+                      <Button {...args} size={size} variant={variant} iconRight={<HeartIcon />}>Click me</Button>
+                      <Button {...args} size={size} variant={variant} iconLeft={<HeartIcon />}>Click me</Button>
+                      <Button {...args} size={size} variant={variant} isDisabled>Click me</Button>
+                    </>,
+                  )}
+                </div>
+              )),
+            )}
+          </div>
+        </ThemeProvider>
+      ))}
     </div>
   ),
 };
 
-/** Disabled buttons can't be focused or pressed. Prefer `isPending` while work is in progress. */
+/** Disabled buttons can't be focused or pressed, and use the fixed system colours in every theme. */
 export const Disabled: Story = {
-  args: { isDisabled: true },
+  render: (args) => row(VARIANTS.map((v) => <Button key={v} {...args} variant={v} isDisabled>Click me</Button>)),
   play: async ({ args, canvas }) => {
-    await userEvent.click(canvas.getByRole('button'));
+    for (const button of canvas.getAllByRole('button')) {
+      await expect(getComputedStyle(button).cursor).toBe('not-allowed');
+      await userEvent.click(button);
+    }
     await expect(args.onPress).not.toHaveBeenCalled();
   },
 };
 
-/** While pending, the button stays focusable, blocks presses and announces progress. */
+/** While pending, the button stays focusable, blocks presses and announces progress. Not designed in Figma yet. */
 export const Pending: Story = {
   args: { isPending: true },
   play: async ({ args, canvas }) => {
     await expect(canvas.getByRole('progressbar', { name: 'Loading' })).toBeInTheDocument();
+    await expect(getComputedStyle(canvas.getByRole('button')).cursor).toBe('progress');
     await userEvent.click(canvas.getByRole('button'));
     await expect(args.onPress).not.toHaveBeenCalled();
   },
 };
 
-/** Pairing: one primary action with a secondary cancel. */
-export const PrimaryWithCancel: Story = {
-  render: () => (
-    <div style={{ display: 'flex', gap: 12 }}>
-      <Button variant="secondary">Cancel</Button>
-      <Button variant="primary">Save changes</Button>
-    </div>
+/** Pairing: one default action with an outline cancel. */
+export const DefaultWithCancel: Story = {
+  render: (args) => row(
+    <>
+      <Button {...args} variant="outline">Cancel</Button>
+      <Button {...args}>Save changes</Button>
+    </>,
   ),
 };
 
-/** Interaction test: keyboard activation with Enter and Space. */
-export const KeyboardActivation: Story = {
+/**
+ * Interaction test: the State Layer's direction is calculated from the brand colour.
+ * light demo has a dark brand (lightening overlay); dark demo a light brand (darkening overlay).
+ */
+export const StateLayerDirection: Story = {
+  tags: ['test-only', '!autodocs'],
+  render: (args) => (
+    <div style={{ display: 'flex', gap: 16 }}>
+      <ThemeProvider modes={{ colorTheme: 'light demo' }}>
+        <Button {...args}>Light theme</Button>
+      </ThemeProvider>
+      <ThemeProvider modes={{ colorTheme: 'dark demo' }}>
+        <Button {...args}>Dark theme</Button>
+      </ThemeProvider>
+    </div>
+  ),
+  play: async ({ canvas }) => {
+    const light = canvas.getByRole('button', { name: 'Light theme' });
+    const dark = canvas.getByRole('button', { name: 'Dark theme' });
+    await expect(layerStyle(light).opacity).toBe('0');
+    await userEvent.hover(light);
+    await waitFor(() => expect(layerStyle(light).opacity).toBe('1'));
+    // Lightness channel of the overlay: 1 = white overlay, 0 = black overlay.
+    const overlayLightness = (el: HTMLElement) => /oklch\(\s*([\d.]+)/.exec(layerStyle(el).backgroundImage)?.[1];
+    await expect(overlayLightness(light)).toBe('1');
+    await expect(overlayLightness(dark)).toBe('0');
+  },
+};
+
+/** Interaction test: keyboard presses shrink the Surface but never the clickable area, and activate the button. */
+export const KeyboardPress: Story = {
   tags: ['test-only', '!autodocs'],
   play: async ({ args, canvas }) => {
     const button = canvas.getByRole('button');
-    await userEvent.tab();
+    await expect(getComputedStyle(button).cursor).toBe('pointer');
+    const before = button.getBoundingClientRect();
+    // One user-event instance, so the key held in one call is released in the next.
+    const user = userEvent.setup();
+    await user.tab();
     await expect(button).toHaveFocus();
-    await userEvent.keyboard('{Enter}');
-    await userEvent.keyboard(' ');
-    await expect(args.onPress).toHaveBeenCalledTimes(2);
+    await user.keyboard('[Space>]');
+    await waitFor(() => expect(getComputedStyle(surfaceOf(button)).transform).toMatch(/^matrix\(0\.96/));
+    await expect(button.getBoundingClientRect().width).toBe(before.width);
+    await user.keyboard('[/Space]');
+    await expect(args.onPress).toHaveBeenCalledTimes(1);
+    await waitFor(() => expect(getComputedStyle(surfaceOf(button)).transform).toBe('none'));
+  },
+};
+
+/** Interaction test: the focus ring is a dashed outline outside the button and doesn't change its size. */
+export const FocusRing: Story = {
+  tags: ['test-only', '!autodocs'],
+  play: async ({ canvas }) => {
+    const button = canvas.getByRole('button');
+    const before = button.getBoundingClientRect();
+    await expect(getComputedStyle(button).outlineStyle).toBe('none');
+    await userEvent.tab();
+    await expect(getComputedStyle(button).outlineStyle).toBe('dashed');
+    // The white backing ring must paint under the black dashes, or it hides them.
+    await expect(getComputedStyle(button, '::before').zIndex).toBe('-1');
+    const after = button.getBoundingClientRect();
+    await expect([after.width, after.height]).toEqual([before.width, before.height]);
   },
 };

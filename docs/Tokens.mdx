@@ -26,7 +26,7 @@ and `npm run tokens` compiles them into StyleX variables.
                 {v ? (
                   <>
                     {t.type === 'color' && <span style={{ display: 'inline-block', width: 12, height: 12, marginRight: 6, borderRadius: 2, border: '1px solid #0002', background: v.value }} />}
-                    <code>{v.value}</code>
+                    <code>{v.value}</code>{v.px && <span style={{ opacity: 0.7 }}> ({v.px})</span>}
                     {v.aliasOf && <div style={{ fontSize: 11, opacity: 0.7 }}>→ {v.aliasOf.join(' → ')}</div>}
                   </>
                 ) : '—'}

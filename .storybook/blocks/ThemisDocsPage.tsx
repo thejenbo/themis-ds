@@ -140,13 +140,14 @@ function ThemisSections({ docs }: { docs: ComponentDocs }) {
           head={['Token', 'Value per mode']}
           rows={docs.tokens.map((id) => {
             const t = tokenById.get(id);
-            const entries = Object.entries((t?.modes ?? {}) as Record<string, { value: string }>);
+            const entries = Object.entries((t?.modes ?? {}) as Record<string, { value: string; px?: string }>);
             if (entries.length === 0) return [<code>{id}</code>, '—'];
             // Each token can come from a different collection, so list that token's own modes.
             const values = entries.map(([mode, v]) => (
               <div key={mode}>
                 {t?.type === 'color' && <span style={s.swatch(v.value)} />}
                 <code>{v.value}</code>
+                {v.px && <span style={{ opacity: 0.7 }}> ({v.px})</span>}
                 {entries.length > 1 && <span style={{ opacity: 0.7 }}> {mode}</span>}
               </div>
             ));
@@ -154,6 +155,15 @@ function ThemisSections({ docs }: { docs: ComponentDocs }) {
           })}
         />
       </Section>
+
+      {docs.motion?.length ? (
+        <Section id="motion" title="Motion">
+          <Table
+            head={['Trigger', 'What moves', 'Duration', 'Easing', 'Reduced motion']}
+            rows={docs.motion.map((m) => [m.trigger, m.property, <code>{m.duration}</code>, <code>{m.easing}</code>, m.reducedMotion])}
+          />
+        </Section>
+      ) : null}
 
       <Section id="figma" title="Figma mapping">
         <p>

@@ -2,7 +2,7 @@ import { defineComponentDocs } from '../../docs/component-docs';
 
 export default defineComponentDocs({
   name: 'Button',
-  status: 'draft',
+  status: 'beta',
   category: 'Actions',
   summary: 'Triggers an action or event, such as submitting a form, opening a dialog or saving a change.',
   base: {
@@ -18,26 +18,47 @@ export default defineComponentDocs({
     ],
     whenNotToUse: [
       { scenario: 'Navigating to another page or URL.', useInstead: 'Link' },
+      { scenario: 'The button shows only an icon, with no visible label.', useInstead: 'IconButton' },
       { scenario: 'Toggling a setting on or off.', useInstead: 'Switch' },
-      { scenario: 'Choosing one option from a small set.', useInstead: 'SegmentedControl' },
     ],
   },
 
   anatomy: [
-    { part: 'Container', description: 'The pressable surface; carries background, border and focus ring.', required: true },
+    {
+      part: 'Button',
+      description:
+        'The clickable element. Carries the focus ring and, on touch screens, an invisible 44×44px touch area. It never changes size.',
+      required: true,
+    },
+    {
+      part: 'Surface',
+      description: 'The visible button: fill, border (outline variant) and padding. Shrinks slightly while pressed.',
+      required: true,
+    },
+    {
+      part: 'State Layer',
+      description:
+        'Overlay shown on hover and press. Its colour is calculated from the Surface: lightening on dark colours, darkening on light ones.',
+      required: true,
+    },
+    { part: 'Icon Left', description: 'Optional decorative icon before the label.', required: false },
     { part: 'Label', description: 'Text describing the action, sentence case, starting with a verb.', required: true },
-    { part: 'Spinner', description: 'Replaces the label visually while `isPending` is true; the label width is preserved.', required: false },
+    { part: 'Icon Right', description: 'Optional decorative icon after the label.', required: false },
   ],
 
   variants: {
     variant: {
-      primary: 'The single most important action in a view. Use at most one per region.',
-      secondary: 'All other actions, including "Cancel" next to a primary action.',
+      default: 'Filled. The main action in a region. Use at most one per region.',
+      outline: 'Bordered. Secondary actions next to a default button, such as "Cancel".',
+      subtle: 'No fill or border until hovered. Low-priority or repeated actions, such as in toolbars and lists.',
     },
     size: {
-      sm: 'Dense UIs such as tables and toolbars.',
-      md: 'Default for forms and dialogs.',
-      lg: 'Prominent calls to action and touch-first layouts.',
+      micro: 'Dense UIs such as tables and toolbars. Keep enough space around it on touch screens (see Touch targets).',
+      small: 'Default for forms and dialogs.',
+      medium: 'Prominent calls to action.',
+    },
+    tone: {
+      brand: 'Uses the brand colour of the current colour theme. Neutral and danger tones are planned.',
     },
   },
 
@@ -51,24 +72,26 @@ export default defineComponentDocs({
     keyboard: [
       { keys: 'Enter', action: 'Activates the button.' },
       { keys: 'Space', action: 'Activates the button.' },
-      { keys: 'Tab', action: 'Moves focus to / away from the button.' },
+      { keys: 'Tab', action: 'Moves focus to or away from the button.' },
     ],
     requirements: [
-      'Icon-only buttons must have an `aria-label`.',
+      'The label must make sense on its own: icons are decorative and hidden from screen readers.',
       'Pass a localised `pendingLabel` when using `isPending`.',
       'Do not nest interactive elements inside a Button.',
+      'On touch screens, leave enough space between buttons that their 44×44px touch areas do not overlap (see Foundations / Touch targets).',
+      'Sticky headers and footers must not cover a focused button (WCAG 2.4.11), for example by setting `scroll-padding` on the page.',
     ],
   },
 
   guidelines: {
     do: [
       'Start labels with a verb: "Save changes", "Add member".',
-      'Pair a primary action with a secondary "Cancel".',
-      'Use `isPending` instead of disabling while an action is in progress.',
+      'Pair a default button with an outline "Cancel".',
+      'Use `isPending` instead of disabling while an action is in progress, unless the action must not be retried.',
     ],
     dont: [
-      'Place more than one primary button in the same region.',
-      'Use a Button to navigate — use Link.',
+      'Place more than one default button in the same region.',
+      'Use a Button to navigate. Use Link.',
       'Override colours via `xstyle`; it is for layout only.',
     ],
   },
@@ -80,36 +103,79 @@ export default defineComponentDocs({
   tokens: [
     'colorTheme/color.brand',
     'colorTheme/color.background',
-    'colorTheme/color.text',
+    'colorTheme/color.text-brand',
     'colorTheme/color.text-inverse',
-    'colorTheme/color.border',
     'colorTheme/color.border-brand',
-    'colorTheme/color.transform-5-inverse',
-    'primitives/border.radius.6',
-    'primitives/border.radius.9999',
-    'primitives/spacing.8',
-    'primitives/spacing.12',
-    'primitives/spacing.16',
-    'primitives/spacing.24',
-    'typography/font.size.xs',
+    'colorTheme/color.transform-20',
+    'colorTheme/color.transform-90',
+    'system/color.background-disabled-default',
+    'system/color.background-disabled-inverse',
+    'system/color.text-disabled-default',
+    'system/color.text-disabled-inverse',
+    'system/color.border-disabled',
+    'spacing/spacing.3xs',
+    'spacing/spacing.2xs',
+    'spacing/spacing.xs',
+    'spacing/spacing.sm',
+    'radius/border.radius.md',
+    'borderWidth/border.width.sm',
+    'borderWidth/border.width.mandatory',
+    'borderWidth/border.width.focus ring',
     'typography/font.size.sm',
-    'typography/font.size.md',
-    'typography/font.weight.regular',
+    'typography/font.line height.sm',
+    'typography/font.weight.semibold',
     'fontTheme/font.family.body',
+    'primitives/color.grayscale.000',
+    'primitives/color.grayscale.1000',
+    'motion/duration.fast',
+    'motion/duration.base',
+    'motion/duration.slow',
+    'motion/easing.standard',
+    'motion/scale.pressed',
+  ],
+
+  motion: [
+    {
+      trigger: 'Hover or press',
+      property: 'State Layer fades in',
+      duration: 'motion/duration.base',
+      easing: 'motion/easing.standard',
+      reducedMotion: 'Unchanged (colour change only, no movement).',
+    },
+    {
+      trigger: 'Press (pointer, Space or Enter)',
+      property: 'Surface shrinks to motion/scale.pressed; the clickable area does not',
+      duration: 'motion/duration.fast',
+      easing: 'motion/easing.standard',
+      reducedMotion: 'No shrink.',
+    },
+    {
+      trigger: 'Release',
+      property: 'Surface returns to full size',
+      duration: 'motion/duration.slow',
+      easing: 'motion/easing.standard',
+      reducedMotion: 'No shrink.',
+    },
   ],
 
   figma: {
     componentKey: null,
-    url: null,
+    url: 'https://www.figma.com/design/tRoAewIghL1YbnTio6fkkw/Themis-Design-System?node-id=1010-80',
     properties: {
-      variant: { figmaProperty: 'Variant', type: 'VARIANT', values: { primary: 'Primary', secondary: 'Secondary' } },
-      size: { figmaProperty: 'Size', type: 'VARIANT', values: { sm: 'Small', md: 'Medium', lg: 'Large' } },
-      isDisabled: { figmaProperty: 'Disabled', type: 'BOOLEAN' },
-      isPending: { figmaProperty: 'Pending', type: 'BOOLEAN' },
-      children: { figmaProperty: 'Label', type: 'TEXT' },
+      variant: { figmaProperty: 'variant', type: 'VARIANT' },
+      size: { figmaProperty: 'size', type: 'VARIANT' },
+      isDisabled: { figmaProperty: 'state', type: 'VARIANT', values: { true: 'disabled' } },
+      iconLeft: { figmaProperty: 'iconLeft', type: 'VARIANT', values: { set: 'true', unset: 'false' } },
+      iconRight: { figmaProperty: 'iconRight', type: 'VARIANT', values: { set: 'true', unset: 'false' } },
     },
   },
 
-  related: ['Link', 'ToggleButton'],
-  notes: ['Placeholder variants/tokens — align with the Figma component set once tokens are imported.'],
+  related: ['Link', 'IconButton'],
+  notes: [
+    'Figma\'s `state` property also has `hovered` and `focused`. In code these come from interaction, not props.',
+    'The `tone` prop maps to the Figma component set ("Button - Brand"), not to a property.',
+    'Pressed is not drawn in Figma: Figma can\'t scale variables, so a scaled copy loses its token bindings. In code it is the hover look plus the shrink described under Motion.',
+    'Figma draws the focus ring with extra padding; in code the ring sits outside the button and never changes its size.',
+    '`isPending` (spinner) is not designed in Figma yet.',
+  ],
 });

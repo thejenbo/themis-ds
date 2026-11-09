@@ -3,12 +3,12 @@
 import * as stylex from '@stylexjs/stylex';
 
 export const spacing = stylex.defineVars({
-  "3xs": "2px",
-  "2xs": "4px",
-  "xs": "8px",
-  "sm": "16px",
-  "md": "24px",
-  "lg": "32px",
-  "xl": "48px",
-  "2xl": "64px",
+  "3xs": "0.125rem",
+  "2xs": "0.25rem",
+  "xs": "0.5rem",
+  "sm": "1rem",
+  "md": "1.5rem",
+  "lg": "2rem",
+  "xl": "3rem",
+  "2xl": "4rem",
 });

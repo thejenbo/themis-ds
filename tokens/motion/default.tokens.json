@@ -1,0 +1,52 @@
+{
+  "duration": {
+    "fast": {
+      "$type": "number",
+      "$value": 100,
+      "$description": "Milliseconds. Instant feedback, e.g. a button shrinking on press.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:2088:3"
+      }
+    },
+    "base": {
+      "$type": "number",
+      "$value": 150,
+      "$description": "Milliseconds. Small state changes such as State Layer fades on hover.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:2088:4"
+      }
+    },
+    "slow": {
+      "$type": "number",
+      "$value": 200,
+      "$description": "Milliseconds. Settling back to rest, e.g. a button releasing after press.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:2088:5"
+      }
+    }
+  },
+  "easing": {
+    "standard": {
+      "$type": "string",
+      "$value": "cubic-bezier(0.2, 0, 0, 1)",
+      "$description": "CSS timing function: fast start, smooth stop. Use for all state transitions. In prototypes, set Smart Animate to Custom bezier 0.2, 0, 0, 1.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:2088:6",
+        "com.figma.type": "string"
+      }
+    }
+  },
+  "scale": {
+    "pressed": {
+      "$type": "number",
+      "$value": 0.9599999785423279,
+      "$description": "Scale applied to the visible layers of a pressed control (pointer and keyboard). The clickable area never shrinks. Not applied under reduced motion.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:2088:7"
+      }
+    }
+  },
+  "$extensions": {
+    "com.figma.modeName": "default"
+  }
+}

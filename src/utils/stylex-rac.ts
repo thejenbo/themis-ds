@@ -1,6 +1,8 @@
 import * as stylex from '@stylexjs/stylex';
 
-type StyleArg = stylex.StyleXStyles | false | null | undefined;
+// Same as what `stylex.props` accepts. `StyleXStyles` alone rejects valid compiled styles such as
+// pseudo-elements with media-query values (e.g. the touch target's `::after`).
+type StyleArg = stylex.StyleXArray<stylex.CompiledStyles | stylex.StyleXStyles | boolean | null | undefined>;
 
 /**
  * Bridges StyleX and React Aria Components.

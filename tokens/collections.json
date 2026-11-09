@@ -41,7 +41,14 @@
     ],
     "defaultMode": "mobile",
     "media": {
-      "desktop": "(min-width: 768px)"
+      "desktop": "(min-width: 48em)"
     }
+  },
+  "shadows": {
+    "modes": [
+      "default",
+      "off"
+    ],
+    "defaultMode": "default"
   }
 }

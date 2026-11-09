@@ -25,7 +25,7 @@ export function ThemeProvider({ modes = {}, children, xstyle }: ThemeProviderPro
   const overrides = entries.flatMap(([collection, mode]) => (themes[collection] as Record<string, readonly stylex.Theme<any>[]>)[mode] ?? []);
   const dataAttrs = Object.fromEntries(entries.map(([collection, mode]) => [`data-themis-${collection}`, mode]));
   return (
-    <div {...dataAttrs} {...stylex.props(...overrides, styles.root, xstyle)}>
+    <div data-themis="" {...dataAttrs} {...stylex.props(...overrides, styles.root, xstyle)}>
       {children}
     </div>
   );

@@ -3,9 +3,19 @@
  * so the package ships a single stylesheet: `import 'themis-ds/styles.css'`.
  * Keep this file tiny — component styles belong in StyleX.
  */
-:where([data-themis-mode]),
-:where([data-themis-mode]) *,
-:where([data-themis-mode]) ::before,
-:where([data-themis-mode]) ::after {
+:where([data-themis]),
+:where([data-themis]) *,
+:where([data-themis]) ::before,
+:where([data-themis]) ::after {
   box-sizing: border-box;
+}
+
+/*
+ * Debug view for Foundations / Touch targets: draws every component's invisible touch area
+ * (see src/utils/touch-target.ts), even on devices that don't use touch.
+ */
+:where([data-themis-show-touch]) [data-themis-touch-target]::after {
+  display: block !important;
+  outline: 1px dashed #d00;
+  background-color: rgb(221 0 0 / 0.12);
 }

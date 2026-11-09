@@ -3,9 +3,9 @@
 import * as stylex from '@stylexjs/stylex';
 
 export const border = stylex.defineVars({
-  "radiusXs": "4px",
-  "radiusSm": "6px",
-  "radiusMd": "10px",
-  "radiusLg": "20px",
+  "radiusXs": "0.25rem",
+  "radiusSm": "0.375rem",
+  "radiusMd": "0.625rem",
+  "radiusLg": "1.25rem",
   "radiusFull": "9999px",
 });

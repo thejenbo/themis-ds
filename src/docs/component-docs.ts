@@ -64,6 +64,18 @@ export interface ComponentDocs {
   /** Token ids (from src/tokens/tokens.json) this component consumes. */
   tokens: string[];
 
+  /**
+   * What the component animates and when. Durations and easings name token ids from `tokens`,
+   * so designers can match prototypes (Figma can't bind transitions to variables).
+   */
+  motion?: {
+    trigger: string;
+    property: string;
+    duration: string;
+    easing: string;
+    reducedMotion: string;
+  }[];
+
   figma: {
     /** Component set key, filled in once the Figma library is published. */
     componentKey: string | null;

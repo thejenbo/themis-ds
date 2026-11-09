@@ -3,16 +3,16 @@
 import * as stylex from '@stylexjs/stylex';
 
 export const spacing = stylex.defineVars({
-  "2": "2px",
-  "4": "4px",
-  "8": "8px",
-  "10": "10px",
-  "12": "12px",
-  "16": "16px",
-  "24": "24px",
-  "32": "32px",
-  "48": "48px",
-  "64": "64px",
+  "2": "0.125rem",
+  "4": "0.25rem",
+  "8": "0.5rem",
+  "10": "0.625rem",
+  "12": "0.75rem",
+  "16": "1rem",
+  "24": "1.5rem",
+  "32": "2rem",
+  "48": "3rem",
+  "64": "4rem",
 });
 
 export const border = stylex.defineVars({
@@ -20,12 +20,12 @@ export const border = stylex.defineVars({
   "width2": "2px",
   "width3": "3px",
   "width4": "4px",
-  "radius2": "2px",
-  "radius4": "4px",
-  "radius6": "6px",
-  "radius10": "10px",
-  "radius20": "20px",
-  "radius30": "30px",
+  "radius2": "0.125rem",
+  "radius4": "0.25rem",
+  "radius6": "0.375rem",
+  "radius10": "0.625rem",
+  "radius20": "1.25rem",
+  "radius30": "1.875rem",
   "radius9999": "9999px",
 });
 
