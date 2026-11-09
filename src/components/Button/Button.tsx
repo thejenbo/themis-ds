@@ -25,7 +25,7 @@ import { racStyles } from '../../utils/stylex-rac';
 
 export type ButtonVariant = 'default' | 'outline' | 'subtle';
 export type ButtonSize = 'micro' | 'small' | 'medium';
-export type ButtonTone = 'brand';
+export type ButtonTone = 'brand' | 'neutral' | 'danger';
 
 export interface ButtonProps extends Omit<AriaButtonProps, 'className' | 'style'> {
   /**
@@ -43,7 +43,10 @@ export interface ButtonProps extends Omit<AriaButtonProps, 'className' | 'style'
    */
   size?: ButtonSize;
   /**
-   * Colour family. Only `brand` exists today; `neutral` and `danger` are planned.
+   * Colour family.
+   * `brand`: the theme's brand colour, for most actions.
+   * `neutral`: black and white (inverted in dark themes), for actions that shouldn't draw on the brand colour.
+   * `danger`: the error colour, for destructive actions such as deleting.
    * @default 'brand'
    */
   tone?: ButtonTone;
@@ -94,6 +97,8 @@ export function Button({
     >
       {composeRenderProps(children, (children, s) => {
         const active = (s.isHovered || s.isPressed) && !s.isDisabled;
+        // Icon colour differs from the label in some tones; disabled always uses the disabled text colour.
+        const iconStyle = !s.isDisabled && icons[tone][variant];
         return (
           <span
             data-themis-part="surface"
@@ -101,7 +106,7 @@ export function Button({
               styles.surface,
               pressMotion.base,
               sizes[size],
-              surfaces[variant],
+              surfaces[tone][variant],
               layers[tone][variant],
               active && styles.stateLayerOn,
               s.isPressed && !s.isDisabled && pressMotion.pressed,
@@ -109,13 +114,13 @@ export function Button({
             )}
           >
             {iconLeft != null && (
-              <span aria-hidden="true" {...stylex.props(styles.slot, s.isPending && styles.hidden)}>
+              <span aria-hidden="true" {...stylex.props(styles.slot, iconStyle, s.isPending && styles.hidden)}>
                 {iconLeft}
               </span>
             )}
             <span {...stylex.props(styles.slot, s.isPending && styles.hidden)}>{children}</span>
             {iconRight != null && (
-              <span aria-hidden="true" {...stylex.props(styles.slot, s.isPending && styles.hidden)}>
+              <span aria-hidden="true" {...stylex.props(styles.slot, iconStyle, s.isPending && styles.hidden)}>
                 {iconRight}
               </span>
             )}
@@ -228,8 +233,23 @@ const sizes = stylex.create({
   medium: { paddingBlock: spacing.xs },
 });
 
-// Resting look per variant (Figma state=default).
-const surfaces = stylex.create({
+/*
+ * Tones. Each comes from a Figma component set ("Button - Brand", "- Neutral", "- Danger") and supplies:
+ *   fill    default variant's Surface, and the hover/press Surface of every variant
+ *   border  outline variant's border
+ *   label   outline and subtle label colour (default variant labels use text-inverse on the fill)
+ * The State Layer overlay's direction is calculated from `fill` (see utils/state-layer.stylex.ts); amounts come
+ * from Figma: default uses transform-20, outline and subtle transform-90. Browsers without relative colour syntax
+ * fall back to Figma's fixed transform tokens.
+ */
+const brandOverlay20 = `oklch(from ${color.brand} ${stateLayer.direction} 0 0 / 0.2)`;
+const brandOverlay90 = `oklch(from ${color.brand} ${stateLayer.direction} 0 0 / 0.9)`;
+const neutralOverlay20 = `oklch(from ${color.backgroundInverse} ${stateLayer.direction} 0 0 / 0.2)`;
+const neutralOverlay90 = `oklch(from ${color.backgroundInverse} ${stateLayer.direction} 0 0 / 0.9)`;
+const dangerOverlay20 = `oklch(from ${color.error} ${stateLayer.direction} 0 0 / 0.2)`;
+const dangerOverlay90 = `oklch(from ${color.error} ${stateLayer.direction} 0 0 / 0.9)`;
+
+const brandSurfaces = stylex.create({
   default: { backgroundColor: color.brand, color: color.textInverse },
   outline: {
     backgroundColor: color.background,
@@ -239,18 +259,12 @@ const surfaces = stylex.create({
   subtle: { backgroundColor: 'transparent', color: color.textBrand },
 });
 
-// Hovered/pressed look: the hover Surface (brand) plus an overlay whose direction is calculated from it
-// (see utils/state-layer.stylex.ts). Amounts come from Figma: default uses transform-20, outline and
-// subtle transform-90. Browsers without relative colour syntax fall back to Figma's fixed tokens.
-const overlay20 = `oklch(from ${color.brand} ${stateLayer.direction} 0 0 / 0.2)`;
-const overlay90 = `oklch(from ${color.brand} ${stateLayer.direction} 0 0 / 0.9)`;
-
 const brandLayers = stylex.create({
   default: {
     '::before': {
       backgroundColor: color.brand,
       backgroundImage: stylex.firstThatWorks(
-        `linear-gradient(${overlay20}, ${overlay20})`,
+        `linear-gradient(${brandOverlay20}, ${brandOverlay20})`,
         `linear-gradient(${color.transform20}, ${color.transform20})`,
       ),
     },
@@ -259,7 +273,7 @@ const brandLayers = stylex.create({
     '::before': {
       backgroundColor: color.brand,
       backgroundImage: stylex.firstThatWorks(
-        `linear-gradient(${overlay90}, ${overlay90})`,
+        `linear-gradient(${brandOverlay90}, ${brandOverlay90})`,
         `linear-gradient(${color.transform90}, ${color.transform90})`,
       ),
     },
@@ -268,15 +282,109 @@ const brandLayers = stylex.create({
     '::before': {
       backgroundColor: color.brand,
       backgroundImage: stylex.firstThatWorks(
-        `linear-gradient(${overlay90}, ${overlay90})`,
+        `linear-gradient(${brandOverlay90}, ${brandOverlay90})`,
         `linear-gradient(${color.transform90}, ${color.transform90})`,
       ),
     },
   },
 });
 
-/** State Layer styles per tone, then per variant. Add `neutral` and `danger` here once designed. */
-const layers: Record<ButtonTone, typeof brandLayers> = { brand: brandLayers };
+const neutralSurfaces = stylex.create({
+  default: { backgroundColor: color.backgroundInverse, color: color.textInverse },
+  outline: {
+    backgroundColor: color.background,
+    color: color.text,
+    '::after': { borderWidth: borderWidth.widthMandatory, borderColor: color.border },
+  },
+  subtle: { backgroundColor: 'transparent', color: color.text },
+});
+
+const neutralLayers = stylex.create({
+  default: {
+    '::before': {
+      backgroundColor: color.backgroundInverse,
+      backgroundImage: stylex.firstThatWorks(
+        `linear-gradient(${neutralOverlay20}, ${neutralOverlay20})`,
+        `linear-gradient(${color.transform20}, ${color.transform20})`,
+      ),
+    },
+  },
+  outline: {
+    '::before': {
+      backgroundColor: color.backgroundInverse,
+      backgroundImage: stylex.firstThatWorks(
+        `linear-gradient(${neutralOverlay90}, ${neutralOverlay90})`,
+        `linear-gradient(${color.transform90}, ${color.transform90})`,
+      ),
+    },
+  },
+  subtle: {
+    '::before': {
+      backgroundColor: color.backgroundInverse,
+      backgroundImage: stylex.firstThatWorks(
+        `linear-gradient(${neutralOverlay90}, ${neutralOverlay90})`,
+        `linear-gradient(${color.transform90}, ${color.transform90})`,
+      ),
+    },
+  },
+});
+
+const dangerSurfaces = stylex.create({
+  default: { backgroundColor: color.error, color: color.textInverse },
+  outline: {
+    backgroundColor: color.background,
+    color: color.text,
+    '::after': { borderWidth: borderWidth.widthMandatory, borderColor: color.error },
+  },
+  subtle: { backgroundColor: 'transparent', color: color.text },
+});
+
+const dangerLayers = stylex.create({
+  default: {
+    '::before': {
+      backgroundColor: color.error,
+      backgroundImage: stylex.firstThatWorks(
+        `linear-gradient(${dangerOverlay20}, ${dangerOverlay20})`,
+        `linear-gradient(${color.transform20}, ${color.transform20})`,
+      ),
+    },
+  },
+  outline: {
+    '::before': {
+      backgroundColor: color.error,
+      backgroundImage: stylex.firstThatWorks(
+        `linear-gradient(${dangerOverlay90}, ${dangerOverlay90})`,
+        `linear-gradient(${color.transform90}, ${color.transform90})`,
+      ),
+    },
+  },
+  subtle: {
+    '::before': {
+      backgroundColor: color.error,
+      backgroundImage: stylex.firstThatWorks(
+        `linear-gradient(${dangerOverlay90}, ${dangerOverlay90})`,
+        `linear-gradient(${color.transform90}, ${color.transform90})`,
+      ),
+    },
+  },
+});
+
+/** Danger's outline and subtle icons use the error colour while the label stays `text` (per Figma). */
+const dangerIcons = stylex.create({
+  outline: { color: color.error },
+  subtle: { color: color.error },
+});
+
+/** Resting look per tone, then per variant (Figma state=default). */
+const surfaces = { brand: brandSurfaces, neutral: neutralSurfaces, danger: dangerSurfaces } satisfies Record<ButtonTone, unknown>;
+/** State Layer (hover/press) per tone, then per variant. */
+const layers = { brand: brandLayers, neutral: neutralLayers, danger: dangerLayers } satisfies Record<ButtonTone, unknown>;
+/** Icon colour per tone and variant, where it differs from the label. */
+const icons: Record<ButtonTone, Partial<Record<ButtonVariant, stylex.StyleXStyles>>> = {
+  brand: {},
+  neutral: {},
+  danger: dangerIcons,
+};
 
 const disabledSurfaces = stylex.create({
   default: {

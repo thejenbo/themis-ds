@@ -20,6 +20,7 @@ export default defineComponentDocs({
       { scenario: 'Navigating to another page or URL.', useInstead: 'Link' },
       { scenario: 'The button shows only an icon, with no visible label.', useInstead: 'IconButton' },
       { scenario: 'Toggling a setting on or off.', useInstead: 'Switch' },
+      { scenario: 'Signalling an error without an action (e.g. a failed save).', useInstead: 'an inline message, not a danger Button' },
     ],
   },
 
@@ -58,7 +59,9 @@ export default defineComponentDocs({
       medium: 'Prominent calls to action.',
     },
     tone: {
-      brand: 'Uses the brand colour of the current colour theme. Neutral and danger tones are planned.',
+      brand: 'The brand colour of the current colour theme. The default for most actions.',
+      neutral: 'Black and white (inverted in dark themes). For actions that should not compete with the brand colour, such as toolbars and secondary flows.',
+      danger: 'The error colour. Only for destructive or irreversible actions, such as "Delete project". Pair with a confirmation step.',
     },
   },
 
@@ -91,6 +94,7 @@ export default defineComponentDocs({
     ],
     dont: [
       'Place more than one default button in the same region.',
+      'Use the danger tone for anything that is not destructive. Its meaning wears off if it is used for emphasis.',
       'Use a Button to navigate. Use Link.',
       'Override colours via `xstyle`; it is for layout only.',
     ],
@@ -102,7 +106,11 @@ export default defineComponentDocs({
 
   tokens: [
     'colorTheme/color.brand',
+    'colorTheme/color.error',
     'colorTheme/color.background',
+    'colorTheme/color.background-inverse',
+    'colorTheme/color.text',
+    'colorTheme/color.border',
     'colorTheme/color.text-brand',
     'colorTheme/color.text-inverse',
     'colorTheme/color.border-brand',
@@ -173,7 +181,9 @@ export default defineComponentDocs({
   related: ['Link', 'IconButton'],
   notes: [
     'Figma\'s `state` property also has `hovered` and `focused`. In code these come from interaction, not props.',
-    'The `tone` prop maps to the Figma component set ("Button - Brand"), not to a property.',
+    'The `tone` prop maps to a Figma component set, not to a property: "Button - Brand" (node 1010:80), "Button - Neutral" (2092:18429) and "Button - Danger" (2092:18796).',
+    'Danger outline and subtle buttons keep a `text`-coloured label with an `error`-coloured icon, as in Figma.',
+    'Figma draws the danger focus ring in red. Code uses the system-wide black and white ring for every tone (see Foundations / Focus ring).',
     'Pressed is not drawn in Figma: Figma can\'t scale variables, so a scaled copy loses its token bindings. In code it is the hover look plus the shrink described under Motion.',
     'Figma draws the focus ring with extra padding; in code the ring sits outside the button and never changes its size.',
     '`isPending` (spinner) is not designed in Figma yet.',

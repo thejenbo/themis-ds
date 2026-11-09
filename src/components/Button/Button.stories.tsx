@@ -4,7 +4,7 @@ import { expect, fn, userEvent, waitFor } from 'storybook/test';
 
 import { ThemeProvider } from '../../theme/ThemeProvider';
 import { collectionModes } from '../../tokens/themes';
-import { Button, type ButtonSize, type ButtonVariant } from './Button';
+import { Button, type ButtonSize, type ButtonTone, type ButtonVariant } from './Button';
 import docs from './Button.docs';
 
 /** Stand-in icon until the icon library exists. Button accepts any ReactNode. */
@@ -18,6 +18,7 @@ function HeartIcon() {
 
 const VARIANTS: ButtonVariant[] = ['default', 'outline', 'subtle'];
 const SIZES: ButtonSize[] = ['micro', 'small', 'medium'];
+const TONES: ButtonTone[] = ['brand', 'neutral', 'danger'];
 
 const row = (children: ReactNode) => (
   <div style={{ display: 'flex', gap: 16, alignItems: 'center', flexWrap: 'wrap' }}>{children}</div>
@@ -42,7 +43,7 @@ const meta = {
   argTypes: {
     variant: { control: 'inline-radio', options: VARIANTS },
     size: { control: 'inline-radio', options: SIZES },
-    tone: { control: 'inline-radio', options: ['brand'] },
+    tone: { control: 'inline-radio', options: TONES },
     iconLeft: { control: false },
     iconRight: { control: false },
   },
@@ -67,6 +68,26 @@ export const Sizes: Story = {
   render: (args) => row(SIZES.map((s) => <Button key={s} {...args} size={s}>{s[0]!.toUpperCase() + s.slice(1)}</Button>)),
 };
 
+/**
+ * `brand` for most actions, `neutral` where the brand colour would compete, `danger` only for destructive actions.
+ * Danger outline and subtle buttons keep a black label with a red icon.
+ */
+export const Tones: Story = {
+  render: (args) => (
+    <div style={{ display: 'grid', gap: 12 }}>
+      {TONES.map((tone) => (
+        <div key={tone}>
+          {row(VARIANTS.map((v) => (
+            <Button key={v} {...args} tone={tone} variant={v} iconLeft={<HeartIcon />}>
+              {tone[0]!.toUpperCase() + tone.slice(1)} {v}
+            </Button>
+          )))}
+        </div>
+      ))}
+    </div>
+  ),
+};
+
 /** Icons are decorative and hidden from screen readers, so the label must make sense alone. */
 export const WithIcons: Story = {
   render: (args) =>
@@ -85,8 +106,8 @@ export const WithIcons: Story = {
 };
 
 /**
- * Every variant and size, mirroring the Figma "Button - Brand" frame, in each colour theme.
- * Hover and focus come from interaction: hover a button or Tab to it.
+ * Every variant and size, mirroring the Figma "Button - Brand/Neutral/Danger" frames, in each colour theme.
+ * Use the `tone` control to switch tone. Hover and focus come from interaction: hover a button or Tab to it.
  */
 export const ThemeMatrix: Story = {
   tags: ['!autodocs'],
@@ -158,13 +179,17 @@ export const DefaultWithCancel: Story = {
 export const StateLayerDirection: Story = {
   tags: ['test-only', '!autodocs'],
   render: (args) => (
-    <div style={{ display: 'flex', gap: 16 }}>
-      <ThemeProvider modes={{ colorTheme: 'light demo' }}>
-        <Button {...args}>Light theme</Button>
-      </ThemeProvider>
-      <ThemeProvider modes={{ colorTheme: 'dark demo' }}>
-        <Button {...args}>Dark theme</Button>
-      </ThemeProvider>
+    <div style={{ display: 'grid', gap: 16 }}>
+      {TONES.map((tone) => (
+        <div key={tone} style={{ display: 'flex', gap: 16 }}>
+          <ThemeProvider modes={{ colorTheme: 'light demo' }}>
+            <Button {...args} tone={tone}>{tone === 'brand' ? 'Light theme' : `Light ${tone}`}</Button>
+          </ThemeProvider>
+          <ThemeProvider modes={{ colorTheme: 'dark demo' }}>
+            <Button {...args} tone={tone}>{tone === 'brand' ? 'Dark theme' : `Dark ${tone}`}</Button>
+          </ThemeProvider>
+        </div>
+      ))}
     </div>
   ),
   play: async ({ canvas }) => {
@@ -177,6 +202,36 @@ export const StateLayerDirection: Story = {
     const overlayLightness = (el: HTMLElement) => /oklch\(\s*([\d.]+)/.exec(layerStyle(el).backgroundImage)?.[1];
     await expect(overlayLightness(light)).toBe('1');
     await expect(overlayLightness(dark)).toBe('0');
+    // Neutral: black fill in light demo (lighten), white in dark demo (darken).
+    await expect(overlayLightness(canvas.getByRole('button', { name: 'Light neutral' }))).toBe('1');
+    await expect(overlayLightness(canvas.getByRole('button', { name: 'Dark neutral' }))).toBe('0');
+    // Danger: dark red in light demo (lighten), light pink in dark demo (darken).
+    await expect(overlayLightness(canvas.getByRole('button', { name: 'Light danger' }))).toBe('1');
+    await expect(overlayLightness(canvas.getByRole('button', { name: 'Dark danger' }))).toBe('0');
+  },
+};
+
+/**
+ * Interaction test: danger outline/subtle icons use the error colour while the label stays `text`,
+ * and fall back to the disabled colour (same as the label) when disabled.
+ */
+export const DangerIconColour: Story = {
+  tags: ['test-only', '!autodocs'],
+  render: (args) => row(
+    <>
+      <Button {...args} tone="danger" variant="outline" iconLeft={<HeartIcon />}>Delete</Button>
+      <Button {...args} tone="danger" variant="outline" iconLeft={<HeartIcon />} isDisabled>Delete disabled</Button>
+    </>,
+  ),
+  play: async ({ canvas }) => {
+    const colours = (name: string) => {
+      const [icon, label] = surfaceOf(canvas.getByRole('button', { name })).children as unknown as HTMLElement[];
+      return { icon: getComputedStyle(icon!).color, label: getComputedStyle(label!).color };
+    };
+    const enabled = colours('Delete');
+    await expect(enabled.icon).not.toBe(enabled.label);
+    const disabled = colours('Delete disabled');
+    await expect(disabled.icon).toBe(disabled.label);
   },
 };
 
