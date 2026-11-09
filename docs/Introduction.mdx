@@ -25,6 +25,10 @@ export function App() {
 }
 ```
 
+**Fonts:** Themis sets font families through tokens but doesn't load font files. Your app must load the fonts it uses
+(for the demo themes: Montserrat, Playfair Display, Outfit, Fredoka One and Space Mono). Storybook loads them from
+Google Fonts in `.storybook/preview-head.html`.
+
 Each multi-mode token collection has its own toolbar control (**colorTheme**, **fontTheme**, **radius** and **borderWidth**). Use them to preview every story in each mode.
 
 ## Source of truth
