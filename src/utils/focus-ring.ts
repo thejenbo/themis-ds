@@ -54,6 +54,28 @@ export const focusRing = stylex.create({
       borderRadius: `calc(${radius.radiusSm} + ${offset} + ${width})`,
     },
   },
+  /**
+   * Add after `visible` to draw the ring just inside the element instead of outside it, for full-width
+   * elements where an outside ring would overlap neighbours or spill out of the container (e.g. Accordion
+   * headers). Same 2px gap and black/white dashes. Set the `::before` border radius in the component to
+   * the element's radius minus `spacing.3xs`.
+   *
+   * Inside the element, the ring has to paint above the element's children, so both colours move onto the
+   * `::before` (white border + black dashed outline on top of it). Windows high-contrast mode drops the
+   * `::before`, so the element's own outline is kept there.
+   */
+  inset: {
+    outlineStyle: { default: 'none', '@media (forced-colors: active)': 'dashed' },
+    outlineOffset: `calc(-1 * (${offset} + ${width}))`,
+    '::before': {
+      inset: offset,
+      zIndex: 1,
+      outlineStyle: 'dashed',
+      outlineWidth: width,
+      outlineColor: primitive.grayscale1000,
+      outlineOffset: `calc(-1 * ${width})`,
+    },
+  },
   /** Add after `visible` on pill-shaped elements using `radius.radiusFull` (e.g. Switch's track). */
   radiusFull: {
     '::before': {
