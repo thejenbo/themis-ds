@@ -14,7 +14,8 @@ import { spacing } from '../tokens/spacing.stylex';
  * - Apply `visible` only for keyboard focus (React Aria `isFocusVisible`), never on mouse clicks.
  * - Windows high-contrast mode replaces custom colours, so the white backing ring is dropped there
  *   and the outline uses the system colour.
- * - The element needs `position: relative` and a border radius of `radius.radiusMd` (the ring follows it).
+ * - The element needs `position: relative` and a border radius of `radius.radiusMd` (the ring follows it),
+ *   or `radius.radiusSm` together with `radiusSm`.
  *   `base` makes the element a stacking context, so the white ring can sit under the outline.
  *
  * Uses the element's `::before`. Don't use `::before` for anything else on the same element.
@@ -45,6 +46,12 @@ export const focusRing = stylex.create({
       borderRadius: `calc(${radius.radiusMd} + ${offset} + ${width})`,
       pointerEvents: 'none',
       display: { default: 'block', '@media (forced-colors: active)': 'none' },
+    },
+  },
+  /** Add after `visible` on elements using `radius.radiusSm` (e.g. micro IconButton), so the ring follows them. */
+  radiusSm: {
+    '::before': {
+      borderRadius: `calc(${radius.radiusSm} + ${offset} + ${width})`,
     },
   },
 });

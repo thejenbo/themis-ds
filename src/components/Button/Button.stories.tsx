@@ -2,19 +2,12 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { ReactNode } from 'react';
 import { expect, fn, userEvent, waitFor } from 'storybook/test';
 
+import { HeartIcon } from '../../docs/demo-icons';
 import { ThemeProvider } from '../../theme/ThemeProvider';
 import { collectionModes } from '../../tokens/themes';
 import { Button, type ButtonSize, type ButtonTone, type ButtonVariant } from './Button';
 import docs from './Button.docs';
 
-/** Stand-in icon until the icon library exists. Button accepts any ReactNode. */
-function HeartIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinejoin="round">
-      <path d="M12 20s-7-4.4-9.3-9A5.1 5.1 0 0 1 12 5.6 5.1 5.1 0 0 1 21.3 11C19 15.6 12 20 12 20Z" />
-    </svg>
-  );
-}
 
 const VARIANTS: ButtonVariant[] = ['default', 'outline', 'subtle'];
 const SIZES: ButtonSize[] = ['micro', 'small', 'medium'];
