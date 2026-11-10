@@ -1,17 +1,23 @@
+import * as stylex from '@stylexjs/stylex';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { ReactNode } from 'react';
 import { expect, fn, userEvent } from 'storybook/test';
 
 import { HeartIcon } from '../../docs/demo-icons';
 import { ThemeProvider } from '../../theme/ThemeProvider';
+import { color } from '../../tokens/colorTheme.stylex';
 import { collectionModes } from '../../tokens/themes';
 import { Button } from '../Button';
-import { IconButton, type IconButtonSize, type IconButtonTone, type IconButtonVariant } from './IconButton';
+import type { ButtonTone } from '../Button';
+import { IconButton, type IconButtonProps, type IconButtonSize, type IconButtonVariant } from './IconButton';
 import docs from './IconButton.docs';
 
 const VARIANTS: IconButtonVariant[] = ['default', 'outline', 'subtle'];
 const SIZES: IconButtonSize[] = ['micro', 'small', 'medium'];
-const TONES: IconButtonTone[] = ['brand', 'neutral', 'danger'];
+const TONES: ButtonTone[] = ['brand', 'neutral', 'danger'];
+
+/** Story args typed as a standard tone, so stories can override `variant` freely. */
+const std = (args: IconButtonProps) => args as Exclude<IconButtonProps, { tone: 'neutral-inverse' }>;
 
 const row = (children: ReactNode) => (
   <div style={{ display: 'flex', gap: 16, alignItems: 'center', flexWrap: 'wrap' }}>{children}</div>
@@ -58,12 +64,12 @@ export const AccessibleName: Story = {
 
 /** `default` for the main action, `outline` for secondary actions, `subtle` for toolbars and row actions. */
 export const Variants: Story = {
-  render: (args) => row(VARIANTS.map((v) => <IconButton key={v} {...args} variant={v} aria-label={`Like (${v})`} />)),
+  render: (args) => row(VARIANTS.map((v) => <IconButton key={v} {...std(args)} variant={v} aria-label={`Like (${v})`} />)),
 };
 
 /** 24, 32 and 40px squares. Micro uses the small radius. */
 export const Sizes: Story = {
-  render: (args) => row(SIZES.map((s) => <IconButton key={s} {...args} size={s} aria-label={`Like (${s})`} />)),
+  render: (args) => row(SIZES.map((s) => <IconButton key={s} {...std(args)} size={s} aria-label={`Like (${s})`} />)),
 };
 
 /** Same tones as Button. Figma only has brand so far; neutral and danger reuse Button's tone colours. */
@@ -72,11 +78,41 @@ export const Tones: Story = {
     <div style={{ display: 'grid', gap: 12 }}>
       {TONES.map((tone) => (
         <div key={tone}>
-          {row(VARIANTS.map((v) => <IconButton key={v} {...args} tone={tone} variant={v} aria-label={`Like (${tone} ${v})`} />))}
+          {row(VARIANTS.map((v) => <IconButton key={v} {...std(args)} tone={tone} variant={v} aria-label={`Like (${tone} ${v})`} />))}
         </div>
       ))}
     </div>
   ),
+};
+
+/**
+ * Subtle icon buttons for other surfaces: `neutral` on the page background, `neutral-inverse` on brand or dark fills
+ * (e.g. a Modal header). Both hover with a see-through tint, so the surface shows through.
+ */
+export const OnSurfaces: Story = {
+  render: (args) => (
+    <div style={{ display: 'grid', gap: 12 }}>
+      <div style={{ display: 'flex', gap: 8 }}>
+        {SIZES.map((size) => (
+          <IconButton key={size} {...std(args)} variant="subtle" tone="neutral" size={size} aria-label={`Close (neutral ${size})`} />
+        ))}
+        <IconButton {...std(args)} variant="subtle" tone="neutral" aria-label="Close (neutral disabled)" isDisabled />
+      </div>
+      <div {...stylex.props(demo.brandSurface)}>
+        {SIZES.map((size) => (
+          <IconButton key={size} {...args} variant="subtle" tone="neutral-inverse" size={size} aria-label={`Close (inverse ${size})`} />
+        ))}
+        <IconButton {...args} variant="subtle" tone="neutral-inverse" aria-label="Close (inverse disabled)" isDisabled />
+      </div>
+    </div>
+  ),
+  play: async ({ canvas }) => {
+    const inverse = canvas.getByRole('button', { name: 'Close (inverse small)' });
+    await userEvent.hover(inverse);
+    // The hover tint is see-through, so the brand fill behind it still shows.
+    const layer = getComputedStyle(inverse.firstElementChild!, '::before');
+    await expect(layer.backgroundColor).toMatch(/rgba\(.*, 0\.2\)|\/ 0\.2\)/);
+  },
 };
 
 /** Every variant and size, mirroring the Figma "Icon Button" frame, in each colour theme. */
@@ -94,8 +130,8 @@ export const ThemeMatrix: Story = {
                 {row(
                   VARIANTS.map((variant) => (
                     <div key={variant} style={{ display: 'flex', gap: 8 }}>
-                      <IconButton {...args} size={size} variant={variant} aria-label={`Like (${theme} ${size} ${variant})`} />
-                      <IconButton {...args} size={size} variant={variant} aria-label={`Like (${theme} ${size} ${variant} disabled)`} isDisabled />
+                      <IconButton {...std(args)} size={size} variant={variant} aria-label={`Like (${theme} ${size} ${variant})`} />
+                      <IconButton {...std(args)} size={size} variant={variant} aria-label={`Like (${theme} ${size} ${variant} disabled)`} isDisabled />
                     </div>
                   )),
                 )}
@@ -116,7 +152,7 @@ export const NextToButton: Story = {
         <div key={size} style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
           <Button size={size} variant="outline">Cancel</Button>
           <Button size={size}>Save</Button>
-          <IconButton {...args} size={size} variant="subtle" aria-label={`More options (${size})`} />
+          <IconButton {...std(args)} size={size} variant="subtle" aria-label={`More options (${size})`} />
         </div>
       ))}
     </div>
@@ -133,7 +169,7 @@ export const NextToButton: Story = {
 
 /** Disabled icon buttons can't be pressed and use the fixed system colours in every theme. */
 export const Disabled: Story = {
-  render: (args) => row(VARIANTS.map((v) => <IconButton key={v} {...args} variant={v} aria-label={`Like (${v})`} isDisabled />)),
+  render: (args) => row(VARIANTS.map((v) => <IconButton key={v} {...std(args)} variant={v} aria-label={`Like (${v})`} isDisabled />)),
   play: async ({ args, canvas }) => {
     for (const button of canvas.getAllByRole('button')) {
       await expect(getComputedStyle(button).cursor).toBe('not-allowed');
@@ -168,3 +204,7 @@ export const MicroFocusRing: Story = {
     await expect(ring).toBe(element + 4);
   },
 };
+
+const demo = stylex.create({
+  brandSurface: { display: 'flex', gap: 8, padding: 8, backgroundColor: color.brand },
+});

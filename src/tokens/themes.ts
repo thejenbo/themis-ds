@@ -58,6 +58,7 @@ const colorTheme_color_lightDemo = stylex.createTheme(colorTheme_color, {
   "success": "#2C6E2F",
   "transform90": "#FFFFFFe5",
   "transform20": "#FFFFFF33",
+  "transform60": "#FFFFFF99",
   "transform5Inverse": "#0000000d",
 });
 
@@ -76,6 +77,7 @@ const colorTheme_color_darkDemo = stylex.createTheme(colorTheme_color, {
   "success": "#71F2C1",
   "transform90": "#000000e5",
   "transform20": "#00000033",
+  "transform60": "#00000099",
   "transform5Inverse": "#FFFFFF0d",
 });
 
@@ -94,6 +96,7 @@ const colorTheme_color_themisConfig = stylex.createTheme(colorTheme_color, {
   "success": "#2C6E2F",
   "transform90": "#FFFFFFe5",
   "transform20": "#FFFFFF33",
+  "transform60": "#FFFFFF",
   "transform5Inverse": "#FFFFFF0d",
 });
 

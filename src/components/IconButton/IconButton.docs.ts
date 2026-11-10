@@ -60,6 +60,8 @@ export default defineComponentDocs({
       brand: 'The brand colour of the current colour theme. The default.',
       neutral: 'Black and white (inverted in dark themes), for actions that should not compete with the brand colour.',
       danger: 'The error colour. Only for destructive actions, such as deleting a row.',
+      'neutral-inverse':
+        'Subtle only. A light icon with a see-through hover, for icon buttons on brand or dark fills such as the Modal header close button.',
     },
   },
 
@@ -108,6 +110,7 @@ export default defineComponentDocs({
     'colorTheme/color.border-brand',
     'colorTheme/color.transform-20',
     'colorTheme/color.transform-90',
+    'colorTheme/color.transform-5-inverse',
     'system/color.background-disabled-default',
     'system/color.background-disabled-inverse',
     'system/color.text-disabled-default',
@@ -168,7 +171,8 @@ export default defineComponentDocs({
   related: ['Button', 'ToggleButton', 'Tooltip'],
   notes: [
     'Shares its styles with Button (src/components/Button/button-base.ts), so tones, disabled colours and the State Layer stay identical.',
-    'Figma\'s "Icon Button" set is brand only. Neutral and danger use the same colours as the matching Button tones until they are designed.',
+    'Figma has brand (all variants), neutral (subtle) and neutral-inverse (subtle). Danger, and neutral default/outline, reuse the matching Button tones until they are designed.',
+    'Neutral subtle and neutral-inverse hover with a see-through tint (transform-5-inverse / transform-20), per Figma. Other subtle tones use Button\'s opaque hover.',
     'Figma\'s `state` property also has `hovered` and `focused`. In code these come from interaction, not props. Pressed (hover look plus shrink) is not drawn in Figma.',
     'Figma draws the focus ring with extra padding; in code the ring sits outside the button and never changes its size.',
     'Figma: the outline / small / disabled variant is 34×34px; every other small variant (and the code) is 32×32px.',

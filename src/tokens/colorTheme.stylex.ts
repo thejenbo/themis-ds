@@ -17,5 +17,6 @@ export const color = stylex.defineVars({
   "success": "#2C6E2F",
   "transform90": "#FFFFFFe5",
   "transform20": "#FFFFFF33",
+  "transform60": "#FFFFFF99",
   "transform5Inverse": "#0000000d",
 });

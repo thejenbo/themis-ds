@@ -286,6 +286,31 @@
         }
       }
     },
+    "transform-60": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          1,
+          1,
+          1
+        ],
+        "alpha": 0.6000000238418579,
+        "hex": "#FFFFFF"
+      },
+      "$extensions": {
+        "com.figma.variableId": "VariableID:2127:20171",
+        "com.figma.scopes": [
+          "ALL_SCOPES"
+        ],
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:43a1799e70914de9ed40192a5eb84ff278b64260/-1:-1",
+          "targetVariableName": "lighten/60",
+          "targetVariableSetId": "VariableCollectionId:67feeb7f7d2e7c02df49c449eb4cd492c38d76a3/-1:-1",
+          "targetVariableSetName": "Primitives"
+        }
+      }
+    },
     "transform-5-inverse": {
       "$type": "color",
       "$value": {

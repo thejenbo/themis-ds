@@ -30,7 +30,7 @@ export default defineConfig({
       cssFileName: 'themis',
     },
     rollupOptions: {
-      external: [/^react(-dom)?(\/.*)?$/, /^react-aria-components/, /^@stylexjs\/stylex/, /^@react-aria\//, /^@react-stately\//],
+      external: [/^react(-dom)?(\/.*)?$/, /^react-aria-components/, /^react-aria(\/|$)/, /^@stylexjs\/stylex/, /^@react-aria\//, /^@react-stately\//],
     },
     sourcemap: true,
   },
