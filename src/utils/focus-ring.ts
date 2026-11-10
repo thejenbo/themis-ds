@@ -54,4 +54,10 @@ export const focusRing = stylex.create({
       borderRadius: `calc(${radius.radiusSm} + ${offset} + ${width})`,
     },
   },
+  /** Add after `visible` on pill-shaped elements using `radius.radiusFull` (e.g. Switch's track). */
+  radiusFull: {
+    '::before': {
+      borderRadius: radius.radiusFull,
+    },
+  },
 });
