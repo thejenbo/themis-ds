@@ -53,7 +53,8 @@ export const baseStyles = stylex.create({
     gap: spacing.xs,
     borderRadius: radius.radiusMd,
     fontFamily: fontTheme.familyBody,
-    fontSize: font.sizeSm,
+    // Figma type/label/base: a fixed label size on every breakpoint.
+    fontSize: font.sizeLabel,
     lineHeight: font.lineHeightSm,
     fontWeight: font.weightSemibold,
     whiteSpace: 'nowrap',

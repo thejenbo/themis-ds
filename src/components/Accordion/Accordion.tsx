@@ -181,7 +181,9 @@ const styles = stylex.create({
     textAlign: 'start',
     backgroundColor: color.brand,
     color: color.textInverse,
+    // type/heading/sm (the shared surface uses the label size).
     fontFamily: fontTheme.familyHeading,
+    fontSize: font.sizeSm,
     fontWeight: font.weightBold,
   },
   headerOpen: { paddingBlockEnd: spacing.xs },

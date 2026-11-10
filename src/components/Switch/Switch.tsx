@@ -271,7 +271,7 @@ const styles = stylex.create({
   text: { display: 'flex', flexDirection: 'column', gap: spacing['2xs'], flexGrow: 1 },
   label: {
     fontFamily: fontTheme.familyBody,
-    fontSize: font.sizeSm,
+    fontSize: font.sizeLabel,
     lineHeight: font.lineHeightSm,
     fontWeight: font.weightSemibold,
   },

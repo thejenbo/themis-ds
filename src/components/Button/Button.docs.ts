@@ -129,7 +129,7 @@ export default defineComponentDocs({
     'borderWidth/border.width.sm',
     'borderWidth/border.width.mandatory',
     'borderWidth/border.width.focus ring',
-    'typography/font.size.sm',
+    'typography/font.size.label',
     'typography/font.line height.sm',
     'typography/font.weight.semibold',
     'fontTheme/font.family.body',
