@@ -96,7 +96,7 @@ const colorTheme_color_themisConfig = stylex.createTheme(colorTheme_color, {
   "success": "#2C6E2F",
   "transform90": "#FFFFFFe5",
   "transform20": "#FFFFFF33",
-  "transform60": "#FFFFFF",
+  "transform60": "#FFFFFF99",
   "transform5Inverse": "#FFFFFF0d",
 });
 

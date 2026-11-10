@@ -5,6 +5,7 @@ export * from './components/Accordion';
 export * from './components/Button';
 export * from './components/IconButton';
 export * from './components/Modal';
+export * from './components/SegmentedControl';
 export * from './components/Switch';
 export * from './components/ToggleButton';
 export { ThemeProvider, type ThemeProviderProps } from './theme/ThemeProvider';

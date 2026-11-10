@@ -12,6 +12,7 @@ export const font = stylex.defineVars({
   "size2xl": { default: "2rem", "@media (min-width: 48em)": "2.5rem" },
   "size3xl": { default: "2.5rem", "@media (min-width: 48em)": "3.5rem" },
   "size4xl": { default: "3rem", "@media (min-width: 48em)": "4.5rem" },
+  "sizeLabel": "1rem",
   "lineHeightXs": "1rem",
   "lineHeightSm": { default: "1.5rem", "@media (min-width: 48em)": "1.75rem" },
   "lineHeightMd": { default: "2rem", "@media (min-width: 48em)": "2.25rem" },

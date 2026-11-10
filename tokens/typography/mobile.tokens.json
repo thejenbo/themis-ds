@@ -90,6 +90,16 @@
             "FONT_SIZE"
           ]
         }
+      },
+      "label": {
+        "$type": "number",
+        "$value": 16,
+        "$extensions": {
+          "com.figma.variableId": "VariableID:2132:21141",
+          "com.figma.scopes": [
+            "ALL_SCOPES"
+          ]
+        }
       }
     },
     "line height": {
