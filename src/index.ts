@@ -2,6 +2,7 @@ import './styles/base.css';
 
 // Public API. Every component exported here must have a <Name>.docs.ts and <Name>.stories.tsx.
 export * from './components/Accordion';
+export * from './components/Avatar';
 export * from './components/Button';
 export * from './components/Chip';
 export * from './components/IconButton';

@@ -116,10 +116,10 @@ const fontTheme_font_themis = stylex.createTheme(fontTheme_font, {
 });
 
 const radius_border_none = stylex.createTheme(radius_border, {
-  "radiusXs": "0",
-  "radiusSm": "0",
-  "radiusMd": "0",
-  "radiusLg": "0",
+  "radiusXs": "0px",
+  "radiusSm": "0px",
+  "radiusMd": "0px",
+  "radiusLg": "0px",
   "radiusFull": "9999px",
 });
 

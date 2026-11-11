@@ -266,7 +266,8 @@ function toCss(type: string | undefined, v: Json): [string, string][] {
     case 'remDimension': {
       const px = Number(v);
       if (!Number.isFinite(px)) throw new Error(`Bad length: ${JSON.stringify(v)}`);
-      return [['', px === 0 ? '0' : px >= 1000 ? `${px}px` : `${Math.round((px / ROOT_FONT_SIZE) * 1e4) / 1e4}rem`]];
+      // Zero keeps a unit: a bare `0` is a number in CSS maths, so calc()/min() with a length would be invalid.
+      return [['', px === 0 ? '0px' : px >= 1000 ? `${px}px` : `${Math.round((px / ROOT_FONT_SIZE) * 1e4) / 1e4}rem`]];
     }
     case 'shadow': return [['', shadow(v)]];
     case 'typography': {
