@@ -7,6 +7,7 @@ import {
   composeRenderProps,
   ProgressBar,
 } from 'react-aria-components';
+import { usePressMotion } from '../Button/use-press-motion';
 
 import { color } from '../../tokens/colorTheme.stylex';
 import { border as radius } from '../../tokens/radius.stylex';
@@ -97,10 +98,12 @@ export function IconButton({
   children,
   ...props
 }: IconButtonProps) {
+  const { isHeld, pressHandlers } = usePressMotion(props);
   const isMicro = size === 'micro';
   return (
     <AriaButton
       {...props}
+      {...pressHandlers}
       data-themis-touch-target=""
       {...racStyles<ButtonRenderProps>((s) => [
         styles.root,
@@ -136,7 +139,8 @@ export function IconButton({
               isMicro && square.radiusSm,
               ...look,
               active && styles.stateLayerOn,
-              s.isPressed && !s.isDisabled && pressMotion.pressed,
+              // Shrink only while actually held, not while a menu it opened is open.
+              isHeld && s.isPressed && !s.isDisabled && pressMotion.pressed,
             )}
           >
             <span aria-hidden="true" {...stylex.props(styles.slot, square.icon, s.isPending && styles.hidden)}>

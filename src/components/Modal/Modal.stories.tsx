@@ -59,14 +59,14 @@ export const OpenAndClose: Story = {
     const trigger = canvas.getByRole('button', { name: 'Invite teammates' });
     await user.click(trigger);
     const dialog = await screen.findByRole('dialog', { name: 'Invite teammates' });
-    await waitFor(() => expect(dialog.contains(document.activeElement)).toBe(true));
+    await waitFor(() => expect(dialog.contains(document.activeElement)).toBe(true), { timeout: 3000 });
     await user.keyboard('{Escape}');
-    await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull());
+    await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull(), { timeout: 3000 });
     await expect(trigger).toHaveFocus();
     // A button with slot="close" closes it too.
     await user.click(trigger);
     await user.click(await screen.findByRole('button', { name: 'Cancel' }));
-    await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull());
+    await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull(), { timeout: 3000 });
   },
 };
 

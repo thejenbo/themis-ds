@@ -72,7 +72,7 @@ export default defineComponentDocs({
     'colorTheme/color.brand',
     'colorTheme/color.border-brand',
     'colorTheme/color.transform-60',
-    'system/color.text-disabled-default',
+    'system/color.text-disabled-on-background',
     'spacing/spacing.3xs',
     'spacing/spacing.2xs',
     'spacing/spacing.xs',

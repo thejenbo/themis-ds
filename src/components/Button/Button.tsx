@@ -7,6 +7,7 @@ import {
   composeRenderProps,
   ProgressBar,
 } from 'react-aria-components';
+import { usePressMotion } from './use-press-motion';
 
 import { spacing } from '../../tokens/spacing.stylex';
 import { focusRing } from '../../utils/focus-ring';
@@ -83,9 +84,11 @@ export function Button({
   children,
   ...props
 }: ButtonProps) {
+  const { isHeld, pressHandlers } = usePressMotion(props);
   return (
     <AriaButton
       {...props}
+      {...pressHandlers}
       data-themis-touch-target=""
       {...racStyles<ButtonRenderProps>((s) => [
         styles.root,
@@ -109,7 +112,8 @@ export function Button({
               surfaces[tone][variant],
               layers[tone][variant],
               active && styles.stateLayerOn,
-              s.isPressed && !s.isDisabled && pressMotion.pressed,
+              // Shrink only while actually held, not while a menu it opened is open.
+              isHeld && s.isPressed && !s.isDisabled && pressMotion.pressed,
               s.isDisabled && disabledSurfaces[variant],
             )}
           >

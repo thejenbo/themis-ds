@@ -160,7 +160,7 @@ const styles = stylex.create({
     userSelect: 'none',
     WebkitTapHighlightColor: 'transparent',
   },
-  disabled: { color: system.textDisabledDefault },
+  disabled: { color: system.textDisabledOnBackground },
   cursorSelected: { cursor: 'default' },
   label: { position: 'relative' },
   labelText: { position: 'relative', borderRadius: radius.radiusSm },
