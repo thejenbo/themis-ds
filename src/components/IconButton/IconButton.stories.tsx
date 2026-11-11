@@ -14,7 +14,7 @@ import docs from './IconButton.docs';
 
 const VARIANTS: IconButtonVariant[] = ['default', 'outline', 'subtle'];
 const SIZES: IconButtonSize[] = ['micro', 'small', 'medium'];
-const TONES: ButtonTone[] = ['brand', 'neutral', 'danger'];
+const TONES: ButtonTone[] = ['brand', 'neutral', 'danger', 'warning', 'success'];
 
 /** Story args typed as a standard tone, so stories can override `variant` freely. */
 const std = (args: IconButtonProps) => args as Exclude<IconButtonProps, { tone: 'neutral-inverse' }>;
@@ -72,7 +72,7 @@ export const Sizes: Story = {
   render: (args) => row(SIZES.map((s) => <IconButton key={s} {...std(args)} size={s} aria-label={`Like (${s})`} />)),
 };
 
-/** Same tones as Button. Figma only has brand so far; neutral and danger reuse Button's tone colours. */
+/** Same tones as Button. Figma has danger, warning and success in subtle only; the other variants reuse Button's. */
 export const Tones: Story = {
   render: (args) => (
     <div style={{ display: 'grid', gap: 12 }}>

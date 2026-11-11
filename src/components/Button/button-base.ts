@@ -18,7 +18,7 @@ import { stateLayer } from '../../utils/state-layer.stylex';
 
 export type ButtonVariant = 'default' | 'outline' | 'subtle';
 export type ButtonSize = 'micro' | 'small' | 'medium';
-export type ButtonTone = 'brand' | 'neutral' | 'danger';
+export type ButtonTone = 'brand' | 'neutral' | 'danger' | 'warning' | 'success';
 
 const spin = stylex.keyframes({
   from: { transform: 'rotate(0deg)' },
@@ -119,10 +119,10 @@ export const blockPadding = stylex.create({
 });
 
 /*
- * Tones. Each comes from a Figma component set ("Button - Brand", "- Neutral", "- Danger") and supplies:
+ * Tones. Each comes from the Figma Button set's `tone` property and supplies:
  *   fill    default variant's Surface, and the hover/press Surface of every variant
  *   border  outline variant's border
- *   label   outline and subtle label colour (default variant labels use text-inverse on the fill)
+ *   label   outline and subtle label and icon colour (default variant labels use text-inverse on the fill)
  * The State Layer overlay's direction is calculated from `fill` (see utils/state-layer.stylex.ts); amounts come
  * from Figma: default uses transform-20, outline and subtle transform-90. Browsers without relative colour syntax
  * fall back to Figma's fixed transform tokens.
@@ -133,6 +133,10 @@ const neutralOverlay20 = `oklch(from ${color.backgroundInverse} ${stateLayer.dir
 const neutralOverlay90 = `oklch(from ${color.backgroundInverse} ${stateLayer.direction} 0 0 / 0.9)`;
 const dangerOverlay20 = `oklch(from ${color.error} ${stateLayer.direction} 0 0 / 0.2)`;
 const dangerOverlay90 = `oklch(from ${color.error} ${stateLayer.direction} 0 0 / 0.9)`;
+const warningOverlay20 = `oklch(from ${color.warning} ${stateLayer.direction} 0 0 / 0.2)`;
+const warningOverlay90 = `oklch(from ${color.warning} ${stateLayer.direction} 0 0 / 0.9)`;
+const successOverlay20 = `oklch(from ${color.success} ${stateLayer.direction} 0 0 / 0.2)`;
+const successOverlay90 = `oklch(from ${color.success} ${stateLayer.direction} 0 0 / 0.9)`;
 
 const brandSurfaces = stylex.create({
   default: { backgroundColor: color.brand, color: color.textInverse },
@@ -218,10 +222,10 @@ const dangerSurfaces = stylex.create({
   default: { backgroundColor: color.error, color: color.textInverse },
   outline: {
     backgroundColor: color.background,
-    color: color.text,
+    color: color.error,
     '::after': { borderWidth: borderWidth.widthMandatory, borderColor: color.error },
   },
-  subtle: { backgroundColor: 'transparent', color: color.text },
+  subtle: { backgroundColor: 'transparent', color: color.error },
 });
 
 const dangerLayers = stylex.create({
@@ -254,23 +258,102 @@ const dangerLayers = stylex.create({
   },
 });
 
-/** Danger's outline and subtle icons use the error colour while the label stays `text` (per Figma). */
-const dangerIcons = stylex.create({
-  outline: { color: color.error },
-  subtle: { color: color.error },
+const warningSurfaces = stylex.create({
+  default: { backgroundColor: color.warning, color: color.textInverse },
+  outline: {
+    backgroundColor: color.background,
+    color: color.warning,
+    '::after': { borderWidth: borderWidth.widthMandatory, borderColor: color.warning },
+  },
+  subtle: { backgroundColor: 'transparent', color: color.warning },
+});
+
+const warningLayers = stylex.create({
+  default: {
+    '::before': {
+      backgroundColor: color.warning,
+      backgroundImage: stylex.firstThatWorks(
+        `linear-gradient(${warningOverlay20}, ${warningOverlay20})`,
+        `linear-gradient(${color.transform20}, ${color.transform20})`,
+      ),
+    },
+  },
+  outline: {
+    '::before': {
+      backgroundColor: color.warning,
+      backgroundImage: stylex.firstThatWorks(
+        `linear-gradient(${warningOverlay90}, ${warningOverlay90})`,
+        `linear-gradient(${color.transform90}, ${color.transform90})`,
+      ),
+    },
+  },
+  subtle: {
+    '::before': {
+      backgroundColor: color.warning,
+      backgroundImage: stylex.firstThatWorks(
+        `linear-gradient(${warningOverlay90}, ${warningOverlay90})`,
+        `linear-gradient(${color.transform90}, ${color.transform90})`,
+      ),
+    },
+  },
+});
+
+const successSurfaces = stylex.create({
+  default: { backgroundColor: color.success, color: color.textInverse },
+  outline: {
+    backgroundColor: color.background,
+    color: color.success,
+    '::after': { borderWidth: borderWidth.widthMandatory, borderColor: color.success },
+  },
+  subtle: { backgroundColor: 'transparent', color: color.success },
+});
+
+const successLayers = stylex.create({
+  default: {
+    '::before': {
+      backgroundColor: color.success,
+      backgroundImage: stylex.firstThatWorks(
+        `linear-gradient(${successOverlay20}, ${successOverlay20})`,
+        `linear-gradient(${color.transform20}, ${color.transform20})`,
+      ),
+    },
+  },
+  outline: {
+    '::before': {
+      backgroundColor: color.success,
+      backgroundImage: stylex.firstThatWorks(
+        `linear-gradient(${successOverlay90}, ${successOverlay90})`,
+        `linear-gradient(${color.transform90}, ${color.transform90})`,
+      ),
+    },
+  },
+  subtle: {
+    '::before': {
+      backgroundColor: color.success,
+      backgroundImage: stylex.firstThatWorks(
+        `linear-gradient(${successOverlay90}, ${successOverlay90})`,
+        `linear-gradient(${color.transform90}, ${color.transform90})`,
+      ),
+    },
+  },
 });
 
 /** Resting look per tone, then per variant (Figma state=default). */
-export const surfaces = { brand: brandSurfaces, neutral: neutralSurfaces, danger: dangerSurfaces } satisfies Record<ButtonTone, unknown>;
+export const surfaces = {
+  brand: brandSurfaces,
+  neutral: neutralSurfaces,
+  danger: dangerSurfaces,
+  warning: warningSurfaces,
+  success: successSurfaces,
+} satisfies Record<ButtonTone, unknown>;
 /** State Layer (hover/press) per tone, then per variant. */
-export const layers = { brand: brandLayers, neutral: neutralLayers, danger: dangerLayers } satisfies Record<ButtonTone, unknown>;
-/** Icon colour per tone and variant, where it differs from the label. */
-export const icons: Record<ButtonTone, Partial<Record<ButtonVariant, stylex.StyleXStyles>>> = {
-  brand: {},
-  neutral: {},
-  danger: dangerIcons,
-};
-
+export const layers = {
+  brand: brandLayers,
+  neutral: neutralLayers,
+  danger: dangerLayers,
+  warning: warningLayers,
+  success: successLayers,
+} satisfies Record<ButtonTone, unknown>;
 export const disabledSurfaces = stylex.create({
   default: {
     backgroundColor: system.backgroundDisabledDefault,

@@ -65,7 +65,8 @@ interface IconButtonStandardTone {
   variant?: IconButtonVariant;
   /**
    * Colour family. Same as Button: `brand` for most actions, `neutral` where the brand colour would compete,
-   * `danger` only for destructive actions. `neutral-inverse` (subtle only) is for icon buttons on brand or dark
+   * `danger` only for destructive actions, `warning` and `success` inside matching status messages (e.g. a Toast's
+   * close button). `neutral-inverse` (subtle only) is for icon buttons on brand or dark
    * fills, such as the close button in a Modal header.
    * @default 'brand'
    */

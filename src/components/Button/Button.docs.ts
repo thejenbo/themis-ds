@@ -62,6 +62,8 @@ export default defineComponentDocs({
       brand: 'The brand colour of the current colour theme. The default for most actions.',
       neutral: 'Black and white (inverted in dark themes). For actions that should not compete with the brand colour, such as toolbars and secondary flows.',
       danger: 'The error colour. Only for destructive or irreversible actions, such as "Delete project". Pair with a confirmation step.',
+      warning: 'The warning colour. For an action inside a warning message, such as "Review" in a warning Toast.',
+      success: 'The success colour. For an action inside a success message, such as "View" in a success Toast.',
     },
   },
 
@@ -113,6 +115,8 @@ export default defineComponentDocs({
     'colorTheme/color.border',
     'colorTheme/color.text-brand',
     'colorTheme/color.text-inverse',
+    'colorTheme/color.warning',
+    'colorTheme/color.success',
     'colorTheme/color.border-brand',
     'colorTheme/color.transform-20',
     'colorTheme/color.transform-90',

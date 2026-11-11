@@ -21,7 +21,6 @@ import {
   type ButtonTone,
   type ButtonVariant,
   disabledSurfaces,
-  icons,
   layers,
   surfaces,
 } from './button-base';
@@ -48,6 +47,7 @@ export interface ButtonProps extends Omit<AriaButtonProps, 'className' | 'style'
    * `brand`: the theme's brand colour, for most actions.
    * `neutral`: black and white (inverted in dark themes), for actions that shouldn't draw on the brand colour.
    * `danger`: the error colour, for destructive actions such as deleting.
+   * `warning`, `success`: the status colours, for actions inside a matching status message such as a Toast.
    * @default 'brand'
    */
   tone?: ButtonTone;
@@ -98,8 +98,6 @@ export function Button({
     >
       {composeRenderProps(children, (children, s) => {
         const active = (s.isHovered || s.isPressed) && !s.isDisabled;
-        // Icon colour differs from the label in some tones; disabled always uses the disabled text colour.
-        const iconStyle = !s.isDisabled && icons[tone][variant];
         return (
           <span
             data-themis-part="surface"
@@ -116,13 +114,13 @@ export function Button({
             )}
           >
             {iconLeft != null && (
-              <span aria-hidden="true" {...stylex.props(styles.slot, iconStyle, s.isPending && styles.hidden)}>
+              <span aria-hidden="true" {...stylex.props(styles.slot, s.isPending && styles.hidden)}>
                 {iconLeft}
               </span>
             )}
             <span {...stylex.props(styles.slot, s.isPending && styles.hidden)}>{children}</span>
             {iconRight != null && (
-              <span aria-hidden="true" {...stylex.props(styles.slot, iconStyle, s.isPending && styles.hidden)}>
+              <span aria-hidden="true" {...stylex.props(styles.slot, s.isPending && styles.hidden)}>
                 {iconRight}
               </span>
             )}

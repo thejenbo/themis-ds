@@ -11,7 +11,7 @@ import docs from './Button.docs';
 
 const VARIANTS: ButtonVariant[] = ['default', 'outline', 'subtle'];
 const SIZES: ButtonSize[] = ['micro', 'small', 'medium'];
-const TONES: ButtonTone[] = ['brand', 'neutral', 'danger'];
+const TONES: ButtonTone[] = ['brand', 'neutral', 'danger', 'warning', 'success'];
 
 const row = (children: ReactNode) => (
   <div style={{ display: 'flex', gap: 16, alignItems: 'center', flexWrap: 'wrap' }}>{children}</div>
@@ -205,10 +205,10 @@ export const StateLayerDirection: Story = {
 };
 
 /**
- * Interaction test: danger outline/subtle icons use the error colour while the label stays `text`,
- * and fall back to the disabled colour (same as the label) when disabled.
+ * Interaction test: status tones colour the outline/subtle label and icon alike, and both switch to the disabled
+ * colour when disabled.
  */
-export const DangerIconColour: Story = {
+export const StatusToneColour: Story = {
   tags: ['test-only', '!autodocs'],
   render: (args) => row(
     <>
@@ -222,9 +222,11 @@ export const DangerIconColour: Story = {
       return { icon: getComputedStyle(icon!).color, label: getComputedStyle(label!).color };
     };
     const enabled = colours('Delete');
-    await expect(enabled.icon).not.toBe(enabled.label);
+    await expect(enabled.icon).toBe(enabled.label);
+    await expect(enabled.label).not.toBe(getComputedStyle(document.body).color);
     const disabled = colours('Delete disabled');
     await expect(disabled.icon).toBe(disabled.label);
+    await expect(disabled.label).not.toBe(enabled.label);
   },
 };
 

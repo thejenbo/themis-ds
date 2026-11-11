@@ -60,6 +60,8 @@ export default defineComponentDocs({
       brand: 'The brand colour of the current colour theme. The default.',
       neutral: 'Black and white (inverted in dark themes), for actions that should not compete with the brand colour.',
       danger: 'The error colour. Only for destructive actions, such as deleting a row.',
+      warning: 'The warning colour, for icon buttons inside a warning message (e.g. a Toast\'s close button).',
+      success: 'The success colour, for icon buttons inside a success message (e.g. a Toast\'s close button).',
       'neutral-inverse':
         'Subtle only. A light icon with a see-through hover, for icon buttons on brand or dark fills such as the Modal header close button.',
     },
@@ -101,6 +103,8 @@ export default defineComponentDocs({
   tokens: [
     'colorTheme/color.brand',
     'colorTheme/color.error',
+    'colorTheme/color.warning',
+    'colorTheme/color.success',
     'colorTheme/color.background',
     'colorTheme/color.background-inverse',
     'colorTheme/color.text',
@@ -171,7 +175,7 @@ export default defineComponentDocs({
   related: ['Button', 'ToggleButton', 'Tooltip'],
   notes: [
     'Shares its styles with Button (src/components/Button/button-base.ts), so tones, disabled colours and the State Layer stay identical.',
-    'Figma has brand (all variants), neutral (subtle) and neutral-inverse (subtle). Danger, and neutral default/outline, reuse the matching Button tones until they are designed.',
+    'Figma has brand (all variants), and neutral, neutral-inverse, danger, warning and success in subtle. The other variants of those tones reuse the matching Button styles until they are designed.',
     'Neutral subtle and neutral-inverse hover with a see-through tint (transform-5-inverse / transform-20), per Figma. Other subtle tones use Button\'s opaque hover.',
     'Figma\'s `state` property also has `hovered` and `focused`. In code these come from interaction, not props. Pressed (hover look plus shrink) is not drawn in Figma.',
     'Figma draws the focus ring with extra padding; in code the ring sits outside the button and never changes its size.',
