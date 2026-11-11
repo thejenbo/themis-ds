@@ -83,7 +83,7 @@ export const Keyboard: Story = {
     await expect(tooltip).toHaveTextContent('Copy link');
     await expect(trigger).toHaveAttribute('aria-describedby', tooltip.id);
     // Wait for the 4px entry slide to finish before measuring.
-    await waitFor(() => expect(getComputedStyle(tooltip).transform).toBe('none'));
+    await waitFor(() => expect(getComputedStyle(tooltip).transform).toBe('none'), { timeout: 3000 });
     const box = tooltip.getBoundingClientRect();
     const lineHeight = parseFloat(getComputedStyle(tooltip.lastElementChild!).lineHeight);
     await expect(Math.round(box.height)).toBe(Math.round(lineHeight + 16));

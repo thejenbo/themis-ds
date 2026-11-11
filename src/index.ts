@@ -9,6 +9,7 @@ export * from './components/IconButton';
 export * from './components/Modal';
 export * from './components/SegmentedControl';
 export * from './components/Switch';
+export * from './components/Tabs';
 export * from './components/Toast';
 export * from './components/ToggleButton';
 export * from './components/Tooltip';
