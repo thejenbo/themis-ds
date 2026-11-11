@@ -9,5 +9,6 @@ export * from './components/SegmentedControl';
 export * from './components/Switch';
 export * from './components/Toast';
 export * from './components/ToggleButton';
+export * from './components/Tooltip';
 export { ThemeProvider, type ThemeProviderProps } from './theme/ThemeProvider';
 export { collectionModes, defaultModes, themes, type Modes, type ModeOf, type ThemeCollection } from './tokens/themes';

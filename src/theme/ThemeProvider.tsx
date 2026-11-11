@@ -1,5 +1,5 @@
 import * as stylex from '@stylexjs/stylex';
-import { type ReactNode, useCallback, useRef } from 'react';
+import { type ReactNode, useCallback, useState } from 'react';
 import { UNSAFE_PortalProvider } from 'react-aria';
 
 import { color } from '../tokens/colorTheme.stylex';
@@ -28,10 +28,12 @@ export function ThemeProvider({ modes = {}, children, xstyle }: ThemeProviderPro
   const entries = Object.entries(modes).filter(([, mode]) => mode !== undefined) as [ThemeCollection, string][];
   const overrides = entries.flatMap(([collection, mode]) => (themes[collection] as Record<string, readonly stylex.Theme<any>[]>)[mode] ?? []);
   const dataAttrs = Object.fromEntries(entries.map(([collection, mode]) => [`data-themis-${collection.toLowerCase()}`, mode]));
-  const ref = useRef<HTMLDivElement>(null);
-  const getContainer = useCallback(() => ref.current, []);
+  // State, not a ref: overlays that are open on the first render (e.g. `defaultOpen`) render nothing until the
+  // container exists, and re-render into it once it does.
+  const [container, setContainer] = useState<HTMLDivElement | null>(null);
+  const getContainer = useCallback(() => container, [container]);
   return (
-    <div ref={ref} data-themis="" {...dataAttrs} {...stylex.props(...overrides, styles.root, xstyle)}>
+    <div ref={setContainer} data-themis="" {...dataAttrs} {...stylex.props(...overrides, styles.root, xstyle)}>
       <UNSAFE_PortalProvider getContainer={getContainer}>{children}</UNSAFE_PortalProvider>
     </div>
   );
