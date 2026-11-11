@@ -1,0 +1,79 @@
+{
+  "avatar": {
+    "font": {
+      "size": {
+        "xs": {
+          "$type": "number",
+          "$value": 10,
+          "$extensions": {
+            "com.figma.variableId": "VariableID:2181:1527",
+            "com.figma.scopes": [
+              "FONT_SIZE"
+            ]
+          }
+        },
+        "sm": {
+          "$type": "number",
+          "$value": 12,
+          "$extensions": {
+            "com.figma.variableId": "VariableID:2181:1528",
+            "com.figma.scopes": [
+              "FONT_SIZE"
+            ]
+          }
+        },
+        "md": {
+          "$type": "number",
+          "$value": 16,
+          "$extensions": {
+            "com.figma.variableId": "VariableID:2181:1529",
+            "com.figma.scopes": [
+              "FONT_SIZE"
+            ]
+          }
+        },
+        "lg": {
+          "$type": "number",
+          "$value": 20,
+          "$extensions": {
+            "com.figma.variableId": "VariableID:2181:1530",
+            "com.figma.scopes": [
+              "FONT_SIZE"
+            ]
+          }
+        },
+        "xl": {
+          "$type": "number",
+          "$value": 22,
+          "$extensions": {
+            "com.figma.variableId": "VariableID:2181:1531",
+            "com.figma.scopes": [
+              "FONT_SIZE"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "tabs": {
+    "item": {
+      "indicator": {
+        "height": {
+          "default": {
+            "$type": "number",
+            "$value": 4,
+            "$extensions": {
+              "com.figma.variableId": "VariableID:2191:4763",
+              "com.figma.scopes": [
+                "ALL_SCOPES"
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "$extensions": {
+    "com.figma.modeName": "Mode 1"
+  }
+}

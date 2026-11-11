@@ -9,3 +9,11 @@ export const border = stylex.defineVars({
   "radiusLg": "1.25rem",
   "radiusFull": "9999px",
 });
+
+export const components = stylex.defineVars({
+  "avatarIndicatorOffsetXs": "3px",
+  "avatarIndicatorOffsetSm": "3px",
+  "avatarIndicatorOffsetMd": "3px",
+  "avatarIndicatorOffsetLg": "3px",
+  "avatarIndicatorOffsetXl": "3px",
+});

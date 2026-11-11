@@ -4,7 +4,7 @@ import * as stylex from '@stylexjs/stylex';
 import { border as borderWidth_border } from './borderWidth.stylex';
 import { color as colorTheme_color } from './colorTheme.stylex';
 import { font as fontTheme_font } from './fontTheme.stylex';
-import { border as radius_border } from './radius.stylex';
+import { border as radius_border, components as radius_components } from './radius.stylex';
 import { dropShadow as shadows_dropShadow } from './shadows.stylex';
 
 const borderWidth_border_none = stylex.createTheme(borderWidth_border, {
@@ -147,6 +147,38 @@ const radius_border_large = stylex.createTheme(radius_border, {
   "radiusFull": "9999px",
 });
 
+const radius_components_none = stylex.createTheme(radius_components, {
+  "avatarIndicatorOffsetXs": "0px",
+  "avatarIndicatorOffsetSm": "0px",
+  "avatarIndicatorOffsetMd": "0px",
+  "avatarIndicatorOffsetLg": "0px",
+  "avatarIndicatorOffsetXl": "0px",
+});
+
+const radius_components_small = stylex.createTheme(radius_components, {
+  "avatarIndicatorOffsetXs": "1px",
+  "avatarIndicatorOffsetSm": "1px",
+  "avatarIndicatorOffsetMd": "1px",
+  "avatarIndicatorOffsetLg": "1px",
+  "avatarIndicatorOffsetXl": "1px",
+});
+
+const radius_components_medium = stylex.createTheme(radius_components, {
+  "avatarIndicatorOffsetXs": "3px",
+  "avatarIndicatorOffsetSm": "3px",
+  "avatarIndicatorOffsetMd": "3px",
+  "avatarIndicatorOffsetLg": "3px",
+  "avatarIndicatorOffsetXl": "3px",
+});
+
+const radius_components_large = stylex.createTheme(radius_components, {
+  "avatarIndicatorOffsetXs": "3.5px",
+  "avatarIndicatorOffsetSm": "4.5px",
+  "avatarIndicatorOffsetMd": "6px",
+  "avatarIndicatorOffsetLg": "6px",
+  "avatarIndicatorOffsetXl": "6px",
+});
+
 const shadows_dropShadow_default = stylex.createTheme(shadows_dropShadow, {
   "blurDefault": "4px",
   "colorDefault": "#0000004d",
@@ -203,10 +235,10 @@ export const themes: { [C in ThemeCollection]: Record<ModeOf<C>, readonly stylex
     "themis": [fontTheme_font_themis],
   },
   "radius": {
-    "none": [radius_border_none],
-    "small": [radius_border_small],
-    "medium": [radius_border_medium],
-    "large": [radius_border_large],
+    "none": [radius_border_none, radius_components_none],
+    "small": [radius_border_small, radius_components_small],
+    "medium": [radius_border_medium, radius_components_medium],
+    "large": [radius_border_large, radius_components_large],
   },
   "shadows": {
     "default": [shadows_dropShadow_default],

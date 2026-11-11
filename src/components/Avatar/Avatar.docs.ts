@@ -78,6 +78,16 @@ export default defineComponentDocs({
     'borderWidth/border.width.xs',
     'fontTheme/font.family.heading',
     'typography/font.weight.bold',
+    'components/avatar.font.size.xs',
+    'components/avatar.font.size.sm',
+    'components/avatar.font.size.md',
+    'components/avatar.font.size.lg',
+    'components/avatar.font.size.xl',
+    'radius/components.avatar.indicator-offset.xs',
+    'radius/components.avatar.indicator-offset.sm',
+    'radius/components.avatar.indicator-offset.md',
+    'radius/components.avatar.indicator-offset.lg',
+    'radius/components.avatar.indicator-offset.xl',
   ],
 
   figma: {
@@ -94,8 +104,8 @@ export default defineComponentDocs({
   related: ['Chip'],
   notes: [
     'Read-only, so there is no React Aria base: it renders a <span role="img">.',
-    'Initials sizes (10/12/16/20/22px) come from Figma\'s Component Tokens collection (avatar/font/size). They\'re fixed constants in code until that collection is exported; they don\'t grow on desktop because the avatar doesn\'t.',
-    'The dot\'s position is computed from the current radius in code ((1 − 1/√2) × radius, capped at half the avatar), so it matches Figma\'s components/avatar/indicator-offset values in every radius mode.',
+    'Initials sizes come from Figma\'s Component Tokens (avatar/font/size: 10/12/16/20/22px). They don\'t grow on desktop, because the avatar doesn\'t.',
+    'The dot\'s position comes from the radius collection (components/avatar/indicator-offset, per radius mode and size): the distance from the square corner to the curve, so the dot sits on the rounded edge in every radius mode.',
     'The outline border sits on Figma\'s Avatar Content frame (the clipping frame that holds the photo), so it draws over the photo. Code does the same with a layer on top of the content: outline and solid avatars are the same size.',
     'Figma\'s `indicator` boolean is `status="online"`; its `image` boolean is on when `src` is passed.',
   ],

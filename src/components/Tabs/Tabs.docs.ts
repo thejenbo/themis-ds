@@ -85,6 +85,7 @@ export default defineComponentDocs({
     'typography/font.weight.bold',
     'primitives/color.grayscale.000',
     'primitives/color.grayscale.1000',
+    'components/tabs.item.indicator.height.default',
     'motion/duration.base',
     'motion/easing.standard',
   ],
@@ -115,7 +116,7 @@ export default defineComponentDocs({
   related: ['SegmentedControl', 'AccordionGroup'],
   notes: [
     'Tab items: Figma "Tab Item" (node 2064-17395). Its `state` variants map to React Aria states: active = selected, hovered, focused, disabled.',
-    'The 4px indicator height comes from Figma\'s Component Tokens (tabs/item/indicator/height/default); it\'s a constant in code until that collection is exported.',
+    'The 4px indicator height comes from Figma\'s Component Tokens (tabs/item/indicator/height/default).',
     'Figma\'s `track` variant was removed; there is no line under the whole row for now.',
     'Focus ring: the shared black/white dashed ring around the label (Figma\'s focused tab draws a solid 2px box in the same place), so it never overlaps the indicator bar and the scrolling row doesn\'t clip it.',
     'The sliding motion and scrolling for overflow are not drawn in Figma.',

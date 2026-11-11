@@ -83,6 +83,62 @@
       }
     }
   },
+  "components": {
+    "avatar": {
+      "indicator-offset": {
+        "xs": {
+          "$type": "number",
+          "$value": 3,
+          "$extensions": {
+            "com.figma.variableId": "VariableID:2177:12083",
+            "com.figma.scopes": [
+              "GAP"
+            ]
+          }
+        },
+        "sm": {
+          "$type": "number",
+          "$value": 3,
+          "$extensions": {
+            "com.figma.variableId": "VariableID:2177:12084",
+            "com.figma.scopes": [
+              "GAP"
+            ]
+          }
+        },
+        "md": {
+          "$type": "number",
+          "$value": 3,
+          "$extensions": {
+            "com.figma.variableId": "VariableID:2177:12085",
+            "com.figma.scopes": [
+              "GAP"
+            ]
+          }
+        },
+        "lg": {
+          "$type": "number",
+          "$value": 3,
+          "$extensions": {
+            "com.figma.variableId": "VariableID:2177:12086",
+            "com.figma.scopes": [
+              "GAP"
+            ]
+          }
+        },
+        "xl": {
+          "$type": "number",
+          "$value": 3,
+          "$extensions": {
+            "com.figma.variableId": "VariableID:2177:12087",
+            "com.figma.scopes": [
+              "GAP"
+            ]
+          }
+        }
+      }
+    }
+  },
   "$extensions": {
     "com.figma.modeName": "medium"
   }

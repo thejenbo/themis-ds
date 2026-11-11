@@ -6,7 +6,8 @@ The token files are the source of truth for design decisions. They are exported 
 | --- | --- |
 | `primitives/default.tokens.json` | Real Figma export (primitives collection, single mode). Keep it byte-for-byte as exported. |
 | `colorTheme/{light demo,dark demo,themis config}.tokens.json` | Real Figma export (colour theme collection). End users pick a theme; these are the demo and config-UI modes. |
-| `radius/{none,small,medium,large}.tokens.json` | Real Figma export (radius collection). Sets how rounded corners are across the system. |
+| `radius/{none,small,medium,large}.tokens.json` | Real Figma export (radius collection). Sets how rounded corners are across the system. Also holds `components.avatar.indicator-offset`, which moves with the radius mode. |
+| `components/Mode 1.tokens.json` | Real Figma export (Component Tokens collection, single mode). Fixed component geometry: Avatar initials sizes and the Tabs indicator height. |
 | `borderWidth/{none,small,medium,large}.tokens.json` | Real Figma export (border width collection). Sets how heavy strokes are across the system. |
 | `system/default.tokens.json` | Real Figma export (system collection, single mode). Fixed colours for disabled and placeholder states that users can't theme. |
 | `fontTheme/{demo,inkling,themis}.tokens.json` | Real Figma export (font theme collection). Heading and body font families users can choose between. |

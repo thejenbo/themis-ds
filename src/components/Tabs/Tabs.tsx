@@ -18,6 +18,7 @@ import {
 } from 'react-aria-components';
 
 import { color } from '../../tokens/colorTheme.stylex';
+import { tabs } from '../../tokens/components.stylex';
 import { font as fontTheme } from '../../tokens/fontTheme.stylex';
 import { duration, easing } from '../../tokens/motion.stylex';
 import { border as radius } from '../../tokens/radius.stylex';
@@ -126,8 +127,6 @@ export function TabPanel(props: TabPanelProps) {
   );
 }
 
-// Figma: the indicator is 4px tall (Component Tokens: tabs/item/indicator/height/default).
-const INDICATOR = '4px';
 
 const styles = stylex.create({
   tabs: { display: 'flex', flexDirection: 'column' },
@@ -170,7 +169,8 @@ const styles = stylex.create({
     insetInlineStart: 0,
     bottom: 0,
     width: '100%',
-    height: INDICATOR,
+    // Figma Component Tokens: tabs/item/indicator/height/default.
+    height: tabs.itemIndicatorHeightDefault,
     // Figma: a rounded bar (radius sm), not a border.
     borderRadius: radius.radiusSm,
     pointerEvents: 'none',

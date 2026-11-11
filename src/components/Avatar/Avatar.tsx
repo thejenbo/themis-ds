@@ -3,8 +3,9 @@ import { type HTMLAttributes, useState } from 'react';
 
 import { border as borderWidth } from '../../tokens/borderWidth.stylex';
 import { color } from '../../tokens/colorTheme.stylex';
+import { avatar } from '../../tokens/components.stylex';
 import { font as fontTheme } from '../../tokens/fontTheme.stylex';
-import { border as radius } from '../../tokens/radius.stylex';
+import { components as offsets, border as radius } from '../../tokens/radius.stylex';
 import { font } from '../../tokens/typography.stylex';
 
 export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
@@ -96,12 +97,11 @@ export function Avatar({
 }
 
 /*
- * The status dot sits on the corner's curve: its centre is where a 45° line from the square corner meets the
- * rounded edge, (1 − 1/√2) × the radius in from each side. The radius is capped at half the avatar, as browsers
- * do, so small avatars in the large radius mode (almost circles) still get the dot on their edge.
+ * The status dot sits on the corner's curve: its centre is where a 45° line from the square corner meets the rounded
+ * edge, (1 − 1/√2) × the radius in from each side (capped at half the avatar). Figma stores that distance per radius
+ * mode and size (radius collection: components/avatar/indicator-offset), so the dot moves with the radius mode.
  */
-const CURVE = 0.2929;
-const dotAt = (box: number, dot: number) => `calc(${CURVE} * min(${radius.radiusMd}, ${box / 32}rem) - ${dot / 2}px)`;
+const dotAt = (offset: string, dot: number) => `calc(${offset} - ${dot / 2}px)`;
 
 const styles = stylex.create({
   avatar: {
@@ -151,22 +151,22 @@ const styles = stylex.create({
   },
 });
 
-/** Figma: box size and initials size (Component Tokens / avatar/font/size), fixed on every breakpoint. */
+/** Figma: box size and initials size (Component Tokens: avatar/font/size), fixed on every breakpoint. */
 const sizes = stylex.create({
-  xs: { width: '1.5rem', height: '1.5rem', fontSize: '0.625rem' },
-  sm: { width: '2rem', height: '2rem', fontSize: '0.75rem' },
-  md: { width: '2.5rem', height: '2.5rem', fontSize: '1rem' },
-  lg: { width: '3rem', height: '3rem', fontSize: '1.25rem' },
-  xl: { width: '3.5rem', height: '3.5rem', fontSize: '1.375rem' },
+  xs: { width: '1.5rem', height: '1.5rem', fontSize: avatar.fontSizeXs },
+  sm: { width: '2rem', height: '2rem', fontSize: avatar.fontSizeSm },
+  md: { width: '2.5rem', height: '2.5rem', fontSize: avatar.fontSizeMd },
+  lg: { width: '3rem', height: '3rem', fontSize: avatar.fontSizeLg },
+  xl: { width: '3.5rem', height: '3.5rem', fontSize: avatar.fontSizeXl },
 });
 
 /** Figma dot sizes: 6, 8, 10, 12, 12px. */
 const dots = stylex.create({
-  xs: { width: '6px', height: '6px', right: dotAt(24, 6), bottom: dotAt(24, 6) },
-  sm: { width: '8px', height: '8px', right: dotAt(32, 8), bottom: dotAt(32, 8) },
-  md: { width: '10px', height: '10px', right: dotAt(40, 10), bottom: dotAt(40, 10) },
-  lg: { width: '12px', height: '12px', right: dotAt(48, 12), bottom: dotAt(48, 12) },
-  xl: { width: '12px', height: '12px', right: dotAt(56, 12), bottom: dotAt(56, 12) },
+  xs: { width: '6px', height: '6px', right: dotAt(offsets.avatarIndicatorOffsetXs, 6), bottom: dotAt(offsets.avatarIndicatorOffsetXs, 6) },
+  sm: { width: '8px', height: '8px', right: dotAt(offsets.avatarIndicatorOffsetSm, 8), bottom: dotAt(offsets.avatarIndicatorOffsetSm, 8) },
+  md: { width: '10px', height: '10px', right: dotAt(offsets.avatarIndicatorOffsetMd, 10), bottom: dotAt(offsets.avatarIndicatorOffsetMd, 10) },
+  lg: { width: '12px', height: '12px', right: dotAt(offsets.avatarIndicatorOffsetLg, 12), bottom: dotAt(offsets.avatarIndicatorOffsetLg, 12) },
+  xl: { width: '12px', height: '12px', right: dotAt(offsets.avatarIndicatorOffsetXl, 12), bottom: dotAt(offsets.avatarIndicatorOffsetXl, 12) },
 });
 
 const statuses = stylex.create({

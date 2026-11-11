@@ -29,8 +29,16 @@ const DEFAULT_MODE_NAMES = ['default', 'light', 'base', 'mode 1', 'mode-1', 'val
  * REM_PATHS scale with the user's browser text size (Figma px ÷ 16). PX_PATHS stay fixed: hairlines and shadows
  * should stay crisp. Values of 1000px or more (e.g. a 9999px "full" radius) stay px.
  */
-const REM_PATHS = ['spacing', 'border.radius', 'font.size', 'font.line height'];
-const PX_PATHS = ['border.width', 'drop shadow.blur', 'drop shadow.x', 'drop shadow.y'];
+const REM_PATHS = ['spacing', 'border.radius', 'font.size', 'font.line height', 'avatar.font.size'];
+const PX_PATHS = [
+  'border.width',
+  'drop shadow.blur',
+  'drop shadow.x',
+  'drop shadow.y',
+  // Component tokens: small fixed geometry that should stay crisp.
+  'components.avatar.indicator-offset',
+  'tabs.item.indicator.height',
+];
 const MS_PATHS = ['duration'];
 const ROOT_FONT_SIZE = 16;
 const under = (prefixes: string[], p: string[]) => prefixes.some((prefix) => `${p.join('.')}.`.startsWith(`${prefix}.`));
