@@ -93,7 +93,7 @@ export function ActionMenuItem({ children, icon, isDanger = false, textValue, ..
       {...racStyles<MenuItemRenderProps>((s) => [
         styles.item,
         isDanger ? tone.danger : tone.default,
-        s.isFocused && !s.isDisabled && (isDanger ? highlight.danger : highlight.default),
+        s.isFocused && !s.isDisabled && styles.highlighted,
         s.isDisabled && styles.disabled,
         focusRing.base,
         s.isFocusVisible && focusRing.visible,
@@ -165,10 +165,22 @@ const styles = stylex.create({
     whiteSpace: 'nowrap',
     outline: 'none',
     userSelect: 'none',
-    transitionProperty: 'background-color',
-    transitionDuration: { default: duration.fast, '@media (prefers-reduced-motion: reduce)': '0s' },
-    transitionTimingFunction: easing.standard,
+    // The highlight tint (see `tone`). It fades in and out as one layer, so the tone colour under its
+    // transform-90 overlay never shows on its own. Behind the label (the item is its own stacking context).
+    '::after': {
+      content: "''",
+      position: 'absolute',
+      inset: 0,
+      zIndex: -1,
+      borderRadius: 'inherit',
+      opacity: 0,
+      pointerEvents: 'none',
+      transitionProperty: 'opacity',
+      transitionDuration: { default: duration.fast, '@media (prefers-reduced-motion: reduce)': '0s' },
+      transitionTimingFunction: easing.standard,
+    },
   },
+  highlighted: { '::after': { opacity: 1 } },
   disabled: { color: system.textDisabledOnBackground },
   // The ring is drawn inside the item, so it doesn't run into its neighbours.
   ringCorners: { '::before': { borderRadius: `max(0px, calc(${radius.radiusMd} - ${spacing['3xs']}))` } },
@@ -176,20 +188,21 @@ const styles = stylex.create({
   label: { overflow: 'hidden', textOverflow: 'ellipsis' },
 });
 
+/** Label colour, and the highlight tint (hovered or keyboard-highlighted): the tone with transform-90 on top. */
 const tone = stylex.create({
-  default: { color: color.text },
-  danger: { color: color.error },
-});
-
-/** Hovered or keyboard-highlighted: the tone with transform-90 on top (a pale tint), per Figma. */
-const highlight = stylex.create({
   default: {
-    backgroundColor: color.brand,
-    backgroundImage: `linear-gradient(${color.transform90}, ${color.transform90})`,
+    color: color.text,
+    '::after': {
+      backgroundColor: color.brand,
+      backgroundImage: `linear-gradient(${color.transform90}, ${color.transform90})`,
+    },
   },
   danger: {
-    backgroundColor: color.error,
-    backgroundImage: `linear-gradient(${color.transform90}, ${color.transform90})`,
+    color: color.error,
+    '::after': {
+      backgroundColor: color.error,
+      backgroundImage: `linear-gradient(${color.transform90}, ${color.transform90})`,
+    },
   },
 });
 
