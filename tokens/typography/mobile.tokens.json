@@ -110,6 +110,16 @@
             "ALL_SCOPES"
           ]
         }
+      },
+      "input": {
+        "$type": "number",
+        "$value": 16,
+        "$extensions": {
+          "com.figma.variableId": "VariableID:2217:14794",
+          "com.figma.scopes": [
+            "ALL_SCOPES"
+          ]
+        }
       }
     },
     "line height": {
@@ -188,6 +198,16 @@
         "$value": 16,
         "$extensions": {
           "com.figma.variableId": "VariableID:2203:14540",
+          "com.figma.scopes": [
+            "ALL_SCOPES"
+          ]
+        }
+      },
+      "input": {
+        "$type": "number",
+        "$value": 24,
+        "$extensions": {
+          "com.figma.variableId": "VariableID:2217:14795",
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]

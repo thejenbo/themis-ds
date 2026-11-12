@@ -81,6 +81,8 @@ export function Slider({ label, showValue = true, xstyle, ...props }: SliderProp
                 touchTarget.area,
                 focusRing.base,
                 t.isFocusVisible && focusRing.visible,
+                // The thumb has a real 3px border, so the white ring has to clear it.
+                t.isFocusVisible && focusRing.aroundBorderMd,
                 t.isFocusVisible && focusRing.radiusFull,
               ])}
             >

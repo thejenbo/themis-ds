@@ -74,6 +74,14 @@ export const Keyboard: Story = {
     await expect(bubble).toHaveTextContent('100');
     // The shared focus ring is on the thumb.
     await expect(getComputedStyle(slider.closest('[data-themis-touch-target]')!).outlineStyle).toBe('dashed');
+    // The white backing ring sits under the dashes, clear of the element's real border (2–4px outside it).
+    {
+      const el = slider.closest('[data-themis-touch-target]')!;
+      const border = parseFloat(getComputedStyle(el).borderTopWidth);
+      const before = getComputedStyle(el, '::before');
+      const outer = -parseFloat(before.top) - border;
+      await expect([outer - parseFloat(before.borderTopWidth), outer]).toEqual([2, 4]);
+    }
   },
 };
 

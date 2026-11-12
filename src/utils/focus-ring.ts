@@ -76,6 +76,22 @@ export const focusRing = stylex.create({
       outlineOffset: `calc(-1 * ${width})`,
     },
   },
+  /**
+   * Add after `visible` on elements with a real CSS border (most Themis components draw borders as an overlay
+   * instead). `::before` is positioned from inside the border, so without this the white ring slides inward by the
+   * border width and covers part of the border. One variant per border-width token in use.
+   */
+  aroundBorderMandatory: {
+    '::before': {
+      inset: `calc(-1 * (${offset} + ${width} + ${borderWidth.widthMandatory}))`,
+      borderRadius: `calc(${radius.radiusMd} + ${offset} + ${width} + ${borderWidth.widthMandatory})`,
+    },
+  },
+  aroundBorderMd: {
+    '::before': {
+      inset: `calc(-1 * (${offset} + ${width} + ${borderWidth.widthMd}))`,
+    },
+  },
   /** Add after `visible` on pill-shaped elements using `radius.radiusFull` (e.g. Switch's track). */
   radiusFull: {
     '::before': {
