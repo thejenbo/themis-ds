@@ -10,6 +10,7 @@ export * from './components/Heading';
 export * from './components/IconButton';
 export * from './components/Modal';
 export * from './components/SegmentedControl';
+export * from './components/Slider';
 export * from './components/Switch';
 export * from './components/Tabs';
 export * from './components/Text';
