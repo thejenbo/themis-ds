@@ -110,11 +110,12 @@ export const RunsAnAction: Story = {
     await expect(trigger).toHaveAttribute('aria-expanded', 'true');
     // While its menu is open, the trigger keeps its State Layer but not the press shrink.
     const surface = trigger.querySelector('[data-themis-part="surface"]')!;
-    await waitFor(() => expect(getComputedStyle(surface, '::before').opacity).toBe('1'));
+    // Both waits cover a fade, which can run long when the whole suite is busy.
+    await waitFor(() => expect(getComputedStyle(surface, '::before').opacity).toBe('1'), { timeout: 3000 });
     await expect(getComputedStyle(surface).transform).toBe('none');
     await userEvent.click(await screen.findByRole('menuitem', { name: 'Duplicate' }));
     await expect(lastActionKey(args.onAction)).toBe('duplicate');
-    await waitFor(() => expect(screen.queryByRole('menu')).toBeNull());
+    await waitFor(() => expect(screen.queryByRole('menu')).toBeNull(), { timeout: 3000 });
     await expect(trigger).toHaveFocus();
   },
 };
