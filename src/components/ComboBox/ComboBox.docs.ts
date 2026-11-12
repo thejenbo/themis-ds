@@ -134,7 +134,7 @@ export default defineComponentDocs({
     'Shares its box with TextInput and its dropdown and options with Select (src/components/Select/dropdown.tsx), so the three stay identical.',
     'The caret is always shown and is a real button (Figma: same in every state). Errors are shown by the border and message; the caret isn\'t replaced by the error icon.',
     'Figma\'s `noResults` variant is what shows when nothing matches; the default text matches it, "no results found :-(" (`emptyText`).',
-    'The box shows the shared focus ring whenever it has focus (like TextInput), since that\'s where typing goes.',
+    'The box shows the shared focus ring inside it whenever it has focus (like TextInput), since that\'s where typing goes.',
     'Not built yet: loading options as you type, highlighting the matching letters, and choosing several options.',
   ],
 });

@@ -112,10 +112,11 @@ export function TextInput({
               g.isInvalid && styles.boxInvalid,
               g.isDisabled && styles.boxDisabled,
               focusRing.base,
-              // Text fields show the ring whenever they have focus (clicked or tabbed into), since that's where typing goes.
+              // Text fields show the ring whenever they have focus (clicked or tabbed into), since that's where typing
+              // goes. It sits inside the box, as in Figma.
               g.isFocusWithin && focusRing.visible,
-              // The box has a real 2px border, so the white ring has to clear it.
-              g.isFocusWithin && focusRing.aroundBorderMandatory,
+              g.isFocusWithin && focusRing.inset,
+              g.isFocusWithin && styles.boxRing,
             ])}
           >
             <Input placeholder={placeholder} {...stylex.props(styles.input, isDisabled && styles.inputDisabled)} />

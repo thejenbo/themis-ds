@@ -42,6 +42,12 @@ export const fieldStyles = stylex.create({
     color: color.text,
     cursor: 'text',
   },
+  /*
+   * Add after `focusRing.visible` and `focusRing.inset`: the ring sits 2px inside the border (Figma "Focus Ring"),
+   * its corners following the box's. Inside the box it never crowds the label or help text 4px away, and a
+   * container that clips overflow can't cut it off.
+   */
+  boxRing: { '::before': { borderRadius: `max(0px, calc(${radius.radiusMd} - ${borderWidth.widthMandatory} - ${spacing['3xs']}))` } },
   boxInvalid: { borderColor: color.error },
   boxDisabled: {
     backgroundColor: system.backgroundDisabledInverse,

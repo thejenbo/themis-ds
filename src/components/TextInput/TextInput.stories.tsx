@@ -78,14 +78,12 @@ export const Linked: Story = {
     await expect(input).toHaveAttribute('type', 'email');
     await expect(input).toHaveAccessibleDescription(/We only use it for receipts\. +0 of 50 characters/);
     await userEvent.click(input);
-    await expect(getComputedStyle(input.parentElement!).outlineStyle).toBe('dashed');
-    // The white backing ring sits under the dashes, clear of the element's real border (2–4px outside it).
+    // The ring sits inside the box (Figma): 2px in from the border, 2px wide, corners following the box.
     {
-      const el = input.parentElement!;
-      const border = parseFloat(getComputedStyle(el).borderTopWidth);
-      const before = getComputedStyle(el, '::before');
-      const outer = -parseFloat(before.top) - border;
-      await expect([outer - parseFloat(before.borderTopWidth), outer]).toEqual([2, 4]);
+      const before = getComputedStyle(input.parentElement!, '::before');
+      await expect(before.outlineStyle).toBe('dashed');
+      await expect([parseFloat(before.top), parseFloat(before.left), parseFloat(before.borderTopWidth)]).toEqual([2, 2, 2]);
+      await expect(before.zIndex).toBe('1');
     }
     await userEvent.type(input, 'taylor@example.com');
     await expect(args.onChange).toHaveBeenLastCalledWith('taylor@example.com');

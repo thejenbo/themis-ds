@@ -81,12 +81,6 @@ export const focusRing = stylex.create({
    * instead). `::before` is positioned from inside the border, so without this the white ring slides inward by the
    * border width and covers part of the border. One variant per border-width token in use.
    */
-  aroundBorderMandatory: {
-    '::before': {
-      inset: `calc(-1 * (${offset} + ${width} + ${borderWidth.widthMandatory}))`,
-      borderRadius: `calc(${radius.radiusMd} + ${offset} + ${width} + ${borderWidth.widthMandatory})`,
-    },
-  },
   aroundBorderMd: {
     '::before': {
       inset: `calc(-1 * (${offset} + ${width} + ${borderWidth.widthMd}))`,

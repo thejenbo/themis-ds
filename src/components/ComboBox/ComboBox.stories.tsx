@@ -81,7 +81,7 @@ export const Keyboard: Story = {
     await user.tab();
     const input = canvas.getByRole('combobox', { name: 'Country' });
     await expect(input).toHaveFocus();
-    await waitFor(() => expect(getComputedStyle(input.parentElement!).outlineStyle).toBe('dashed'));
+    await waitFor(() => expect(getComputedStyle(input.parentElement!, '::before').outlineStyle).toBe('dashed'));
     await user.keyboard('{ArrowDown}');
     await waitFor(() => expect(screen.getAllByRole('option')).toHaveLength(COUNTRIES.length));
     await user.keyboard('{ArrowDown}');

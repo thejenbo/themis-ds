@@ -119,7 +119,7 @@ export default defineComponentDocs({
     'Figma draws the up/down arrows as one icon; in code they are two buttons, each greying out (background-disabled-default) at its limit or when the field is disabled.',
     'On touch screens, each button\'s target is its half of the box, 44px wide, so the two don\'t overlap.',
     'Figma has no hover state for the buttons; they use the pointer cursor and the pressed shrink.',
-    'The focus ring goes outside the box, as in TextInput (Figma draws it inside).',
+    'The focus ring sits inside the box, as in Figma and the other inputs.',
     'Scrolling over the field while it has focus changes the value (React Aria default; `isWheelDisabled` turns it off).',
   ],
 });

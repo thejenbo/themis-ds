@@ -60,7 +60,7 @@ export const Keyboard: Story = {
     await user.tab();
     const input = canvas.getByRole('textbox', { name: 'Guests' });
     await expect(input).toHaveFocus();
-    await waitFor(() => expect(getComputedStyle(input.closest('[role=group]')!).outlineStyle).toBe('dashed'));
+    await waitFor(() => expect(getComputedStyle(input.closest('[role=group]')!, '::before').outlineStyle).toBe('dashed'));
     await user.keyboard('{ArrowUp}');
     await waitFor(() => expect(args.onChange).toHaveBeenLastCalledWith(3));
     await user.clear(input);

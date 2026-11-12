@@ -99,9 +99,10 @@ export function ComboBox<T extends object>({
               g.isInvalid && fieldStyles.boxInvalid,
               g.isDisabled && fieldStyles.boxDisabled,
               focusRing.base,
-              // Like TextInput: the ring shows whenever the box has focus, since that's where typing goes.
+              // Like TextInput: the ring shows inside the box whenever it has focus, since that's where typing goes.
               g.isFocusWithin && focusRing.visible,
-              g.isFocusWithin && focusRing.aroundBorderMandatory,
+              g.isFocusWithin && focusRing.inset,
+              g.isFocusWithin && fieldStyles.boxRing,
             ])}
           >
             <Input placeholder={placeholder} {...stylex.props(fieldStyles.input, isDisabled && fieldStyles.inputDisabled)} />

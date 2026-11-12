@@ -86,7 +86,7 @@ export const Keyboard: Story = {
     await user.tab();
     const box = canvas.getByRole('button', { name: /Role/ });
     await expect(box).toHaveFocus();
-    await expect(getComputedStyle(box).outlineStyle).toBe('dashed');
+    await waitFor(() => expect(getComputedStyle(box, '::before').outlineStyle).toBe('dashed'));
     await user.keyboard('{ArrowDown}');
     await screen.findByRole('listbox');
     await user.keyboard('a');

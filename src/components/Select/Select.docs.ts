@@ -143,7 +143,7 @@ export default defineComponentDocs({
     'Figma\'s `empty` variants show the placeholder; `focused` and `opened` come from interaction.',
     'The caret stays the same while the list is open (Figma).',
     'The highlight tint matches ActionMenu (brand with transform-90 on top); Figma\'s option State Layer also has 90% fill opacity, which code doesn\'t repeat.',
-    'The box shows the shared focus ring for keyboard focus; options use it inside the option.',
+    'The box shows the shared focus ring inside it for keyboard focus (as in Figma and the other inputs); options use it inside the option.',
     'Not built yet: search while typing (ComboBox), multiple selection, and option groups with headings.',
   ],
 });

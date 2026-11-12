@@ -89,7 +89,9 @@ export function Select<T extends object>({
               b.isDisabled && fieldStyles.boxDisabled,
               focusRing.base,
               b.isFocusVisible && focusRing.visible,
-              b.isFocusVisible && focusRing.aroundBorderMandatory,
+              // Inside the box, as in Figma (and the other inputs).
+              b.isFocusVisible && focusRing.inset,
+              b.isFocusVisible && fieldStyles.boxRing,
               b.isDisabled ? interactiveCursor.disabled : interactiveCursor.enabled,
             ])}
           >
