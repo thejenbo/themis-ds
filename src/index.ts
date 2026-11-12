@@ -6,6 +6,7 @@ export * from './components/ActionMenu';
 export * from './components/Avatar';
 export * from './components/Button';
 export * from './components/Chip';
+export * from './components/ComboBox';
 export * from './components/Heading';
 export * from './components/IconButton';
 export * from './components/Modal';
