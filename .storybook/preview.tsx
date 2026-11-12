@@ -17,8 +17,25 @@ const withTheme: Decorator = (Story, { globals }) => (
   </ThemeProvider>
 );
 
+/**
+ * Load the demo fonts (preview-head.html) before rendering any story. Fonts only start downloading once text uses
+ * them, so without this a story can render, and a test measure it, in the fallback font; under the load of a full
+ * test run that made size-based tests flaky. Capped at 5s so a slow network can't hang Storybook.
+ */
+const DEMO_FONTS = ['Montserrat', 'Playfair Display', 'Outfit'].flatMap((family) =>
+  ['400', '600', '700'].map((weight) => `${weight} 16px "${family}"`),
+).concat(['400 16px "Fredoka One"', '400 16px "Space Mono"', '700 16px "Space Mono"']);
+const loadFonts = async () => {
+  await Promise.race([
+    Promise.all(DEMO_FONTS.map((f) => document.fonts.load(f).catch(() => []))),
+    new Promise((resolve) => setTimeout(resolve, 5000)),
+  ]);
+  return {};
+};
+
 const preview: Preview = {
   decorators: [withTheme],
+  loaders: [loadFonts],
   globalTypes: Object.fromEntries(
     collections.map((c) => [
       c,

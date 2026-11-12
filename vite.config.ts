@@ -17,6 +17,10 @@ export default defineConfig({
       dev: process.env.NODE_ENV !== 'production',
       useCSSLayers: true,
       unstable_moduleResolution: { type: 'commonJS', rootDir: dirname },
+      // In test runs, insert each module's styles as soon as it executes. Otherwise styles arrive through the
+      // shared dev stylesheet, which can lag behind under a full parallel run, so a test may measure an unstyled
+      // component (that made size-based tests flaky).
+      runtimeInjection: Boolean(process.env.VITEST),
     }),
     react(),
   ],
