@@ -14,7 +14,7 @@ export default defineComponentDocs({
   usage: {
     whenToUse: ['Short free-text answers: names, email addresses, titles, search terms.'],
     whenNotToUse: [
-      { scenario: 'Text longer than a line or two.', useInstead: 'a TextArea (coming later)' },
+      { scenario: 'Text longer than a line or two.', useInstead: 'TextArea' },
       { scenario: 'Choosing from a known list.', useInstead: 'Select or SegmentedControl' },
       { scenario: 'A number in a range where roughly is fine.', useInstead: 'Slider' },
       { scenario: 'Turning something on or off.', useInstead: 'Switch' },
@@ -110,13 +110,13 @@ export default defineComponentDocs({
     },
   },
 
-  related: ['Slider', 'Switch', 'SegmentedControl'],
+  related: ['TextArea', 'Slider', 'Switch', 'SegmentedControl'],
   notes: [
     'Built on Figma "Input Base" (node 1834-6859) and "Input Box" (node 1832-6830). The shared styles live in src/components/TextInput/field-base.ts for the other inputs.',
     'Figma\'s `empty` variants show the placeholder; `focused` is interaction; `charLimitErrored` is typing past `characterLimit`.',
     'The shared black/white focus ring sits inside the box, 2px in from the border (Figma "Focus Ring"), and shows whenever the field has focus. Inside, it never crowds the label or help text, and containers that clip overflow can\'t cut it off.',
     'The box stays 40px on every screen (type/input/base is a fixed 16/24), so it lines up with a medium Button.',
     'Disabled fields keep the label in color/text (Figma); only the box goes grey.',
-    'Not built yet: multi-line text, password show/hide, a search clear button, and the dropdown (that\'s Select).',
+    'Not built yet: password show/hide, a search clear button, and the dropdown (that\'s Select).',
   ],
 });

@@ -1,12 +1,11 @@
 import * as stylex from '@stylexjs/stylex';
-import { type ReactNode, useState } from 'react';
+import type { ReactNode } from 'react';
 import {
   FieldError,
   Group,
   type GroupRenderProps,
   Input,
   Label,
-  Text,
   TextField,
   type TextFieldProps,
   type TextFieldRenderProps,
@@ -15,6 +14,7 @@ import {
 
 import { focusRing } from '../../utils/focus-ring';
 import { racStyles } from '../../utils/stylex-rac';
+import { FieldContext, useCharacterCount } from './character-count';
 import { fieldStyles as styles } from './field-base';
 
 interface TextInputBaseProps extends Omit<TextFieldProps, 'className' | 'style' | 'children' | 'maxLength'> {
@@ -79,23 +79,13 @@ export function TextInput({
   isInvalid,
   ...props
 }: TextInputProps) {
-  // Track the length for the character count, whether the field is controlled or not.
-  const [uncontrolledLength, setUncontrolledLength] = useState((defaultValue ?? '').length);
-  const length = value !== undefined ? value.length : uncontrolledLength;
-  const over = characterLimit !== undefined ? length - characterLimit : 0;
-  const hasContext = description != null || characterLimit !== undefined;
+  const { length, over, fieldProps } = useCharacterCount({ value, defaultValue, onChange, characterLimit, isInvalid });
 
   return (
     <TextField
       {...props}
       type={type}
-      value={value}
-      defaultValue={defaultValue}
-      isInvalid={isInvalid || over > 0 || undefined}
-      onChange={(next) => {
-        if (value === undefined) setUncontrolledLength(next.length);
-        onChange?.(next);
-      }}
+      {...fieldProps}
       {...racStyles<TextFieldRenderProps>(() => [styles.field, xstyle])}
     >
       {({ isDisabled, isInvalid: invalid }) => (
@@ -132,29 +122,7 @@ export function TextInput({
               )
             )}
           </Group>
-          {hasContext && (
-            // One description for screen readers: the help text, then the count ("12 of 150 characters").
-            <Text slot="description" {...stylex.props(styles.contextRow, styles.caption)}>
-              {description != null && <span {...stylex.props(styles.description)}>{description}</span>}
-              {characterLimit !== undefined && (
-                <span {...stylex.props(styles.count, over > 0 && styles.countOver)}>
-                  <span aria-hidden="true">
-                    {length}/{characterLimit}
-                  </span>
-                  <span {...stylex.props(styles.visuallyHidden)}>
-                    {' '}
-                    {length} of {characterLimit} characters
-                  </span>
-                </span>
-              )}
-            </Text>
-          )}
-          {characterLimit !== undefined && (
-            // Announced as soon as the limit is passed, not only on the next focus.
-            <span aria-live="polite" {...stylex.props(styles.visuallyHidden)}>
-              {over > 0 ? `${over} ${over === 1 ? 'character' : 'characters'} over the limit` : ''}
-            </span>
-          )}
+          <FieldContext description={description} characterLimit={characterLimit} length={length} over={over} />
           <FieldError {...stylex.props(styles.error)}>
             {(validation) => (typeof errorMessage === 'function' ? errorMessage(validation) : (errorMessage ?? validation.validationErrors.join(' ')))}
           </FieldError>
