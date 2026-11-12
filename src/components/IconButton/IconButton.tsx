@@ -177,8 +177,8 @@ const square = stylex.create({
   small: { padding: spacing['2xs'] },
   medium: { padding: spacing.xs },
   icon: {
-    width: font.lineHeightSm,
-    height: font.lineHeightSm,
+    width: font.lineHeightLabel,
+    height: font.lineHeightLabel,
     justifyContent: 'center',
   },
   // Figma: micro uses the small radius; small and medium use the medium radius like Button.

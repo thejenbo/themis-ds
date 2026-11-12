@@ -154,7 +154,7 @@ const styles = stylex.create({
     fontFamily: fontTheme.familyHeading,
     fontSize: font.sizeSm,
     lineHeight: font.lineHeightSm,
-    fontWeight: font.weightBold,
+    fontWeight: font.weightSemibold,
     whiteSpace: 'nowrap',
     outline: 'none',
     userSelect: 'none',

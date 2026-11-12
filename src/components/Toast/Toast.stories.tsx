@@ -16,8 +16,11 @@ import {
 } from './Toast';
 import docs from './Toast.docs';
 
-/** Two lines of text plus Figma's padding (xs top and bottom) and gap (xs): 72px on mobile. */
-const headingHeight = (toast: HTMLElement) => Math.round(2 * parseFloat(getComputedStyle(document.getElementById(toast.getAttribute('aria-labelledby')!)!).lineHeight) + 24);
+/** Heading line + message line + Figma's padding (xs top and bottom) and gap (xs): 72px on mobile. */
+const headingHeight = (toast: HTMLElement) => {
+  const lh = (id: string | null) => parseFloat(getComputedStyle(document.getElementById(id!)!).lineHeight);
+  return Math.round(lh(toast.getAttribute('aria-labelledby')) + lh(toast.getAttribute('aria-describedby')) + 24);
+};
 
 const TONES: ToastTone[] = ['info', 'brand', 'success', 'warning', 'danger'];
 const PLACEMENTS: ToastPlacement[] = ['bottom-right', 'bottom-left', 'top-right', 'top-left'];

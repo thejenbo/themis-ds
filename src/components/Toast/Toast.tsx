@@ -266,7 +266,7 @@ export function Toast({ tone = 'info', title, description, icon, action, showClo
   const status = statusLabels[tone];
   const prefix = status ? <span {...stylex.props(styles.visuallyHidden)}>{`${status}: `}</span> : null;
   const iconSlot = iconNode ? (
-    <span aria-hidden="true" {...stylex.props(styles.icon, toneText[tone])}>
+    <span aria-hidden="true" {...stylex.props(styles.icon, title != null ? styles.iconOnTitle : styles.iconOnMessage, toneText[tone])}>
       {iconNode}
     </span>
   ) : null;
@@ -429,16 +429,18 @@ const styles = stylex.create({
     gap: spacing.xs,
   },
   line: { display: 'flex', alignItems: 'flex-start', gap: spacing.xs },
+  // As tall as the line it sits on (heading or message), so it's centred on that line and doesn't stretch it.
   icon: {
     flexShrink: 0,
     display: 'inline-flex',
     alignItems: 'center',
-    height: font.lineHeightSm,
   },
+  iconOnTitle: { height: font.lineHeightLabel },
+  iconOnMessage: { height: font.lineHeightSm },
   // Figma type/label/base.
   title: {
     fontSize: font.sizeLabel,
-    lineHeight: font.lineHeightSm,
+    lineHeight: font.lineHeightLabel,
     fontWeight: font.weightSemibold,
   },
   // Figma type/body/base.

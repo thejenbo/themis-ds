@@ -299,7 +299,7 @@ const styles = stylex.create({
     fontFamily: fontTheme.familyHeading,
     fontSize: font.sizeSm,
     lineHeight: font.lineHeightSm,
-    fontWeight: font.weightBold,
+    fontWeight: font.weightSemibold,
   },
   // Content and actions. Only the content scrolls, so the header and actions stay in view.
   body: {

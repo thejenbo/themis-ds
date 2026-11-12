@@ -155,7 +155,7 @@ const styles = stylex.create({
   },
   exit: { animationName: fadeOut, animationFillMode: 'forwards' },
   // Figma type/label/base.
-  title: { fontSize: font.sizeLabel, lineHeight: font.lineHeightSm, fontWeight: font.weightSemibold },
+  title: { fontSize: font.sizeLabel, lineHeight: font.lineHeightLabel, fontWeight: font.weightSemibold },
   // Figma type/body/base.
   text: { fontSize: font.sizeSm, lineHeight: font.lineHeightSm, fontWeight: font.weightRegular },
   arrow: { display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none' },

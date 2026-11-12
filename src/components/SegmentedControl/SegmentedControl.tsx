@@ -55,7 +55,7 @@ interface SegmentedControlBaseProps
   /** Called with the newly selected item's `id`. */
   onSelectionChange?: (key: Key) => void;
   /**
-   * Height, matching Button of the same size: 24/32/40px on mobile, 28/36/44px on desktop.
+   * Height, matching Button of the same size: 24/32/40px on every screen.
    * @default 'small'
    */
   size?: SegmentedControlSize;

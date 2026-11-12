@@ -55,7 +55,7 @@ export const Variants: Story = {
 
 /**
  * All sizes share one label size, so height follows the typography tokens:
- * 24/32/40px on mobile and 28/36/44px from 768px wide.
+ * 24/32/40px on every screen (the label size and line height are fixed).
  */
 export const Sizes: Story = {
   render: (args) => row(SIZES.map((s) => <Button key={s} {...args} size={s}>{s[0]!.toUpperCase() + s.slice(1)}</Button>)),

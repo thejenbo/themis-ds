@@ -98,7 +98,7 @@ export default defineComponentDocs({
     'shadows/drop shadow.color.default',
     'fontTheme/font.family.body',
     'typography/font.size.label',
-    'typography/font.line height.sm',
+    'typography/font.line height.label',
     'typography/font.weight.semibold',
     'primitives/color.grayscale.000',
     'primitives/color.grayscale.1000',

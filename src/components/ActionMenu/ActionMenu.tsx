@@ -160,7 +160,7 @@ const styles = stylex.create({
     borderRadius: radius.radiusMd,
     fontFamily: fontTheme.familyBody,
     fontSize: font.sizeLabel,
-    lineHeight: font.lineHeightSm,
+    lineHeight: font.lineHeightLabel,
     fontWeight: font.weightSemibold,
     whiteSpace: 'nowrap',
     outline: 'none',

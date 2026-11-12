@@ -82,7 +82,7 @@ export default defineComponentDocs({
     'fontTheme/font.family.heading',
     'typography/font.size.sm',
     'typography/font.line height.sm',
-    'typography/font.weight.bold',
+    'typography/font.weight.semibold',
     'primitives/color.grayscale.000',
     'primitives/color.grayscale.1000',
     'components/tabs.item.indicator.height.default',

@@ -39,7 +39,7 @@ export interface SwitchProps extends Omit<AriaSwitchProps, 'className' | 'style'
    */
   labelPosition?: SwitchLabelPosition;
   /**
-   * Track height, matching Button of the same size so they line up: 24/32/40px on mobile, 28/36/44px on desktop.
+   * Track height, matching Button of the same size so they line up: 24/32/40px on every screen.
    * @default 'small'
    */
   size?: SwitchSize;
@@ -182,9 +182,9 @@ function CloseGlyph() {
  * Icon sizes are fixed: Figma has no token for them.
  */
 const H = {
-  micro: font.lineHeightSm,
-  small: `calc(${font.lineHeightSm} + 2 * ${spacing['2xs']})`,
-  medium: `calc(${font.lineHeightSm} + 2 * ${spacing.xs})`,
+  micro: font.lineHeightLabel,
+  small: `calc(${font.lineHeightLabel} + 2 * ${spacing['2xs']})`,
+  medium: `calc(${font.lineHeightLabel} + 2 * ${spacing.xs})`,
 };
 const ICON = { micro: '0.6875rem', small: '1rem', medium: '1.25rem' };
 
@@ -272,13 +272,13 @@ const styles = stylex.create({
   label: {
     fontFamily: fontTheme.familyBody,
     fontSize: font.sizeLabel,
-    lineHeight: font.lineHeightSm,
+    lineHeight: font.lineHeightLabel,
     fontWeight: font.weightSemibold,
   },
   description: {
     fontFamily: fontTheme.familyBody,
-    fontSize: font.sizeXs,
-    lineHeight: font.lineHeightXs,
+    fontSize: font.sizeCaption,
+    lineHeight: font.lineHeightCaption,
     fontWeight: font.weightRegular,
   },
   textDisabled: { color: system.textDisabledDefault },

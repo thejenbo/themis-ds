@@ -82,8 +82,8 @@ export default defineComponentDocs({
     'radius/border.radius.xs',
     'borderWidth/border.width.mandatory',
     'fontTheme/font.family.body',
-    'typography/font.size.xs',
-    'typography/font.line height.xs',
+    'typography/font.line height.caption',
+    'typography/font.size.caption',
     'typography/font.weight.regular',
   ],
 

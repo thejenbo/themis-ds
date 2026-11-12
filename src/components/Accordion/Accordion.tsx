@@ -184,7 +184,7 @@ const styles = stylex.create({
     // type/heading/sm (the shared surface uses the label size).
     fontFamily: fontTheme.familyHeading,
     fontSize: font.sizeSm,
-    fontWeight: font.weightBold,
+    fontWeight: font.weightSemibold,
   },
   headerOpen: { paddingBlockEnd: spacing.xs },
   headerDisabled: { backgroundColor: system.backgroundDisabledDefault, color: system.textDisabledInverse },

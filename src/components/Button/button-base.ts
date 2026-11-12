@@ -55,7 +55,7 @@ export const baseStyles = stylex.create({
     fontFamily: fontTheme.familyBody,
     // Figma type/label/base: a fixed label size on every breakpoint.
     fontSize: font.sizeLabel,
-    lineHeight: font.lineHeightSm,
+    lineHeight: font.lineHeightLabel,
     fontWeight: font.weightSemibold,
     whiteSpace: 'nowrap',
     // State Layer. It holds the full hovered look (hover Surface + overlay) and fades in as one piece,

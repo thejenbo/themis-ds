@@ -101,7 +101,7 @@ export default defineComponentDocs({
     'fontTheme/font.family.body',
     'typography/font.size.sm',
     'typography/font.line height.sm',
-    'typography/font.weight.bold',
+    'typography/font.weight.semibold',
     'typography/font.weight.regular',
     'primitives/color.grayscale.000',
     'primitives/color.grayscale.1000',

@@ -39,7 +39,7 @@ export interface ButtonProps extends Omit<AriaButtonProps, 'className' | 'style'
   variant?: ButtonVariant;
   /**
    * Vertical padding. All sizes share the same label size, so height follows the typography
-   * tokens: 24/32/40px on mobile and 28/36/44px on desktop.
+   * tokens: 24/32/40px on every screen.
    * @default 'small'
    */
   size?: ButtonSize;

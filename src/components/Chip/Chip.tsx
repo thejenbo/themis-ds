@@ -72,8 +72,8 @@ const styles = stylex.create({
     whiteSpace: 'nowrap',
     fontFamily: fontTheme.familyBody,
     // Figma type/caption/base.
-    fontSize: font.sizeXs,
-    lineHeight: font.lineHeightXs,
+    fontSize: font.sizeCaption,
+    lineHeight: font.lineHeightCaption,
     fontWeight: font.weightRegular,
   },
   // Drawn on top, like Figma's inside stroke, so it adds no size.
@@ -89,7 +89,7 @@ const styles = stylex.create({
     },
   },
   label: { position: 'relative' },
-  icon: { position: 'relative', display: 'inline-flex', alignItems: 'center', height: font.lineHeightXs },
+  icon: { position: 'relative', display: 'inline-flex', alignItems: 'center', height: font.lineHeightCaption },
 });
 
 const outline = stylex.create({

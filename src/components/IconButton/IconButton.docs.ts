@@ -102,6 +102,7 @@ export default defineComponentDocs({
 
   tokens: [
     'colorTheme/color.brand',
+    'typography/font.line height.label',
     'colorTheme/color.error',
     'colorTheme/color.warning',
     'colorTheme/color.success',
@@ -128,7 +129,6 @@ export default defineComponentDocs({
     'borderWidth/border.width.sm',
     'borderWidth/border.width.mandatory',
     'borderWidth/border.width.focus ring',
-    'typography/font.line height.sm',
     'primitives/color.grayscale.000',
     'primitives/color.grayscale.1000',
     'motion/duration.fast',
