@@ -74,8 +74,8 @@ export default defineComponentDocs({
     'colorTheme/color.border',
     'colorTheme/color.error',
     'system/color.background-disabled-inverse',
+    'system/color.border-disabled',
     'system/color.text-disabled-default',
-    'system/color.text-disabled-on-background',
     'system/color.placeholder-default',
     'spacing/spacing.2xs',
     'spacing/spacing.xs',
@@ -116,7 +116,7 @@ export default defineComponentDocs({
     'Figma\'s `empty` variants show the placeholder; `focused` is interaction; `charLimitErrored` is typing past `characterLimit`.',
     'Figma\'s focused box draws an inset 6/6 dashed ring; code uses the shared black/white ring outside the box, shown whenever the field has focus.',
     'The box stays 40px on every screen (type/input/base is a fixed 16/24), so it lines up with a medium Button.',
-    'Disabled fields also grey the label (text-disabled-on-background); Figma keeps it color/text.',
+    'Disabled fields keep the label in color/text (Figma); only the box goes grey.',
     'Not built yet: multi-line text, password show/hide, a search clear button, and the dropdown (that\'s Select).',
   ],
 });

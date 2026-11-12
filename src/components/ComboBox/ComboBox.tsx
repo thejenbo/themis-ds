@@ -87,7 +87,7 @@ export function ComboBox<T extends object>({
       {({ isDisabled }) => (
         <>
           {label != null && (
-            <Label {...stylex.props(fieldStyles.label, isDisabled && fieldStyles.labelDisabled)}>
+            <Label {...stylex.props(fieldStyles.label)}>
               {label}
               {isOptional && <span {...stylex.props(fieldStyles.optional)}> ({optionalText})</span>}
             </Label>

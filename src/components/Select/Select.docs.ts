@@ -75,6 +75,7 @@ export default defineComponentDocs({
     'colorTheme/color.brand',
     'colorTheme/color.transform-90',
     'system/color.background-disabled-inverse',
+    'system/color.border-disabled',
     'system/color.background-disabled-default',
     'system/color.text-disabled-default',
     'system/color.text-disabled-on-background',

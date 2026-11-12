@@ -22,7 +22,6 @@ export const fieldStyles = stylex.create({
     fontWeight: font.weightSemibold,
     color: color.text,
   },
-  labelDisabled: { color: system.textDisabledOnBackground },
   optional: { fontWeight: font.weightRegular },
   /*
    * Figma "Input Box": 40px tall on every screen (8px + 24px input line + 8px), 16px sides, radius md, and a
@@ -44,7 +43,12 @@ export const fieldStyles = stylex.create({
     cursor: 'text',
   },
   boxInvalid: { borderColor: color.error },
-  boxDisabled: { backgroundColor: system.backgroundDisabledInverse, color: system.textDisabledDefault, cursor: 'not-allowed' },
+  boxDisabled: {
+    backgroundColor: system.backgroundDisabledInverse,
+    borderColor: system.borderDisabled,
+    color: system.textDisabledDefault,
+    cursor: 'not-allowed',
+  },
   // Figma type/input/base: fixed 16/24, so the box stays 40px and iPhones don't zoom in on focus.
   input: {
     flexGrow: 1,

@@ -76,7 +76,7 @@ export function Select<T extends object>({
       {({ isDisabled, isInvalid }) => (
         <>
           {label != null && (
-            <Label {...stylex.props(fieldStyles.label, isDisabled && fieldStyles.labelDisabled)}>
+            <Label {...stylex.props(fieldStyles.label)}>
               {label}
               {isOptional && <span {...stylex.props(fieldStyles.optional)}> ({optionalText})</span>}
             </Label>

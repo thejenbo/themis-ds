@@ -60,8 +60,11 @@ export const States: Story = {
     const input = canvas.getByRole('textbox', { name: 'Filled' });
     const box = input.parentElement!.getBoundingClientRect();
     await expect(Math.round(box.height)).toBe(40);
-    // The disabled field greys its label too.
-    await expect(canvas.getByRole('textbox', { name: 'Disabled' })).toBeDisabled();
+    // Disabled: the label keeps the text colour (only the box goes grey) and the border is border-disabled.
+    const disabled = canvas.getByRole('textbox', { name: 'Disabled' });
+    await expect(disabled).toBeDisabled();
+    await expect(getComputedStyle(canvas.getByText('Disabled')).color).toBe(getComputedStyle(canvas.getByText('Filled')).color);
+    await expect(getComputedStyle(disabled.parentElement!).borderColor).toBe('rgb(51, 51, 51)');
     await expect(canvas.getByText('(optional)')).toBeInTheDocument();
   },
 };

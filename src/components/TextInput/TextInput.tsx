@@ -101,7 +101,7 @@ export function TextInput({
       {({ isDisabled, isInvalid: invalid }) => (
         <>
           {label != null && (
-            <Label {...stylex.props(styles.label, isDisabled && styles.labelDisabled)}>
+            <Label {...stylex.props(styles.label)}>
               {label}
               {isOptional && <span {...stylex.props(styles.optional)}> ({optionalText})</span>}
             </Label>

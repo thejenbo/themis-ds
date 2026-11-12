@@ -20,6 +20,7 @@ export * from './components/TextInput';
 export * from './components/Toast';
 export * from './components/ToggleButton';
 export * from './components/Tooltip';
+export * from './components/UnitInput';
 export { headingStyles, textStyles } from './styles/type-styles';
 export { ThemeProvider, type ThemeProviderProps } from './theme/ThemeProvider';
 export { collectionModes, defaultModes, themes, type Modes, type ModeOf, type ThemeCollection } from './tokens/themes';
