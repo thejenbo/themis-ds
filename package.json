@@ -28,10 +28,11 @@
     "manifest": "tsx scripts/build-manifest.ts",
     "storybook": "npm run tokens && npm run manifest && storybook dev -p 6006",
     "build-storybook": "npm run tokens && npm run manifest && storybook build",
-    "build": "npm run tokens && npm run manifest && vite build && tsc -p tsconfig.build.json && cp public/themis-manifest.json dist/",
+    "build": "npm run tokens && npm run contrast -- --strict && npm run manifest && vite build && tsc -p tsconfig.build.json && cp public/themis-manifest.json dist/",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "contrast": "tsx scripts/check-contrast.ts"
   },
   "peerDependencies": {
     "react": ">=19.0.0",

@@ -223,11 +223,11 @@ const widths = stylex.create({
 
 const tones = stylex.create({
   brand: { backgroundColor: color.brand },
-  danger: { backgroundColor: color.error },
+  danger: { backgroundColor: color.stateError },
 });
 
 const styles = stylex.create({
-  // The backdrop: Figma's Overlay (transform-60 + 10px blur). Keeps spacing.sm at the sides and spacing.lg
+  // The backdrop: Figma's Overlay (overlay-tint + 10px blur). Keeps spacing.sm at the sides and spacing.lg
   // above and below, so the modal never touches the screen edges.
   overlay: {
     position: 'fixed',
@@ -238,7 +238,7 @@ const styles = stylex.create({
     justifyContent: 'center',
     paddingBlock: spacing.lg,
     paddingInline: spacing.sm,
-    backgroundColor: color.transform60,
+    backgroundColor: color.overlayTint,
     backdropFilter: { default: 'blur(10px)', '@media (prefers-reduced-transparency: reduce)': 'none' },
   },
   fadeIn: { animationName: fade, animationDuration: duration.base, animationTimingFunction: easing.standard },

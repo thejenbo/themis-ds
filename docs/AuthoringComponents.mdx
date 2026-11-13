@@ -27,11 +27,15 @@ Each component lives in `src/components/<Name>/` and contains exactly these file
 
    | Helper | What it does | Uses |
    | --- | --- | --- |
-   | `stateLayer` (`state-layer.stylex.ts`) | Hover/press overlay whose darken/lighten direction is calculated from the Surface colour. | The Surface's `::before` |
    | `focusRing` (`focus-ring.ts`) | 2px black/white dashed ring outside the element. See Foundations / Focus ring. | The element's `outline` and `::before` |
    | `touchTarget` (`touch-target.ts`) | 44×44px touch area on touch screens. See Foundations / Touch targets. | The element's `::after` |
    | `pressMotion` (`press-motion.ts`) | Shrinks the visible layers to `scale.pressed` while pressed. See Foundations / Motion. | The Surface's `transform` |
    | `interactiveCursor` (`interactive-cursor.ts`) | `pointer` when enabled, `not-allowed` when disabled, `progress` while pending. | The element's `cursor` |
+
+   Hover and press colours come from tokens, not helpers: a filled Surface's hover is its solid `*-hover` token
+   (`brand-hover`, `state.error-hover`…), and anything transparent or `background`-coloured gets the tone's see-through
+   `*-tint` (`brand-tint`, `background-hover`, `inverse-tint`…). Draw it on the Surface's `::before` and fade its
+   opacity. Add each new text-on-hover pair to `tokens/contrast-pairs.json`.
 
    Every clickable control uses `interactiveCursor`. The exceptions are elements with their own conventional
    cursor: text inputs (`text`), draggable items (`grab`/`grabbing`), resize handles and the like.

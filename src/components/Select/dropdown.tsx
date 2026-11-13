@@ -118,7 +118,7 @@ const fromBelow = stylex.keyframes({ from: { opacity: 0, transform: 'translateY(
 
 /** Styles for the box side of Select and ComboBox. */
 export const triggerStyles = stylex.create({
-  placeholder: { color: system.placeholderDefault },
+  placeholder: { color: color.textPlaceholderDefault },
   // Figma: the caret goes background-disabled-default when disabled.
   caretDisabled: { color: system.backgroundDisabledDefault },
 });
@@ -171,15 +171,14 @@ const styles = stylex.create({
     fontWeight: font.weightRegular,
     outline: 'none',
     userSelect: 'none',
-    // Highlight tint, as in ActionMenu: brand with transform-90 on top, fading as one layer.
+    // Highlight tint, as in ActionMenu: the see-through brand tint over the list.
     '::after': {
       content: "''",
       position: 'absolute',
       inset: 0,
       zIndex: -1,
       borderRadius: 'inherit',
-      backgroundColor: color.brand,
-      backgroundImage: `linear-gradient(${color.transform90}, ${color.transform90})`,
+      backgroundColor: color.brandTint,
       opacity: 0,
       pointerEvents: 'none',
       transitionProperty: 'opacity',
@@ -188,9 +187,9 @@ const styles = stylex.create({
     },
   },
   highlighted: { '::after': { opacity: 1 } },
-  optionDisabled: { color: system.textDisabledOnBackground },
+  optionDisabled: { color: color.textDisabledOnBackground },
   // Figma "no results": option text style, disabled-on-background colour, nothing to choose.
-  empty: { color: system.textDisabledOnBackground, cursor: 'default' },
+  empty: { color: color.textDisabledOnBackground, cursor: 'default' },
   optionLabel: {
     flexGrow: 1,
     minWidth: 0,

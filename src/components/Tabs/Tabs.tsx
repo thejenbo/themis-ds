@@ -23,7 +23,6 @@ import { font as fontTheme } from '../../tokens/fontTheme.stylex';
 import { duration, easing } from '../../tokens/motion.stylex';
 import { border as radius } from '../../tokens/radius.stylex';
 import { spacing } from '../../tokens/spacing.stylex';
-import { color as system } from '../../tokens/system.stylex';
 import { font } from '../../tokens/typography.stylex';
 import { focusRing } from '../../utils/focus-ring';
 import { interactiveCursor } from '../../utils/interactive-cursor';
@@ -160,7 +159,7 @@ const styles = stylex.create({
     userSelect: 'none',
     WebkitTapHighlightColor: 'transparent',
   },
-  disabled: { color: system.textDisabledOnBackground },
+  disabled: { color: color.textDisabledOnBackground },
   cursorSelected: { cursor: 'default' },
   label: { position: 'relative' },
   labelText: { position: 'relative', borderRadius: radius.radiusSm },
@@ -175,10 +174,9 @@ const styles = stylex.create({
     borderRadius: radius.radiusSm,
     pointerEvents: 'none',
   },
-  // Figma: brand with transform-60 on top (a pale brand bar; lightened in light themes, darkened in dark ones).
+  // Figma: border-brand-hover, a pale brand bar (40% brand mixed into the background).
   hoverUnderline: {
-    backgroundColor: color.brand,
-    backgroundImage: `linear-gradient(${color.transform60}, ${color.transform60})`,
+    backgroundColor: color.borderBrandHover,
     opacity: 0,
     transitionProperty: 'opacity',
     transitionDuration: { default: duration.base, '@media (prefers-reduced-motion: reduce)': '0s' },

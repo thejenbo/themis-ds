@@ -109,9 +109,9 @@ export const OnSurfaces: Story = {
   play: async ({ canvas }) => {
     const inverse = canvas.getByRole('button', { name: 'Close (inverse small)' });
     await userEvent.hover(inverse);
-    // The hover tint is see-through, so the brand fill behind it still shows.
+    // inverse-tint: text-inverse at 7%, see-through, so the brand fill behind it still shows.
     const layer = getComputedStyle(inverse.firstElementChild!, '::before');
-    await expect(layer.backgroundColor).toMatch(/rgba\(.*, 0\.2\)|\/ 0\.2\)/);
+    await expect(layer.backgroundColor).toMatch(/^rgba\(255, 255, 255, 0\.07\d*\)$/);
   },
 };
 

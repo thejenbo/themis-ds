@@ -127,9 +127,9 @@ const styles = stylex.create({
       borderStyle: 'solid',
       borderWidth: borderWidth.widthSm,
       borderColor: color.border,
-      // Figma: brand with transform-90 on top (a pale brand) for the part not filled yet.
-      backgroundColor: color.brand,
-      backgroundImage: `linear-gradient(${color.transform90}, ${color.transform90})`,
+      // Figma: the see-through brand tint over the background, for the part not filled yet.
+      backgroundColor: color.background,
+      backgroundImage: `linear-gradient(${color.brandTint}, ${color.brandTint})`,
     },
   },
   trackDisabled: { cursor: 'not-allowed', '::before': { backgroundColor: system.backgroundDisabledDefault } },

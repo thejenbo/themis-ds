@@ -21,7 +21,6 @@ import { duration, easing } from '../../tokens/motion.stylex';
 import { border as radius } from '../../tokens/radius.stylex';
 import { dropShadow } from '../../tokens/shadows.stylex';
 import { spacing } from '../../tokens/spacing.stylex';
-import { color as system } from '../../tokens/system.stylex';
 import { font } from '../../tokens/typography.stylex';
 import { focusRing } from '../../utils/focus-ring';
 import { interactiveCursor } from '../../utils/interactive-cursor';
@@ -165,8 +164,7 @@ const styles = stylex.create({
     whiteSpace: 'nowrap',
     outline: 'none',
     userSelect: 'none',
-    // The highlight tint (see `tone`). It fades in and out as one layer, so the tone colour under its
-    // transform-90 overlay never shows on its own. Behind the label (the item is its own stacking context).
+    // The highlight tint (see `tone`), fading in and out. Behind the label (the item is its own stacking context).
     '::after': {
       content: "''",
       position: 'absolute',
@@ -181,28 +179,22 @@ const styles = stylex.create({
     },
   },
   highlighted: { '::after': { opacity: 1 } },
-  disabled: { color: system.textDisabledOnBackground },
+  disabled: { color: color.textDisabledOnBackground },
   // The ring is drawn inside the item, so it doesn't run into its neighbours.
   ringCorners: { '::before': { borderRadius: `max(0px, calc(${radius.radiusMd} - ${spacing['3xs']}))` } },
   icon: { display: 'inline-flex', flexShrink: 0, alignItems: 'center', justifyContent: 'center', width: '1rem', height: '1rem' },
   label: { overflow: 'hidden', textOverflow: 'ellipsis' },
 });
 
-/** Label colour, and the highlight tint (hovered or keyboard-highlighted): the tone with transform-90 on top. */
+/** Label colour, and the highlight tint (hovered or keyboard-highlighted): the tone's see-through tint over the menu. */
 const tone = stylex.create({
   default: {
     color: color.text,
-    '::after': {
-      backgroundColor: color.brand,
-      backgroundImage: `linear-gradient(${color.transform90}, ${color.transform90})`,
-    },
+    '::after': { backgroundColor: color.brandTint },
   },
   danger: {
-    color: color.error,
-    '::after': {
-      backgroundColor: color.error,
-      backgroundImage: `linear-gradient(${color.transform90}, ${color.transform90})`,
-    },
+    color: color.stateError,
+    '::after': { backgroundColor: color.stateErrorTint },
   },
 });
 

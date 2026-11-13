@@ -63,7 +63,6 @@ export const Sizes: Story = {
 
 /**
  * `brand` for most actions, `neutral` where the brand colour would compete, `danger` only for destructive actions.
- * Danger outline and subtle buttons keep a black label with a red icon.
  */
 export const Tones: Story = {
   render: (args) => (
@@ -166,41 +165,31 @@ export const DefaultWithCancel: Story = {
 };
 
 /**
- * Interaction test: the State Layer's direction is calculated from the brand colour.
- * light demo has a dark brand (lightening overlay); dark demo a light brand (darkening overlay).
+ * Interaction test: hover colours come from each colour theme's hover tokens. Filled buttons use the solid
+ * brand-hover (shifted away from the label: darker in light demo, lighter in dark demo); subtle buttons use the
+ * see-through brand-tint.
  */
-export const StateLayerDirection: Story = {
+export const HoverTokens: Story = {
   tags: ['test-only', '!autodocs'],
   render: (args) => (
-    <div style={{ display: 'grid', gap: 16 }}>
-      {TONES.map((tone) => (
-        <div key={tone} style={{ display: 'flex', gap: 16 }}>
-          <ThemeProvider modes={{ colorTheme: 'light demo' }}>
-            <Button {...args} tone={tone}>{tone === 'brand' ? 'Light theme' : `Light ${tone}`}</Button>
-          </ThemeProvider>
-          <ThemeProvider modes={{ colorTheme: 'dark demo' }}>
-            <Button {...args} tone={tone}>{tone === 'brand' ? 'Dark theme' : `Dark ${tone}`}</Button>
-          </ThemeProvider>
-        </div>
-      ))}
+    <div style={{ display: 'flex', gap: 16 }}>
+      <ThemeProvider modes={{ colorTheme: 'light demo' }}>
+        <Button {...args}>Light theme</Button>
+        <Button {...args} variant="subtle">Light subtle</Button>
+      </ThemeProvider>
+      <ThemeProvider modes={{ colorTheme: 'dark demo' }}>
+        <Button {...args}>Dark theme</Button>
+      </ThemeProvider>
     </div>
   ),
   play: async ({ canvas }) => {
     const light = canvas.getByRole('button', { name: 'Light theme' });
-    const dark = canvas.getByRole('button', { name: 'Dark theme' });
     await expect(layerStyle(light).opacity).toBe('0');
     await userEvent.hover(light);
     await waitFor(() => expect(layerStyle(light).opacity).toBe('1'));
-    // Lightness channel of the overlay: 1 = white overlay, 0 = black overlay.
-    const overlayLightness = (el: HTMLElement) => /oklch\(\s*([\d.]+)/.exec(layerStyle(el).backgroundImage)?.[1];
-    await expect(overlayLightness(light)).toBe('1');
-    await expect(overlayLightness(dark)).toBe('0');
-    // Neutral: black fill in light demo (lighten), white in dark demo (darken).
-    await expect(overlayLightness(canvas.getByRole('button', { name: 'Light neutral' }))).toBe('1');
-    await expect(overlayLightness(canvas.getByRole('button', { name: 'Dark neutral' }))).toBe('0');
-    // Danger: dark red in light demo (lighten), light pink in dark demo (darken).
-    await expect(overlayLightness(canvas.getByRole('button', { name: 'Light danger' }))).toBe('1');
-    await expect(overlayLightness(canvas.getByRole('button', { name: 'Dark danger' }))).toBe('0');
+    await expect(layerStyle(light).backgroundColor).toBe('rgb(108, 5, 218)'); // #6C05DA, darker than #7406EB
+    await expect(layerStyle(canvas.getByRole('button', { name: 'Dark theme' })).backgroundColor).toBe('rgb(219, 178, 231)'); // #DBB2E7
+    await expect(layerStyle(canvas.getByRole('button', { name: 'Light subtle' })).backgroundColor).toMatch(/^rgba\(116, 6, 235, 0\.07\d*\)$/);
   },
 };
 

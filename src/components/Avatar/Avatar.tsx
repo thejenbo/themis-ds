@@ -170,5 +170,5 @@ const dots = stylex.create({
 });
 
 const statuses = stylex.create({
-  online: { backgroundColor: color.success },
+  online: { backgroundColor: color.stateSuccess },
 });

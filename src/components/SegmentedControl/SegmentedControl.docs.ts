@@ -80,7 +80,7 @@ export default defineComponentDocs({
     'colorTheme/color.border-brand',
     'colorTheme/color.text-brand',
     'colorTheme/color.text-inverse',
-    'colorTheme/color.transform-90',
+    'colorTheme/color.brand-tint',
     'system/color.background-disabled-default',
     'system/color.background-disabled-inverse',
     'system/color.text-disabled-default',

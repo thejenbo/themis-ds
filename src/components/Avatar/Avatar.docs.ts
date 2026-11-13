@@ -71,7 +71,7 @@ export default defineComponentDocs({
     'colorTheme/color.text-brand',
     'colorTheme/color.border-brand',
     'colorTheme/color.border',
-    'colorTheme/color.success',
+    'colorTheme/color.state.success',
     'radius/border.radius.md',
     'radius/border.radius.full',
     'borderWidth/border.width.mandatory',

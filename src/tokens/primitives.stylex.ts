@@ -63,6 +63,7 @@ export const color = stylex.defineVars({
 export const darken = stylex.defineVars({
   "2": "#00000005",
   "5": "#0000000d",
+  "7": "#00000012",
   "10": "#0000001a",
   "15": "#00000026",
   "20": "#00000033",
@@ -73,10 +74,12 @@ export const darken = stylex.defineVars({
   "70": "#000000b2",
   "80": "#000000cc",
   "90": "#000000e5",
+  "93": "#000000ed",
 });
 
 export const lighten = stylex.defineVars({
   "5": "#FFFFFF0d",
+  "7": "#FFFFFF12",
   "10": "#FFFFFF1a",
   "15": "#FFFFFF26",
   "20": "#FFFFFF33",
@@ -89,6 +92,7 @@ export const lighten = stylex.defineVars({
   "80": "#FFFFFFcc",
   "85": "#FFFFFFd9",
   "90": "#FFFFFFe5",
+  "93": "#FFFFFFed",
   "95": "#FFFFFFf2",
 });
 

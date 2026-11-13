@@ -1,0 +1,286 @@
+{
+  "$description": "Every text (or icon) colour the components put on a surface, at rest and on hover. `npm run contrast` rates each pair in every colour theme. Add a pair whenever a component puts text on a new surface or tint. `overlay` is a see-through colorTheme token composited over `surface`, the way the browser draws it. Subtle buttons are only rated on the surfaces their guidelines allow (Button / IconButton docs). `minimum` overrides the default for a pair (3 for icons); `level: advisory` pairs (disabled text, which WCAG exempts) are reported but never fail.",
+  "minimum": 4.5,
+  "pairs": [
+    {
+      "id": "text",
+      "text": "colorTheme/color.text",
+      "surface": "colorTheme/color.background",
+      "usedBy": [
+        "Everything"
+      ]
+    },
+    {
+      "id": "text-brand",
+      "text": "colorTheme/color.text-brand",
+      "surface": "colorTheme/color.background",
+      "usedBy": [
+        "Button/IconButton brand outline and subtle",
+        "ToggleButton off",
+        "SegmentedControl",
+        "Avatar outline",
+        "Chip brand",
+        "Toast brand"
+      ]
+    },
+    {
+      "id": "error",
+      "text": "colorTheme/color.state.error",
+      "surface": "colorTheme/color.background",
+      "usedBy": [
+        "Button/IconButton danger outline and subtle",
+        "Chip danger",
+        "Toast danger",
+        "Error messages",
+        "ActionMenu danger item"
+      ]
+    },
+    {
+      "id": "warning",
+      "text": "colorTheme/color.state.warning",
+      "surface": "colorTheme/color.background",
+      "usedBy": [
+        "Button/IconButton warning outline and subtle",
+        "Chip warning",
+        "Toast warning"
+      ]
+    },
+    {
+      "id": "success",
+      "text": "colorTheme/color.state.success",
+      "surface": "colorTheme/color.background",
+      "usedBy": [
+        "Button/IconButton success outline and subtle",
+        "Chip success",
+        "Toast success"
+      ]
+    },
+    {
+      "id": "inverse-on-brand",
+      "text": "colorTheme/color.text-inverse",
+      "surface": "colorTheme/color.brand",
+      "usedBy": [
+        "Button/IconButton brand default",
+        "ToggleButton on",
+        "SegmentedControl selected",
+        "Accordion header",
+        "Avatar solid",
+        "Chip brand solid",
+        "Table header (planned)"
+      ]
+    },
+    {
+      "id": "inverse-on-neutral",
+      "text": "colorTheme/color.text-inverse",
+      "surface": "colorTheme/color.background-inverse",
+      "usedBy": [
+        "Button/IconButton neutral default",
+        "Chip neutral solid"
+      ]
+    },
+    {
+      "id": "inverse-on-error",
+      "text": "colorTheme/color.text-inverse",
+      "surface": "colorTheme/color.state.error",
+      "usedBy": [
+        "Button/IconButton danger default",
+        "Chip danger solid"
+      ]
+    },
+    {
+      "id": "inverse-on-warning",
+      "text": "colorTheme/color.text-inverse",
+      "surface": "colorTheme/color.state.warning",
+      "usedBy": [
+        "Button/IconButton warning default",
+        "Chip warning solid"
+      ]
+    },
+    {
+      "id": "inverse-on-success",
+      "text": "colorTheme/color.text-inverse",
+      "surface": "colorTheme/color.state.success",
+      "usedBy": [
+        "Button/IconButton success default",
+        "Chip success solid"
+      ]
+    },
+    {
+      "id": "placeholder",
+      "text": "colorTheme/color.text-placeholder-default",
+      "surface": "colorTheme/color.background",
+      "usedBy": [
+        "TextInput",
+        "TextArea",
+        "NumberInput",
+        "UnitInput",
+        "Select",
+        "ComboBox"
+      ]
+    },
+    {
+      "id": "disabled",
+      "text": "colorTheme/color.text-disabled-on-background",
+      "surface": "colorTheme/color.background",
+      "usedBy": [
+        "RadioGroup",
+        "Checkbox",
+        "Tabs",
+        "Select and ActionMenu items",
+        "Switch"
+      ],
+      "level": "advisory"
+    },
+    {
+      "id": "inverse-on-brand-hover",
+      "text": "colorTheme/color.text-inverse",
+      "surface": "colorTheme/color.brand-hover",
+      "usedBy": [
+        "Button/IconButton brand default hover",
+        "ToggleButton on hover",
+        "Accordion header hover"
+      ]
+    },
+    {
+      "id": "inverse-on-neutral-hover",
+      "text": "colorTheme/color.text-inverse",
+      "surface": "colorTheme/color.background-inverse-hover",
+      "usedBy": [
+        "Button/IconButton neutral default hover"
+      ]
+    },
+    {
+      "id": "inverse-on-error-hover",
+      "text": "colorTheme/color.text-inverse",
+      "surface": "colorTheme/color.state.error-hover",
+      "usedBy": [
+        "Button/IconButton danger default hover"
+      ]
+    },
+    {
+      "id": "inverse-on-warning-hover",
+      "text": "colorTheme/color.text-inverse",
+      "surface": "colorTheme/color.state.warning-hover",
+      "usedBy": [
+        "Button/IconButton warning default hover"
+      ]
+    },
+    {
+      "id": "inverse-on-success-hover",
+      "text": "colorTheme/color.text-inverse",
+      "surface": "colorTheme/color.state.success-hover",
+      "usedBy": [
+        "Button/IconButton success default hover"
+      ]
+    },
+    {
+      "id": "text-on-brand-tint",
+      "text": "colorTheme/color.text",
+      "surface": "colorTheme/color.background",
+      "usedBy": [
+        "ActionMenu item highlight",
+        "Select / ComboBox / UnitInput option highlight"
+      ],
+      "overlay": "colorTheme/color.brand-tint"
+    },
+    {
+      "id": "text-brand-on-brand-tint",
+      "text": "colorTheme/color.text-brand",
+      "surface": "colorTheme/color.background",
+      "usedBy": [
+        "Button/IconButton brand outline and subtle hover",
+        "ToggleButton off hover",
+        "SegmentedControl item hover"
+      ],
+      "overlay": "colorTheme/color.brand-tint"
+    },
+    {
+      "id": "text-on-background-hover",
+      "text": "colorTheme/color.text",
+      "surface": "colorTheme/color.background",
+      "usedBy": [
+        "Button/IconButton neutral outline and subtle hover",
+        "Table row hover (planned)"
+      ],
+      "overlay": "colorTheme/color.background-hover"
+    },
+    {
+      "id": "error-on-error-tint",
+      "text": "colorTheme/color.state.error",
+      "surface": "colorTheme/color.background",
+      "usedBy": [
+        "Button/IconButton danger outline and subtle hover",
+        "ActionMenu danger item highlight"
+      ],
+      "overlay": "colorTheme/color.state.error-tint"
+    },
+    {
+      "id": "warning-on-warning-tint",
+      "text": "colorTheme/color.state.warning",
+      "surface": "colorTheme/color.background",
+      "usedBy": [
+        "Button/IconButton warning outline and subtle hover"
+      ],
+      "overlay": "colorTheme/color.state.warning-tint"
+    },
+    {
+      "id": "success-on-success-tint",
+      "text": "colorTheme/color.state.success",
+      "surface": "colorTheme/color.background",
+      "usedBy": [
+        "Button/IconButton success outline and subtle hover"
+      ],
+      "overlay": "colorTheme/color.state.success-tint"
+    },
+    {
+      "id": "inverse-icon-on-background-inverse-tint",
+      "text": "colorTheme/color.text-inverse",
+      "surface": "colorTheme/color.background-inverse",
+      "usedBy": [
+        "IconButton neutral-inverse subtle hover"
+      ],
+      "overlay": "colorTheme/color.inverse-tint",
+      "minimum": 3
+    },
+    {
+      "id": "inverse-icon-on-brand-tint",
+      "text": "colorTheme/color.text-inverse",
+      "surface": "colorTheme/color.brand",
+      "usedBy": [
+        "IconButton neutral-inverse subtle hover"
+      ],
+      "overlay": "colorTheme/color.inverse-tint",
+      "minimum": 3
+    },
+    {
+      "id": "inverse-icon-on-error-tint",
+      "text": "colorTheme/color.text-inverse",
+      "surface": "colorTheme/color.state.error",
+      "usedBy": [
+        "IconButton neutral-inverse subtle hover"
+      ],
+      "overlay": "colorTheme/color.inverse-tint",
+      "minimum": 3
+    },
+    {
+      "id": "inverse-icon-on-warning-tint",
+      "text": "colorTheme/color.text-inverse",
+      "surface": "colorTheme/color.state.warning",
+      "usedBy": [
+        "IconButton neutral-inverse subtle hover"
+      ],
+      "overlay": "colorTheme/color.inverse-tint",
+      "minimum": 3
+    },
+    {
+      "id": "inverse-icon-on-success-tint",
+      "text": "colorTheme/color.text-inverse",
+      "surface": "colorTheme/color.state.success",
+      "usedBy": [
+        "IconButton neutral-inverse subtle hover"
+      ],
+      "overlay": "colorTheme/color.inverse-tint",
+      "minimum": 3
+    }
+  ]
+}

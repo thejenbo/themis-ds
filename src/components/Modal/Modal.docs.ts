@@ -25,7 +25,7 @@ export default defineComponentDocs({
   },
 
   anatomy: [
-    { part: 'Overlay', description: 'Covers the page with transform-60 and a 10px blur. Clicking it closes the modal (unless turned off).', required: true },
+    { part: 'Overlay', description: 'Covers the page with overlay-tint and a 10px blur. Clicking it closes the modal (unless turned off).', required: true },
     { part: 'Header', description: 'Optional. Brand or error fill, the title (heading level 2) and an optional close button.', required: false },
     { part: 'Close button', description: 'A micro subtle IconButton: neutral-inverse in the header, neutral in the content when there is no header.', required: false },
     { part: 'Content', description: 'At least 150px tall. Scrolls when it doesn\'t fit; the header and actions stay in view.', required: true },
@@ -78,12 +78,12 @@ export default defineComponentDocs({
 
   tokens: [
     'colorTheme/color.brand',
-    'colorTheme/color.error',
+    'colorTheme/color.state.error',
     'colorTheme/color.background',
     'colorTheme/color.border',
     'colorTheme/color.text',
     'colorTheme/color.text-inverse',
-    'colorTheme/color.transform-60',
+    'colorTheme/color.overlay-tint',
     'shadows/drop shadow.x.default',
     'shadows/drop shadow.y.default',
     'shadows/drop shadow.blur.default',
@@ -136,7 +136,7 @@ export default defineComponentDocs({
     'Figma\'s Header, Primary Action and Secondary Action variants map to `title` and the buttons passed to `actions`. "Swap Actions" isn\'t a prop: the order is the order you pass them, and Themis recommends secondary first, primary last.',
     'The danger tone is a separate Figma set (Modal - Danger, node 2128-20396).',
     'Figma shows the close button only when there are no actions; in code `showCloseButton` defaults to that but can be combined with actions.',
-    'Overlay: Figma\'s Overlay component (transform-60 + 10px blur). The blur is removed when the user asks for reduced transparency.',
+    'Overlay: Figma\'s Overlay component (overlay-tint + 10px blur). The blur is removed when the user asks for reduced transparency.',
     'Max height: the modal stays spacing.lg from the top and bottom of the screen; the content scrolls.',
     'The modal renders inside the nearest ThemeProvider, so it keeps that provider\'s theme.',
   ],

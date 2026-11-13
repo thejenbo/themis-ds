@@ -8,6 +8,4 @@ export const color = stylex.defineVars({
   "backgroundDisabledInverse": "#DDDDDD",
   "backgroundDisabledDefault": "#444444",
   "borderDisabled": "#333333",
-  "placeholderDefault": "#555555",
-  "textDisabledOnBackground": "#555555",
 });

@@ -206,5 +206,5 @@ const styles = stylex.create({
     fontWeight: font.weightRegular,
     color: color.text,
   },
-  labelDisabled: { color: system.textDisabledOnBackground },
+  labelDisabled: { color: color.textDisabledOnBackground },
 });

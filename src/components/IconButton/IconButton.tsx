@@ -118,15 +118,14 @@ export function IconButton({
     >
       {composeRenderProps(children, (children, s) => {
         const active = (s.isHovered || s.isPressed) && !s.isDisabled;
-        // neutral-inverse sits on coloured fills, so its hover is a see-through tint, not Button's opaque one.
-        // Neutral subtle uses Figma's see-through tint too (Icon Button - Neutral).
+        // neutral-inverse sits on filled surfaces (background-inverse, brand, error, warning, success), so its hover
+        // is a see-through tint toward its icon colour: inverse-tint.
         const look =
           tone === 'neutral-inverse'
             ? [see.inverse, see.inverseLayer, s.isDisabled && see.inverseDisabled]
             : [
                 surfaces[tone][variant],
                 layers[tone][variant],
-                tone === 'neutral' && variant === 'subtle' && see.neutralLayer,
                 s.isDisabled && (tone === 'neutral' && variant === 'subtle' ? see.neutralDisabled : disabledSurfaces[variant]),
               ];
         return (
@@ -161,9 +160,8 @@ export function IconButton({
 /** See-through looks for icon buttons that sit on other surfaces (Figma: Icon Button - Neutral / Neutral Inverse). */
 const see = stylex.create({
   inverse: { backgroundColor: 'transparent', color: color.background },
-  inverseLayer: { '::before': { backgroundColor: color.transform20, backgroundImage: 'none' } },
+  inverseLayer: { '::before': { backgroundColor: color.inverseTint, backgroundImage: 'none' } },
   inverseDisabled: { color: system.textDisabledInverse },
-  neutralLayer: { '::before': { backgroundColor: color.transform5Inverse, backgroundImage: 'none' } },
   neutralDisabled: { backgroundColor: 'transparent', color: system.textDisabledDefault },
 });
 

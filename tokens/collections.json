@@ -4,7 +4,8 @@
     "modes": [
       "light demo",
       "dark demo",
-      "themis config"
+      "themis config",
+      "inkling"
     ],
     "defaultMode": "light demo"
   },

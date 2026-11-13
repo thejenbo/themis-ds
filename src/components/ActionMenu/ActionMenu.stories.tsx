@@ -131,7 +131,8 @@ export const Keyboard: Story = {
     await waitFor(() => expect(rename).toHaveFocus());
     // Keyboard focus: highlighted and the dashed ring.
     await expect(getComputedStyle(rename, '::before').outlineStyle).toBe('dashed');
-    await expect(getComputedStyle(rename, '::after').backgroundImage).toContain('linear-gradient');
+    // brand-tint: the brand colour (#7406EB in light demo) at 7% opacity.
+    await expect(getComputedStyle(rename, '::after').backgroundColor).toMatch(/^rgba\(116, 6, 235, 0\.07\d*\)$/);
     await waitFor(() => expect(getComputedStyle(rename, '::after').opacity).toBe('1'));
     await user.keyboard('{ArrowDown}{ArrowDown}');
     // Archive is disabled, so focus goes from Duplicate to Delete.

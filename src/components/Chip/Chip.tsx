@@ -95,15 +95,15 @@ const styles = stylex.create({
 const outline = stylex.create({
   neutral: { backgroundColor: color.background, color: color.text, '::after': { borderColor: color.border } },
   brand: { backgroundColor: color.background, color: color.textBrand, '::after': { borderColor: color.borderBrand } },
-  success: { backgroundColor: color.background, color: color.success, '::after': { borderColor: color.success } },
-  warning: { backgroundColor: color.background, color: color.warning, '::after': { borderColor: color.warning } },
-  danger: { backgroundColor: color.background, color: color.error, '::after': { borderColor: color.error } },
+  success: { backgroundColor: color.background, color: color.stateSuccess, '::after': { borderColor: color.stateSuccess } },
+  warning: { backgroundColor: color.background, color: color.stateWarning, '::after': { borderColor: color.stateWarning } },
+  danger: { backgroundColor: color.background, color: color.stateError, '::after': { borderColor: color.stateError } },
 });
 
 const solid = stylex.create({
   neutral: { backgroundColor: color.backgroundInverse, color: color.textInverse },
   brand: { backgroundColor: color.brand, color: color.textInverse },
-  success: { backgroundColor: color.success, color: color.textInverse },
-  warning: { backgroundColor: color.warning, color: color.textInverse },
-  danger: { backgroundColor: color.error, color: color.textInverse },
+  success: { backgroundColor: color.stateSuccess, color: color.textInverse },
+  warning: { backgroundColor: color.stateWarning, color: color.textInverse },
+  danger: { backgroundColor: color.stateError, color: color.textInverse },
 });

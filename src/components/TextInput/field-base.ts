@@ -48,7 +48,7 @@ export const fieldStyles = stylex.create({
    * container that clips overflow can't cut it off.
    */
   boxRing: { '::before': { borderRadius: `max(0px, calc(${radius.radiusMd} - ${borderWidth.widthMandatory} - ${spacing['3xs']}))` } },
-  boxInvalid: { borderColor: color.error },
+  boxInvalid: { borderColor: color.stateError },
   boxDisabled: {
     backgroundColor: system.backgroundDisabledInverse,
     borderColor: system.borderDisabled,
@@ -69,7 +69,7 @@ export const fieldStyles = stylex.create({
     lineHeight: font.lineHeightInput,
     fontWeight: font.weightRegular,
     outline: 'none',
-    '::placeholder': { color: system.placeholderDefault, opacity: 1 },
+    '::placeholder': { color: color.textPlaceholderDefault, opacity: 1 },
   },
   inputDisabled: { cursor: 'not-allowed' },
   // Right-hand icon slot (Figma "Icon Right"), 16px from the text.
@@ -82,13 +82,13 @@ export const fieldStyles = stylex.create({
     width: '1.25rem',
     height: '1.25rem',
   },
-  iconInvalid: { color: color.error },
+  iconInvalid: { color: color.stateError },
   // Figma "Context": description on the left, character count on the right, caption style.
   contextRow: { display: 'flex', alignItems: 'flex-start', gap: spacing.sm, color: color.text },
   caption: { fontFamily: fontTheme.familyBody, fontSize: font.sizeCaption, lineHeight: font.lineHeightCaption, fontWeight: font.weightRegular },
   description: { flexGrow: 1, minWidth: 0 },
   count: { marginInlineStart: 'auto', flexShrink: 0, fontVariantNumeric: 'tabular-nums' },
-  countOver: { color: color.error },
+  countOver: { color: color.stateError },
   // Figma: the error message is body/base in the error colour, below the context row.
   error: {
     display: { default: 'block', ':empty': 'none' },
@@ -96,7 +96,7 @@ export const fieldStyles = stylex.create({
     fontSize: font.sizeSm,
     lineHeight: font.lineHeightSm,
     fontWeight: font.weightRegular,
-    color: color.error,
+    color: color.stateError,
   },
   visuallyHidden: {
     position: 'absolute',

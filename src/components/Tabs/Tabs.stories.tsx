@@ -78,11 +78,11 @@ export const SelectsOnClick: Story = {
       expect(Math.round(l.left)).toBe(Math.round(a.left));
       expect(Math.round(l.height)).toBe(4);
     });
-    // Hover shows a pale brand indicator under tabs that aren't selected (brand + transform-60).
+    // Hover shows a pale brand indicator under tabs that aren't selected (border-brand-hover).
     await userEvent.hover(overview);
     const hover = overview.querySelectorAll('[aria-hidden="true"]')[0] as HTMLElement;
     await waitFor(() => expect(getComputedStyle(hover).opacity).toBe('1'));
-    await expect(getComputedStyle(hover).backgroundImage).toContain('linear-gradient');
+    await expect(getComputedStyle(hover).backgroundColor).toBe('rgb(200, 155, 247)'); // border-brand-hover, light demo
     await expect(getComputedStyle(hover).borderTopLeftRadius).not.toBe('0px');
     await userEvent.unhover(overview);
     await expect(getComputedStyle(activity).cursor).toBe('default');

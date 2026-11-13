@@ -481,18 +481,18 @@ const regionPlacement = stylex.create({
 const toastBorders = stylex.create({
   info: { '::after': { borderColor: color.border } },
   brand: { '::after': { borderColor: color.borderBrand } },
-  danger: { '::after': { borderColor: color.error } },
-  warning: { '::after': { borderColor: color.warning } },
-  success: { '::after': { borderColor: color.success } },
+  danger: { '::after': { borderColor: color.stateError } },
+  warning: { '::after': { borderColor: color.stateWarning } },
+  success: { '::after': { borderColor: color.stateSuccess } },
 });
 
 /** Heading and icon colour. */
 const toneText = stylex.create({
   info: { color: color.text },
   brand: { color: color.textBrand },
-  danger: { color: color.error },
-  warning: { color: color.warning },
-  success: { color: color.success },
+  danger: { color: color.stateError },
+  warning: { color: color.stateWarning },
+  success: { color: color.stateSuccess },
 });
 
 /*

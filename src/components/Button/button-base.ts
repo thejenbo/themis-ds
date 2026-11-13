@@ -8,7 +8,6 @@ import { border as radius } from '../../tokens/radius.stylex';
 import { spacing } from '../../tokens/spacing.stylex';
 import { color as system } from '../../tokens/system.stylex';
 import { font } from '../../tokens/typography.stylex';
-import { stateLayer } from '../../utils/state-layer.stylex';
 
 /**
  * Styles shared by Button and IconButton: the clickable root, the Surface with its State Layer, tones,
@@ -120,24 +119,15 @@ export const blockPadding = stylex.create({
 
 /*
  * Tones. Each comes from the Figma Button set's `tone` property and supplies:
- *   fill    default variant's Surface, and the hover/press Surface of every variant
+ *   fill    default variant's Surface
  *   border  outline variant's border
  *   label   outline and subtle label and icon colour (default variant labels use text-inverse on the fill)
- * The State Layer overlay's direction is calculated from `fill` (see utils/state-layer.stylex.ts); amounts come
- * from Figma: default uses transform-20, outline and subtle transform-90. Browsers without relative colour syntax
- * fall back to Figma's fixed transform tokens.
+ * Hover/press (the State Layer) uses Figma's hover tokens, computed per colour theme:
+ *   default  the solid `*-hover` fill: the fill shifted 7% away from its label, so contrast only goes up
+ *   outline  the see-through `*-tint` over the background, so the layer is as opaque as the resting fill
+ *   subtle   the see-through `*-tint` alone. Subtle buttons only sit on `background`-coloured surfaces, where
+ *            that pair is rated (tokens/contrast-pairs.json)
  */
-const brandOverlay20 = `oklch(from ${color.brand} ${stateLayer.direction} 0 0 / 0.2)`;
-const brandOverlay90 = `oklch(from ${color.brand} ${stateLayer.direction} 0 0 / 0.9)`;
-const neutralOverlay20 = `oklch(from ${color.backgroundInverse} ${stateLayer.direction} 0 0 / 0.2)`;
-const neutralOverlay90 = `oklch(from ${color.backgroundInverse} ${stateLayer.direction} 0 0 / 0.9)`;
-const dangerOverlay20 = `oklch(from ${color.error} ${stateLayer.direction} 0 0 / 0.2)`;
-const dangerOverlay90 = `oklch(from ${color.error} ${stateLayer.direction} 0 0 / 0.9)`;
-const warningOverlay20 = `oklch(from ${color.warning} ${stateLayer.direction} 0 0 / 0.2)`;
-const warningOverlay90 = `oklch(from ${color.warning} ${stateLayer.direction} 0 0 / 0.9)`;
-const successOverlay20 = `oklch(from ${color.success} ${stateLayer.direction} 0 0 / 0.2)`;
-const successOverlay90 = `oklch(from ${color.success} ${stateLayer.direction} 0 0 / 0.9)`;
-
 const brandSurfaces = stylex.create({
   default: { backgroundColor: color.brand, color: color.textInverse },
   outline: {
@@ -149,33 +139,9 @@ const brandSurfaces = stylex.create({
 });
 
 const brandLayers = stylex.create({
-  default: {
-    '::before': {
-      backgroundColor: color.brand,
-      backgroundImage: stylex.firstThatWorks(
-        `linear-gradient(${brandOverlay20}, ${brandOverlay20})`,
-        `linear-gradient(${color.transform20}, ${color.transform20})`,
-      ),
-    },
-  },
-  outline: {
-    '::before': {
-      backgroundColor: color.brand,
-      backgroundImage: stylex.firstThatWorks(
-        `linear-gradient(${brandOverlay90}, ${brandOverlay90})`,
-        `linear-gradient(${color.transform90}, ${color.transform90})`,
-      ),
-    },
-  },
-  subtle: {
-    '::before': {
-      backgroundColor: color.brand,
-      backgroundImage: stylex.firstThatWorks(
-        `linear-gradient(${brandOverlay90}, ${brandOverlay90})`,
-        `linear-gradient(${color.transform90}, ${color.transform90})`,
-      ),
-    },
-  },
+  default: { '::before': { backgroundColor: color.brandHover } },
+  outline: { '::before': { backgroundColor: color.background, backgroundImage: `linear-gradient(${color.brandTint}, ${color.brandTint})` } },
+  subtle: { '::before': { backgroundColor: color.brandTint } },
 });
 
 const neutralSurfaces = stylex.create({
@@ -189,153 +155,57 @@ const neutralSurfaces = stylex.create({
 });
 
 const neutralLayers = stylex.create({
-  default: {
-    '::before': {
-      backgroundColor: color.backgroundInverse,
-      backgroundImage: stylex.firstThatWorks(
-        `linear-gradient(${neutralOverlay20}, ${neutralOverlay20})`,
-        `linear-gradient(${color.transform20}, ${color.transform20})`,
-      ),
-    },
-  },
-  outline: {
-    '::before': {
-      backgroundColor: color.backgroundInverse,
-      backgroundImage: stylex.firstThatWorks(
-        `linear-gradient(${neutralOverlay90}, ${neutralOverlay90})`,
-        `linear-gradient(${color.transform90}, ${color.transform90})`,
-      ),
-    },
-  },
-  subtle: {
-    '::before': {
-      backgroundColor: color.backgroundInverse,
-      backgroundImage: stylex.firstThatWorks(
-        `linear-gradient(${neutralOverlay90}, ${neutralOverlay90})`,
-        `linear-gradient(${color.transform90}, ${color.transform90})`,
-      ),
-    },
-  },
+  default: { '::before': { backgroundColor: color.backgroundInverseHover } },
+  outline: { '::before': { backgroundColor: color.background, backgroundImage: `linear-gradient(${color.backgroundHover}, ${color.backgroundHover})` } },
+  subtle: { '::before': { backgroundColor: color.backgroundHover } },
 });
 
 const dangerSurfaces = stylex.create({
-  default: { backgroundColor: color.error, color: color.textInverse },
+  default: { backgroundColor: color.stateError, color: color.textInverse },
   outline: {
     backgroundColor: color.background,
-    color: color.error,
-    '::after': { borderWidth: borderWidth.widthMandatory, borderColor: color.error },
+    color: color.stateError,
+    '::after': { borderWidth: borderWidth.widthMandatory, borderColor: color.stateError },
   },
-  subtle: { backgroundColor: 'transparent', color: color.error },
+  subtle: { backgroundColor: 'transparent', color: color.stateError },
 });
 
 const dangerLayers = stylex.create({
-  default: {
-    '::before': {
-      backgroundColor: color.error,
-      backgroundImage: stylex.firstThatWorks(
-        `linear-gradient(${dangerOverlay20}, ${dangerOverlay20})`,
-        `linear-gradient(${color.transform20}, ${color.transform20})`,
-      ),
-    },
-  },
-  outline: {
-    '::before': {
-      backgroundColor: color.error,
-      backgroundImage: stylex.firstThatWorks(
-        `linear-gradient(${dangerOverlay90}, ${dangerOverlay90})`,
-        `linear-gradient(${color.transform90}, ${color.transform90})`,
-      ),
-    },
-  },
-  subtle: {
-    '::before': {
-      backgroundColor: color.error,
-      backgroundImage: stylex.firstThatWorks(
-        `linear-gradient(${dangerOverlay90}, ${dangerOverlay90})`,
-        `linear-gradient(${color.transform90}, ${color.transform90})`,
-      ),
-    },
-  },
+  default: { '::before': { backgroundColor: color.stateErrorHover } },
+  outline: { '::before': { backgroundColor: color.background, backgroundImage: `linear-gradient(${color.stateErrorTint}, ${color.stateErrorTint})` } },
+  subtle: { '::before': { backgroundColor: color.stateErrorTint } },
 });
 
 const warningSurfaces = stylex.create({
-  default: { backgroundColor: color.warning, color: color.textInverse },
+  default: { backgroundColor: color.stateWarning, color: color.textInverse },
   outline: {
     backgroundColor: color.background,
-    color: color.warning,
-    '::after': { borderWidth: borderWidth.widthMandatory, borderColor: color.warning },
+    color: color.stateWarning,
+    '::after': { borderWidth: borderWidth.widthMandatory, borderColor: color.stateWarning },
   },
-  subtle: { backgroundColor: 'transparent', color: color.warning },
+  subtle: { backgroundColor: 'transparent', color: color.stateWarning },
 });
 
 const warningLayers = stylex.create({
-  default: {
-    '::before': {
-      backgroundColor: color.warning,
-      backgroundImage: stylex.firstThatWorks(
-        `linear-gradient(${warningOverlay20}, ${warningOverlay20})`,
-        `linear-gradient(${color.transform20}, ${color.transform20})`,
-      ),
-    },
-  },
-  outline: {
-    '::before': {
-      backgroundColor: color.warning,
-      backgroundImage: stylex.firstThatWorks(
-        `linear-gradient(${warningOverlay90}, ${warningOverlay90})`,
-        `linear-gradient(${color.transform90}, ${color.transform90})`,
-      ),
-    },
-  },
-  subtle: {
-    '::before': {
-      backgroundColor: color.warning,
-      backgroundImage: stylex.firstThatWorks(
-        `linear-gradient(${warningOverlay90}, ${warningOverlay90})`,
-        `linear-gradient(${color.transform90}, ${color.transform90})`,
-      ),
-    },
-  },
+  default: { '::before': { backgroundColor: color.stateWarningHover } },
+  outline: { '::before': { backgroundColor: color.background, backgroundImage: `linear-gradient(${color.stateWarningTint}, ${color.stateWarningTint})` } },
+  subtle: { '::before': { backgroundColor: color.stateWarningTint } },
 });
 
 const successSurfaces = stylex.create({
-  default: { backgroundColor: color.success, color: color.textInverse },
+  default: { backgroundColor: color.stateSuccess, color: color.textInverse },
   outline: {
     backgroundColor: color.background,
-    color: color.success,
-    '::after': { borderWidth: borderWidth.widthMandatory, borderColor: color.success },
+    color: color.stateSuccess,
+    '::after': { borderWidth: borderWidth.widthMandatory, borderColor: color.stateSuccess },
   },
-  subtle: { backgroundColor: 'transparent', color: color.success },
+  subtle: { backgroundColor: 'transparent', color: color.stateSuccess },
 });
 
 const successLayers = stylex.create({
-  default: {
-    '::before': {
-      backgroundColor: color.success,
-      backgroundImage: stylex.firstThatWorks(
-        `linear-gradient(${successOverlay20}, ${successOverlay20})`,
-        `linear-gradient(${color.transform20}, ${color.transform20})`,
-      ),
-    },
-  },
-  outline: {
-    '::before': {
-      backgroundColor: color.success,
-      backgroundImage: stylex.firstThatWorks(
-        `linear-gradient(${successOverlay90}, ${successOverlay90})`,
-        `linear-gradient(${color.transform90}, ${color.transform90})`,
-      ),
-    },
-  },
-  subtle: {
-    '::before': {
-      backgroundColor: color.success,
-      backgroundImage: stylex.firstThatWorks(
-        `linear-gradient(${successOverlay90}, ${successOverlay90})`,
-        `linear-gradient(${color.transform90}, ${color.transform90})`,
-      ),
-    },
-  },
+  default: { '::before': { backgroundColor: color.stateSuccessHover } },
+  outline: { '::before': { backgroundColor: color.background, backgroundImage: `linear-gradient(${color.stateSuccessTint}, ${color.stateSuccessTint})` } },
+  subtle: { '::before': { backgroundColor: color.stateSuccessTint } },
 });
 
 /** Resting look per tone, then per variant (Figma state=default). */

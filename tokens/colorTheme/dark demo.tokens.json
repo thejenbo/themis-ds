@@ -153,140 +153,7 @@
         ]
       }
     },
-    "error": {
-      "$type": "color",
-      "$value": {
-        "colorSpace": "srgb",
-        "components": [
-          0.9818404316902161,
-          0.693418025970459,
-          0.693418025970459
-        ],
-        "alpha": 1,
-        "hex": "#FAB1B1"
-      },
-      "$extensions": {
-        "com.figma.variableId": "VariableID:1731:7439",
-        "com.figma.scopes": [
-          "ALL_FILLS",
-          "STROKE",
-          "EFFECT_COLOR"
-        ],
-        "com.figma.aliasData": {
-          "targetVariableId": "VariableID:2c78538a43386c013b166d4ad6b627c0eb3777eb/-1:-1",
-          "targetVariableName": "color/red/050",
-          "targetVariableSetId": "VariableCollectionId:67feeb7f7d2e7c02df49c449eb4cd492c38d76a3/-1:-1",
-          "targetVariableSetName": "Primitives"
-        }
-      }
-    },
-    "warning": {
-      "$type": "color",
-      "$value": {
-        "colorSpace": "srgb",
-        "components": [
-          0.9915033578872681,
-          0.8754391074180603,
-          0.7427942156791687
-        ],
-        "alpha": 1,
-        "hex": "#FDDFBD"
-      },
-      "$extensions": {
-        "com.figma.variableId": "VariableID:1731:7440",
-        "com.figma.scopes": [
-          "ALL_FILLS",
-          "STROKE",
-          "EFFECT_COLOR"
-        ],
-        "com.figma.aliasData": {
-          "targetVariableId": "VariableID:fd16f7485ddbb1259b74c68844f6726aba3d626e/-1:-1",
-          "targetVariableName": "color/orange/050",
-          "targetVariableSetId": "VariableCollectionId:67feeb7f7d2e7c02df49c449eb4cd492c38d76a3/-1:-1",
-          "targetVariableSetName": "Primitives"
-        }
-      }
-    },
-    "success": {
-      "$type": "color",
-      "$value": {
-        "colorSpace": "srgb",
-        "components": [
-          0.44380027055740356,
-          0.9497460722923279,
-          0.755800187587738
-        ],
-        "alpha": 1,
-        "hex": "#71F2C1"
-      },
-      "$extensions": {
-        "com.figma.variableId": "VariableID:1731:7444",
-        "com.figma.scopes": [
-          "ALL_FILLS",
-          "STROKE",
-          "EFFECT_COLOR"
-        ],
-        "com.figma.aliasData": {
-          "targetVariableId": "VariableID:0c82a0138195c234434d3a6485007367bceb4dbb/-1:-1",
-          "targetVariableName": "color/green/050",
-          "targetVariableSetId": "VariableCollectionId:67feeb7f7d2e7c02df49c449eb4cd492c38d76a3/-1:-1",
-          "targetVariableSetName": "Primitives"
-        }
-      }
-    },
-    "transform-90": {
-      "$type": "color",
-      "$value": {
-        "colorSpace": "srgb",
-        "components": [
-          0,
-          0,
-          0
-        ],
-        "alpha": 0.8999999761581421,
-        "hex": "#000000"
-      },
-      "$extensions": {
-        "com.figma.variableId": "VariableID:2016:10406",
-        "com.figma.scopes": [
-          "ALL_FILLS",
-          "STROKE",
-          "EFFECT_COLOR"
-        ],
-        "com.figma.aliasData": {
-          "targetVariableId": "VariableID:25c5da43c8cbb0623caf285e3af0fd3442260b83/-1:-1",
-          "targetVariableName": "darken/90",
-          "targetVariableSetId": "VariableCollectionId:67feeb7f7d2e7c02df49c449eb4cd492c38d76a3/-1:-1",
-          "targetVariableSetName": "Primitives"
-        }
-      }
-    },
-    "transform-20": {
-      "$type": "color",
-      "$value": {
-        "colorSpace": "srgb",
-        "components": [
-          0,
-          0,
-          0
-        ],
-        "alpha": 0.20000000298023224,
-        "hex": "#000000"
-      },
-      "$extensions": {
-        "com.figma.variableId": "VariableID:2038:6829",
-        "com.figma.scopes": [
-          "ALL_SCOPES"
-        ],
-        "com.figma.aliasData": {
-          "targetVariableId": "VariableID:f9c2520563604363a068e50454cc02e545f4c8a0/-1:-1",
-          "targetVariableName": "darken/20",
-          "targetVariableSetId": "VariableCollectionId:67feeb7f7d2e7c02df49c449eb4cd492c38d76a3/-1:-1",
-          "targetVariableSetName": "Primitives"
-        }
-      }
-    },
-    "transform-60": {
+    "overlay-tint": {
       "$type": "color",
       "$value": {
         "colorSpace": "srgb",
@@ -311,7 +178,120 @@
         }
       }
     },
-    "transform-5-inverse": {
+    "text-disabled-on-background": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.5333333611488342,
+          0.5333333611488342,
+          0.5333333611488342
+        ],
+        "alpha": 1,
+        "hex": "#888888"
+      },
+      "$extensions": {
+        "com.figma.variableId": "VariableID:2253:17778",
+        "com.figma.scopes": [
+          "ALL_SCOPES"
+        ],
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:7c2b7d15f8cc986786a5a3d06f70e1d7af9cbdd4/-1:-1",
+          "targetVariableName": "color/grayscale/200",
+          "targetVariableSetId": "VariableCollectionId:67feeb7f7d2e7c02df49c449eb4cd492c38d76a3/-1:-1",
+          "targetVariableSetName": "Primitives"
+        }
+      }
+    },
+    "text-placeholder-default": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.5333333611488342,
+          0.5333333611488342,
+          0.5333333611488342
+        ],
+        "alpha": 1,
+        "hex": "#888888"
+      },
+      "$extensions": {
+        "com.figma.variableId": "VariableID:2260:17779",
+        "com.figma.scopes": [
+          "ALL_SCOPES"
+        ],
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:7c2b7d15f8cc986786a5a3d06f70e1d7af9cbdd4/-1:-1",
+          "targetVariableName": "color/grayscale/200",
+          "targetVariableSetId": "VariableCollectionId:67feeb7f7d2e7c02df49c449eb4cd492c38d76a3/-1:-1",
+          "targetVariableSetName": "Primitives"
+        }
+      }
+    },
+    "brand-hover": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.8588235378265381,
+          0.6980392336845398,
+          0.9058823585510254
+        ],
+        "alpha": 1,
+        "hex": "#DBB2E7"
+      },
+      "$description": "Filled brand surface, hovered: brand shifted 7% away from text-inverse (lightened instead when the fill is too dark to darken visibly). Computed per theme.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:2264:1697",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL"
+        ]
+      }
+    },
+    "background-inverse-hover": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.929411768913269,
+          0.929411768913269,
+          0.929411768913269
+        ],
+        "alpha": 1,
+        "hex": "#EDEDED"
+      },
+      "$description": "Filled neutral surface, hovered: background-inverse shifted 7% away from text-inverse (or toward it when it can't move further). Computed per theme.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:2264:1698",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL"
+        ]
+      }
+    },
+    "brand-tint": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.9222732186317444,
+          0.7503138184547424,
+          0.9746086597442627
+        ],
+        "alpha": 0.07000000029802322,
+        "hex": "#EBBFF9"
+      },
+      "$description": "Brand at 7% opacity: see-through, so it tints toward brand on any surface. Brand outline/subtle hovers, menu and option highlights, Slider track.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:2264:1702",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL"
+        ]
+      }
+    },
+    "background-hover": {
       "$type": "color",
       "$value": {
         "colorSpace": "srgb",
@@ -320,19 +300,267 @@
           1,
           1
         ],
-        "alpha": 0.05000000074505806,
+        "alpha": 0.07000000029802322,
         "hex": "#FFFFFF"
       },
+      "$description": "Text colour at 7% opacity: see-through, so it darkens light surfaces and lightens dark ones. Neutral outline/subtle hovers, neutral IconButton, table rows.",
       "$extensions": {
-        "com.figma.variableId": "VariableID:2061:17089",
+        "com.figma.variableId": "VariableID:2264:1706",
         "com.figma.scopes": [
-          "ALL_SCOPES"
+          "FRAME_FILL",
+          "SHAPE_FILL"
+        ]
+      }
+    },
+    "border-brand-hover": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.3686274588108063,
+          0.3019607961177826,
+          0.38823530077934265
         ],
-        "com.figma.aliasData": {
-          "targetVariableId": "VariableID:292f6db9e2bd758edc78131c19c018b658c82a42/-1:-1",
-          "targetVariableName": "lighten/5",
-          "targetVariableSetId": "VariableCollectionId:67feeb7f7d2e7c02df49c449eb4cd492c38d76a3/-1:-1",
-          "targetVariableSetName": "Primitives"
+        "alpha": 1,
+        "hex": "#5E4D63"
+      },
+      "$description": "40% brand mixed into the background. Hovered tab indicator. Computed per theme.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:2264:1707",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL",
+          "STROKE"
+        ]
+      }
+    },
+    "inverse-tint": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0,
+          0,
+          0
+        ],
+        "alpha": 0.07000000029802322,
+        "hex": "#000000"
+      },
+      "$description": "Text-inverse at 7% opacity: see-through. Hover for neutral-inverse subtle icon buttons, which sit on background-inverse, brand, error, warning or success surfaces.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:2274:2",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL"
+        ]
+      }
+    },
+    "state": {
+      "error": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9818404316902161,
+            0.693418025970459,
+            0.693418025970459
+          ],
+          "alpha": 1,
+          "hex": "#FAB1B1"
+        },
+        "$extensions": {
+          "com.figma.variableId": "VariableID:1731:7439",
+          "com.figma.scopes": [
+            "ALL_FILLS",
+            "STROKE",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:2c78538a43386c013b166d4ad6b627c0eb3777eb/-1:-1",
+            "targetVariableName": "color/red/050",
+            "targetVariableSetId": "VariableCollectionId:67feeb7f7d2e7c02df49c449eb4cd492c38d76a3/-1:-1",
+            "targetVariableSetName": "Primitives"
+          }
+        }
+      },
+      "warning": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9915033578872681,
+            0.8754391074180603,
+            0.7427942156791687
+          ],
+          "alpha": 1,
+          "hex": "#FDDFBD"
+        },
+        "$extensions": {
+          "com.figma.variableId": "VariableID:1731:7440",
+          "com.figma.scopes": [
+            "ALL_FILLS",
+            "STROKE",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:fd16f7485ddbb1259b74c68844f6726aba3d626e/-1:-1",
+            "targetVariableName": "color/orange/050",
+            "targetVariableSetId": "VariableCollectionId:67feeb7f7d2e7c02df49c449eb4cd492c38d76a3/-1:-1",
+            "targetVariableSetName": "Primitives"
+          }
+        }
+      },
+      "success": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.44380027055740356,
+            0.9497460722923279,
+            0.755800187587738
+          ],
+          "alpha": 1,
+          "hex": "#71F2C1"
+        },
+        "$extensions": {
+          "com.figma.variableId": "VariableID:1731:7444",
+          "com.figma.scopes": [
+            "ALL_FILLS",
+            "STROKE",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:0c82a0138195c234434d3a6485007367bceb4dbb/-1:-1",
+            "targetVariableName": "color/green/050",
+            "targetVariableSetId": "VariableCollectionId:67feeb7f7d2e7c02df49c449eb4cd492c38d76a3/-1:-1",
+            "targetVariableSetName": "Primitives"
+          }
+        }
+      },
+      "error-hover": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9137254953384399,
+            0.6431372761726379,
+            0.6431372761726379
+          ],
+          "alpha": 1,
+          "hex": "#E9A4A4"
+        },
+        "$description": "Filled error surface, hovered: error shifted 7% away from text-inverse. Computed per theme.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:2264:1699",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL"
+          ]
+        }
+      },
+      "warning-hover": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9215686321258545,
+            0.8156862854957581,
+            0.6901960968971252
+          ],
+          "alpha": 1,
+          "hex": "#EBD0B0"
+        },
+        "$description": "Filled warning surface, hovered: warning shifted 7% away from text-inverse. Computed per theme.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:2264:1700",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL"
+          ]
+        }
+      },
+      "success-hover": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.4117647111415863,
+            0.8823529481887817,
+            0.7019608020782471
+          ],
+          "alpha": 1,
+          "hex": "#69E1B3"
+        },
+        "$description": "Filled success surface, hovered: success shifted 7% away from text-inverse. Computed per theme.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:2264:1701",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL"
+          ]
+        }
+      },
+      "error-tint": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9818404316902161,
+            0.693418025970459,
+            0.693418025970459
+          ],
+          "alpha": 0.07000000029802322,
+          "hex": "#FAB1B1"
+        },
+        "$description": "Error at 7% opacity: see-through. Danger outline/subtle hovers and danger menu items.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:2264:1703",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL"
+          ]
+        }
+      },
+      "warning-tint": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9915033578872681,
+            0.8754391074180603,
+            0.7427942156791687
+          ],
+          "alpha": 0.07000000029802322,
+          "hex": "#FDDFBD"
+        },
+        "$description": "Warning at 7% opacity: see-through. Warning outline/subtle hovers.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:2264:1704",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL"
+          ]
+        }
+      },
+      "success-tint": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.44380027055740356,
+            0.9497460722923279,
+            0.755800187587738
+          ],
+          "alpha": 0.07000000029802322,
+          "hex": "#71F2C1"
+        },
+        "$description": "Success at 7% opacity: see-through. Success outline/subtle hovers.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:2264:1705",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL"
+          ]
         }
       }
     }
