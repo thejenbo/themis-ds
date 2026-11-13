@@ -20,7 +20,7 @@ export default defineComponentDocs({
       { scenario: 'More than about 6 options, or options people already know.', useInstead: 'Select' },
       { scenario: 'An on/off setting that applies right away.', useInstead: 'Switch' },
       { scenario: '2–5 short options that switch a view.', useInstead: 'SegmentedControl' },
-      { scenario: 'Choosing several options.', useInstead: 'checkboxes (coming later)' },
+      { scenario: 'Choosing several options.', useInstead: 'a Checkbox for each (a CheckboxGroup is coming later)' },
     ],
   },
 
@@ -128,7 +128,7 @@ export default defineComponentDocs({
     },
   },
 
-  related: ['Select', 'SegmentedControl', 'Switch'],
+  related: ['Checkbox', 'Select', 'SegmentedControl', 'Switch'],
   notes: [
     'Figma "Radio Input" is a RadioGroup with a label; "Radio Button Group" (node 1342-6478) is one without a visible label (give it an `aria-label`); "Radio Button" (node 1342-6439) is `Radio`.',
     'Errored groups look like the default ones apart from the error message (Figma). `disabledErrored` looks disabled.',
