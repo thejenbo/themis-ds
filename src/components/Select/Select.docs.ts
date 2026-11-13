@@ -135,6 +135,9 @@ export default defineComponentDocs({
       isOpen: { figmaProperty: 'state', type: 'VARIANT', values: { true: 'opened' } },
       description: { figmaProperty: 'description', type: 'VARIANT' },
     },
+    differences: [
+      { topic: 'Focus ring', figma: 'The `focused` variant shows the ring.', code: 'The ring only shows for keyboard focus, since the box is a button; a click opens the list instead.', action: 'annotate-figma', done: '2026-11-13' },
+    ],
   },
 
   related: ['TextInput', 'SegmentedControl', 'ActionMenu'],

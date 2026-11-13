@@ -27,7 +27,7 @@ export default defineComponentDocs({
     { part: 'Label', description: 'The field\'s name (`label`), label style. "(optional)" is added with `isOptional`.', required: true },
     { part: 'Input Box', description: 'The 40px box shared with TextInput: red border when invalid, grey with border-disabled when disabled.', required: true },
     { part: 'Number', description: 'The number in the input text style, formatted for the locale; placeholder while empty.', required: true },
-    { part: 'Steppers', description: 'Up and down buttons (Figma "Icon Right"), 16px from the number. Each greys out at its limit.', required: true },
+    { part: 'Steppers', description: 'Up and down buttons (Figma "Number Stepper", in "Icon Right"), 16px from the number. Each greys out at its limit (stepper `atMin` / `atMax`).', required: true },
     { part: 'Description / Error message', description: 'Help text (caption) and the error message, as in TextInput.', required: false },
   ],
 
@@ -112,14 +112,14 @@ export default defineComponentDocs({
       isInvalid: { figmaProperty: 'state', type: 'VARIANT', values: { true: 'errored' } },
       description: { figmaProperty: 'description', type: 'VARIANT' },
     },
+    differences: [
+      { topic: 'Touch targets and scrolling', figma: 'Not shown.', code: 'On touch screens each step button\'s target is its half of the box, 44px wide. Scrolling over the focused field changes the value (`isWheelDisabled` turns it off).', action: 'annotate-figma', done: '2026-11-13' },
+    ],
   },
 
   related: ['TextInput', 'UnitInput', 'Slider'],
   notes: [
-    'Figma draws the up/down arrows as one icon; in code they are two buttons, each greying out (background-disabled-default) at its limit or when the field is disabled.',
-    'On touch screens, each button\'s target is its half of the box, 44px wide, so the two don\'t overlap.',
     'Figma has no hover state for the buttons; they use the pointer cursor and the pressed shrink.',
     'The focus ring sits inside the box, as in Figma and the other inputs.',
-    'Scrolling over the field while it has focus changes the value (React Aria default; `isWheelDisabled` turns it off).',
   ],
 });

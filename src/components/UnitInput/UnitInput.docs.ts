@@ -118,14 +118,16 @@ export default defineComponentDocs({
       isInvalid: { figmaProperty: 'state', type: 'VARIANT', values: { true: 'errored' } },
       description: { figmaProperty: 'description', type: 'VARIANT' },
     },
+    differences: [
+      { topic: 'Unit width', figma: 'The unit button hugs the word "Unit".', code: 'The unit button is as wide as the widest unit, so the divider doesn\'t move when the unit changes.', action: 'annotate-figma', done: '2026-11-13' },
+      { topic: 'Keyboard', figma: 'Not shown.', code: 'Up and Down arrows step the number (there are no step buttons); the unit opens with Enter, Space or Alt+Down.', action: 'annotate-figma', done: '2026-11-13' },
+    ],
   },
 
   related: ['TextInput', 'Select', 'Slider'],
   notes: [
     'Figma "Unit Select Input". Shares its box with TextInput and its dropdown with Select and ComboBox.',
     'Each half shows the shared focus ring inside the box (Figma `inputFocused` / `selectFocused`): the number whenever it has focus, the unit for keyboard focus.',
-    'The unit button is as wide as the widest unit (Figma hugs "Unit"), so the divider stays put when the unit changes.',
     'Disabled keeps the label in color/text, like every input; only the box goes grey.',
-    'No stepper buttons (Figma has none); Up/Down arrows step the number.',
   ],
 });

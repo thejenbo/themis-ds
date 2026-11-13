@@ -92,12 +92,14 @@ export default defineComponentDocs({
       description: { figmaProperty: 'description', type: 'VARIANT' },
       characterLimit: { figmaProperty: 'charLimit', type: 'VARIANT' },
     },
+    differences: [
+      { topic: 'Height', figma: 'A fixed 130px box.', code: '130px to start, then grows with the text up to `maxRows` (10 lines by default) and scrolls. No drag handle.', action: 'annotate-figma', done: '2026-11-13' },
+    ],
   },
 
   related: ['TextInput'],
   notes: [
     'Built on Figma "Textarea" and "Textarea Box" (node 1843-9407), with the shared field styles from TextInput.',
-    'Figma\'s box is a fixed 130px; in code that\'s the starting height, and the box grows with the text up to `maxRows` (10 lines by default), then scrolls. There is no drag handle.',
     'The character count works as in TextInput: people can type past it; the count and border turn red, the field is marked invalid, and the overage is announced.',
     'No error icon (Figma): in a tall box it would sit away from the text. The red border and message show the error.',
     'The focus ring sits inside the box, 2px in from the border, and shows whenever the field has focus.',

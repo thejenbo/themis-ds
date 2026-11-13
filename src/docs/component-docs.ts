@@ -26,6 +26,25 @@ export interface FigmaPropertyMapping {
   values?: Record<string, string>;
 }
 
+/**
+ * One way the coded component differs from its Figma component, so the two can be kept in line.
+ *
+ * - `update-figma`: Figma can show it; change the Figma component to match code, then delete the entry.
+ * - `annotate-figma`: Figma can't show it (behaviour, motion, keyboard, responsive). Add a note to the Figma
+ *   component and keep the entry, with `done` set, since it still documents the behaviour.
+ */
+export interface FigmaDifference {
+  /** The part or behaviour it's about, e.g. "Box size" or "Row hover". */
+  topic: string;
+  /** What the Figma component shows today. */
+  figma: string;
+  /** What the code does, and why. */
+  code: string;
+  action: 'update-figma' | 'annotate-figma';
+  /** The date (YYYY-MM-DD) the Figma annotation was added. Only for `annotate-figma`. */
+  done?: string;
+}
+
 export interface ComponentDocs {
   /** Display name; must match the React export and the Figma component set name. */
   name: string;
@@ -83,6 +102,8 @@ export interface ComponentDocs {
     url: string | null;
     /** React prop name → Figma component property. */
     properties: Record<string, FigmaPropertyMapping>;
+    /** Where code and Figma differ, and what to do about it in Figma. Empty when they match. */
+    differences?: FigmaDifference[];
   };
 
   related?: string[];

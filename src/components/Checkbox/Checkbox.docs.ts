@@ -110,15 +110,13 @@ export default defineComponentDocs({
       isSelected: { figmaProperty: 'Checked', type: 'VARIANT' },
       isDisabled: { figmaProperty: 'state', type: 'VARIANT', values: { true: 'disabled' } },
       isInvalid: { figmaProperty: 'state', type: 'VARIANT', values: { true: 'errored' } },
+      isIndeterminate: { figmaProperty: 'Checked', type: 'VARIANT', values: { true: 'indeterminate' } },
     },
   },
 
   related: ['RadioGroup', 'Switch'],
   notes: [
-    'The box is 24px in code (Figma: 16px, nudged 4px down) so it fills the label\'s line and sits well next to the 28px radio.',
-    'Labels use the regular input text style, like radio options (Figma: semibold label style).',
-    'Errors show only as the message, as in RadioGroup; the box doesn\'t turn red. The message sits 4px below, as in the other inputs (Figma: 8px).',
-    '`isIndeterminate` draws a dash in the check\'s style. It isn\'t in Figma yet.',
+    'Errors show only as the message, as in RadioGroup; the box doesn\'t turn red.',
     'The focus ring is the shared black/white ring around the whole row, radius sm corners, keyboard focus only. On touch screens the row\'s target is at least 44px tall.',
     'Not built yet: CheckboxGroup (a question label, help and error around several checkboxes).',
   ],

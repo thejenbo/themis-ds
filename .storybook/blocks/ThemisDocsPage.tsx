@@ -178,6 +178,20 @@ function ThemisSections({ docs }: { docs: ComponentDocs }) {
             m.values ? Object.entries(m.values).map(([k, v]) => `${k} → ${v}`).join(', ') : '—',
           ])}
         />
+        {docs.figma.differences?.length ? (
+          <>
+            <h3>How code differs from Figma</h3>
+            <Table
+              head={['Topic', 'Figma', 'Code', 'In Figma']}
+              rows={docs.figma.differences.map((d) => [
+                d.topic,
+                d.figma,
+                d.code,
+                d.action === 'update-figma' ? 'To update' : d.done ? `Annotated (${d.done})` : 'To annotate',
+              ])}
+            />
+          </>
+        ) : null}
       </Section>
 
       {(docs.related?.length || docs.notes?.length) && (
