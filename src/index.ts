@@ -17,6 +17,7 @@ export * from './components/SegmentedControl';
 export * from './components/Select';
 export * from './components/Slider';
 export * from './components/Switch';
+export * from './components/Table';
 export * from './components/Tabs';
 export * from './components/Text';
 export * from './components/TextArea';

@@ -66,7 +66,7 @@
         "Accordion header",
         "Avatar solid",
         "Chip brand solid",
-        "Table header (planned)"
+        "Table header"
       ]
     },
     {
@@ -127,7 +127,8 @@
         "Checkbox",
         "Tabs",
         "Select and ActionMenu items",
-        "Switch"
+        "Switch",
+        "Table empty state"
       ],
       "level": "advisory"
     },
@@ -138,7 +139,8 @@
       "usedBy": [
         "Button/IconButton brand default hover",
         "ToggleButton on hover",
-        "Accordion header hover"
+        "Accordion header hover",
+        "Table sortable header hover"
       ]
     },
     {
@@ -179,7 +181,8 @@
       "surface": "colorTheme/color.background",
       "usedBy": [
         "ActionMenu item highlight",
-        "Select / ComboBox / UnitInput option highlight"
+        "Select / ComboBox / UnitInput option highlight",
+        "Table row hover (with onRowAction)"
       ],
       "overlay": "colorTheme/color.brand-tint"
     },
@@ -199,8 +202,7 @@
       "text": "colorTheme/color.text",
       "surface": "colorTheme/color.background",
       "usedBy": [
-        "Button/IconButton neutral outline and subtle hover",
-        "Table row hover (planned)"
+        "Button/IconButton neutral outline and subtle hover"
       ],
       "overlay": "colorTheme/color.background-hover"
     },
