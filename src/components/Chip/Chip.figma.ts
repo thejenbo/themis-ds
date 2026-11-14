@@ -15,8 +15,15 @@ const tone = instance.getEnum('tone', {
 const variant = instance.getEnum('variant', { outline: undefined, solid: 'solid' })
 const hasIconLeft = instance.getEnum('iconLeft', { true: true, false: false })
 const hasIconRight = instance.getEnum('iconRight', { true: true, false: false })
-const iconLeft = hasIconLeft ? instance.getSlot('Icon Left') : undefined
-const iconRight = hasIconRight ? instance.getSlot('Icon Right') : undefined
+// Icons are found by Code Connect id, as in Button: reading the slots directly either comes back empty or wraps the
+// icon in a generated frame component. "Icon Left" comes before "Icon Right", so left is the first icon found.
+const icons = instance.findConnectedInstances((node) => node.codeConnectId() === 'icon', { traverseInstances: true })
+function iconAt(index: number, slotName: string) {
+  const found = icons[index]
+  return found && found.type === 'INSTANCE' ? found.executeTemplate().example : instance.getSlot(slotName)
+}
+const iconLeft = hasIconLeft ? iconAt(0, 'Icon Left') : undefined
+const iconRight = hasIconRight ? iconAt(icons.length - 1, 'Icon Right') : undefined
 
 // Each tone's variants name the label layer after its sample text.
 const paid = instance.findText('paid')

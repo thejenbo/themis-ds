@@ -27,7 +27,13 @@ const state = instance.getEnum('state', {
   disabled: 'disabled',
   pending: 'pending',
 })
-const icon = instance.getSlot('Button Content')
+// The icon is found by its Code Connect id: the "Button Content" slot comes back empty when the button is nested
+// in another component (e.g. the ActionMenu trigger). The slot is the fallback.
+const iconInstance = instance.findConnectedInstance('icon', { traverseInstances: true })
+const icon =
+  iconInstance && iconInstance.type === 'INSTANCE'
+    ? iconInstance.executeTemplate().example
+    : instance.getSlot('Button Content')
 
 // aria-label is required in code but Figma has no name for it: "Action" is a placeholder.
 // Replace it with what the button does, e.g. "Add to favourites".

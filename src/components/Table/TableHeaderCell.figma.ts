@@ -12,14 +12,18 @@ const sortable = instance.getEnum('sortable', { true: true, false: false })
 // `state` is left out: hovered and focused come from interaction, not props.
 
 const labelLayer = instance.findText('Date')
-const label = labelLayer.type === 'TEXT' ? labelLayer.textContent : 'Column'
+const text = labelLayer.type === 'TEXT' ? labelLayer.textContent.trim() : ''
+// A heading with no visible text (e.g. over a row-actions column) still needs an accessible name: `hideLabel`
+// keeps it for screen readers. "Actions" is a placeholder; name it for what the column holds.
+const hideLabel = text === ''
+const label = hideLabel ? 'Actions' : text
 const id = label
   .toLowerCase()
   .replace(/[^a-z0-9]+/g, '-')
   .replace(/^-|-$/g, '')
 
 export default {
-  example: figma.code`<Column id="${id}"${sortable ? ' allowsSorting' : ''}>${label}</Column>`,
+  example: figma.code`<Column id="${id}"${sortable ? ' allowsSorting' : ''}${hideLabel ? ' hideLabel' : ''}>${label}</Column>`,
   imports: ['import { Column } from "themis-ds"'],
   id: 'table-header-cell',
   metadata: { nestable: true, props: { columnId: id, sortDirection: sorting } },

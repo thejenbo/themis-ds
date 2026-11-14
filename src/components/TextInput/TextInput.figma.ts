@@ -40,7 +40,14 @@ const characterLimit = countMatch ? countMatch[1] : undefined
 
 // In the errored variants the Icon Right slot holds the error icon, which the component adds by itself.
 const box = base.type === 'INSTANCE' ? base.findInstance('Input Box', { traverseInstances: true }) : undefined
-const icon = hasIcon && !isErrored && box && box.type === 'INSTANCE' ? box.getSlot('Icon Right') : undefined
+// The icon is found by Code Connect id: the slot comes back empty this deep in nested instances.
+function boxIcon() {
+  if (!box || box.type !== 'INSTANCE') return undefined
+  const found = box.findConnectedInstances((node) => node.codeConnectId() === 'icon', { traverseInstances: true })
+  const last = found[found.length - 1]
+  return last && last.type === 'INSTANCE' ? last.executeTemplate().example : box.getSlot('Icon Right')
+}
+const icon = hasIcon && !isErrored ? boxIcon() : undefined
 
 export default {
   example: figma.code`<TextInput${attr('label', label)}${isEmpty && content ? attr('placeholder', content) : ''}${

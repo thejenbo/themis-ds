@@ -24,8 +24,16 @@ const state = instance.getEnum('state', {
 })
 const hasIconLeft = instance.getEnum('iconLeft', { true: true, false: false })
 const hasIconRight = instance.getEnum('iconRight', { true: true, false: false })
-const iconLeft = hasIconLeft ? instance.getSlot('Icon Left') : undefined
-const iconRight = hasIconRight ? instance.getSlot('Icon Right') : undefined
+// Icons are found by Code Connect id. Reading the slots directly either comes back empty or wraps the icon in a
+// generated frame component. "Icon Left" comes before "Icon Right" in the layers, so left is the first icon found
+// and right the last. The slot is the fallback.
+const icons = instance.findConnectedInstances((node) => node.codeConnectId() === 'icon', { traverseInstances: true })
+function iconAt(index: number, slotName: string) {
+  const found = icons[index]
+  return found && found.type === 'INSTANCE' ? found.executeTemplate().example : instance.getSlot(slotName)
+}
+const iconLeft = hasIconLeft ? iconAt(0, 'Icon Left') : undefined
+const iconRight = hasIconRight ? iconAt(icons.length - 1, 'Icon Right') : undefined
 
 const labelLayer = instance.findText('Click Me')
 const label = labelLayer.type === 'TEXT' ? labelLayer.textContent : 'Button'
