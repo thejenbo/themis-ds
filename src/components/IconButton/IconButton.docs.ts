@@ -174,22 +174,20 @@ export default defineComponentDocs({
 
   figma: {
     componentKey: null,
-    url: 'https://www.figma.com/design/tRoAewIghL1YbnTio6fkkw/Themis-Design-System?node-id=1343-7408',
+    url: 'https://www.figma.com/design/tRoAewIghL1YbnTio6fkkw/Themis-Design-System?node-id=2098-19172',
     properties: {
+      tone: { figmaProperty: 'tone', type: 'VARIANT' },
       variant: { figmaProperty: 'variant', type: 'VARIANT' },
       size: { figmaProperty: 'size', type: 'VARIANT' },
       isDisabled: { figmaProperty: 'state', type: 'VARIANT', values: { true: 'disabled' } },
+      isPending: { figmaProperty: 'state', type: 'VARIANT', values: { true: 'pending' } },
     },
   },
 
   related: ['Button', 'ToggleButton', 'Tooltip'],
   notes: [
     'Shares its styles with Button (src/components/Button/button-base.ts), so tones, disabled colours and the State Layer stay identical.',
-    'Figma has brand (all variants), and neutral, neutral-inverse, danger, warning and success in subtle. The other variants of those tones reuse the matching Button styles until they are designed.',
     'Subtle hovers are see-through tints toward the icon colour: the tone\'s `*-tint` (`background-hover` for neutral), and `inverse-tint` for neutral-inverse. Filled hovers use the solid `*-hover` tokens, as in Button.',
-    'Figma\'s `state` property also has `hovered` and `focused`. In code these come from interaction, not props. Pressed (hover look plus shrink) is not drawn in Figma.',
-    'Figma draws the focus ring with extra padding; in code the ring sits outside the button and never changes its size.',
-    'Figma: the outline / small / disabled variant is 34×34px; every other small variant (and the code) is 32×32px.',
-    '`isPending` (spinner) is not designed in Figma yet.',
+    'Figma\'s `state` property also has `hovered` and `focused`. In code these come from interaction, not props.',
   ],
 });

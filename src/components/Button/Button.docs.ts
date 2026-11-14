@@ -184,9 +184,11 @@ export default defineComponentDocs({
     componentKey: null,
     url: 'https://www.figma.com/design/tRoAewIghL1YbnTio6fkkw/Themis-Design-System?node-id=1010-80',
     properties: {
+      tone: { figmaProperty: 'tone', type: 'VARIANT' },
       variant: { figmaProperty: 'variant', type: 'VARIANT' },
       size: { figmaProperty: 'size', type: 'VARIANT' },
       isDisabled: { figmaProperty: 'state', type: 'VARIANT', values: { true: 'disabled' } },
+      isPending: { figmaProperty: 'state', type: 'VARIANT', values: { true: 'pending' } },
       iconLeft: { figmaProperty: 'iconLeft', type: 'VARIANT', values: { set: 'true', unset: 'false' } },
       iconRight: { figmaProperty: 'iconRight', type: 'VARIANT', values: { set: 'true', unset: 'false' } },
     },
@@ -195,10 +197,5 @@ export default defineComponentDocs({
   related: ['Link', 'IconButton'],
   notes: [
     'Figma\'s `state` property also has `hovered` and `focused`. In code these come from interaction, not props.',
-    'The `tone` prop maps to a Figma component set, not to a property: "Button - Brand" (node 1010:80), "Button - Neutral" (2092:18429) and "Button - Danger" (2092:18796).',
-    'Figma draws the danger focus ring in red. Code uses the system-wide black and white ring for every tone (see Foundations / Focus ring).',
-    'Pressed is not drawn in Figma: Figma can\'t scale variables, so a scaled copy loses its token bindings. In code it is the hover look plus the shrink described under Motion.',
-    'Figma draws the focus ring with extra padding; in code the ring sits outside the button and never changes its size.',
-    '`isPending` (spinner) is not designed in Figma yet.',
   ],
 });

@@ -162,8 +162,5 @@ export default defineComponentDocs({
     'Shares its styles with Button (src/components/Button/button-base.ts): off is the brand outline look, on is the brand default look.',
     'Brand tone only, matching Figma.',
     'Figma calls the on state `activated`; code uses React Aria\'s `isSelected`, so it is not confused with the pressed (shrink) state.',
-    'Pressed (hover look plus shrink) is not drawn in Figma; it works the same as Button.',
-    'Figma: the small / activated / hovered variant is 34px tall; every other small variant (and the code) is 32px.',
-    'Figma binds medium vertical padding to `button/paddingY/md` (03 Component Tokens), which is not exported; it resolves to spacing/xs, which code uses.',
   ],
 });
