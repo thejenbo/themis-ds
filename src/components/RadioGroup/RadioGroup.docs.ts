@@ -119,7 +119,7 @@ export default defineComponentDocs({
 
   figma: {
     componentKey: null,
-    url: 'https://www.figma.com/design/tRoAewIghL1YbnTio6fkkw/Themis-Design-System?node-id=1834-7045',
+    url: 'https://www.figma.com/design/tRoAewIghL1YbnTio6fkkw/Themis-Design-System?node-id=2248-16566',
     properties: {
       isDisabled: { figmaProperty: 'state', type: 'VARIANT', values: { true: 'disabled' } },
       isInvalid: { figmaProperty: 'state', type: 'VARIANT', values: { true: 'errored' } },

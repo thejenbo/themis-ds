@@ -14,7 +14,7 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "noEmit": true,
-    "types": ["node", "vite/client"]
+    "types": ["node", "vite/client", "@figma/code-connect/figma-types"]
   },
   "include": ["src", "scripts", ".storybook", "docs", "vite.config.ts"]
 }

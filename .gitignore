@@ -6,3 +6,6 @@ coverage
 .DS_Store
 .vite
 public/themis-manifest.json
+
+# Local secrets (e.g. FIGMA_ACCESS_TOKEN for Code Connect)
+.env

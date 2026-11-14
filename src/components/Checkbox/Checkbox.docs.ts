@@ -105,12 +105,12 @@ export default defineComponentDocs({
 
   figma: {
     componentKey: null,
-    url: 'https://www.figma.com/design/tRoAewIghL1YbnTio6fkkw/Themis-Design-System?node-id=1342-6472',
+    url: 'https://www.figma.com/design/tRoAewIghL1YbnTio6fkkw/Themis-Design-System?node-id=2248-16469',
     properties: {
-      isSelected: { figmaProperty: 'Checked', type: 'VARIANT' },
+      isSelected: { figmaProperty: 'selected', type: 'VARIANT' },
       isDisabled: { figmaProperty: 'state', type: 'VARIANT', values: { true: 'disabled' } },
       isInvalid: { figmaProperty: 'state', type: 'VARIANT', values: { true: 'errored' } },
-      isIndeterminate: { figmaProperty: 'Checked', type: 'VARIANT', values: { true: 'indeterminate' } },
+      isIndeterminate: { figmaProperty: 'selected', type: 'VARIANT', values: { true: 'indeterminate' } },
     },
   },
 

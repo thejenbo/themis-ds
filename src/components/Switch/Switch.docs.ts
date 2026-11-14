@@ -160,7 +160,7 @@ export default defineComponentDocs({
     componentKey: null,
     url: 'https://www.figma.com/design/tRoAewIghL1YbnTio6fkkw/Themis-Design-System?node-id=2052-12425',
     properties: {
-      isSelected: { figmaProperty: 'activated', type: 'VARIANT' },
+      isSelected: { figmaProperty: 'selected', type: 'VARIANT' },
       size: { figmaProperty: 'size', type: 'VARIANT' },
       labelPosition: { figmaProperty: 'label position', type: 'VARIANT' },
       isDisabled: { figmaProperty: 'state', type: 'VARIANT', values: { true: 'disabled' } },
@@ -172,7 +172,6 @@ export default defineComponentDocs({
   related: ['Checkbox', 'ToggleButton', 'RadioGroup'],
   notes: [
     'Brand tone only, matching Figma.',
-    'Figma calls the on state `activated`; code uses React Aria\'s `isSelected`.',
     'Figma\'s `description` variant is a boolean; in code, passing `description` turns it on.',
     'Track height follows Button\'s height for each size: 24/32/40px on every screen.',
     'The ✓ and × are inline SVGs until the icon library exists.',

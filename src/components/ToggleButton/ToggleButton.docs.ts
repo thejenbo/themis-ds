@@ -149,7 +149,7 @@ export default defineComponentDocs({
     componentKey: null,
     url: 'https://www.figma.com/design/tRoAewIghL1YbnTio6fkkw/Themis-Design-System?node-id=2092-18091',
     properties: {
-      isSelected: { figmaProperty: 'activated', type: 'VARIANT' },
+      isSelected: { figmaProperty: 'selected', type: 'VARIANT' },
       size: { figmaProperty: 'size', type: 'VARIANT' },
       isDisabled: { figmaProperty: 'state', type: 'VARIANT', values: { true: 'disabled' } },
       iconLeft: { figmaProperty: 'iconLeft', type: 'VARIANT' },
@@ -161,6 +161,5 @@ export default defineComponentDocs({
   notes: [
     'Shares its styles with Button (src/components/Button/button-base.ts): off is the brand outline look, on is the brand default look.',
     'Brand tone only, matching Figma.',
-    'Figma calls the on state `activated`; code uses React Aria\'s `isSelected`, so it is not confused with the pressed (shrink) state.',
   ],
 });

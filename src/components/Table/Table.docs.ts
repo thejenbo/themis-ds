@@ -123,7 +123,7 @@ export default defineComponentDocs({
   related: ['ActionMenu', 'IconButton'],
   notes: [
     'A plain HTML table rather than React Aria\'s grid Table: in a grid every cell is focusable and the whole table is one Tab stop (arrow keys inside). For a read-and-act table, Tab reaching the sort buttons and row actions is what keyboard users expect.',
-    'Figma "Table" (1457-6618) is `Table`; "Table Header" (1490-42) is `TableHeader`; "Table Header Cell" (1493-95) is `Column`, whose `sorting` none/asc/desc is the table\'s `sortDescriptor`; "Table Row" (1491-55) is `Row`, whose `action=true` is a last `Cell` holding an ActionMenu.',
+    'Figma "Table" (1457-6618) is `Table`; "Table Header" (1490-42) is `TableHeader`; "Table Header Cell" (1493-95) is `Column`: its `sortable` is `allowsSorting` (false for headings you can\'t sort by, like the actions column), and its `sorting` none/asc/desc is the table\'s `sortDescriptor`; "Table Row" (1491-55) is `Row`, whose `action=true` is a last `Cell` holding an ActionMenu.',
     'The sort button fills the heading. Figma "Table Header Cell" has `state` default/hovered/focused: hovered is brand-hover (with a faint arrow on unsorted columns), focused has the shared ring inside. The arrow is drawn as a micro IconButton in Figma and a plain icon in code.',
     'Not built yet: row selection with checkboxes, column resizing, and a loading state.',
   ],
