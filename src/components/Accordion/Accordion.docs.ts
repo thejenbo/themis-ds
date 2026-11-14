@@ -133,14 +133,14 @@ export default defineComponentDocs({
       defaultExpanded: { figmaProperty: 'open', type: 'VARIANT' },
       isDisabled: { figmaProperty: 'state', type: 'VARIANT', values: { true: 'disabled' } },
     },
+    differences: [
+      { topic: 'Press', figma: 'Not shown.', code: 'No press shrink (an exception to the system rule): the header is full width. Hover and press show the tint only.', action: 'annotate-figma', done: '2026-11-13' },
+      { topic: 'Groups', figma: 'A single accordion.', code: 'AccordionGroup stacks accordions 8px (spacing.xs) apart, with one or many open. There is no Figma component for it yet.', action: 'annotate-figma', done: '2026-11-13' },
+    ],
   },
 
   related: ['Tabs', 'Dialog'],
   notes: [
-    'Figma has a single item; AccordionGroup (stacking with spacing.xs, one-or-many open) is code-only for now.',
-    'Figma draws a white-only dashed focus ring inside the header; code uses the shared black/white ring, drawn inset, so it keeps 3:1 contrast with any brand colour and never overlaps neighbours.',
-    'No press shrink: the header is full width. Hover and press show the State Layer only.',
-    'Animation is not drawn in Figma; it follows the Motion foundation.',
     'The chevron is an inline SVG until the icon library exists.',
   ],
 });

@@ -112,17 +112,19 @@ export default defineComponentDocs({
     componentKey: null,
     url: 'https://www.figma.com/design/tRoAewIghL1YbnTio6fkkw/Themis-Design-System?node-id=1457-6618',
     properties: {},
+    differences: [
+      { topic: 'Row hover', figma: 'A `hovered` row state.', code: 'Rows only tint (brand-tint) and show the pointer cursor when the table has `onRowAction`; clicking anywhere on the row (outside other controls) runs it. Read-only tables have no row hover.', action: 'annotate-figma', done: '2026-11-13' },
+      { topic: 'Column widths', figma: 'Equal widths.', code: 'Columns size to their content; `width` fixes one, and a `hideLabel` column shrinks to fit.', action: 'annotate-figma', done: '2026-11-13' },
+      { topic: 'Keyboard', figma: '`focused` header cell and row states.', code: 'Tab moves through the sort buttons, then each row\'s name button (with `onRowAction`) and ⋮ menu. Plain cells aren\'t focusable. A focused row name rings the whole row.', action: 'annotate-figma', done: '2026-11-13' },
+      { topic: 'Narrow screens', figma: 'Not shown.', code: 'The table scrolls sideways inside its border instead of squashing columns.', action: 'annotate-figma', done: '2026-11-13' },
+    ],
   },
 
   related: ['ActionMenu', 'IconButton'],
   notes: [
     'A plain HTML table rather than React Aria\'s grid Table: in a grid every cell is focusable and the whole table is one Tab stop (arrow keys inside). For a read-and-act table, Tab reaching the sort buttons and row actions is what keyboard users expect.',
     'Figma "Table" (1457-6618) is `Table`; "Table Header" (1490-42) is `TableHeader`; "Table Header Cell" (1493-95) is `Column`, whose `sorting` none/asc/desc is the table\'s `sortDescriptor`; "Table Row" (1491-55) is `Row`, whose `action=true` is a last `Cell` holding an ActionMenu.',
-    'The sort button fills the heading (Figma draws the arrow as a micro IconButton). Unsorted sortable headings show a faint arrow on hover or keyboard focus, and the heading turns brand-hover, like a filled button.',
-    'Body cells use the regular input text style (Figma: semibold label style) so the header stands apart.',
-    'Rows only tint on hover (brand-tint) and show the pointer cursor when the table has `onRowAction`; clicking anywhere on the row (outside other controls) runs it. Figma shows the hover on every row.',
-    'Keyboard focus: the shared ring just inside the sort button, or just inside the whole row while its row header button is focused. Figma has no focus state.',
-    'Columns size to their content (Figma: equal widths). Pass `width` to fix one. A `hideLabel` column shrinks to fit its content.',
+    'The sort button fills the heading. Figma "Table Header Cell" has `state` default/hovered/focused: hovered is brand-hover (with a faint arrow on unsorted columns), focused has the shared ring inside. The arrow is drawn as a micro IconButton in Figma and a plain icon in code.',
     'Not built yet: row selection with checkboxes, column resizing, and a loading state.',
   ],
 });
