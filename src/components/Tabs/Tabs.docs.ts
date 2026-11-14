@@ -111,6 +111,9 @@ export default defineComponentDocs({
     componentKey: null,
     url: 'https://www.figma.com/design/tRoAewIghL1YbnTio6fkkw/Themis-Design-System?node-id=2064-17412',
     properties: {},
+    differences: [
+      { topic: 'Indicator and overflow', figma: 'Not shown.', code: 'The selected bar slides from the old tab to the new one, and the row scrolls sideways when the tabs don\'t fit.', action: 'annotate-figma', done: '2026-11-13' },
+    ],
   },
 
   related: ['SegmentedControl', 'AccordionGroup'],
@@ -118,7 +121,5 @@ export default defineComponentDocs({
     'Tab items: Figma "Tab Item" (node 2064-17395). Its `state` variants map to React Aria states: active = selected, hovered, focused, disabled.',
     'The 4px indicator height comes from Figma\'s Component Tokens (tabs/item/indicator/height/default).',
     'Figma\'s `track` variant was removed; there is no line under the whole row for now.',
-    'Focus ring: the shared black/white dashed ring around the label (Figma\'s focused tab draws a solid 2px box in the same place), so it never overlaps the indicator bar and the scrolling row doesn\'t clip it.',
-    'The sliding motion and scrolling for overflow are not drawn in Figma.',
   ],
 });

@@ -133,7 +133,6 @@ export default defineComponentDocs({
     'Figma "Radio Input" is a RadioGroup with a label; "Radio Button Group" (node 1342-6478) is one without a visible label (give it an `aria-label`); "Radio Button" (node 1342-6439) is `Radio`.',
     'Errored groups look like the default ones apart from the error message (Figma). `disabledErrored` looks disabled.',
     'The focus ring is the shared black/white ring around the whole row (circle and label), with radius sm corners, for keyboard focus only.',
-    'Figma has no hover or pressed state; the row gets the pointer cursor and the circle shrinks while pressed, as in Switch.',
     'On touch screens each row\'s target is 44px tall; with 16px between 28px rows, neighbouring targets meet without overlapping.',
   ],
 });

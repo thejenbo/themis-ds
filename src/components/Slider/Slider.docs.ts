@@ -27,7 +27,7 @@ export default defineComponentDocs({
     { part: 'Label and value', description: 'The label (`label`) and the current value (`showValue`), label style, 8px above the track.', required: false },
     { part: 'Slider', description: 'The 16px track: a pill with a border, pale brand where it isn\'t filled.', required: true },
     { part: 'Progress', description: 'Brand fill from the start of the track to the thumb.', required: true },
-    { part: 'Thumb', description: '28px circle with a border; 32px on hover and 36px while dragging. Stays inside the track at both ends.', required: true },
+    { part: 'Thumb', description: '28px circle with a border/width/sm border in color/border; 32px on hover and 36px while dragging. Stays inside the track at both ends.', required: true },
     { part: 'Indicator', description: 'The value in a dark pill, 4px above the thumb, shown only while dragging or using the keyboard. It floats over the label row.', required: false },
   ],
 
@@ -83,7 +83,6 @@ export default defineComponentDocs({
     'spacing/spacing.xs',
     'radius/border.radius.full',
     'borderWidth/border.width.sm',
-    'borderWidth/border.width.md',
     'borderWidth/border.width.focus ring',
     'fontTheme/font.family.body',
     'typography/font.size.label',
@@ -122,14 +121,15 @@ export default defineComponentDocs({
       label: { figmaProperty: 'Label', type: 'TEXT' },
       isDisabled: { figmaProperty: 'state', type: 'VARIANT', values: { true: 'disabled' } },
     },
+    differences: [
+      { topic: 'Value indicator', figma: '`indicator=true` variants show the value pill above the track.', code: 'The pill only appears while the thumb is dragged or moved with the keyboard, and floats over the label row instead of reserving space above the track.', action: 'annotate-figma', done: '2026-11-13' },
+      { topic: 'Thumb size', figma: '"Thumb": default 28px, hovered 32px, activated 36px.', code: '28px, 32px on hover, 36px while dragging (`activated`). The size animates.', action: 'annotate-figma', done: '2026-11-13' },
+    ],
   },
 
   related: ['Switch', 'SegmentedControl'],
   notes: [
     'Figma\'s `progress` variants are just example values; in code it\'s `value` / `defaultValue` between `minValue` and `maxValue`.',
-    'Figma\'s `indicator` variants show the value pill; in code it appears only while dragging or using the keyboard, and floats over the label row rather than reserving space above the track.',
-    'The thumb (Figma "Thumb", default/activated/focused/disabled) grows to 36px while dragging (Figma `activated`); hover (32px) is not drawn in Figma.',
-    'Figma\'s focused thumb draws its own 8/8 dashed ring; code uses the shared black/white ring.',
     'Single thumb only. Range sliders, tick marks (`stops`) and vertical sliders are not designed yet.',
   ],
 });

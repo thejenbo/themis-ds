@@ -81,9 +81,9 @@ export const focusRing = stylex.create({
    * instead). `::before` is positioned from inside the border, so without this the white ring slides inward by the
    * border width and covers part of the border. One variant per border-width token in use.
    */
-  aroundBorderMd: {
+  aroundBorderSm: {
     '::before': {
-      inset: `calc(-1 * (${offset} + ${width} + ${borderWidth.widthMd}))`,
+      inset: `calc(-1 * (${offset} + ${width} + ${borderWidth.widthSm}))`,
     },
   },
   /** Add after `visible` on pill-shaped elements using `radius.radiusFull` (e.g. Switch's track). */

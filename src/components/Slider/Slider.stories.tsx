@@ -78,6 +78,7 @@ export const Keyboard: Story = {
     {
       const el = slider.closest('[data-themis-touch-target]')!;
       const border = parseFloat(getComputedStyle(el).borderTopWidth);
+      await expect(border).toBe(2); // border/width/sm in medium, as in Figma
       const before = getComputedStyle(el, '::before');
       const outer = -parseFloat(before.top) - border;
       await expect([outer - parseFloat(before.borderTopWidth), outer]).toEqual([2, 4]);

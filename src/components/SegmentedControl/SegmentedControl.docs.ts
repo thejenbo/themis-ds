@@ -126,14 +126,15 @@ export default defineComponentDocs({
       size: { figmaProperty: 'size', type: 'VARIANT' },
       isDisabled: { figmaProperty: 'state', type: 'VARIANT', values: { true: 'disabled' } },
     },
+    differences: [
+      { topic: 'Selected item', figma: 'Not shown.', code: 'The selected item has no hover and keeps the default cursor, since choosing it again does nothing.', action: 'annotate-figma', done: '2026-11-13' },
+      { topic: 'Press', figma: 'Not shown.', code: 'No press shrink (an exception to the system rule): a segment shrinking inside the shared border looks broken. Hover and press show the tint only.', action: 'annotate-figma', done: '2026-11-13' },
+    ],
   },
 
   related: ['ToggleButton', 'Switch', 'RadioGroup', 'Tabs'],
   notes: [
     'Items: Figma "Segmented Control Item" (node 2052-12657). Its `left` / `right` corner variants are automatic in code (first and last item).',
-    'The selected item has no hover (selecting it again does nothing) and keeps the default cursor.',
-    'No press shrink: a segment shrinking inside the shared border looks broken. Hover and press show the State Layer only.',
-    'Figma\'s focus ring colour is replaced by the shared black/white ring, lifted above neighbouring items.',
     'Radius sm at every size is intentional (unlike Button, which uses md for small and medium).',
   ],
 });

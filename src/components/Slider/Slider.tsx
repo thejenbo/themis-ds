@@ -81,8 +81,8 @@ export function Slider({ label, showValue = true, xstyle, ...props }: SliderProp
                 touchTarget.area,
                 focusRing.base,
                 t.isFocusVisible && focusRing.visible,
-                // The thumb has a real 3px border, so the white ring has to clear it.
-                t.isFocusVisible && focusRing.aroundBorderMd,
+                // The thumb has a real border (border/width/sm), so the white ring has to clear it.
+                t.isFocusVisible && focusRing.aroundBorderSm,
                 t.isFocusVisible && focusRing.radiusFull,
               ])}
             >
@@ -149,7 +149,7 @@ const styles = stylex.create({
     height: '28px',
     borderRadius: radius.radiusFull,
     borderStyle: 'solid',
-    borderWidth: borderWidth.widthMd,
+    borderWidth: borderWidth.widthSm,
     borderColor: color.border,
     backgroundColor: color.background,
     cursor: 'grab',

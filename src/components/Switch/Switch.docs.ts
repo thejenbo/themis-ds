@@ -175,8 +175,6 @@ export default defineComponentDocs({
     'Figma calls the on state `activated`; code uses React Aria\'s `isSelected`.',
     'Figma\'s `description` variant is a boolean; in code, passing `description` turns it on.',
     'Track height follows Button\'s height for each size: 24/32/40px on every screen.',
-    'Figma draws the focus ring tight to the track with 6/6 dashes; code uses the shared Themis focus ring (2px gap, 4/4 dashes) so focus looks the same on every component.',
-    'Animation and the pressed shrink are not drawn in Figma; they follow the Motion foundation.',
     'The ✓ and × are inline SVGs until the icon library exists.',
   ],
 });
