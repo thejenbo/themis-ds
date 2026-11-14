@@ -4,7 +4,7 @@
 import figma from 'figma'
 const instance = figma.selectedInstance
 
-// Defaults (medium, solid) are left out. `indicator` has only `false`, so it maps to nothing.
+// Defaults (medium, solid) are left out.
 const size = instance.getEnum('size', { small: 'small', medium: undefined, large: 'large' })
 const variant = instance.getEnum('variant', { solid: undefined, outline: 'outline' })
 

@@ -77,10 +77,7 @@ export default defineComponentDocs({
       size: { figmaProperty: 'size', type: 'VARIANT' },
       variant: { figmaProperty: 'variant', type: 'VARIANT' },
     },
-    differences: [
-      { topic: 'See-through colours', figma: 'The "Swatch Content" fill is solid.', code: 'Colours with transparency show a grey and white 8px checkerboard behind them.', action: 'update-figma' },
-      { topic: 'Indicator', figma: '`indicator` has only one value, `false`.', code: 'No indicator; a selected state will come with the swatch picker.', action: 'update-figma' },
-    ],
+    differences: [],
   },
 
   related: ['ColorSlider', 'ColorArea'],

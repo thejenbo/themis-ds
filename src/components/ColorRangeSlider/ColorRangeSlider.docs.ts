@@ -109,17 +109,15 @@ export default defineComponentDocs({
 
   figma: {
     componentKey: null,
-    url: 'https://www.figma.com/design/tRoAewIghL1YbnTio6fkkw/Themis-Design-System?node-id=1909-994',
+    url: 'https://www.figma.com/design/tRoAewIghL1YbnTio6fkkw/Themis-Design-System?node-id=2335-733',
     properties: {
+      label: { figmaProperty: 'Label', type: 'TEXT' },
+      showValue: { figmaProperty: 'showValue', type: 'BOOLEAN' },
       isDisabled: { figmaProperty: 'state', type: 'VARIANT', values: { true: 'disabled' } },
-      showSwatches: { figmaProperty: 'indicator', type: 'VARIANT' },
+      showSwatches: { figmaProperty: 'showSwatches', type: 'VARIANT' },
     },
     differences: [
-      { topic: 'Component', figma: 'The `handles=double` variants of ColorSlider.', code: 'Its own component, ColorRangeSlider, with `[start, end]` values.', action: 'update-figma' },
-      { topic: 'Active thumb', figma: '`activeHandle=start|end` shows one thumb at 36px.', code: 'The thumb being dragged grows to 36px; `activeHandle` is interaction, not a prop.', action: 'annotate-figma' },
-      { topic: 'Thumb fill and rings', figma: 'White thumbs with a color/border border.', code: 'Each thumb is filled with its colour, with a black border and a white ring inside.', action: 'update-figma' },
-      { topic: 'Swatches', figma: '`indicator=true` shows a swatch above the active thumb only.', code: '`showSwatches` shows one above each thumb, all the time.', action: 'update-figma' },
-      { topic: 'Disabled and focused', figma: 'Not designed for two thumbs.', code: 'As ColorSlider: grey track and thumbs when disabled; the focus ring on the focused thumb.', action: 'update-figma' },
+      { topic: 'Active thumb', figma: 'Both thumbs at their resting 28px.', code: 'The thumb being dragged grows to 36px (32px on hover), as Thumb `activated=true`.', action: 'annotate-figma', done: '2026-11-14' },
     ],
   },
 

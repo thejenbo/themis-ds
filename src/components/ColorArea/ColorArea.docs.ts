@@ -82,11 +82,12 @@ export default defineComponentDocs({
 
   figma: {
     componentKey: null,
-    url: 'https://www.figma.com/design/tRoAewIghL1YbnTio6fkkw/Themis-Design-System?node-id=1922-9523',
-    properties: {},
+    url: 'https://www.figma.com/design/tRoAewIghL1YbnTio6fkkw/Themis-Design-System?node-id=2335-273',
+    properties: {
+      isDisabled: { figmaProperty: 'state', type: 'VARIANT', values: { true: 'disabled' } },
+    },
     differences: [
-      { topic: 'States', figma: 'A single component with no states.', code: 'Keyboard focus puts the focus ring round the thumb. Disabled: the area turns grey (color/background-disabled-default) and the thumb uses the disabled colours.', action: 'update-figma' },
-      { topic: 'Size', figma: '345 × 284px.', code: 'Fills its container\'s width at the same proportions; set the size through `xstyle`.', action: 'annotate-figma' },
+      { topic: 'Size', figma: '345 × 284px.', code: 'Fills its container\'s width at the same proportions; set the size through `xstyle`.', action: 'annotate-figma', done: '2026-11-14' },
     ],
   },
 

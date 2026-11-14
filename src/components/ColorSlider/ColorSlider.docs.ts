@@ -108,14 +108,12 @@ export default defineComponentDocs({
     componentKey: null,
     url: 'https://www.figma.com/design/tRoAewIghL1YbnTio6fkkw/Themis-Design-System?node-id=1909-994',
     properties: {
+      label: { figmaProperty: 'Label', type: 'TEXT' },
+      showValue: { figmaProperty: 'showValue', type: 'BOOLEAN' },
       isDisabled: { figmaProperty: 'state', type: 'VARIANT', values: { true: 'disabled' } },
     },
     differences: [
-      { topic: 'Thumb fill', figma: 'The thumb is white, and `indicator=true` adds a small swatch above it showing the colour.', code: 'The thumb is filled with the current colour, and there is no swatch above it.', action: 'update-figma' },
-      { topic: 'Thumb rings', figma: 'A border/width/sm border in color/border.', code: 'A black border with a white ring inside it (border/width/mandatory each), like ColorArea\'s bullseye thumb, so the thumb shows on light and dark colours alike.', action: 'update-figma' },
-      { topic: 'Two thumbs', figma: '`handles=double` variants on this set.', code: 'A separate component, ColorRangeSlider.', action: 'update-figma' },
-      { topic: 'Label', figma: 'No label row.', code: 'Optional `label` and value row above the track, as on Slider.', action: 'update-figma' },
-      { topic: 'Gradient', figma: 'The "Gradient" slot holds a drawn hue gradient.', code: 'The gradient is drawn from `channel` and the current colour, so it changes with them.', action: 'annotate-figma' },
+      { topic: 'Gradient', figma: 'The "Gradient" slot holds a drawn hue gradient.', code: 'The gradient is drawn from `channel` and the current colour, so it changes with them.', action: 'annotate-figma', done: '2026-11-14' },
     ],
   },
 
