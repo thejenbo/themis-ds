@@ -158,6 +158,10 @@ export default defineComponentDocs({
       showCloseButton: { figmaProperty: 'close button', type: 'VARIANT' },
       action: { figmaProperty: 'action button', type: 'VARIANT' },
     },
+    differences: [
+      { topic: 'Placement and stacking', figma: 'Not drawn.', code: '24px (spacing.md) from the screen edges plus the phone\'s safe area, 8px (spacing.xs) between toasts, at most 3 at once. Under 768px wide, toasts are full width minus the margins.', action: 'annotate-figma', done: '2026-11-13' },
+      { topic: 'Motion', figma: 'Not shown.', code: 'Enter, exit and restacking use View Transitions where supported; elsewhere toasts appear and disappear without animation.', action: 'annotate-figma', done: '2026-11-13' },
+    ],
   },
 
   related: ['Modal', 'Button', 'IconButton'],
@@ -166,10 +170,7 @@ export default defineComponentDocs({
     'Figma\'s `variant` is `tone` in code, like Button. Figma\'s `heading` boolean is on when `title` is passed.',
     'Built on React Aria\'s toast, which is still marked UNSTABLE. It is used only inside Themis, so app code never depends on it.',
     'At most 3 toasts show at once (`createToastQueue({ maxVisibleToasts })`); the rest wait their turn.',
-    'Placement, spacing and stacking aren\'t drawn in Figma: 24px (spacing.md) from the screen edges, plus the phone\'s safe area, and 8px (spacing.xs) between toasts. Under 768px wide (the typography tokens\' mobile breakpoint), toasts are full width minus the margins.',
     'Width: 500px, never wider than the screen minus the margins.',
     'The status icons are placeholders until the icon library exists.',
-    'The × lines up with the heading, or with the message on one-line toasts. Figma draws it 4px above the message on one-line toasts; code centres it on the text.',
-    'Enter, exit and restacking use the browser\'s View Transitions where supported; elsewhere toasts appear and disappear without animation.',
   ],
 });

@@ -129,15 +129,17 @@ export default defineComponentDocs({
       showCloseButton: { figmaProperty: 'Close Button', type: 'VARIANT' },
       hideActionBorder: { figmaProperty: 'Hide Action Border', type: 'VARIANT' },
     },
+    differences: [
+      { topic: 'Height', figma: 'Fixed example heights.', code: 'Stays spacing.lg from the top and bottom of the screen; the content scrolls.', action: 'annotate-figma', done: '2026-11-13' },
+      { topic: 'Overlay blur', figma: 'overlay-tint with a 10px blur.', code: 'The same, but the blur is removed when the user asks for reduced transparency.', action: 'annotate-figma', done: '2026-11-13' },
+      { topic: 'Close button', figma: 'A `Close Button` property.', code: '`showCloseButton` is on by default when there are no actions, and can be shown alongside actions too.', action: 'annotate-figma', done: '2026-11-13' },
+    ],
   },
 
   related: ['Button', 'IconButton'],
   notes: [
     'Figma\'s Header, Primary Action and Secondary Action variants map to `title` and the buttons passed to `actions`. "Swap Actions" isn\'t a prop: the order is the order you pass them, and Themis recommends secondary first, primary last.',
     'The danger tone is a separate Figma set (Modal - Danger, node 2128-20396).',
-    'Figma shows the close button only when there are no actions; in code `showCloseButton` defaults to that but can be combined with actions.',
-    'Overlay: Figma\'s Overlay component (overlay-tint + 10px blur). The blur is removed when the user asks for reduced transparency.',
-    'Max height: the modal stays spacing.lg from the top and bottom of the screen; the content scrolls.',
     'The modal renders inside the nearest ThemeProvider, so it keeps that provider\'s theme.',
   ],
 });

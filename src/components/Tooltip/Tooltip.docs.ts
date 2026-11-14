@@ -124,14 +124,16 @@ export default defineComponentDocs({
       placement: { figmaProperty: 'position', type: 'VARIANT' },
       title: { figmaProperty: 'heading', type: 'VARIANT' },
     },
+    differences: [
+      { topic: 'Delay', figma: 'Not shown.', code: 'Shows after 700ms of hover (React Aria\'s default is 1500ms) or straight away on keyboard focus. Change it per trigger with `TooltipTrigger delay`.', action: 'annotate-figma', done: '2026-11-13' },
+      { topic: 'Spacing', figma: 'Not drawn.', code: '4px (spacing.2xs) from the trigger to the arrow tip.', action: 'annotate-figma', done: '2026-11-13' },
+      { topic: 'Width', figma: 'Hugs the example text.', code: 'Up to 320px, never closer than 16px to the screen edges; text wraps.', action: 'annotate-figma', done: '2026-11-13' },
+    ],
   },
 
   related: ['IconButton', 'Button', 'Modal'],
   notes: [
     'Figma\'s `position` is `placement` in code, with the same values. Figma\'s `heading` is on when `title` is passed.',
-    'Show delay: 700ms (React Aria\'s default is 1500ms). Change it per trigger with `TooltipTrigger delay`.',
-    'Spacing: 4px (spacing.2xs) from the trigger to the arrow tip. Not drawn in Figma.',
     'The arrow always points at the middle of the trigger (React Aria\'s behaviour). With start/end placements the box lines up with the trigger\'s edge, so on wide triggers the arrow sits further along the box. It stays at least 8px (spacing.xs) from the box\'s ends, so with very small triggers it can sit slightly off their middle.',
-    'Width: up to 320px, never closer than 16px to the screen edges; text wraps.',
   ],
 });

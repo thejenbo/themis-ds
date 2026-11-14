@@ -136,15 +136,17 @@ export default defineComponentDocs({
     componentKey: null,
     url: 'https://www.figma.com/design/tRoAewIghL1YbnTio6fkkw/Themis-Design-System?node-id=2194-12291',
     properties: {},
+    differences: [
+      { topic: 'Width', figma: 'A fixed 305px menu.', code: 'Fits the labels: at least as wide as the trigger (and 160px), at most 320px. Long labels end with an ellipsis.', action: 'annotate-figma', done: '2026-11-13' },
+      { topic: 'Open trigger', figma: 'Not shown.', code: 'While the menu is open, its trigger keeps its hover tint (not the press shrink), so it\'s clear which button opened it.', action: 'annotate-figma', done: '2026-11-13' },
+      { topic: 'Position', figma: 'The menu drawn below the trigger.', code: '8px below the trigger, lined up with its start edge; it flips above when there isn\'t room.', action: 'annotate-figma', done: '2026-11-13' },
+    ],
   },
 
   related: ['IconButton', 'Button', 'Modal', 'Toast'],
   notes: [
     'Items: Figma "Action Menu Item" (node 2194-12252). `state` comes from interaction (hovered and focused are both the highlighted item, since React Aria moves focus with the pointer); `danger` is `isDanger`; `iconLeft` is on when `icon` is passed.',
     'Trigger: Figma "Action Menu Trigger" (node 2194-12854), a micro subtle IconButton, with the menu 8px below it, lined up with its start edge.',
-    'Figma\'s focused item draws a solid 2px ring; code uses the shared black/white dashed ring, drawn inside the item.',
-    'Width: Figma is 299px; code fits the labels, at least as wide as the trigger (and 160px), at most 320px. Long labels are cut with an ellipsis.',
-    'While the menu is open, its trigger keeps its hover overlay (State Layer), but not the press shrink, so it\'s clear which button opened it.',
     'Separators, section headings, submenus and checkable items are not designed yet.',
   ],
 });
