@@ -13,6 +13,7 @@ export * from './components/ColorSlider';
 export * from './components/ColorSwatch';
 export * from './components/ComboBox';
 export * from './components/Heading';
+export * from './components/Icon';
 export * from './components/IconButton';
 export * from './components/Modal';
 export * from './components/NumberInput';
