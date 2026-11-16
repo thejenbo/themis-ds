@@ -17,6 +17,7 @@ import {
   type IconNode,
   Info,
   Mail,
+  Minus,
   Plus,
   Search,
   Settings,
@@ -89,6 +90,7 @@ export const iconSet = {
   },
   info: { shapes: Info },
   mail: { shapes: Mail },
+  minus: { shapes: Minus },
   plus: { shapes: Plus },
   search: { shapes: Search },
   settings: {

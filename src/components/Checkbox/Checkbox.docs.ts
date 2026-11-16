@@ -24,7 +24,7 @@ export default defineComponentDocs({
   },
 
   anatomy: [
-    { part: 'Box', description: '24px, filling the label\'s first line: border/width/sm in color/border, radius xs, background fill. A 2px check (or a dash when indeterminate) in background-inverse.', required: true },
+    { part: 'Box', description: '24px, filling the label\'s first line: border/width/mandatory in color/border (so it keeps its border when the border width is none), radius xs, background fill. The `check` icon (or `minus` when indeterminate), 16px, in background-inverse; like every icon it follows the border width and radius.', required: true },
     { part: 'Label', description: 'The input text style, 8px after the box. Wraps under itself, with the box on the first line. Clicking it toggles the box.', required: true },
     { part: 'Description / Error message', description: 'Help text (caption) and the error message, 4px below, as in the other inputs.', required: false },
   ],
@@ -68,7 +68,7 @@ export default defineComponentDocs({
     'spacing/spacing.sm',
     'radius/border.radius.xs',
     'radius/border.radius.sm',
-    'borderWidth/border.width.sm',
+    'borderWidth/border.width.mandatory',
     'borderWidth/border.width.focus ring',
     'fontTheme/font.family.body',
     'typography/font.size.input',

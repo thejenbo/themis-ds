@@ -3,6 +3,7 @@ import { createElement } from 'react';
 
 import { iconStyle } from '../../theme/icon-style.stylex';
 import { border as borderWidth } from '../../tokens/borderWidth.stylex';
+import { duration, easing } from '../../tokens/motion.stylex';
 import { border as radius } from '../../tokens/radius.stylex';
 import { type IconName, type IconShape, iconSet } from './icon-set';
 
@@ -26,6 +27,11 @@ export interface IconProps {
    * by their own label or `aria-label`.
    */
   'aria-label'?: string;
+  /**
+   * Animates the icon's lines drawing themselves in: `false` hides them, `true` draws them in (motion/duration.fast;
+   * instantly under reduced motion). Leave it out for an icon that's simply shown. Checkbox uses it for its tick.
+   */
+  drawn?: boolean;
   /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colour or size. */
   xstyle?: stylex.StyleXStyles;
 }
@@ -35,7 +41,7 @@ export interface IconProps {
  * component borders (`border/width/mandatory`, from 1.25px up to a cap per size so small icons never clog), and with
  * radius `none` corners turn sharp, line ends flat, and a few icons switch to hand-drawn sharp versions.
  */
-export function Icon({ name, size = 'small', 'aria-label': ariaLabel, xstyle }: IconProps) {
+export function Icon({ name, size = 'small', 'aria-label': ariaLabel, drawn, xstyle }: IconProps) {
   const { shapes, sharp } = iconSet[name] as { shapes: IconShape[]; sharp?: IconShape[] };
   const a11y = ariaLabel ? { role: 'img', 'aria-label': ariaLabel } : { 'aria-hidden': true };
   return (
@@ -50,34 +56,42 @@ export function Icon({ name, size = 'small', 'aria-label': ariaLabel, xstyle }: 
     >
       {sharp ? (
         <>
-          <g {...stylex.props(styles.round)}>{draw(shapes, size)}</g>
-          <g {...stylex.props(styles.sharp)}>{draw(sharp, size)}</g>
+          <g {...stylex.props(styles.round)}>{draw(shapes, size, drawn)}</g>
+          <g {...stylex.props(styles.sharp)}>{draw(sharp, size, drawn)}</g>
         </>
       ) : (
-        draw(shapes, size)
+        draw(shapes, size, drawn)
       )}
     </svg>
   );
 }
 
-/** Lucide marks dots as zero-length lines (`h.01`) or tiny circles (r 1 or 0.5). */
-const isDotLine = (tag: string, attributes: Record<string, string>) => tag === 'path' && /[hv]\.01$/.test(attributes.d ?? '');
+/** Lucide draws dots as zero-length lines (a path ending `h.01`, or a `line` 0.01 long) or tiny circles (r 1 or 0.5). */
+const isDotLine = (tag: string, attributes: Record<string, string>) =>
+  (tag === 'path' && /[hv]\.01$/.test(attributes.d ?? '')) ||
+  (tag === 'line' &&
+    Math.abs(Number(attributes.x2) - Number(attributes.x1)) + Math.abs(Number(attributes.y2) - Number(attributes.y1)) < 0.1);
 const isDotCircle = (tag: string, attributes: Record<string, string>) => tag === 'circle' && Number(attributes.r) <= 1;
 
-function draw(shapes: IconShape[], size: IconSize) {
-  return shapes.map(([tag, attributes, options], index) =>
-    createElement(tag, {
+function draw(shapes: IconShape[], size: IconSize, drawn: boolean | undefined) {
+  return shapes.map(([tag, attributes, options], index) => {
+    const dot = isDotLine(tag, attributes) || isDotCircle(tag, attributes);
+    return createElement(tag, {
       key: index,
       ...attributes,
+      // Drawing in: each line's length counts as 1, so a dash offset of 1 hides it and 0 shows it all. Dots fade instead.
+      ...(drawn !== undefined && !dot && { pathLength: 1 }),
       // A tiny circle only looks solid while the stroke covers its centre; below a 2-unit stroke it shows a hole.
       ...(isDotCircle(tag, attributes) && { fill: 'currentColor' }),
       ...stylex.props(
         isDotLine(tag, attributes) && styles.dotLine,
         tag === 'rect' && styles.rect,
         options?.detail && details[size],
+        drawn !== undefined && (dot ? styles.fade : styles.drawable),
+        drawn === false && (dot ? styles.faded : styles.undrawn),
       ),
-    }),
-  );
+    });
+  });
 }
 
 /*
@@ -101,6 +115,20 @@ const styles = stylex.create({
   dotLine: { strokeLinecap: iconStyle.dotCap },
   // Rectangles inside icons (Copy, CreditCard, Calendar) follow the radius, up to Lucide's own corners.
   rect: { rx: `min(calc(${radius.radiusXs} / 2), 4px)` },
+  drawable: {
+    strokeDasharray: 1,
+    strokeDashoffset: 0,
+    transitionProperty: 'stroke-dashoffset',
+    transitionDuration: { default: duration.fast, '@media (prefers-reduced-motion: reduce)': '0s' },
+    transitionTimingFunction: easing.standard,
+  },
+  undrawn: { strokeDashoffset: 1 },
+  fade: {
+    transitionProperty: 'opacity',
+    transitionDuration: { default: duration.fast, '@media (prefers-reduced-motion: reduce)': '0s' },
+    transitionTimingFunction: easing.standard,
+  },
+  faded: { opacity: 0 },
 });
 
 const sizes = stylex.create({

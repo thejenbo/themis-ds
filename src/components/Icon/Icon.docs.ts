@@ -59,24 +59,31 @@ export default defineComponentDocs({
     ],
   },
 
-  tokens: ['borderWidth/border.width.mandatory', 'radius/border.radius.xs'],
+  tokens: ['borderWidth/border.width.mandatory', 'radius/border.radius.xs', 'motion/duration.fast', 'motion/easing.standard'],
+
+  motion: [
+    {
+      trigger: '`drawn` turns true (or false)',
+      property: 'The lines draw themselves in (or disappear); dots fade',
+      duration: 'motion/duration.fast',
+      easing: 'motion/easing.standard',
+      reducedMotion: 'Appears and disappears instantly.',
+    },
+  ],
 
   figma: {
     componentKey: null,
-    url: null,
-    properties: {},
+    url: 'https://www.figma.com/design/tRoAewIghL1YbnTio6fkkw/Themis-Design-System?node-id=1544-6241',
+    properties: {
+      name: { figmaProperty: 'name', type: 'VARIANT' },
+    },
     differences: [
       {
-        topic: 'Icon set',
-        figma: 'The Icons set holds ten placeholder icons at one size.',
-        code: 'The Themis set of Lucide icons at 12, 16, 20, 24 and 32px, with sharp versions of Settings, Copy, Heart, Folder, Trash and TriangleAlert for radius `none`.',
-        action: 'update-figma',
-      },
-      {
         topic: 'Theming',
-        figma: 'Fixed strokes and corners.',
+        figma: 'Strokes are bound to border/width/mandatory and the round and sharp drawings switch with icon/round and icon/sharp, but Figma can\'t apply the per-size limits (12px instances use a fixed 1.5px) or the lighter "!".',
         code: 'Lines are as thick as `border/width/mandatory` (at least 1.25px, at most 1.5px at 12px, 2px at 16px, 2.25px at 20px, 2.5px at 24px and 2.75px at 32px). With radius `none`, joins turn sharp, line ends flat (dots square), rectangles lose their rounding, and the sharp versions replace their icons.',
         action: 'annotate-figma',
+        done: '2026-11-16',
       },
     ],
   },

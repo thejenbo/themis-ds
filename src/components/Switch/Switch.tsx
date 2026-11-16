@@ -21,6 +21,7 @@ import { pressMotion } from '../../utils/press-motion';
 import { racStyles } from '../../utils/stylex-rac';
 import { touchTarget } from '../../utils/touch-target';
 import { baseStyles, layers } from '../Button/button-base';
+import { Icon, type IconSize } from '../Icon';
 
 export type SwitchSize = 'micro' | 'small' | 'medium';
 export type SwitchLabelPosition = 'right' | 'left';
@@ -107,10 +108,10 @@ export function Switch({
               )}
             >
               <span aria-hidden="true" {...stylex.props(styles.icon, icons[size], styles.iconStart, !s.isSelected && styles.iconHidden)}>
-                <CheckGlyph />
+                <Icon name="check" size={iconSizes[size]} />
               </span>
               <span aria-hidden="true" {...stylex.props(styles.icon, icons[size], styles.iconEnd, s.isSelected && styles.iconHidden)}>
-                <CloseGlyph />
+                <Icon name="x" size={iconSizes[size]} />
               </span>
               <span
                 {...stylex.props(
@@ -155,22 +156,6 @@ export function Switch({
   );
 }
 
-/** Figma's built-in icons: ✓ on the "on" side, × on the "off" side. They scale with the icon box. */
-function CheckGlyph() {
-  return (
-    <svg width="100%" height="100%" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M2.5 8.5 6 12l7.5-8" />
-    </svg>
-  );
-}
-
-function CloseGlyph() {
-  return (
-    <svg width="100%" height="100%" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-      <path d="M3.5 3.5l9 9M12.5 3.5l-9 9" />
-    </svg>
-  );
-}
 
 /*
  * Geometry (Figma, mobile): track 47×24 / 60×32 / 72×40, thumb 16 / 24 / 32, icon 11 / 16 / 20.
@@ -187,6 +172,9 @@ const H = {
   medium: `calc(${font.lineHeightLabel} + 2 * ${spacing.xs})`,
 };
 const ICON = { micro: '0.6875rem', small: '1rem', medium: '1.25rem' };
+// ✓ on the "on" side, × on the "off" side: the Icon closest to each box (micro's 12px icon overhangs its 11px box by
+// half a pixel each side).
+const iconSizes: Record<SwitchSize, IconSize> = { micro: 'xsmall', small: 'small', medium: 'medium' };
 
 const sizes = stylex.create({
   micro: {
@@ -259,6 +247,8 @@ const styles = stylex.create({
     position: 'absolute',
     top: '50%',
     display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     transform: 'translateY(-50%)',
     transitionProperty: 'opacity',
     transitionDuration: { default: duration.base, '@media (prefers-reduced-motion: reduce)': '0s' },

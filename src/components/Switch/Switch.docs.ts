@@ -174,6 +174,6 @@ export default defineComponentDocs({
     'Brand tone only, matching Figma.',
     'Figma\'s `description` variant is a boolean; in code, passing `description` turns it on.',
     'Track height follows Button\'s height for each size: 24/32/40px on every screen.',
-    'The ✓ and × are inline SVGs until the icon library exists.',
+    'The ✓ and × are Themis icons (`check` and `x`, 12, 16 or 20px by size), so they follow the border width and radius like every icon.',
   ],
 });

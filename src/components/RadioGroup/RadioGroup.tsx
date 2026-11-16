@@ -174,7 +174,7 @@ const styles = stylex.create({
     width: circleSize,
     height: circleSize,
     borderStyle: 'solid',
-    borderWidth: borderWidth.widthSm,
+    borderWidth: borderWidth.widthMandatory,
     borderColor: color.border,
     borderRadius: radius.radiusFull,
     backgroundColor: color.background,

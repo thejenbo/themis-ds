@@ -27,7 +27,7 @@ export default defineComponentDocs({
   anatomy: [
     { part: 'Label', description: 'The question (`label`), label style. "(optional)" is added with `isOptional`.', required: true },
     { part: 'Radio Buttons', description: 'The options, 16px apart: stacked (`vertical`) or side by side, wrapping (`horizontal`).', required: true },
-    { part: 'Radio Button', description: 'A 28px circle (border/width/sm in color/border, background fill, a 12px dot when chosen) and its label 8px after it, in the input text style. The whole row is clickable.', required: true },
+    { part: 'Radio Button', description: 'A 28px circle (border/width/mandatory in color/border, so it keeps its border when the border width is none, background fill, a 12px dot when chosen) and its label 8px after it, in the input text style. The whole row is clickable.', required: true },
     { part: 'Description / Error message', description: 'Help text (caption) and the error message, as in TextInput.', required: false },
   ],
 
@@ -79,7 +79,7 @@ export default defineComponentDocs({
     'spacing/spacing.sm',
     'radius/border.radius.sm',
     'radius/border.radius.full',
-    'borderWidth/border.width.sm',
+    'borderWidth/border.width.mandatory',
     'borderWidth/border.width.focus ring',
     'fontTheme/font.family.body',
     'typography/font.size.label',

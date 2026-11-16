@@ -15,7 +15,6 @@ import {
 import { border as borderWidth } from '../../tokens/borderWidth.stylex';
 import { color } from '../../tokens/colorTheme.stylex';
 import { font as fontTheme } from '../../tokens/fontTheme.stylex';
-import { duration, easing } from '../../tokens/motion.stylex';
 import { border as radius } from '../../tokens/radius.stylex';
 import { spacing } from '../../tokens/spacing.stylex';
 import { color as system } from '../../tokens/system.stylex';
@@ -25,6 +24,7 @@ import { interactiveCursor } from '../../utils/interactive-cursor';
 import { pressMotion } from '../../utils/press-motion';
 import { racStyles } from '../../utils/stylex-rac';
 import { touchTarget } from '../../utils/touch-target';
+import { Icon } from '../Icon';
 import { fieldStyles } from '../TextInput/field-base';
 
 export interface CheckboxProps extends Omit<CheckboxFieldProps, 'className' | 'style' | 'children'> {
@@ -66,14 +66,14 @@ export function Checkbox({ children, description, errorMessage, xstyle, ...props
               aria-hidden="true"
               {...stylex.props(styles.box, s.isDisabled && styles.boxDisabled, pressMotion.base, s.isPressed && !s.isDisabled && pressMotion.pressed)}
             >
-              {/* The viewBox frames the check at about 55% of the space inside the border (Figma: 7.8px in 14px). */}
-              <svg viewBox="1.4 1.5 21.2 21.2" fill="none" {...stylex.props(styles.icon)}>
-                {s.isIndeterminate ? (
-                  <path d="M7.75 12h8.5" pathLength={1} {...stylex.props(styles.mark, styles.drawn)} />
-                ) : (
-                  <path d="M6.26 13.87l3.96 3.24 7.68-10" pathLength={1} {...stylex.props(styles.mark, s.isSelected && styles.drawn)} />
-                )}
-              </svg>
+              {/*
+                Themis icons, so the marks follow the border width and radius like every icon. Both stay in the box,
+                stacked, and draw themselves in and out, so changing state never morphs one mark into the other.
+              */}
+              <span {...stylex.props(styles.marks)}>
+                <Icon name="check" drawn={s.isSelected && !s.isIndeterminate} xstyle={styles.mark} />
+                <Icon name="minus" drawn={s.isIndeterminate} xstyle={styles.mark} />
+              </span>
             </span>
             <span {...stylex.props(styles.label, s.isDisabled && styles.labelDisabled)}>{children}</span>
           </>
@@ -110,33 +110,22 @@ const styles = stylex.create({
   // 24px, so it fills the label's first line: border/width/sm in color/border, radius xs, the background fill.
   box: {
     display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     flexShrink: 0,
     boxSizing: 'border-box',
     width: boxSize,
     height: boxSize,
     borderStyle: 'solid',
-    borderWidth: borderWidth.widthSm,
+    borderWidth: borderWidth.widthMandatory,
     borderColor: color.border,
     borderRadius: radius.radiusXs,
     backgroundColor: color.background,
     color: color.backgroundInverse,
   },
+  marks: { display: 'grid' },
+  mark: { gridArea: '1 / 1' },
   boxDisabled: { borderColor: system.borderDisabled, backgroundColor: system.backgroundDisabledInverse, color: system.backgroundDisabledDefault },
-  // The mark fills the space inside the border, so a thicker border (or a rounder box) shrinks it with room to spare.
-  icon: { display: 'block', width: '100%', height: '100%' },
-  // Figma "Check": a 2px rounded stroke. It draws itself in when ticked; under reduced motion it just appears.
-  mark: {
-    stroke: 'currentColor',
-    strokeWidth: 2,
-    strokeLinecap: 'round',
-    strokeLinejoin: 'round',
-    strokeDasharray: 1,
-    strokeDashoffset: 1,
-    transitionProperty: 'stroke-dashoffset',
-    transitionDuration: { default: duration.fast, '@media (prefers-reduced-motion: reduce)': '0s' },
-    transitionTimingFunction: easing.standard,
-  },
-  drawn: { strokeDashoffset: 0 },
   // Figma type/input/base, regular weight like the radio options.
   label: {
     fontFamily: fontTheme.familyBody,

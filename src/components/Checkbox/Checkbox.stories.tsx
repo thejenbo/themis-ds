@@ -135,6 +135,22 @@ export const SelectAll: Story = {
       </div>
     );
   },
+  play: async ({ canvas }) => {
+    const all = canvas.getByRole('checkbox', { name: 'All notifications' });
+    const box = all.closest('label')!;
+    const offset = (name: string) => getComputedStyle(box.querySelector(`svg[data-themis-icon="${name}"] path`)!).strokeDashoffset;
+    // Some ticked: the dash shows, the check doesn't.
+    await expect(offset('minus')).toBe('0px');
+    await expect(offset('check')).toBe('1px');
+    // Untick the last one: the dash draws out, and the check never appears on the way.
+    await userEvent.click(canvas.getByRole('checkbox', { name: 'Mentions' }));
+    await expect(offset('check')).toBe('1px');
+    await waitFor(() => expect(offset('minus')).toBe('1px'));
+    // Tick them all: the check draws in and the dash stays hidden.
+    await userEvent.click(all);
+    await waitFor(() => expect(offset('check')).toBe('0px'));
+    await expect(offset('minus')).toBe('1px');
+  },
 };
 
 /** Next to a RadioGroup: the same label style, spacing and states. */

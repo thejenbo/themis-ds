@@ -54,11 +54,11 @@ export const Gallery: Story = {
   },
 };
 
-const SAMPLE: IconName[] = ['heart', 'check', 'chevron-down', 'triangle-alert', 'settings', 'copy', 'credit-card', 'trash'];
+const SAMPLE: IconName[] = ['heart', 'check', 'chevron-down', 'triangle-alert', 'circle-alert', 'settings', 'copy', 'credit-card', 'trash'];
 
 /**
  * Every border width (down) and radius (across), at 20px. The outlined box at the start of each cell uses
- * `border/width/sm` and `border/radius/md`, to compare the icons with component borders.
+ * `border/width/mandatory` (the width icons draw at) and `border/radius/md`, to compare the icons with component borders.
  */
 export const ThemeModes: Story = {
   render: () => (
@@ -71,7 +71,7 @@ export const ThemeModes: Story = {
           {collectionModes.radius.map((r) => (
             <ThemeProvider key={r} modes={{ borderWidth: w, radius: r }}>
               <div data-testid={`cell-${w}-${r}`} style={{ display: 'flex', gap: 8, alignItems: 'center', padding: 8 }}>
-                <span style={{ width: 20, height: 20, border: `${borderWidth.widthSm} solid currentColor`, borderRadius: radius.radiusMd }} />
+                <span style={{ width: 20, height: 20, border: `${borderWidth.widthMandatory} solid currentColor`, borderRadius: radius.radiusMd }} />
                 {SAMPLE.map((name) => <Icon key={name} name={name} size="medium" />)}
               </div>
             </ThemeProvider>
@@ -91,6 +91,9 @@ export const ThemeModes: Story = {
     // …dots keep square ends so they don't vanish…
     const dot = icon('medium', 'none', 'triangle-alert').querySelector('g:last-child path[d$="h.01"]') as SVGElement;
     await expect(getComputedStyle(dot).strokeLinecap).toBe('square');
+    // …including dots drawn as a 0.01-long line (circle-alert)…
+    const lineDot = icon('medium', 'none', 'circle-alert').querySelector('line[x2="12.01"]') as SVGElement;
+    await expect(getComputedStyle(lineDot).strokeLinecap).toBe('square');
     // …rectangles lose their rounding…
     await expect(getComputedStyle(icon('medium', 'none', 'credit-card').querySelector('rect')!).rx).toBe('0px');
     // …and icons with a hand-drawn sharp version swap to it.
