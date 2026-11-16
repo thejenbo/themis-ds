@@ -23,6 +23,7 @@ import { interactiveCursor } from '../../utils/interactive-cursor';
 import { pressMotion } from '../../utils/press-motion';
 import { racStyles } from '../../utils/stylex-rac';
 import { fieldStyles } from '../TextInput/field-base';
+import { Icon } from '../Icon';
 
 interface NumberInputBaseProps extends Omit<NumberFieldProps, 'className' | 'style' | 'children'> {
   /** Shown in the box while it's empty, e.g. "0". A hint, never a replacement for the label. */
@@ -103,14 +104,14 @@ export function NumberInput({
               <Button slot="increment" aria-label={stepperLabels.increment} data-themis-touch-target="" {...racStyles<ButtonRenderProps>((b) => stepperStyles(b, 'up'))}>
                 {({ isPressed }) => (
                   <span aria-hidden="true" {...stylex.props(styles.chevron, pressMotion.base, isPressed && pressMotion.pressed)}>
-                    <ChevronIcon direction="up" />
+                    <Icon name="chevron-up" />
                   </span>
                 )}
               </Button>
               <Button slot="decrement" aria-label={stepperLabels.decrement} data-themis-touch-target="" {...racStyles<ButtonRenderProps>((b) => stepperStyles(b, 'down'))}>
                 {({ isPressed }) => (
                   <span aria-hidden="true" {...stylex.props(styles.chevron, pressMotion.base, isPressed && pressMotion.pressed)}>
-                    <ChevronIcon direction="down" />
+                    <Icon name="chevron-down" />
                   </span>
                 )}
               </Button>
@@ -140,14 +141,6 @@ function stepperStyles(b: ButtonRenderProps, direction: 'up' | 'down') {
   ];
 }
 
-/** Placeholder chevrons until the icon library exists. Together they make Figma's 6×18 up/down icon. */
-function ChevronIcon({ direction }: { direction: 'up' | 'down' }) {
-  return (
-    <svg width="10" height="6" viewBox="0 0 10 6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d={direction === 'up' ? 'M1.5 4.75L5 1.25l3.5 3.5' : 'M1.5 1.25L5 4.75l3.5-3.5'} />
-    </svg>
-  );
-}
 
 // The box's padding above and below the text (8px less the border), which the buttons reach into.
 const boxPaddingBlock = `calc(${spacing.xs} - ${borderWidth.widthMandatory})`;
@@ -181,7 +174,9 @@ const styles = stylex.create({
   down: { alignItems: 'flex-start', paddingTop: '0.25rem' },
   // Figma: the icon goes background-disabled-default when disabled, as Select's caret does; also at min/max.
   stepperDisabled: { color: system.backgroundDisabledDefault },
-  chevron: { display: 'inline-flex' },
+  // A 6px-tall slot, the height of the chevron itself, so the up and down chevrons sit close together as one
+  // up/down icon (Figma's 6×18). The 16px icon overflows it evenly.
+  chevron: { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', height: '0.375rem' },
 });
 
 /**

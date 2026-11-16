@@ -22,6 +22,7 @@ import { font } from '../../tokens/typography.stylex';
 import { focusRing } from '../../utils/focus-ring';
 import { racStyles } from '../../utils/stylex-rac';
 import { IconButton } from '../IconButton';
+import { Icon } from '../Icon';
 
 export type ModalSize = 'small' | 'medium' | 'large';
 export type ModalTone = 'brand' | 'danger';
@@ -128,7 +129,7 @@ export function Modal({
                   </Heading>
                   {showCloseButton && (
                     <IconButton size="micro" variant="subtle" tone="neutral-inverse" aria-label={closeLabel} onPress={close}>
-                      <CloseGlyph />
+                      <Icon name="x" />
                     </IconButton>
                   )}
                 </div>
@@ -149,7 +150,7 @@ export function Modal({
                     <>
                       <div {...stylex.props(styles.contentInner)}>{children}</div>
                       <IconButton size="micro" variant="subtle" tone="neutral" aria-label={closeLabel} onPress={close}>
-                        <CloseGlyph />
+                        <Icon name="x" />
                       </IconButton>
                     </>
                   ) : (
@@ -195,13 +196,6 @@ function useScrollableRegion() {
  */
 export const ModalTrigger = DialogTrigger;
 
-function CloseGlyph() {
-  return (
-    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-      <path d="M1.5 1.5l9 9M10.5 1.5l-9 9" />
-    </svg>
-  );
-}
 
 const fade = stylex.keyframes({ from: { opacity: 0 }, to: { opacity: 1 } });
 const fadeAway = stylex.keyframes({ from: { opacity: 1 }, to: { opacity: 0 } });

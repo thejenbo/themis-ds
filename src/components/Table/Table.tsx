@@ -14,6 +14,7 @@ import { font } from '../../tokens/typography.stylex';
 import { focusRing } from '../../utils/focus-ring';
 import { racStyles } from '../../utils/stylex-rac';
 import { fieldStyles } from '../TextInput/field-base';
+import { Icon } from '../Icon';
 
 export type { SortDescriptor };
 
@@ -144,7 +145,7 @@ export function Column({ id, children, allowsSorting = false, hideLabel = false,
                   direction == null && (s.isHovered || s.isFocusVisible) && styles.sortHintShown,
                 )}
               >
-                {direction === 'descending' ? <ArrowDown /> : <ArrowUp />}
+                <Icon name={direction === 'descending' ? 'arrow-down' : 'arrow-up'} />
               </span>
             </>
           )}
@@ -269,21 +270,6 @@ function RowActionButton({ children, onPress, onFocusVisibleChange }: { children
   );
 }
 
-/** Figma "arrow-up" / "arrow-down": 14px in a 24px box, the label's line height. */
-function ArrowUp() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M7 12.25V1.75M2.75 6 7 1.75 11.25 6" />
-    </svg>
-  );
-}
-function ArrowDown() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M7 1.75v10.5M2.75 8 7 12.25 11.25 8" />
-    </svg>
-  );
-}
 
 const styles = stylex.create({
   // Figma "Table": border/width/mandatory in color/border all round, radius md, so the table keeps its edge when

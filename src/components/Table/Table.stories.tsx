@@ -8,6 +8,7 @@ import { collectionModes } from '../../tokens/themes';
 import { ActionMenu, ActionMenuItem, ActionMenuTrigger } from '../ActionMenu';
 import { IconButton } from '../IconButton';
 import { Cell, Column, Row, Table, TableBody, TableHeader } from './Table';
+import { Icon } from '../Icon';
 import docs from './Table.docs';
 
 interface Project {
@@ -27,21 +28,11 @@ const PROJECTS: Project[] = [
 
 const formatDate = (iso: string) => new Date(`${iso}T12:00:00`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 
-function MoreIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-      <circle cx="8" cy="3" r="1.5" />
-      <circle cx="8" cy="8" r="1.5" />
-      <circle cx="8" cy="13" r="1.5" />
-    </svg>
-  );
-}
-
 function RowActions({ project }: { project: Project }) {
   return (
     <ActionMenuTrigger>
       <IconButton aria-label={`Actions for ${project.name}`} variant="subtle" size="micro">
-        <MoreIcon />
+        <Icon name="ellipsis-vertical" />
       </IconButton>
       <ActionMenu placement="bottom end">
         <ActionMenuItem>Rename</ActionMenuItem>

@@ -3,13 +3,13 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { ReactNode } from 'react';
 import { expect, fn, userEvent } from 'storybook/test';
 
-import { HeartIcon } from '../../docs/demo-icons';
 import { ThemeProvider } from '../../theme/ThemeProvider';
 import { color } from '../../tokens/colorTheme.stylex';
 import { collectionModes } from '../../tokens/themes';
 import { Button } from '../Button';
 import type { ButtonTone } from '../Button';
 import { IconButton, type IconButtonProps, type IconButtonSize, type IconButtonVariant } from './IconButton';
+import { Icon } from '../Icon';
 import docs from './IconButton.docs';
 
 const VARIANTS: IconButtonVariant[] = ['default', 'outline', 'subtle'];
@@ -33,7 +33,7 @@ const meta = {
   },
   args: {
     'aria-label': 'Add to favourites',
-    children: <HeartIcon />,
+    children: <Icon name="heart" />,
     onPress: fn(),
   },
   argTypes: {

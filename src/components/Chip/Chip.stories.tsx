@@ -4,6 +4,7 @@ import { expect } from 'storybook/test';
 import { ThemeProvider } from '../../theme/ThemeProvider';
 import { collectionModes } from '../../tokens/themes';
 import { Chip, type ChipTone, type ChipVariant } from './Chip';
+import { Icon } from '../Icon';
 import docs from './Chip.docs';
 
 const TONES: ChipTone[] = ['neutral', 'brand', 'success', 'warning', 'danger'];
@@ -17,13 +18,6 @@ const LABELS: Record<ChipTone, string> = {
 };
 
 /** Placeholder icon until the icon library exists, drawn at Figma's size (about 9×8). */
-function HeartIcon() {
-  return (
-    <svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round">
-      <path d="M8 14s-6-3.6-6-8a3.5 3.5 0 016-2.4A3.5 3.5 0 0114 6c0 4.4-6 8-6 8z" />
-    </svg>
-  );
-}
 
 const meta = {
   title: 'Data display/Chip',
@@ -62,10 +56,10 @@ export const Gallery: Story = {
             <Chip tone={tone} variant={variant}>
               {LABELS[tone]}
             </Chip>
-            <Chip tone={tone} variant={variant} iconLeft={<HeartIcon />}>
+            <Chip tone={tone} variant={variant} iconLeft={<Icon name="heart" size="xsmall" />}>
               {LABELS[tone]}
             </Chip>
-            <Chip tone={tone} variant={variant} iconRight={<HeartIcon />}>
+            <Chip tone={tone} variant={variant} iconRight={<Icon name="heart" size="xsmall" />}>
               {LABELS[tone]}
             </Chip>
             <span />

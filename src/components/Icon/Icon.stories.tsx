@@ -12,7 +12,7 @@ import { Icon, type IconName, type IconSize, iconNames } from './Icon';
 import docs from './Icon.docs';
 import { iconSet } from './icon-set';
 
-const SIZES: IconSize[] = ['small', 'medium', 'large', 'xlarge'];
+const SIZES: IconSize[] = ['xsmall', 'small', 'medium', 'large', 'xlarge'];
 const SHARP_NAMES = iconNames.filter((name) => 'sharp' in iconSet[name]);
 const caption = { fontSize: 12, opacity: 0.7 } as const;
 
@@ -31,7 +31,7 @@ type Story = StoryObj<typeof meta>;
 /** Use the controls for every prop, and the toolbar's `borderWidth` and `radius` to see the icon follow the theme. */
 export const Playground: Story = {};
 
-/** The whole Themis set at 16, 20, 24 and 32px. Follows the toolbar's `borderWidth` and `radius`. */
+/** The whole Themis set at 12, 16, 20, 24 and 32px. Follows the toolbar's `borderWidth` and `radius`. */
 export const Gallery: Story = {
   render: () => (
     <div style={{ display: 'grid', gridTemplateColumns: `160px repeat(${SIZES.length}, 48px)`, gap: 12, alignItems: 'center' }}>
@@ -47,7 +47,7 @@ export const Gallery: Story = {
   ),
   play: async ({ canvasElement }) => {
     const sizeOf = (size: number) => canvasElement.querySelectorAll('svg[data-themis-icon="heart"]')[size]!.getBoundingClientRect().width;
-    await expect([0, 1, 2, 3].map(sizeOf)).toEqual([16, 20, 24, 32]);
+    await expect([0, 1, 2, 3, 4].map(sizeOf)).toEqual([12, 16, 20, 24, 32]);
     // Dots drawn as tiny circles are filled, so they stay solid with thin strokes.
     const dot = canvasElement.querySelector('svg[data-themis-icon="ellipsis-vertical"] circle') as SVGElement;
     await expect(getComputedStyle(dot).fill).not.toBe('none');

@@ -9,14 +9,14 @@ import { type IconName, type IconShape, iconSet } from './icon-set';
 export type { IconName } from './icon-set';
 export { iconNames } from './icon-set';
 
-export type IconSize = 'small' | 'medium' | 'large' | 'xlarge';
+export type IconSize = 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge';
 
 export interface IconProps {
   /** Which icon. The Themis set is a chosen subset of Lucide, under Lucide's names (see the Gallery story). */
   name: IconName;
   /**
-   * 16, 20, 24 or 32px (in rem, so it follows the text size setting). Icons next to labels in Button, IconButton and
-   * inputs are `small`.
+   * 12, 16, 20, 24 or 32px (in rem, so it follows the text size setting). Icons next to labels in Button, IconButton and
+   * inputs are `small`; Chip's are `xsmall`.
    * @default 'small'
    */
   size?: IconSize;
@@ -31,9 +31,9 @@ export interface IconProps {
 }
 
 /**
- * An icon from the Themis set, drawn in the current text colour. Its lines follow the theme: the stroke follows the
- * border width (`border/width/mandatory`, kept between 1.5 and 2.75 on the 24px grid so icons never fade or clog), and
- * with radius `none` corners turn sharp, line ends flat, and a few icons switch to hand-drawn sharp versions.
+ * An icon from the Themis set, drawn in the current text colour. Its lines follow the theme: they're as thick as the
+ * component borders (`border/width/mandatory`, from 1.25px up to a cap per size so small icons never clog), and with
+ * radius `none` corners turn sharp, line ends flat, and a few icons switch to hand-drawn sharp versions.
  */
 export function Icon({ name, size = 'small', 'aria-label': ariaLabel, xstyle }: IconProps) {
   const { shapes, sharp } = iconSet[name] as { shapes: IconShape[]; sharp?: IconShape[] };
@@ -50,11 +50,11 @@ export function Icon({ name, size = 'small', 'aria-label': ariaLabel, xstyle }: 
     >
       {sharp ? (
         <>
-          <g {...stylex.props(styles.round)}>{draw(shapes)}</g>
-          <g {...stylex.props(styles.sharp)}>{draw(sharp)}</g>
+          <g {...stylex.props(styles.round)}>{draw(shapes, size)}</g>
+          <g {...stylex.props(styles.sharp)}>{draw(sharp, size)}</g>
         </>
       ) : (
-        draw(shapes)
+        draw(shapes, size)
       )}
     </svg>
   );
@@ -64,7 +64,7 @@ export function Icon({ name, size = 'small', 'aria-label': ariaLabel, xstyle }: 
 const isDotLine = (tag: string, attributes: Record<string, string>) => tag === 'path' && /[hv]\.01$/.test(attributes.d ?? '');
 const isDotCircle = (tag: string, attributes: Record<string, string>) => tag === 'circle' && Number(attributes.r) <= 1;
 
-function draw(shapes: IconShape[]) {
+function draw(shapes: IconShape[], size: IconSize) {
   return shapes.map(([tag, attributes, options], index) =>
     createElement(tag, {
       key: index,
@@ -74,20 +74,24 @@ function draw(shapes: IconShape[]) {
       ...stylex.props(
         isDotLine(tag, attributes) && styles.dotLine,
         tag === 'rect' && styles.rect,
-        options?.detail && styles.detail,
+        options?.detail && details[size],
       ),
     }),
   );
 }
 
-// On the 24 × 24 grid, so it scales with the icon (16px icons get two thirds of it).
-const STROKE = `clamp(1.5px, ${borderWidth.widthMandatory}, 2.75px)`;
+/*
+ * Line weight. Icons draw their lines as thick as the component borders (`border/width/mandatory`) at every size, so
+ * an icon reads as part of the component it sits in. Each size has a cap, so large borders don't crowd small icons,
+ * and a floor of 1.25px for the thin border modes. The 24 × 24 grid is scaled to the icon's size, so each pixel value
+ * is converted to grid units (× 24 / size).
+ */
+const stroke = (cap: string, units: number) => `calc(clamp(1.25px, ${borderWidth.widthMandatory}, ${cap}) * ${units})`;
 
 const styles = stylex.create({
   icon: {
     flexShrink: 0,
     verticalAlign: 'middle',
-    strokeWidth: STROKE,
     strokeLinejoin: iconStyle.join,
     strokeLinecap: iconStyle.cap,
   },
@@ -97,12 +101,21 @@ const styles = stylex.create({
   dotLine: { strokeLinecap: iconStyle.dotCap },
   // Rectangles inside icons (Copy, CreditCard, Calendar) follow the radius, up to Lucide's own corners.
   rect: { rx: `min(calc(${radius.radiusXs} / 2), 4px)` },
-  detail: { strokeWidth: `min(${STROKE}, 2px)` },
 });
 
 const sizes = stylex.create({
-  small: { width: '1rem', height: '1rem' },
-  medium: { width: '1.25rem', height: '1.25rem' },
-  large: { width: '1.5rem', height: '1.5rem' },
-  xlarge: { width: '2rem', height: '2rem' },
+  xsmall: { width: '0.75rem', height: '0.75rem', strokeWidth: stroke('1.5px', 2) },
+  small: { width: '1rem', height: '1rem', strokeWidth: stroke('2px', 1.5) },
+  medium: { width: '1.25rem', height: '1.25rem', strokeWidth: stroke('2.25px', 1.2) },
+  large: { width: '1.5rem', height: '1.5rem', strokeWidth: stroke('2.5px', 1) },
+  xlarge: { width: '2rem', height: '2rem', strokeWidth: stroke('2.75px', 0.75) },
+});
+
+/** Small marks inside an outline (TriangleAlert's "!") are at most 2 grid units, so they keep clear of thick outlines. */
+const details = stylex.create({
+  xsmall: { strokeWidth: `min(${stroke('1.5px', 2)}, 2px)` },
+  small: { strokeWidth: `min(${stroke('2px', 1.5)}, 2px)` },
+  medium: { strokeWidth: `min(${stroke('2.25px', 1.2)}, 2px)` },
+  large: { strokeWidth: `min(${stroke('2.5px', 1)}, 2px)` },
+  xlarge: { strokeWidth: `min(${stroke('2.75px', 0.75)}, 2px)` },
 });

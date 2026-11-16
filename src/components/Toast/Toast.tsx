@@ -25,6 +25,7 @@ import { focusRing } from '../../utils/focus-ring';
 import { racStyles } from '../../utils/stylex-rac';
 import { Button, type ButtonTone } from '../Button';
 import { IconButton } from '../IconButton';
+import { Icon, type IconName } from '../Icon';
 
 /*
  * React Aria's toast API is still marked UNSTABLE. It is only used in this file, behind Themis's own API
@@ -262,7 +263,7 @@ export function Toast({ tone = 'info', title, description, icon, action, showClo
   const region = useContext(RegionContext);
   if (!region) throw new Error('Toast: show toasts with toast.show() and render a <ToastRegion />.');
   const { queued, close, closeLabel, statusLabels, from } = region;
-  const iconNode = icon === true || (icon === undefined && tone !== 'brand') ? <StatusIcon tone={tone} /> : icon || null;
+  const iconNode = icon === true || (icon === undefined && tone !== 'brand') ? <Icon name={statusIcons[tone]} /> : icon || null;
   const status = statusLabels[tone];
   const prefix = status ? <span {...stylex.props(styles.visuallyHidden)}>{`${status}: `}</span> : null;
   const iconSlot = iconNode ? (
@@ -331,7 +332,7 @@ export function Toast({ tone = 'info', title, description, icon, action, showClo
         {showCloseButton && (
           <span {...stylex.props(styles.closeSlot, title == null && styles.closeCentered)}>
             <IconButton slot="close" size="micro" variant="subtle" tone={closeTone[tone]} aria-label={closeLabel}>
-              <CloseIcon />
+              <Icon name="x" />
             </IconButton>
           </span>
         )}
@@ -340,42 +341,14 @@ export function Toast({ tone = 'info', title, description, icon, action, showClo
   );
 }
 
-/** Placeholder status icons, until the icon library exists. */
-function StatusIcon({ tone }: { tone: ToastTone }) {
-  return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      {tone === 'success' ? (
-        <>
-          <circle cx="8" cy="8" r="6.75" />
-          <path d="M5 8.25l2 2 4-4.25" />
-        </>
-      ) : tone === 'warning' ? (
-        <>
-          <path d="M8 1.75L14.75 13.75H1.25Z" />
-          <path d="M8 6.25v3.5M8 11.75v.01" />
-        </>
-      ) : tone === 'danger' ? (
-        <>
-          <circle cx="8" cy="8" r="6.75" />
-          <path d="M8 4.5v4M8 11v.01" />
-        </>
-      ) : (
-        <>
-          <circle cx="8" cy="8" r="6.75" />
-          <path d="M8 7.25v4M8 4.75v.01" />
-        </>
-      )}
-    </svg>
-  );
-}
-
-function CloseIcon() {
-  return (
-    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-      <path d="M1.5 1.5l9 9M10.5 1.5l-9 9" />
-    </svg>
-  );
-}
+/** The icon each tone shows by default. Brand has none. */
+const statusIcons: Record<ToastTone, IconName> = {
+  info: 'info',
+  brand: 'info',
+  danger: 'circle-alert',
+  warning: 'triangle-alert',
+  success: 'circle-check',
+};
 
 // Same breakpoint as the typography tokens' mobile mode.
 const NARROW = '@media (width < 48em)';

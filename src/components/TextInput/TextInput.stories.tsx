@@ -7,18 +7,12 @@ import { ThemeProvider } from '../../theme/ThemeProvider';
 import { collectionModes } from '../../tokens/themes';
 import { Button } from '../Button';
 import { TextInput } from './TextInput';
+import { Icon } from '../Icon';
 import docs from './TextInput.docs';
 
 const column = { display: 'grid', gap: 24, maxWidth: 320 } as const;
 
 /** Placeholder icon until the icon library exists. */
-function CheckIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M2 7.5l3.2 3L12 3.5" />
-    </svg>
-  );
-}
 
 const meta = {
   title: 'Inputs/TextInput',
@@ -48,7 +42,7 @@ export const States: Story = {
       <TextInput label="Empty" placeholder="placeholder" />
       <TextInput label="Filled" defaultValue="input content" />
       <TextInput label="With help and count" defaultValue="input content" description="here's some helpful context!" characterLimit={150} />
-      <TextInput label="With icon" defaultValue="input content" icon={<CheckIcon />} />
+      <TextInput label="With icon" defaultValue="input content" icon={<Icon name="check" />} />
       <TextInput label="Invalid" defaultValue="input content" isInvalid errorMessage="a helpful error message :-)" description="here's some helpful context!" />
       <TextInput label="Over the limit" defaultValue="This title is far too long" characterLimit={10} description="here's some helpful context!" />
       <TextInput label="Disabled" defaultValue="input content" isDisabled description="here's some helpful context!" />

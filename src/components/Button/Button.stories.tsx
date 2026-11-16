@@ -2,10 +2,10 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { ReactNode } from 'react';
 import { expect, fn, userEvent, waitFor } from 'storybook/test';
 
-import { HeartIcon } from '../../docs/demo-icons';
 import { ThemeProvider } from '../../theme/ThemeProvider';
 import { collectionModes } from '../../tokens/themes';
 import { Button, type ButtonSize, type ButtonTone, type ButtonVariant } from './Button';
+import { Icon } from '../Icon';
 import docs from './Button.docs';
 
 
@@ -70,7 +70,7 @@ export const Tones: Story = {
       {TONES.map((tone) => (
         <div key={tone}>
           {row(VARIANTS.map((v) => (
-            <Button key={v} {...args} tone={tone} variant={v} iconLeft={<HeartIcon />}>
+            <Button key={v} {...args} tone={tone} variant={v} iconLeft={<Icon name="heart" />}>
               {tone[0]!.toUpperCase() + tone.slice(1)} {v}
             </Button>
           )))}
@@ -85,10 +85,10 @@ export const WithIcons: Story = {
   render: (args) =>
     row(
       <>
-        <Button {...args} iconLeft={<HeartIcon />}>Save</Button>
-        <Button {...args} iconRight={<HeartIcon />}>Save</Button>
-        <Button {...args} variant="outline" iconLeft={<HeartIcon />}>Save</Button>
-        <Button {...args} variant="subtle" iconRight={<HeartIcon />}>Save</Button>
+        <Button {...args} iconLeft={<Icon name="heart" />}>Save</Button>
+        <Button {...args} iconRight={<Icon name="heart" />}>Save</Button>
+        <Button {...args} variant="outline" iconLeft={<Icon name="heart" />}>Save</Button>
+        <Button {...args} variant="subtle" iconRight={<Icon name="heart" />}>Save</Button>
       </>,
     ),
   play: async ({ canvas }) => {
@@ -116,8 +116,8 @@ export const ThemeMatrix: Story = {
                   {row(
                     <>
                       <Button {...args} size={size} variant={variant}>Click me</Button>
-                      <Button {...args} size={size} variant={variant} iconRight={<HeartIcon />}>Click me</Button>
-                      <Button {...args} size={size} variant={variant} iconLeft={<HeartIcon />}>Click me</Button>
+                      <Button {...args} size={size} variant={variant} iconRight={<Icon name="heart" />}>Click me</Button>
+                      <Button {...args} size={size} variant={variant} iconLeft={<Icon name="heart" />}>Click me</Button>
                       <Button {...args} size={size} variant={variant} isDisabled>Click me</Button>
                     </>,
                   )}
@@ -201,8 +201,8 @@ export const StatusToneColour: Story = {
   tags: ['test-only', '!autodocs'],
   render: (args) => row(
     <>
-      <Button {...args} tone="danger" variant="outline" iconLeft={<HeartIcon />}>Delete</Button>
-      <Button {...args} tone="danger" variant="outline" iconLeft={<HeartIcon />} isDisabled>Delete disabled</Button>
+      <Button {...args} tone="danger" variant="outline" iconLeft={<Icon name="trash" />}>Delete</Button>
+      <Button {...args} tone="danger" variant="outline" iconLeft={<Icon name="heart" />} isDisabled>Delete disabled</Button>
     </>,
   ),
   play: async ({ canvas }) => {

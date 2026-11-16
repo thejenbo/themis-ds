@@ -21,11 +21,12 @@ export default defineComponentDocs({
   },
 
   anatomy: [
-    { part: 'Icon', description: 'A 24 × 24 line drawing scaled to 16, 20, 24 or 32px, in the current text colour (`currentColor`).', required: true },
+    { part: 'Icon', description: 'A 24 × 24 line drawing scaled to 12, 16, 20, 24 or 32px, in the current text colour (`currentColor`).', required: true },
   ],
 
   variants: {
     size: {
+      xsmall: '12px. In Chip, next to caption-size text.',
       small: '16px. Next to labels and in IconButton. The default.',
       medium: '20px.',
       large: '24px.',
@@ -68,13 +69,13 @@ export default defineComponentDocs({
       {
         topic: 'Icon set',
         figma: 'The Icons set holds ten placeholder icons at one size.',
-        code: 'The Themis set of Lucide icons at 16, 20, 24 and 32px, with sharp versions of Settings, Copy, Heart, Folder, Trash and TriangleAlert for radius `none`.',
+        code: 'The Themis set of Lucide icons at 12, 16, 20, 24 and 32px, with sharp versions of Settings, Copy, Heart, Folder, Trash and TriangleAlert for radius `none`.',
         action: 'update-figma',
       },
       {
         topic: 'Theming',
         figma: 'Fixed strokes and corners.',
-        code: 'The stroke follows `border/width/mandatory` (kept between 1.5 and 2.75 on the 24px grid). With radius `none`, joins turn sharp, line ends flat (dots square), rectangles lose their rounding, and the sharp versions replace their icons.',
+        code: 'Lines are as thick as `border/width/mandatory` (at least 1.25px, at most 1.5px at 12px, 2px at 16px, 2.25px at 20px, 2.5px at 24px and 2.75px at 32px). With radius `none`, joins turn sharp, line ends flat (dots square), rectangles lose their rounding, and the sharp versions replace their icons.',
         action: 'annotate-figma',
       },
     ],
@@ -83,6 +84,7 @@ export default defineComponentDocs({
   related: ['Button', 'IconButton'],
   notes: [
     'Icons are drawn from Lucide\'s shape data (https://lucide.dev, ISC licence), not from Lucide\'s React components, so Themis controls every line.',
-    'Small marks inside an outline (TriangleAlert\'s "!") stay at most the medium weight, so they keep clear of thick outlines.',
+    'Small marks inside an outline (TriangleAlert\'s "!") are at most 2 grid units thick, so they keep clear of thick outlines.',
+    '`caret-down` is drawn for Themis (it isn\'t in Lucide): the wider arrow on Select, ComboBox and UnitInput triggers.',
   ],
 });

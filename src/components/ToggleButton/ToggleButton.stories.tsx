@@ -2,11 +2,11 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { type ReactNode, useState } from 'react';
 import { expect, fn, userEvent } from 'storybook/test';
 
-import { CheckIcon } from '../../docs/demo-icons';
 import { ThemeProvider } from '../../theme/ThemeProvider';
 import { collectionModes } from '../../tokens/themes';
 import { Button } from '../Button';
 import { ToggleButton, type ToggleButtonSize } from './ToggleButton';
+import { Icon } from '../Icon';
 import docs from './ToggleButton.docs';
 
 const SIZES: ToggleButtonSize[] = ['micro', 'small', 'medium'];
@@ -104,10 +104,10 @@ export const WithIcons: Story = {
   render: (args) =>
     row(
       <>
-        <ToggleButton {...args} iconLeft={<CheckIcon />}>
+        <ToggleButton {...args} iconLeft={<Icon name="check" />}>
           Icon left
         </ToggleButton>
-        <ToggleButton {...args} iconRight={<CheckIcon />} defaultSelected>
+        <ToggleButton {...args} iconRight={<Icon name="check" />} defaultSelected>
           Icon right
         </ToggleButton>
       </>,

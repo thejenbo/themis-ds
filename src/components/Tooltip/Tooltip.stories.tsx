@@ -6,17 +6,10 @@ import { collectionModes } from '../../tokens/themes';
 import { Button } from '../Button';
 import { IconButton } from '../IconButton';
 import { Tooltip, type TooltipPlacement, TooltipTrigger } from './Tooltip';
+import { Icon } from '../Icon';
 import docs from './Tooltip.docs';
 
 const PLACEMENTS: TooltipPlacement[] = ['top', 'bottom', 'left', 'right', 'top start', 'top end', 'bottom start', 'bottom end'];
-
-function LinkIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-      <path d="M6.5 9.5l3-3M7 4.5l1-1a2.8 2.8 0 014 4l-1 1M9 11.5l-1 1a2.8 2.8 0 01-4-4l1-1" />
-    </svg>
-  );
-}
 
 const centre = { display: 'grid', placeItems: 'center', minHeight: 260 } as const;
 
@@ -39,7 +32,7 @@ const meta = {
     <div style={centre}>
       <TooltipTrigger>
         <IconButton aria-label="Copy link" variant="outline">
-          <LinkIcon />
+          <Icon name="copy" />
         </IconButton>
         <Tooltip {...args} />
       </TooltipTrigger>
@@ -59,7 +52,7 @@ export const Open: Story = {
   render: (args) => (
     <div style={centre}>
       <TooltipTrigger defaultOpen>
-        <Button variant="outline" iconLeft={<LinkIcon />}>
+        <Button variant="outline" iconLeft={<Icon name="copy" />}>
           Share
         </Button>
         <Tooltip {...args} />

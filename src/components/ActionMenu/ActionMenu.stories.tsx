@@ -6,41 +6,26 @@ import { collectionModes } from '../../tokens/themes';
 import { Button } from '../Button';
 import { IconButton } from '../IconButton';
 import { ActionMenu, ActionMenuItem, ActionMenuTrigger } from './ActionMenu';
+import { Icon } from '../Icon';
 import docs from './ActionMenu.docs';
 
 /** The first argument of the last call to a mock (React Aria also passes a second, undefined argument). */
 const lastActionKey = (mock: unknown) => (mock as { mock: { lastCall?: unknown[] } }).mock.lastCall?.[0];
 
 /** Placeholder icons until the icon library exists. */
-function MoreIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-      <circle cx="8" cy="3" r="1.5" />
-      <circle cx="8" cy="8" r="1.5" />
-      <circle cx="8" cy="13" r="1.5" />
-    </svg>
-  );
-}
-function HeartIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round">
-      <path d="M8 14s-6-3.6-6-8a3.5 3.5 0 016-2.4A3.5 3.5 0 0114 6c0 4.4-6 8-6 8z" />
-    </svg>
-  );
-}
 
 const items = (
   <>
-    <ActionMenuItem id="rename" icon={<HeartIcon />}>
+    <ActionMenuItem id="rename" icon={<Icon name="heart" />}>
       Rename
     </ActionMenuItem>
-    <ActionMenuItem id="duplicate" icon={<HeartIcon />}>
+    <ActionMenuItem id="duplicate" icon={<Icon name="copy" />}>
       Duplicate
     </ActionMenuItem>
-    <ActionMenuItem id="archive" icon={<HeartIcon />} isDisabled>
+    <ActionMenuItem id="archive" icon={<Icon name="folder" />} isDisabled>
       Archive
     </ActionMenuItem>
-    <ActionMenuItem id="delete" icon={<HeartIcon />} isDanger>
+    <ActionMenuItem id="delete" icon={<Icon name="trash" />} isDanger>
       Delete
     </ActionMenuItem>
   </>
@@ -64,7 +49,7 @@ const meta = {
     <div style={{ minHeight: 240 }}>
       <ActionMenuTrigger>
         <IconButton aria-label="Actions for Website redesign" variant="subtle" size="micro">
-          <MoreIcon />
+          <Icon name="ellipsis-vertical" />
         </IconButton>
         <ActionMenu {...args} />
       </ActionMenuTrigger>
@@ -84,7 +69,7 @@ export const Open: Story = {
     <div style={{ minHeight: 240 }}>
       <ActionMenuTrigger defaultOpen>
         <IconButton aria-label="Actions for Website redesign" variant="subtle" size="micro">
-          <MoreIcon />
+          <Icon name="ellipsis-vertical" />
         </IconButton>
         <ActionMenu {...args} />
       </ActionMenuTrigger>
@@ -187,7 +172,7 @@ export const ThemeMatrix: Story = {
             <strong>{theme}</strong>
             <ActionMenuTrigger defaultOpen>
               <IconButton aria-label={`Actions (${theme})`} variant="subtle" size="micro">
-                <MoreIcon />
+                <Icon name="ellipsis-vertical" />
               </IconButton>
               <ActionMenu {...args} />
             </ActionMenuTrigger>

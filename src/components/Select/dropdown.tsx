@@ -23,6 +23,7 @@ import { font } from '../../tokens/typography.stylex';
 import { focusRing } from '../../utils/focus-ring';
 import { interactiveCursor } from '../../utils/interactive-cursor';
 import { racStyles } from '../../utils/stylex-rac';
+import { Icon } from '../Icon';
 
 /**
  * Figma "Dropdown" and "Dropdown Option", shared by Select and ComboBox so the two lists can't drift apart.
@@ -86,7 +87,7 @@ export function DropdownItem({ children, textValue, ...props }: DropdownItemProp
           <span {...stylex.props(styles.optionLabel)}>{children}</span>
           {s.isSelected && (
             <span aria-hidden="true" {...stylex.props(styles.check)}>
-              <CheckIcon />
+              <Icon name="check" />
             </span>
           )}
         </>
@@ -95,20 +96,9 @@ export function DropdownItem({ children, textValue, ...props }: DropdownItemProp
   );
 }
 
-/** Placeholder icons until the icon library exists. */
+/** The trigger's chevron (Figma "caret-down"). */
 export function CaretIcon() {
-  return (
-    <svg width="12" height="8" viewBox="0 0 12 8" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M1.5 1.75L6 6.25l4.5-4.5" />
-    </svg>
-  );
-}
-function CheckIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M2 7.5l3.2 3L12 3.5" />
-    </svg>
-  );
+  return <Icon name="caret-down" />;
 }
 
 const fadeOut = stylex.keyframes({ to: { opacity: 0 } });

@@ -5,7 +5,10 @@ import {
   Calendar,
   Check,
   ChevronDown,
+  ChevronUp,
   ChevronsUpDown,
+  CircleAlert,
+  CircleCheck,
   Copy,
   CreditCard,
   EllipsisVertical,
@@ -51,8 +54,14 @@ export const iconSet = {
   bell: { shapes: Bell },
   calendar: { shapes: Calendar },
   check: { shapes: Check },
+  // Drawn for Themis (Figma's "caret-down"): the arrow on Select, ComboBox and UnitInput triggers. Wider than Lucide's
+  // chevron-down (14.5 × 7.25 on the grid instead of 12 × 6), like the arrow Figma draws there.
+  'caret-down': { shapes: [['path', { d: 'M4.75 8.5 12 15.75l7.25-7.25' }]] },
   'chevron-down': { shapes: ChevronDown },
+  'chevron-up': { shapes: ChevronUp },
   'chevrons-up-down': { shapes: ChevronsUpDown },
+  'circle-alert': { shapes: CircleAlert },
+  'circle-check': { shapes: CircleCheck },
   copy: {
     shapes: Copy,
     // Square corners on the back square too (the front one is a rect, which follows the radius already).

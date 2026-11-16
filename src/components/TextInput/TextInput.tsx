@@ -16,6 +16,7 @@ import { focusRing } from '../../utils/focus-ring';
 import { racStyles } from '../../utils/stylex-rac';
 import { FieldContext, useCharacterCount } from './character-count';
 import { fieldStyles as styles } from './field-base';
+import { Icon } from '../Icon';
 
 interface TextInputBaseProps extends Omit<TextFieldProps, 'className' | 'style' | 'children' | 'maxLength'> {
   /** Help text under the box, e.g. "We'll only use this to send receipts." Linked to the input for screen readers. */
@@ -112,7 +113,7 @@ export function TextInput({
             <Input placeholder={placeholder} {...stylex.props(styles.input, isDisabled && styles.inputDisabled)} />
             {invalid ? (
               <span aria-hidden="true" {...stylex.props(styles.icon, styles.iconInvalid)}>
-                <ErrorIcon />
+                <Icon name="circle-alert" size="medium" />
               </span>
             ) : (
               icon != null && (
@@ -132,13 +133,3 @@ export function TextInput({
   );
 }
 
-/** Placeholder error icon (Figma "Icon Right", errored) until the icon library exists. */
-function ErrorIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-      <circle cx="10" cy="10" r="9" stroke="currentColor" strokeWidth="2" />
-      <path d="M10 5v6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-      <circle cx="10" cy="14.5" r="1.25" fill="currentColor" />
-    </svg>
-  );
-}

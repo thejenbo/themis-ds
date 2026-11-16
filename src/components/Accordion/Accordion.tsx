@@ -25,6 +25,7 @@ import { interactiveCursor } from '../../utils/interactive-cursor';
 import { racStyles } from '../../utils/stylex-rac';
 import { touchTarget } from '../../utils/touch-target';
 import { baseStyles, layers } from '../Button/button-base';
+import { Icon } from '../Icon';
 
 export interface AccordionProps extends Omit<DisclosureProps, 'className' | 'style' | 'children'> {
   /** The header text. Keep it short; it wraps onto more lines if needed. */
@@ -85,7 +86,7 @@ export function Accordion({ title, children, headingLevel = 3, xstyle, ...props 
                 >
                   <span {...stylex.props(styles.title)}>{title}</span>
                   <span aria-hidden="true" {...stylex.props(styles.chevron, isExpanded && styles.chevronOpen)}>
-                    <ChevronGlyph />
+                    <Icon name="chevron-down" />
                   </span>
                 </span>
               ))}
@@ -125,14 +126,6 @@ export function AccordionGroup({ allowsMultipleExpanded = true, xstyle, children
   );
 }
 
-/** Points down; rotated to point right while closed. */
-function ChevronGlyph() {
-  return (
-    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M0.75 3.25 6 8.5l5.25-5.25" />
-    </svg>
-  );
-}
 
 // Inside radius of the outer border, so the header's corners (and the focus ring) follow the container.
 const innerRadius = `calc(${radius.radiusMd} - ${borderWidth.widthSm})`;
