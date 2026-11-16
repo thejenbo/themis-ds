@@ -17,7 +17,7 @@ import {
 import { color } from '../../tokens/colorTheme.stylex';
 import { spacing } from '../../tokens/spacing.stylex';
 import { textStyles } from '../../styles/type-styles';
-import { colorFill, colorThumb, colorTrack, trackEnds } from '../../utils/color';
+import { colorFill, colorThumb, colorTrack, trackBackground } from '../../utils/color';
 import { focusRing } from '../../utils/focus-ring';
 import { racStyles } from '../../utils/stylex-rac';
 import { touchTarget } from '../../utils/touch-target';
@@ -67,14 +67,14 @@ export function ColorSlider({ label, showValue = true, xstyle, ...props }: Color
           )}
           <div
             {...stylex.props(colorTrack.pill, isDisabled && colorTrack.pillDisabled)}
-            style={isDisabled ? undefined : { background: trackEnds(state.value, props.channel, direction) }}
+            style={isDisabled ? undefined : { background: trackBackground(state.value, props.channel, direction) }}
           >
             <SliderTrack
               className={(s: SliderTrackRenderProps) =>
                 stylex.props(colorTrack.track, s.isDisabled && colorTrack.trackDisabled).className ?? ''
               }
-              // React Aria paints the channel's gradient here; disabled, the pill's grey shows instead.
-              style={({ defaultStyle, isDisabled: off }) => (off ? { ...defaultStyle, background: 'none' } : defaultStyle)}
+              // React Aria paints the channel's gradient here, inset by half a thumb; the pill draws it end to end instead.
+              style={({ defaultStyle }) => ({ ...defaultStyle, background: 'none' })}
             >
               <ColorThumb
                 data-themis-touch-target=""

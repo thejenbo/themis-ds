@@ -25,6 +25,7 @@ export default defineComponentDocs({
   anatomy: [
     { part: 'Swatch', description: 'A 24, 32 or 40px square with border/radius/md corners, filled with the colour. See-through colours show a grey and white checkerboard behind them.', required: true },
     { part: 'Outline', description: '`variant="outline"`: a border/width/sm border in color/border.', required: false },
+    { part: 'Empty', description: '`variant="empty"`: a dashed border/width/mandatory outline in color/border with no colour, for an unused slot. Hidden from screen readers.', required: false },
   ],
 
   variants: {
@@ -36,6 +37,7 @@ export default defineComponentDocs({
     variant: {
       solid: 'The colour only. The default.',
       outline: 'Adds a border, so colours close to the background (white on white, black on black) stay visible.',
+      empty: 'A placeholder for a slot with no colour yet, e.g. unused recent colours in ColorPicker. Not announced.',
     },
   },
 
@@ -68,6 +70,7 @@ export default defineComponentDocs({
     'borderWidth/border.width.sm',
     'primitives/color.grayscale.000',
     'primitives/color.grayscale.030',
+    'borderWidth/border.width.mandatory',
   ],
 
   figma: {

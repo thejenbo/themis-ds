@@ -6,12 +6,15 @@ const instance = figma.selectedInstance
 
 // Defaults (medium, solid) are left out.
 const size = instance.getEnum('size', { small: 'small', medium: undefined, large: 'large' })
-const variant = instance.getEnum('variant', { solid: undefined, outline: 'outline' })
+const variant = instance.getEnum('variant', { solid: undefined, outline: 'outline', empty: 'empty' })
 
 // The colour is the "Swatch Content" fill, which templates can't read: `yourColor` is a placeholder for any CSS
 // colour string or React Aria `Color`.
 export default {
-  example: figma.code`<ColorSwatch color={yourColor}${size ? ` size="${size}"` : ''}${variant ? ` variant="${variant}"` : ''} />`,
+  example:
+    variant === 'empty'
+      ? figma.code`<ColorSwatch variant="empty"${size ? ` size="${size}"` : ''} />`
+      : figma.code`<ColorSwatch color={yourColor}${size ? ` size="${size}"` : ''}${variant ? ` variant="${variant}"` : ''} />`,
   imports: ['import { ColorSwatch } from "themis-ds"'],
   id: 'color-swatch',
   metadata: { nestable: true },

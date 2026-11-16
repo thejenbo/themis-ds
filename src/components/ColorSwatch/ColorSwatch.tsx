@@ -26,9 +26,11 @@ export interface ColorSwatchProps extends Omit<AriaColorSwatchProps, 'className'
   size?: 'small' | 'medium' | 'large';
   /**
    * `outline` adds a border in color/border, so light colours stay visible on a light background (and dark on dark).
+   * `empty` is a placeholder for a slot with no colour yet (a dashed outline, hidden from screen readers), e.g. the
+   * unused slots in ColorPicker's recent colours; it ignores `color`.
    * @default 'solid'
    */
-  variant?: 'solid' | 'outline';
+  variant?: 'solid' | 'outline' | 'empty';
   /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colours or size. */
   xstyle?: stylex.StyleXStyles;
 }
@@ -39,6 +41,7 @@ export interface ColorSwatchProps extends Omit<AriaColorSwatchProps, 'className'
  * See-through colours show a checkerboard behind them. It isn't interactive by itself.
  */
 export function ColorSwatch({ size = 'medium', variant = 'solid', xstyle, ...props }: ColorSwatchProps) {
+  if (variant === 'empty') return <span aria-hidden="true" {...stylex.props(styles.swatch, sizes[size], styles.empty, xstyle)} />;
   return (
     <AriaColorSwatch
       {...props}
@@ -61,6 +64,13 @@ const styles = stylex.create({
   outline: {
     borderStyle: 'solid',
     borderWidth: borderWidth.widthSm,
+    borderColor: color.border,
+  },
+  // Figma variant=empty: a dashed border/width/mandatory outline, so the slot still shows with border width none.
+  empty: {
+    display: 'inline-block',
+    borderStyle: 'dashed',
+    borderWidth: borderWidth.widthMandatory,
     borderColor: color.border,
   },
 });

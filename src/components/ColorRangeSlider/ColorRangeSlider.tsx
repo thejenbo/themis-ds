@@ -23,7 +23,7 @@ import { border as radius } from '../../tokens/radius.stylex';
 import { color as system } from '../../tokens/system.stylex';
 import { spacing } from '../../tokens/spacing.stylex';
 import { textStyles } from '../../styles/type-styles';
-import { channelGradient, colorFill, colorThumb, colorTrack, trackEnds } from '../../utils/color';
+import { colorFill, colorThumb, colorTrack, trackBackground } from '../../utils/color';
 import { focusRing } from '../../utils/focus-ring';
 import { racStyles } from '../../utils/stylex-rac';
 import { touchTarget } from '../../utils/touch-target';
@@ -91,7 +91,6 @@ export function ColorRangeSlider({
   const { minValue, maxValue, step } = base.getChannelRange(channel);
   const channelName = base.getChannelName(channel, locale);
   const ariaLabel = props['aria-label'] ?? (label == null && !props['aria-labelledby'] ? `${channelName} range` : undefined);
-  const gradient = channelGradient(base, channel, direction === 'rtl' ? 'left' : 'right');
 
   return (
     <Slider<number[]>
@@ -117,13 +116,13 @@ export function ColorRangeSlider({
           )}
           <div
             {...stylex.props(colorTrack.pill, isDisabled && colorTrack.pillDisabled, showSwatches && (label != null ? styles.swatchRoomBelowLabel : styles.swatchRoom))}
-            style={isDisabled ? undefined : { background: trackEnds(base, channel, direction) }}
+            style={isDisabled ? undefined : { background: trackBackground(base, channel, direction) }}
           >
             <SliderTrack
               className={(s: SliderTrackRenderProps) =>
                 stylex.props(colorTrack.track, s.isDisabled && colorTrack.trackDisabled).className ?? ''
               }
-              style={({ defaultStyle, isDisabled: off }) => (off ? defaultStyle : { ...defaultStyle, background: gradient })}
+              style={({ defaultStyle }) => ({ ...defaultStyle, background: 'none' })}
             >
               {({ state }) =>
                 [0, 1].map((index) => (

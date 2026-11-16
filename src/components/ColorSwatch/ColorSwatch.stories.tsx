@@ -88,3 +88,19 @@ export const Names: Story = {
     await expect(labelled).toHaveAccessibleName(expect.stringMatching(/, Error$/));
   },
 };
+
+/** `variant="empty"`: a placeholder for an unused slot (e.g. ColorPicker's recent colours), hidden from screen readers. */
+export const Empty: Story = {
+  render: () => (
+    <div style={row}>
+      <ColorSwatch variant="empty" size="large" />
+      <ColorSwatch variant="empty" size="medium" />
+      <ColorSwatch variant="empty" size="small" />
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const slots = canvasElement.querySelectorAll('span[aria-hidden="true"]');
+    await expect(slots).toHaveLength(3);
+    await expect(getComputedStyle(slots[0]!).borderTopStyle).toBe('dashed');
+  },
+};

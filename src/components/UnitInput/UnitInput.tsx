@@ -215,7 +215,8 @@ export const UnitInputItem = DropdownItem;
 // Inside rings: the corners follow the box on the outer side only (Figma "Focus Ring" in each half).
 const ringRadius = `max(0px, calc(${radius.radiusMd} - ${spacing['3xs']} - ${borderWidth.widthMandatory}))`;
 
-const styles = stylex.create({
+/** The box's two halves (text and a format/unit button), shared with ColorField. */
+export const unitBoxStyles = stylex.create({
   // The two halves fill the box and draw their own padding, so each can carry its own focus ring.
   box: { alignItems: 'stretch', paddingBlock: 0, paddingInline: 0 },
   number: {
@@ -271,3 +272,5 @@ const styles = stylex.create({
   stack: { gridArea: '1 / 1' },
   sizer: { visibility: 'hidden' },
 });
+
+const styles = unitBoxStyles;

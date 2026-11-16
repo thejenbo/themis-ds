@@ -39,25 +39,23 @@ export function channelGradient(color: Color, channel: ColorChannel, to: 'left' 
 }
 
 /**
- * CSS `background` for the colour track's pill: the channel's end colours in the half-thumb ends that reach past
- * the slider's own track (the middle is covered by it), over a checkerboard for the alpha channel.
+ * CSS `background` for the colour track's pill: the channel's gradient from end to end of the pill (over a
+ * checkerboard for the alpha channel). The thumb's centre only travels between half a thumb in from each end, so the
+ * colour under it is a little off near the ends, but the thumb is filled with the exact colour; drawing the gradient
+ * only over the thumb's travel left solid blocks at the ends.
  */
-export function trackEnds(color: Color, channel: ColorChannel, direction: 'ltr' | 'rtl'): string {
-  const { minValue, maxValue } = color.getChannelRange(channel);
-  let start = color.withChannelValue(channel, minValue).toString('css');
-  let end = color.withChannelValue(channel, maxValue).toString('css');
-  if (direction === 'rtl') [start, end] = [end, start];
-  const ends = `linear-gradient(to right, ${start} 0 ${HALF_THUMB}, transparent ${HALF_THUMB} calc(100% - ${HALF_THUMB}), ${end} calc(100% - ${HALF_THUMB}))`;
-  return channel === 'alpha' ? `${ends}, ${CHECKERBOARD}` : ends;
+export function trackBackground(color: Color, channel: ColorChannel, direction: 'ltr' | 'rtl'): string {
+  const gradient = channelGradient(color, channel, direction === 'rtl' ? 'left' : 'right');
+  return channel === 'alpha' ? `${gradient}, ${CHECKERBOARD}` : gradient;
 }
 
 // Figma "Thumb": 28px (32px hovered, 36px while dragging) on a 16px track.
 export const HALF_THUMB = '14px';
 
 /**
- * The colour track: a 16px pill with a border. The element holding these styles is the full pill; the slider's
- * own track sits inside it, inset by half a thumb at each end so the thumb stays inside the pill at both ends (as in
- * Slider). The inset ends are painted with the channel's end colours, inline, by the component.
+ * The colour track: a 16px pill with a border, painted with the channel's gradient (inline, `trackBackground`). The
+ * slider's own track sits inside it, inset by half a thumb at each end so the thumb stays inside the pill at both
+ * ends (as in Slider); it's transparent.
  */
 export const colorTrack = stylex.create({
   pill: {
