@@ -113,7 +113,7 @@ export default defineComponentDocs({
       isDisabled: { figmaProperty: 'state', type: 'VARIANT', values: { true: 'disabled' } },
     },
     differences: [
-      { topic: 'Gradient', figma: 'The "Gradient" slot holds a drawn hue gradient.', code: 'The gradient is drawn from `channel` and the current colour, so it changes with them.', action: 'annotate-figma', done: '2026-11-14' },
+      { topic: 'Gradient', figma: 'The "Gradient" slot holds a drawn hue gradient.', code: 'The gradient is drawn from `channel`: hue is a fixed rainbow of full-strength hues; other channels show the current colour\'s range, so they change with it.', action: 'annotate-figma', done: '2026-11-14' },
     ],
   },
 

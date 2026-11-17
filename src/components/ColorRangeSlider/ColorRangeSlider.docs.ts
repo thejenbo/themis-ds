@@ -24,7 +24,7 @@ export default defineComponentDocs({
 
   anatomy: [
     { part: 'Label and value', description: 'With `label`: the label and the range (`showValue`), label style, 8px above the track.', required: false },
-    { part: 'Track', description: 'As ColorSlider: a 16px pill with a border, showing the channel from minimum to maximum of `color`.', required: true },
+    { part: 'Track', description: 'As ColorSlider: a 16px pill with a border, showing the channel from minimum to maximum of `color` (hue: always the full-strength rainbow).', required: true },
     { part: 'Swatches', description: 'With `showSwatches`: a 24px swatch of each end\'s colour (border/radius/md, border/width/sm border in color/border), 4px above its thumb, always shown. The slider makes room for them above the track.', required: false },
     { part: 'Start and end thumbs', description: 'As ColorSlider\'s thumb, each filled with the colour at its end of the range. The one being dragged grows to 36px.', required: true },
   ],
@@ -64,7 +64,7 @@ export default defineComponentDocs({
 
   guidelines: {
     do: [
-      'Set `color` to the colour the range is taken from, so the track shows the real colours on offer.',
+      'Set `color` to the colour the range is taken from, so saturation, lightness and other tracks show the real colours on offer.',
       'Save with `onChangeEnd`.',
       'Turn on `showSwatches` when the two end colours are the result, e.g. gradient stops.',
     ],

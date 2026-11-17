@@ -99,6 +99,23 @@ export const ClosesOutside: Story = {
   },
 };
 
+/** The hue track is a fixed rainbow: moving the area's thumb (saturation, brightness) doesn't change it. */
+export const HueTrackStaysPut: Story = {
+  tags: ['test-only', '!autodocs'],
+  play: async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole('button', { name: /Brand color/ }));
+    await screen.findByRole('dialog');
+    const hue = screen.getByRole('slider', { name: 'Hue' });
+    const track = () => getComputedStyle(hue.closest('[data-themis-touch-target]')!.parentElement!.parentElement!).backgroundImage;
+    const before = track();
+    // Move the area's thumb towards grey and black.
+    const area = screen.getAllByRole('slider').find((s) => s !== hue)!;
+    area.focus();
+    await userEvent.keyboard('{PageDown}{PageDown}{Home}');
+    await expect(track()).toBe(before);
+  },
+};
+
 /** Disabled: the swatch shows the disabled grey and can't be pressed. */
 export const Disabled: Story = {
   args: { isDisabled: true },

@@ -26,8 +26,8 @@ export function colorFill(color: Color): string {
 
 /**
  * The gradient along one channel of a colour, the same stops React Aria's ColorSlider uses: hue goes round the
- * wheel, lightness passes through the full colour in the middle, and every other channel runs from its minimum to
- * its maximum.
+ * wheel at full strength, lightness passes through the full colour in the middle, and every other channel runs from
+ * its minimum to its maximum.
  */
 export function channelGradient(color: Color, channel: ColorChannel, to: 'left' | 'right'): string {
   const { minValue, maxValue } = color.getChannelRange(channel);
@@ -35,7 +35,10 @@ export function channelGradient(color: Color, channel: ColorChannel, to: 'left' 
   if (channel === 'hue') values = [0, 60, 120, 180, 240, 300, 360];
   else if (channel === 'lightness') values = [minValue, (maxValue - minValue) / 2, maxValue];
   else values = [minValue, maxValue];
-  return `linear-gradient(to ${to}, ${values.map((v) => color.withChannelValue(channel, v).toString('css')).join(', ')})`;
+  // A hue track is a fixed rainbow of full-strength hues, so it doesn't dim or grey out as the colour's saturation and
+  // brightness change (e.g. moving ColorArea's thumb). Every other channel shows the colour's own range.
+  const stop = (v: number) => (channel === 'hue' ? `hsl(${v}, 100%, 50%)` : color.withChannelValue(channel, v).toString('css'));
+  return `linear-gradient(to ${to}, ${values.map(stop).join(', ')})`;
 }
 
 /**
