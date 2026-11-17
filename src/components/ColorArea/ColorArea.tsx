@@ -11,8 +11,9 @@ import {
 
 import { border as borderWidth } from '../../tokens/borderWidth.stylex';
 import { color } from '../../tokens/colorTheme.stylex';
-import { color as primitive } from '../../tokens/primitives.stylex';
+import { border as borderPrimitive, color as primitive } from '../../tokens/primitives.stylex';
 import { border as radius } from '../../tokens/radius.stylex';
+import { spacing } from '../../tokens/spacing.stylex';
 import { color as system } from '../../tokens/system.stylex';
 import { colorFill } from '../../utils/color';
 import { focusRing } from '../../utils/focus-ring';
@@ -73,7 +74,7 @@ export function ColorArea({ xstyle, xChannel, yChannel, ...props }: ColorAreaPro
           touchTarget.area,
           focusRing.base,
           t.isFocusVisible && focusRing.visible,
-          t.isFocusVisible && focusRing.aroundBorderSm,
+          t.isFocusVisible && styles.focusAroundRing,
           t.isFocusVisible && focusRing.radiusFull,
         ])}
       >
@@ -92,6 +93,10 @@ export function ColorArea({ xstyle, xChannel, yChannel, ...props }: ColorAreaPro
   );
 }
 
+// The bullseye's rings are always 3px (the large border width), whatever the border-width mode: thinner rings make
+// the thumb hard to see on busy colours.
+const ring = borderPrimitive.width3;
+
 const styles = stylex.create({
   area: {
     position: 'relative',
@@ -105,8 +110,8 @@ const styles = stylex.create({
   },
   areaDisabled: { backgroundColor: system.backgroundDisabledDefault },
   /*
-   * Figma "Thumb", bullseye: 32px, a black border, a white ring inside it, then the colour in an 18px circle with
-   * its own black border. One of black or white always shows against the colours around it.
+   * Figma "Thumb", bullseye: 32px, a 3px black border, a 3px white ring inside it, then the colour in a 22px circle
+   * with its own 3px black border. One of black or white always shows against the colours around it.
    */
   thumb: {
     zIndex: 1,
@@ -115,10 +120,12 @@ const styles = stylex.create({
     height: '32px',
     borderRadius: radius.radiusFull,
     borderStyle: 'solid',
-    borderWidth: borderWidth.widthMandatory,
+    borderWidth: ring,
     borderColor: primitive.grayscale1000,
     cursor: 'grab',
   },
+  // The focus ring sits outside the 3px border (focusRing's own offset assumes border/width/sm).
+  focusAroundRing: { '::before': { inset: `calc(-1 * (${spacing['3xs']} + ${borderWidth.widthFocusRing} + ${ring}))` } },
   thumbDragging: { cursor: 'grabbing' },
   thumbDisabled: { cursor: 'not-allowed', borderColor: system.borderDisabled },
   ring: {
@@ -126,7 +133,7 @@ const styles = stylex.create({
     inset: 0,
     borderRadius: radius.radiusFull,
     borderStyle: 'solid',
-    borderWidth: borderWidth.widthMandatory,
+    borderWidth: ring,
     borderColor: primitive.grayscale000,
     pointerEvents: 'none',
   },
@@ -141,7 +148,7 @@ const styles = stylex.create({
     transform: 'translate(-50%, -50%)',
     borderRadius: radius.radiusFull,
     borderStyle: 'solid',
-    borderWidth: borderWidth.widthMandatory,
+    borderWidth: ring,
     borderColor: primitive.grayscale1000,
     pointerEvents: 'none',
   },

@@ -24,7 +24,7 @@ export default defineComponentDocs({
 
   anatomy: [
     { part: 'Area', description: 'The two-channel gradient (x channel left to right, y channel bottom to top), with border/radius/md corners and a border/width/md border in color/border drawn inside it. Fills its container\'s width at 345 × 284 proportions.', required: true },
-    { part: 'Thumb', description: '"Bullseye": a 32px circle with a black border, a white ring inside it, and the current colour in the middle with its own black border (border/width/mandatory each).', required: true },
+    { part: 'Thumb', description: '"Bullseye": a 32px circle with a black border, a white ring inside it, and the current colour in the middle with its own black border (3px each, primitives/border.width.3, in every border-width mode, so the thumb stays easy to see).', required: true },
   ],
 
   variants: {
@@ -75,7 +75,7 @@ export default defineComponentDocs({
     'radius/border.radius.md',
     'radius/border.radius.full',
     'borderWidth/border.width.md',
-    'borderWidth/border.width.mandatory',
+    'primitives/border.width.3',
     'borderWidth/border.width.sm',
     'borderWidth/border.width.focus ring',
   ],
