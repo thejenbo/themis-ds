@@ -26,7 +26,7 @@ export default defineComponentDocs({
 
   anatomy: [
     { part: 'Container', description: 'The outer border (border-brand, radius sm). Drawn on top of the items, so it adds no size.', required: true },
-    { part: 'Item', description: 'One option. Selected: brand fill. Not selected: background fill, brand label.', required: true },
+    { part: 'Item', description: 'One option. Selected: brand fill. Not selected: background fill, brand label. In small and medium the fill (and the hover tint) sits 4px (spacing.2xs) inside the control\'s border with border/radius/xs corners; in micro it fills the item.', required: true },
     { part: 'State Layer', description: 'Hover and press overlay on items that are not selected.', required: true },
   ],
 
@@ -75,6 +75,7 @@ export default defineComponentDocs({
   },
 
   tokens: [
+    'radius/border.radius.xs',
     'colorTheme/color.brand',
     'colorTheme/color.background',
     'colorTheme/color.border-brand',

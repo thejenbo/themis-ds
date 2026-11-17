@@ -22,7 +22,7 @@ import { focusRing } from '../../utils/focus-ring';
 import { interactiveCursor } from '../../utils/interactive-cursor';
 import { racStyles } from '../../utils/stylex-rac';
 import { touchTarget } from '../../utils/touch-target';
-import { baseStyles, blockPadding, type ButtonSize, disabledSurfaces, layers, surfaces } from '../Button/button-base';
+import { baseStyles, type ButtonSize, disabledSurfaces, layers, surfaces } from '../Button/button-base';
 
 export type SegmentedControlSize = ButtonSize;
 
@@ -143,6 +143,7 @@ export function SegmentedControlItem({ children, ...props }: SegmentedControlIte
         baseStyles.root,
         styles.item,
         corners[position],
+        size !== 'micro' && styles.itemInset,
         isFullWidth && styles.itemFull,
         touchTarget.area,
         focusRing.base,
@@ -162,10 +163,13 @@ export function SegmentedControlItem({ children, ...props }: SegmentedControlIte
             {...stylex.props(
               baseStyles.surface,
               styles.surface,
-              blockPadding[size],
+              surfaceSizes[size],
               surfaces.brand[look],
               layers.brand[look],
               active && baseStyles.stateLayerOn,
+              // Selected items have no hover, so the hover layer goes at once: fading it out would flash the selected
+              // look's darker brand-hover over the fill as it fades in.
+              s.isSelected && styles.layerOffAtOnce,
               s.isDisabled && disabledSurfaces[look],
               // The control has one outer border; items don't get the outline look's own border.
               styles.noItemBorder,
@@ -209,20 +213,31 @@ const styles = stylex.create({
     // On touch screens, keep each item at least 44px wide so neighbouring touch areas don't overlap.
     minWidth: { default: '24px', '@media (pointer: coarse)': '44px' },
   },
+  // Figma (small and medium): 4px between the selected fill or hover tint and the control's border; micro fills it.
+  itemInset: { padding: spacing['2xs'] },
   itemFull: { flexGrow: 1, flexBasis: 0 },
   // Lift the focused item (and its ring) above its neighbours and the outer border.
   itemFocused: { zIndex: 2 },
   cursorSelected: { cursor: 'default' },
+  layerOffAtOnce: { '::before': { transitionDuration: '0s' } },
   noItemBorder: { '::after': { borderWidth: 0 } },
-  // Figma: 10px each side (2xs + 2xs + 3xs, split across nested frames).
   surface: {
-    paddingInline: `calc(2 * ${spacing['2xs']} + ${spacing['3xs']})`,
-    borderRadius: 'inherit',
     fontSize: font.sizeLabel,
     transitionProperty: 'background-color, color',
     transitionDuration: { default: duration.base, '@media (prefers-reduced-motion: reduce)': '0s' },
     transitionTimingFunction: easing.standard,
   },
+});
+
+/*
+ * The fill (selected) and tint (hover) layer. Figma: 10px from the item's edge to the label on each side. Micro fills
+ * the item, following its corners; small and medium sit 4px inside it (itemInset) with border/radius/xs corners, so
+ * they're 24px and 32px tall inside 32px and 40px items.
+ */
+const surfaceSizes = stylex.create({
+  micro: { paddingBlock: 0, paddingInline: `calc(2 * ${spacing['2xs']} + ${spacing['3xs']})`, borderRadius: 'inherit' },
+  small: { paddingBlock: 0, paddingInline: `calc(${spacing['2xs']} + ${spacing['3xs']})`, borderRadius: radius.radiusXs },
+  medium: { paddingBlock: spacing['2xs'], paddingInline: `calc(${spacing['2xs']} + ${spacing['3xs']})`, borderRadius: radius.radiusXs },
 });
 
 /** Only the outer corners are rounded. */
