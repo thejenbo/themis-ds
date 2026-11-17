@@ -5,6 +5,22 @@ All notable changes to Themis are recorded here. The format follows
 [Semantic Versioning](https://semver.org/). Until 1.0, minor versions (0.x.0) may include breaking changes; they're
 listed under **Changed** or **Removed** with what to do.
 
+## [Unreleased]
+
+### Added
+
+- Theme files: a JSON format (`themis.theme.json`, version 1) holding named themes, each with six colours, a border
+  width, a radius and Google Fonts. `<ThemeProvider theme={config.themes.light}>` applies one; the fonts load
+  automatically (`loadFonts={false}` to opt out). A JSON Schema ships as `themis-ds/theme.schema.json`.
+- The colour rules behind every Themis theme, in code: `deriveColorTokens` works out all 27 colour tokens from six
+  colours (hovers 7% darker, tints at 7%, muted text at 6:1, …), matching the Figma themes.
+- `parseThemisConfig` (checks a theme file and lists every problem), `themeVariables`, `googleFontsHref`, and
+  `rateThemeColors` / `contrastLevel` for AAA / AA / AA Large / Fail contrast ratings.
+
+### Changed
+
+- Primitives: `orange/500` is `#A35104`, as in Figma (the export was stale; components already used it).
+
 ## [0.1.0] - 2026-11-17
 
 The first release: the base of the design system, matched to the Themis Figma library.

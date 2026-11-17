@@ -36,4 +36,16 @@ export * from './components/Tooltip';
 export * from './components/UnitInput';
 export { headingStyles, textStyles } from './styles/type-styles';
 export { ThemeProvider, type ThemeProviderProps } from './theme/ThemeProvider';
+export {
+  type FontChoice,
+  googleFontsHref,
+  parseThemisConfig,
+  THEME_CONFIG_VERSION,
+  type ThemeColors,
+  type ThemeSettings,
+  themeVariables,
+  type ThemisConfig,
+} from './theme/theme-config';
+export { COLOR_RULES, type ColorTokens, deriveColorTokens } from './theme/derive-colors';
+export { type ColorRating, type ContrastLevel, contrastLevel, rateThemeColors } from './theme/contrast-rating';
 export { collectionModes, defaultModes, themes, type Modes, type ModeOf, type ThemeCollection } from './tokens/themes';

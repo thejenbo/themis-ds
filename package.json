@@ -1,7 +1,7 @@
 {
   "name": "themis-ds",
   "version": "0.1.0",
-  "description": "Themis — a parametric, accessible React design system built on React Aria Components and StyleX.",
+  "description": "Themis \u2014 a parametric, accessible React design system built on React Aria Components and StyleX.",
   "type": "module",
   "sideEffects": [
     "**/*.css"
@@ -15,7 +15,8 @@
       "import": "./dist/index.js"
     },
     "./styles.css": "./dist/themis.css",
-    "./manifest.json": "./dist/themis-manifest.json"
+    "./manifest.json": "./dist/themis-manifest.json",
+    "./theme.schema.json": "./dist/theme.schema.json"
   },
   "files": [
     "dist"
@@ -28,7 +29,7 @@
     "manifest": "tsx scripts/build-manifest.ts",
     "storybook": "npm run tokens && npm run manifest && storybook dev -p 6006",
     "build-storybook": "npm run tokens && npm run manifest && storybook build",
-    "build": "npm run tokens && npm run contrast -- --strict && npm run manifest && vite build && tsc -p tsconfig.build.json && cp public/themis-manifest.json dist/",
+    "build": "npm run tokens && npm run contrast -- --strict && npm run manifest && vite build && tsc -p tsconfig.build.json && cp public/themis-manifest.json src/theme/theme.schema.json dist/",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",

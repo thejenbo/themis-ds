@@ -39,9 +39,14 @@ export default defineConfig({
     sourcemap: true,
   },
 
-  // `npm test` runs every story as a browser test (interactions + axe a11y checks).
+  // `npm test` runs the unit tests and every story as a browser test (interactions + axe a11y checks).
   test: {
     projects: [
+      // Plain logic (the theme engine): src/**/*.test.ts, in Node.
+      {
+        extends: true,
+        test: { name: 'unit', include: ['src/**/*.test.ts'], environment: 'node' },
+      },
       {
         extends: true,
         plugins: [storybookTest({ configDir: path.join(dirname, '.storybook') })],

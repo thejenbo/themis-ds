@@ -1,0 +1,200 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://unpkg.com/themis-ds/dist/theme.schema.json",
+  "title": "Themis theme file",
+  "description": "Named Themis themes (e.g. light and dark), made with the Themis config tool. Pass one to <ThemeProvider theme={\u2026}>.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "themes"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "version": {
+      "const": 1,
+      "description": "The theme file format version."
+    },
+    "themes": {
+      "type": "object",
+      "minProperties": 1,
+      "description": "Themes by name, e.g. \"light\", \"dark\".",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "colors"
+        ],
+        "properties": {
+          "colors": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "brand",
+              "text",
+              "background",
+              "error",
+              "warning",
+              "success"
+            ],
+            "description": "The six colours; every other colour token is worked out from them.",
+            "properties": {
+              "brand": {
+                "type": "string",
+                "pattern": "^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})$",
+                "examples": [
+                  "#7406EB"
+                ],
+                "description": "Brand colour: buttons, links, selection."
+              },
+              "text": {
+                "type": "string",
+                "pattern": "^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})$",
+                "examples": [
+                  "#7406EB"
+                ],
+                "description": "Text and borders."
+              },
+              "background": {
+                "type": "string",
+                "pattern": "^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})$",
+                "examples": [
+                  "#7406EB"
+                ],
+                "description": "Page and surface background."
+              },
+              "error": {
+                "type": "string",
+                "pattern": "^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})$",
+                "examples": [
+                  "#7406EB"
+                ],
+                "description": "Errors and destructive actions."
+              },
+              "warning": {
+                "type": "string",
+                "pattern": "^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})$",
+                "examples": [
+                  "#7406EB"
+                ],
+                "description": "Warnings."
+              },
+              "success": {
+                "type": "string",
+                "pattern": "^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})$",
+                "examples": [
+                  "#7406EB"
+                ],
+                "description": "Success and confirmation."
+              }
+            }
+          },
+          "borderWidth": {
+            "enum": [
+              "none",
+              "small",
+              "medium",
+              "large"
+            ],
+            "default": "medium",
+            "description": "How heavy borders are."
+          },
+          "radius": {
+            "enum": [
+              "none",
+              "small",
+              "medium",
+              "large"
+            ],
+            "default": "medium",
+            "description": "How rounded corners are."
+          },
+          "fonts": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "heading",
+              "body"
+            ],
+            "properties": {
+              "heading": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "A Google Fonts family name. Loads weights 400, 600 and 700.",
+                    "examples": [
+                      "Playfair Display"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "family",
+                      "weights"
+                    ],
+                    "properties": {
+                      "family": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "weights": {
+                        "type": "array",
+                        "items": {
+                          "type": "integer",
+                          "minimum": 100,
+                          "maximum": 900
+                        },
+                        "minItems": 1,
+                        "description": "The weights to load, for families without all of 400, 600 and 700."
+                      }
+                    }
+                  }
+                ]
+              },
+              "body": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "A Google Fonts family name. Loads weights 400, 600 and 700.",
+                    "examples": [
+                      "Playfair Display"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "family",
+                      "weights"
+                    ],
+                    "properties": {
+                      "family": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "weights": {
+                        "type": "array",
+                        "items": {
+                          "type": "integer",
+                          "minimum": 100,
+                          "maximum": 900
+                        },
+                        "minItems": 1,
+                        "description": "The weights to load, for families without all of 400, 600 and 700."
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
