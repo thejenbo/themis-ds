@@ -518,7 +518,19 @@
           "com.figma.scopes": [
             "FRAME_FILL",
             "SHAPE_FILL"
-          ]
+          ],
+          "com.figma.composedColor": {
+            "colorArg": {
+              "type": "alias",
+              "alias": {
+                "targetVariableName": "color/state/error"
+              }
+            },
+            "opacityArg": {
+              "type": "number",
+              "value": 7
+            }
+          }
         }
       },
       "warning-tint": {
@@ -539,7 +551,19 @@
           "com.figma.scopes": [
             "FRAME_FILL",
             "SHAPE_FILL"
-          ]
+          ],
+          "com.figma.composedColor": {
+            "colorArg": {
+              "type": "alias",
+              "alias": {
+                "targetVariableName": "color/state/warning"
+              }
+            },
+            "opacityArg": {
+              "type": "number",
+              "value": 7
+            }
+          }
         }
       },
       "success-tint": {
@@ -560,7 +584,19 @@
           "com.figma.scopes": [
             "FRAME_FILL",
             "SHAPE_FILL"
-          ]
+          ],
+          "com.figma.composedColor": {
+            "colorArg": {
+              "type": "alias",
+              "alias": {
+                "targetVariableName": "color/state/success"
+              }
+            },
+            "opacityArg": {
+              "type": "number",
+              "value": 7
+            }
+          }
         }
       }
     }

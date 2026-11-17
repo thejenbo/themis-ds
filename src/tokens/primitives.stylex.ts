@@ -50,7 +50,7 @@ export const color = stylex.defineVars({
   "wine500": "#952646",
   "green500": "#2C6E2F",
   "green050": "#71F2C1",
-  "orange500": "#B15906",
+  "orange500": "#A35104",
   "orange050": "#FDDFBD",
   "red500": "#AF0E0E",
   "red050": "#FAB1B1",
