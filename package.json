@@ -33,7 +33,9 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "contrast": "tsx scripts/check-contrast.ts"
+    "contrast": "tsx scripts/check-contrast.ts",
+    "config": "vite --config apps/config/vite.config.ts",
+    "config:build": "vite build --config apps/config/vite.config.ts"
   },
   "peerDependencies": {
     "react": ">=19.0.0",

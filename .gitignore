@@ -9,3 +9,4 @@ public/themis-manifest.json
 
 # Local secrets (e.g. FIGMA_ACCESS_TOKEN for Code Connect)
 .env
+apps/config/dist
