@@ -289,7 +289,7 @@ export function Toast({ tone = 'info', title, description, icon, action, showClo
       className={rac.className}
       style={(s) => ({ ...rac.style(s), ...transition })}
     >
-      <span {...stylex.props(styles.surface)}>
+      <span {...stylex.props(styles.surface, showCloseButton && styles.surfaceWithClose)}>
         <AriaToastContent {...stylex.props(styles.text)}>
           {title != null ? (
             <>
@@ -394,6 +394,8 @@ const styles = stylex.create({
     color: color.text,
     fontFamily: fontTheme.familyBody,
   },
+  // Figma: 8px on the right when the × is there (its 24px button already has room around the icon), 16px without.
+  surfaceWithClose: { paddingInlineEnd: spacing.xs },
   text: {
     flexGrow: 1,
     minWidth: 0,

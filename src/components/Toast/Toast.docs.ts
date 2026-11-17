@@ -27,8 +27,8 @@ export default defineComponentDocs({
 
   anatomy: [
     { part: 'Toast Region', description: 'The landmark that holds the toasts, fixed in one corner (`ToastRegion`). Render once near the app root.', required: true },
-    { part: 'Toast', description: 'One message: background fill, 2px border in the tone colour, drop shadow. Focusable, so keyboard users can reach its buttons.', required: true },
-    { part: 'Status Icon', description: 'Placeholder icon per tone, before the first line. Decorative.', required: false },
+    { part: 'Toast', description: 'One message: background fill, 2px border in the tone colour, drop shadow, 8px top and bottom, 16px on the left and right (8px on the right with the close button). Focusable, so keyboard users can reach its buttons.', required: true },
+    { part: 'Status Icon', description: 'The tone\'s icon (info, circle-alert, triangle-alert or circle-check) before the first line. Decorative.', required: false },
     { part: 'Heading', description: 'Optional `title`, in the tone colour (label style).', required: false },
     { part: 'Content', description: 'The message (`description`, body style).', required: true },
     { part: 'Action Button', description: 'Optional small outline Button in the tone. Pressing it also closes the toast.', required: false },
