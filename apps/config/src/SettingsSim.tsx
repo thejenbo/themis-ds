@@ -17,6 +17,7 @@ import {
   TextInput,
 } from 'themis-ds';
 
+import { color } from '../../../src/tokens/colorTheme.stylex';
 import { spacing } from '../../../src/tokens/spacing.stylex';
 import { ScalesIllustration } from './illustrations/ScalesIllustration';
 import { Sparkle } from './illustrations/Sparkle';
@@ -141,7 +142,15 @@ const styles = stylex.create({
     width: `min(27.3rem, calc(100% - ${scalesLeft}))`,
     display: { default: 'block', '@container (max-width: 56rem)': 'none' },
   },
-  title: { display: 'flex', alignItems: 'flex-start', gap: spacing['3xs'] },
+  // Figma: the title, the only text right on the tinted page, has a 1px outside stroke in the background colour.
+  // CSS strokes are centred on the outline, so 2px painted under the fill leaves 1px showing outside.
+  title: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    gap: spacing['3xs'],
+    WebkitTextStroke: `2px ${color.background}`,
+    paintOrder: 'stroke fill',
+  },
   titleSparkle: { width: '1.3rem', flexShrink: 0 },
   toolbar: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: spacing.md, flexWrap: 'wrap' },
   stack: { display: 'flex', flexDirection: 'column', gap: spacing.md },

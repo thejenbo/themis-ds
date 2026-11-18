@@ -8,6 +8,7 @@ import { spacing } from '../../../src/tokens/spacing.stylex';
 import { AppHeader, type Page } from './AppHeader';
 import { ExportModal } from './ExportModal';
 import { initialConfig } from './initial-config';
+import { loadSaved, save } from './storage';
 import { ThemeSettingsForm } from './SettingsPanel';
 import { SettingsSim } from './SettingsSim';
 import { ThemeNameField, ThemePicker } from './ThemeBar';
@@ -27,10 +28,12 @@ const pageFromHash = (): Page => (window.location.hash === '#docs' ? 'docs' : 's
  * the Themis config theme; only the preview changes.
  */
 export function App() {
-  const [config, setConfig] = useState<ThemisConfig>(initialConfig);
-  const [selected, setSelected] = useState<string>(Object.keys(initialConfig.themes)[0]!);
+  // Pick up where you left off in this browser, or start from the Themis demo themes.
+  const [saved] = useState(loadSaved);
+  const [config, setConfig] = useState<ThemisConfig>(saved?.config ?? initialConfig);
+  const [selected, setSelected] = useState<string>(saved?.selected ?? Object.keys(initialConfig.themes)[0]!);
   const [naming, setNaming] = useState<Naming | null>(null);
-  const [dialog, setDialog] = useState<'export' | 'delete' | 'discard' | null>(null);
+  const [dialog, setDialog] = useState<'export' | 'delete' | 'discard' | 'start-over' | null>(null);
   const [page, setPage] = useState<Page>(pageFromHash);
   const selectRef = useRef<HTMLDivElement>(null);
 
@@ -40,8 +43,22 @@ export function App() {
     return () => window.removeEventListener('hashchange', onHash);
   }, []);
 
+  // Save shortly after each change (not on every slider step).
+  useEffect(() => {
+    const timer = setTimeout(() => save({ config, selected }), 300);
+    return () => clearTimeout(timer);
+  }, [config, selected]);
+
   const names = Object.keys(config.themes);
   const draft = naming && naming.mode !== 'rename' ? naming : null;
+
+  // A theme that's still being named isn't saved yet, so ask before the page is closed or reloaded.
+  useEffect(() => {
+    if (!draft) return;
+    const warn = (e: BeforeUnloadEvent) => e.preventDefault();
+    window.addEventListener('beforeunload', warn);
+    return () => window.removeEventListener('beforeunload', warn);
+  }, [draft != null]);
   // While a new theme is being named, the sidebar and preview show it.
   const theme = draft ? draft.theme : config.themes[selected]!;
   // The preview follows a step behind while a slider or field is changing, so they stay quick to use.
@@ -132,6 +149,7 @@ export function App() {
                 onRename={startRename}
                 onDuplicate={startDuplicate}
                 onDelete={() => setDialog('delete')}
+                onStartOver={() => setDialog('start-over')}
                 selectRef={selectRef}
               />
             )}
@@ -197,6 +215,34 @@ export function App() {
         <Text variant="body-base">Your changes to this theme will be lost.</Text>
       </Modal>
 
+      <Modal
+        title="Start over?"
+        tone="danger"
+        size="small"
+        isOpen={dialog === 'start-over'}
+        onOpenChange={(open) => setDialog(open ? 'start-over' : null)}
+        actions={(close) => (
+          <>
+            <Button variant="outline" slot="close">
+              Cancel
+            </Button>
+            <Button
+              tone="danger"
+              onPress={() => {
+                close();
+                setConfig(initialConfig);
+                setSelected(Object.keys(initialConfig.themes)[0]!);
+                focusThemeSelect();
+              }}
+            >
+              Start over
+            </Button>
+          </>
+        )}
+      >
+        <Text variant="body-base">All your themes will be replaced with the starting light and dark themes. Export first to keep them.</Text>
+      </Modal>
+
       <ToastRegion />
     </ThemeProvider>
   );
@@ -223,7 +269,9 @@ const styles = stylex.create({
     minHeight: 0,
   },
   preview: { overflowY: 'auto' },
-  previewTheme: { minHeight: '100%' },
+  // A faint brand tint behind the simulator, so its components stand out (even with borders set to none).
+  // Decorative and only in this tool: the components themselves still sit on the plain background colour.
+  previewTheme: { minHeight: '100%', backgroundColor: `color-mix(in srgb, ${color.brand} 7%, ${color.background})` },
   placeholder: { padding: spacing['2xl'] },
   sidebar: {
     overflowY: 'auto',

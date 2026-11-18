@@ -29,12 +29,13 @@ interface ThemePickerProps {
   onRename: () => void;
   onDuplicate: () => void;
   onDelete: () => void;
+  onStartOver: () => void;
   /** Where focus goes back to after naming a theme. */
   selectRef: RefObject<HTMLDivElement | null>;
 }
 
 /** Figma "Theme" row: switch theme (with "Add new theme" at the end), and the current theme's actions. */
-export function ThemePicker({ themes, selected, onSelect, onAdd, onRename, onDuplicate, onDelete, selectRef }: ThemePickerProps) {
+export function ThemePicker({ themes, selected, onSelect, onAdd, onRename, onDuplicate, onDelete, onStartOver, selectRef }: ThemePickerProps) {
   const names = Object.keys(themes);
   return (
     <div {...stylex.props(styles.row)}>
@@ -73,6 +74,10 @@ export function ThemePicker({ themes, selected, onSelect, onAdd, onRename, onDup
           {/* A theme file needs at least one theme. */}
           <ActionMenuItem id="delete" isDanger isDisabled={names.length < 2} onAction={onDelete}>
             Delete…
+          </ActionMenuItem>
+          {/* Replaces every theme with the starting ones (after a confirm). */}
+          <ActionMenuItem id="start-over" isDanger onAction={onStartOver}>
+            Start over…
           </ActionMenuItem>
         </ActionMenu>
       </ActionMenuTrigger>

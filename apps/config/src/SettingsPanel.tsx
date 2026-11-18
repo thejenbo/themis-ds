@@ -115,6 +115,8 @@ const ColorRow = memo(function ColorRow({ colorKey, hex, level, ratio, worstPair
       }
       value={value}
       formats={FORMATS}
+      // Six fields share the sidebar, so each picker button says which colour it's for.
+      pickerLabel={`Pick the ${COLOR_LABELS[colorKey].toLowerCase()} color`}
       onChange={(c) => {
         if (!c) return;
         setExact(c);
