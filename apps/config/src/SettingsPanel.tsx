@@ -1,65 +1,22 @@
 import * as stylex from '@stylexjs/stylex';
-import { useMemo, useState } from 'react';
+import { memo, useCallback, useMemo, useRef, useState } from 'react';
+import type { Color } from 'react-aria-components';
 import {
-  Button,
   Chip,
   type ChipTone,
   ColorField,
   type ContrastLevel,
   collectionModes,
   Heading,
-  Icon,
   type ModeOf,
   rateThemeColors,
   Select,
   SelectItem,
-  Tab,
-  TabList,
-  TabPanel,
-  Tabs,
   type ThemeColors,
   type ThemeSettings,
-  type ThemisConfig,
 } from 'themis-ds';
 
 import { spacing } from '../../../src/tokens/spacing.stylex';
-
-interface SettingsPanelProps {
-  config: ThemisConfig;
-  selected: string;
-  onSelect: (name: string) => void;
-  onChange: (name: string, theme: ThemeSettings) => void;
-  onAddTheme: () => void;
-}
-
-/** The left-hand panel: a tab per theme, each with its colours, borders and fonts; then the export. */
-export function SettingsPanel({ config, selected, onSelect, onChange, onAddTheme }: SettingsPanelProps) {
-  const names = Object.keys(config.themes);
-  return (
-    <div {...stylex.props(styles.panel)}>
-      <Tabs selectedKey={selected} onSelectionChange={(key) => onSelect(String(key))}>
-        <div {...stylex.props(styles.tabRow)}>
-          <TabList aria-label="Themes">
-            {names.map((name) => (
-              <Tab key={name} id={name}>
-                {name}
-              </Tab>
-            ))}
-          </TabList>
-          <Button variant="subtle" size="small" iconLeft={<Icon name="plus" />} onPress={onAddTheme}>
-            Add Theme
-          </Button>
-        </div>
-        {names.map((name) => (
-          <TabPanel key={name} id={name}>
-            <ThemeSettingsForm theme={config.themes[name]!} onChange={(theme) => onChange(name, theme)} />
-          </TabPanel>
-        ))}
-      </Tabs>
-      <ExportSection config={config} />
-    </div>
-  );
-}
 
 const COLOR_LABELS: Record<keyof ThemeColors, string> = {
   brand: 'Brand',
@@ -89,10 +46,19 @@ const RADIUS_LABELS: Record<ModeOf<'radius'>, string> = {
 /** A starter list until the Google Fonts search lands. */
 const FONTS = ['Playfair Display', 'Montserrat', 'Inter', 'Fraunces', 'DM Sans', 'Lora', 'Space Grotesk', 'Fredoka'];
 
-function ThemeSettingsForm({ theme, onChange }: { theme: ThemeSettings; onChange: (theme: ThemeSettings) => void }) {
+/** One theme's colours, borders and fonts: the sidebar below the theme row. */
+export function ThemeSettingsForm({ theme, onChange }: { theme: ThemeSettings; onChange: (theme: ThemeSettings) => void }) {
   const ratings = useMemo(() => rateThemeColors(theme.colors), [theme.colors]);
+  // Callbacks read the latest theme from a ref, so they never change and the memoised rows below only re-render
+  // when their own value does. (Re-rendering every field on each slider step made keyboard use lag.)
+  const latest = useRef({ theme, onChange });
+  latest.current = { theme, onChange };
+  const update = useCallback((patch: Partial<ThemeSettings>) => latest.current.onChange({ ...latest.current.theme, ...patch }), []);
+  const setColor = useCallback(
+    (key: keyof ThemeColors, hex: string) => update({ colors: { ...latest.current.theme.colors, [key]: hex } }),
+    [update],
+  );
   const fonts = theme.fonts ?? { heading: 'Playfair Display', body: 'Montserrat' };
-  const setColor = (key: keyof ThemeColors, hex: string) => onChange({ ...theme, colors: { ...theme.colors, [key]: hex } });
 
   return (
     <div {...stylex.props(styles.sections)}>
@@ -100,61 +66,122 @@ function ThemeSettingsForm({ theme, onChange }: { theme: ThemeSettings; onChange
         <Heading level={2} size="sm">
           Colors
         </Heading>
-        {(Object.keys(COLOR_LABELS) as (keyof ThemeColors)[]).map((key) => {
-          const rating = ratings[key];
-          return (
-            <ColorField
-              key={key}
-              label={
-                <span {...stylex.props(styles.colorLabel)}>
-                  {COLOR_LABELS[key]}
-                  <Chip variant="solid" tone={LEVEL_TONE[rating.level]}>
-                    <span title={`Lowest contrast ${rating.ratio.toFixed(2)}:1 (${rating.worstPair})`}>{rating.level}</span>
-                  </Chip>
-                </span>
-              }
-              value={theme.colors[key]}
-              formats={['hex', 'rgb', 'hsl', 'hsb']}
-              onChange={(c) => c && setColor(key, c.toString('hex'))}
-            />
-          );
-        })}
+        {(Object.keys(COLOR_LABELS) as (keyof ThemeColors)[]).map((key) => (
+          <ColorRow
+            key={key}
+            colorKey={key}
+            hex={theme.colors[key]}
+            level={ratings[key].level}
+            ratio={ratings[key].ratio}
+            worstPair={ratings[key].worstPair}
+            onChange={setColor}
+          />
+        ))}
       </section>
+      <BordersSection borderWidth={theme.borderWidth ?? 'medium'} radius={theme.radius ?? 'medium'} onChange={update} />
+      <FontsSection
+        heading={typeof fonts.heading === 'string' ? fonts.heading : fonts.heading.family}
+        body={typeof fonts.body === 'string' ? fonts.body : fonts.body.family}
+        onChange={update}
+      />
+    </div>
+  );
+}
 
-      <section {...stylex.props(styles.section)}>
-        <Heading level={2} size="sm">
-          Borders
-        </Heading>
-        <Select
-          label="Border width"
-          value={theme.borderWidth ?? 'medium'}
-          onChange={(v) => onChange({ ...theme, borderWidth: v as ModeOf<'borderWidth'> })}
-        >
+interface ColorRowProps {
+  colorKey: keyof ThemeColors;
+  hex: string;
+  level: ContrastLevel;
+  ratio: number;
+  worstPair: string;
+  onChange: (key: keyof ThemeColors, hex: string) => void;
+}
+
+/** One colour, with its contrast badge. */
+const ColorRow = memo(function ColorRow({ colorKey, hex, level, ratio, worstPair, onChange }: ColorRowProps) {
+  // The file stores hex, but the field gets back the exact colour it sent: rounding to hex on every step would
+  // nudge the sliders (a hue step of 1° could land on 0.8° or 1.2°).
+  const [exact, setExact] = useState<Color | null>(null);
+  const value = exact && exact.toString('hex').toLowerCase() === hex.toLowerCase() ? exact : hex;
+  return (
+    <ColorField
+      label={
+        <span {...stylex.props(styles.colorLabel)}>
+          {COLOR_LABELS[colorKey]}
+          <Chip variant="solid" tone={LEVEL_TONE[level]}>
+            <span title={`Lowest contrast ${ratio.toFixed(2)}:1 (${worstPair})`}>{level}</span>
+          </Chip>
+        </span>
+      }
+      value={value}
+      formats={FORMATS}
+      onChange={(c) => {
+        if (!c) return;
+        setExact(c);
+        onChange(colorKey, c.toString('hex'));
+      }}
+    />
+  );
+});
+
+const FORMATS: ('hex' | 'rgb' | 'hsl' | 'hsb')[] = ['hex', 'rgb', 'hsl', 'hsb'];
+
+const BordersSection = memo(function BordersSection({
+  borderWidth,
+  radius,
+  onChange,
+}: {
+  borderWidth: ModeOf<'borderWidth'>;
+  radius: ModeOf<'radius'>;
+  onChange: (patch: Partial<ThemeSettings>) => void;
+}) {
+  return (
+    <section {...stylex.props(styles.section)}>
+      <Heading level={2} size="sm">
+        Borders
+      </Heading>
+      <div {...stylex.props(styles.fields)}>
+        <Select label="Width" value={borderWidth} onChange={(v) => onChange({ borderWidth: v as ModeOf<'borderWidth'> })}>
           {collectionModes.borderWidth.map((mode) => (
             <SelectItem key={mode} id={mode}>
               {BORDER_WIDTH_LABELS[mode]}
             </SelectItem>
           ))}
         </Select>
-        <Select label="Border radius" value={theme.radius ?? 'medium'} onChange={(v) => onChange({ ...theme, radius: v as ModeOf<'radius'> })}>
+        <Select label="Radius" value={radius} onChange={(v) => onChange({ radius: v as ModeOf<'radius'> })}>
           {collectionModes.radius.map((mode) => (
             <SelectItem key={mode} id={mode}>
               {RADIUS_LABELS[mode]}
             </SelectItem>
           ))}
         </Select>
-      </section>
+      </div>
+    </section>
+  );
+});
 
-      <section {...stylex.props(styles.section)}>
-        <Heading level={2} size="sm">
-          Fonts
-        </Heading>
+const FontsSection = memo(function FontsSection({
+  heading,
+  body,
+  onChange,
+}: {
+  heading: string;
+  body: string;
+  onChange: (patch: Partial<ThemeSettings>) => void;
+}) {
+  const fonts = { heading, body };
+  return (
+    <section {...stylex.props(styles.section)}>
+      <Heading level={2} size="sm">
+        Fonts
+      </Heading>
+      <div {...stylex.props(styles.fields)}>
         {(['heading', 'body'] as const).map((slot) => (
           <Select
             key={slot}
             label={slot === 'heading' ? 'Heading' : 'Body'}
-            value={typeof fonts[slot] === 'string' ? fonts[slot] : fonts[slot].family}
-            onChange={(v) => onChange({ ...theme, fonts: { ...fonts, [slot]: String(v) } })}
+            value={fonts[slot]}
+            onChange={(v) => onChange({ fonts: { ...fonts, [slot]: String(v) } })}
           >
             {FONTS.map((family) => (
               <SelectItem key={family} id={family}>
@@ -163,54 +190,14 @@ function ThemeSettingsForm({ theme, onChange }: { theme: ThemeSettings; onChange
             ))}
           </Select>
         ))}
-      </section>
-    </div>
-  );
-}
-
-/** The theme file as it will be saved. Copy for now; the format switch and download come with the export phase. */
-function ExportSection({ config }: { config: ThemisConfig }) {
-  const json = JSON.stringify(config, null, 2);
-  const [copied, setCopied] = useState(false);
-  return (
-    <section {...stylex.props(styles.section, styles.exportSection)}>
-      <Heading level={2} size="sm">
-        Export
-      </Heading>
-      <pre {...stylex.props(styles.code)}>{json}</pre>
-      <div {...stylex.props(styles.exportActions)}>
-        <Button
-          variant="outline"
-          size="micro"
-          iconLeft={<Icon name={copied ? 'check' : 'copy'} />}
-          onPress={async () => {
-            await navigator.clipboard.writeText(json);
-            setCopied(true);
-            setTimeout(() => setCopied(false), 1500);
-          }}
-        >
-          {copied ? 'Copied' : 'Copy'}
-        </Button>
       </div>
     </section>
   );
-}
+});
 
 const styles = stylex.create({
-  panel: { display: 'flex', flexDirection: 'column', gap: spacing.lg, padding: spacing.sm },
-  tabRow: { display: 'flex', alignItems: 'center', gap: spacing.sm, flexWrap: 'wrap' },
-  sections: { display: 'flex', flexDirection: 'column', gap: spacing.lg, paddingBlockStart: spacing.sm },
+  sections: { display: 'flex', flexDirection: 'column', gap: spacing.md },
   section: { display: 'flex', flexDirection: 'column', gap: spacing.sm },
+  fields: { display: 'flex', flexDirection: 'column', gap: spacing.md },
   colorLabel: { display: 'inline-flex', alignItems: 'center', gap: spacing.xs },
-  exportSection: { paddingBlockEnd: spacing.lg },
-  code: {
-    margin: 0,
-    padding: spacing.sm,
-    fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-    fontSize: '0.75rem',
-    lineHeight: 1.5,
-    overflowX: 'auto',
-    whiteSpace: 'pre',
-  },
-  exportActions: { display: 'flex', justifyContent: 'flex-end' },
 });

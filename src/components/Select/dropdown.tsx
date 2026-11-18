@@ -208,7 +208,8 @@ const styles = stylex.create({
   },
   check: { display: 'inline-flex', flexShrink: 0 },
   content: { display: 'flex', alignItems: 'center', gap: spacing.xs, flexGrow: 1, minWidth: 0 },
-  icon: { display: 'inline-flex', flexShrink: 0, alignItems: 'center', justifyContent: 'center', width: '1rem', height: '1rem' },
+  // At least 16px (an Icon); wider content, such as the config tool's colour dots, keeps its own width.
+  icon: { display: 'inline-flex', flexShrink: 0, alignItems: 'center', justifyContent: 'center', minWidth: '1rem', height: '1rem' },
   // 1px whatever the border-width theme, so it still shows with borders set to none. Hidden when filtering leaves
   // it at the start or end of the list.
   separator: {

@@ -1,4 +1,5 @@
 import * as stylex from '@stylexjs/stylex';
+import { memo } from 'react';
 import {
   Accordion,
   Avatar,
@@ -24,7 +25,7 @@ import { Sparkle } from './illustrations/Sparkle';
  * "Settings Sim" (Figma 1936:11209): an account settings page built only from Themis components, so every token a
  * theme sets shows up somewhere.
  */
-export function SettingsSim() {
+export const SettingsSim = memo(function SettingsSim() {
   return (
     <div {...stylex.props(styles.page)}>
       <ScalesIllustration xstyle={styles.scales} />
@@ -117,7 +118,7 @@ export function SettingsSim() {
       </div>
     </div>
   );
-}
+});
 
 // Where the scales start: under the content's right edge, so the left pan sits behind the accordions (as in Figma).
 const scalesLeft = `calc(${spacing['2xl']} + 37.3rem)`;
