@@ -40,5 +40,6 @@ export default {
   example: figma.code`<Icon name="${name}" />`,
   imports: ['import { Icon } from "themis-ds"'],
   id: 'icon',
-  metadata: { nestable: true },
+  // Parents that build their own markup (e.g. Dropdown Option inside Select) read the name from here.
+  metadata: { nestable: true, props: { name } },
 }

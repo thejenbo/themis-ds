@@ -19,7 +19,7 @@ import { focusRing } from '../../utils/focus-ring';
 import { interactiveCursor } from '../../utils/interactive-cursor';
 import { racStyles } from '../../utils/stylex-rac';
 import { touchTarget } from '../../utils/touch-target';
-import { CaretIcon, Dropdown, DropdownItem, type DropdownItemProps, triggerStyles } from '../Select/dropdown';
+import { CaretIcon, Dropdown, DropdownItem, type DropdownItemProps, DropdownSeparator, triggerStyles } from '../Select/dropdown';
 import { fieldStyles } from '../TextInput/field-base';
 
 interface ComboBoxBaseProps<T extends object>
@@ -141,6 +141,9 @@ export type ComboBoxItemProps = DropdownItemProps;
 
 /** One option in a `ComboBox`. The chosen one shows a ✓. */
 export const ComboBoxItem = DropdownItem;
+
+/** A 1px line between groups of options, e.g. before an "Add new…" option at the end. Screen readers skip it. */
+export const ComboBoxSeparator = DropdownSeparator;
 
 const styles = stylex.create({
   caretButton: {

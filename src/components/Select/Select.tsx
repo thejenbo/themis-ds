@@ -1,13 +1,16 @@
 import * as stylex from '@stylexjs/stylex';
-import type { ReactNode } from 'react';
+import { type ReactNode, type RefObject, useContext, useRef, useState } from 'react';
 import {
   Button,
   type ButtonRenderProps,
   FieldError,
+  type Key,
   Label,
   Select as AriaSelect,
   type SelectProps as AriaSelectProps,
   type SelectRenderProps,
+  type SelectState,
+  SelectStateContext,
   SelectValue,
   type SelectValueRenderProps,
   Text,
@@ -18,7 +21,7 @@ import { focusRing } from '../../utils/focus-ring';
 import { interactiveCursor } from '../../utils/interactive-cursor';
 import { racStyles } from '../../utils/stylex-rac';
 import { fieldStyles } from '../TextInput/field-base';
-import { CaretIcon, Dropdown, DropdownItem, type DropdownItemProps, triggerStyles } from './dropdown';
+import { CaretIcon, Dropdown, DropdownItem, type DropdownItemProps, DropdownSeparator, triggerStyles } from './dropdown';
 
 interface SelectBaseProps<T extends object>
   extends Omit<
@@ -59,8 +62,12 @@ export type SelectProps<T extends object = object> = SelectBaseProps<T> &
  * Picks one option from a list that opens below the field, such as a country or a role. Built on React Aria
  * `Select`: the arrow keys and typing a letter move through options, Escape closes the list, and the label,
  * description and error are linked for screen readers. Use `value` / `onChange` for the chosen option's `id`.
+ * An option with `onAction` (e.g. "Add new…") runs it instead of becoming the value.
  */
 export function Select<T extends object>({
+  value,
+  defaultValue,
+  onChange,
   label,
   description,
   errorMessage,
@@ -71,10 +78,33 @@ export function Select<T extends object>({
   xstyle,
   ...props
 }: SelectProps<T>) {
+  // React Aria's Select would make an action option the value, so the value is kept here and actions are run instead.
+  const [uncontrolledValue, setUncontrolledValue] = useState<Key | null>(defaultValue ?? null);
+  const isControlled = value !== undefined;
+  const stateRef = useRef<SelectState<T, 'single'> | null>(null);
+  const handleChange = (key: Key | null) => {
+    const state = stateRef.current;
+    const onAction: unknown = key != null ? state?.collection.getItem(key)?.props?.onAction : undefined;
+    if (typeof onAction === 'function') {
+      // Only from the open list: typing a letter on the closed box shouldn't run an action.
+      if (state?.isOpen) onAction();
+      return;
+    }
+    if (!isControlled) setUncontrolledValue(key);
+    onChange?.(key);
+  };
+
   return (
-    <AriaSelect<T, 'single'> {...props} placeholder={placeholder} {...racStyles<SelectRenderProps>(() => [fieldStyles.field, xstyle])}>
+    <AriaSelect<T, 'single'>
+      {...props}
+      value={isControlled ? value : uncontrolledValue}
+      onChange={handleChange}
+      placeholder={placeholder}
+      {...racStyles<SelectRenderProps>(() => [fieldStyles.field, xstyle])}
+    >
       {({ isDisabled, isInvalid }) => (
         <>
+          <SelectStateRef stateRef={stateRef} />
           {label != null && (
             <Label {...stylex.props(fieldStyles.label)}>
               {label}
@@ -116,10 +146,20 @@ export function Select<T extends object>({
   );
 }
 
+/** Keeps a handle on React Aria's select state, so `onChange` can tell an action option from a value. */
+function SelectStateRef<T extends object>({ stateRef }: { stateRef: RefObject<SelectState<T, 'single'> | null> }) {
+  // Written each render, so it is never stale.
+  stateRef.current = useContext(SelectStateContext) as SelectState<T, 'single'> | null;
+  return null;
+}
+
 export type SelectItemProps = DropdownItemProps;
 
 /** One option in a `Select`. The chosen one shows a ✓. */
 export const SelectItem = DropdownItem;
+
+/** A 1px line between groups of options, e.g. before an "Add new…" option at the end. Screen readers skip it. */
+export const SelectSeparator = DropdownSeparator;
 
 const styles = stylex.create({
   // The box is a button: full width, value on the left, caret on the right.

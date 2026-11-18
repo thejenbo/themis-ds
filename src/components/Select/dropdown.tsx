@@ -9,6 +9,7 @@ import {
   type ListBoxItemRenderProps,
   Popover,
   type PopoverRenderProps,
+  Separator,
 } from 'react-aria-components';
 
 import { border as borderWidth } from '../../tokens/borderWidth.stylex';
@@ -61,10 +62,15 @@ export interface DropdownItemProps extends Omit<ListBoxItemProps, 'className' | 
   id: Key;
   /** The option's label. */
   children: ReactNode;
+  /**
+   * Decorative icon before the label (hidden from screen readers), e.g. `<Icon name="plus" />` on an
+   * "Add new…" option.
+   */
+  icon?: ReactNode;
 }
 
 /** One option. The chosen one shows a ✓. */
-export function DropdownItem({ children, textValue, ...props }: DropdownItemProps) {
+export function DropdownItem({ children, icon, textValue, ...props }: DropdownItemProps) {
   return (
     <ListBoxItem
       {...props}
@@ -84,7 +90,15 @@ export function DropdownItem({ children, textValue, ...props }: DropdownItemProp
     >
       {composeRenderProps(children, (children, s) => (
         <>
-          <span {...stylex.props(styles.optionLabel)}>{children}</span>
+          {/* Figma "Content": the icon sits 8px from the label (as in ActionMenu); the ✓ stays 16px away. */}
+          <span {...stylex.props(styles.content)}>
+            {icon != null && (
+              <span aria-hidden="true" {...stylex.props(styles.icon)}>
+                {icon}
+              </span>
+            )}
+            <span {...stylex.props(styles.optionLabel)}>{children}</span>
+          </span>
           {s.isSelected && (
             <span aria-hidden="true" {...stylex.props(styles.check)}>
               <Icon name="check" />
@@ -94,6 +108,11 @@ export function DropdownItem({ children, textValue, ...props }: DropdownItemProp
       ))}
     </ListBoxItem>
   );
+}
+
+/** Figma "Dropdown Divider": a 1px line in the border colour between groups of options. */
+export function DropdownSeparator() {
+  return <Separator {...stylex.props(styles.separator)} />;
 }
 
 /** The trigger's chevron (Figma "caret-down"). */
@@ -188,6 +207,18 @@ const styles = stylex.create({
     whiteSpace: 'nowrap',
   },
   check: { display: 'inline-flex', flexShrink: 0 },
+  content: { display: 'flex', alignItems: 'center', gap: spacing.xs, flexGrow: 1, minWidth: 0 },
+  icon: { display: 'inline-flex', flexShrink: 0, alignItems: 'center', justifyContent: 'center', width: '1rem', height: '1rem' },
+  // 1px whatever the border-width theme, so it still shows with borders set to none. Hidden when filtering leaves
+  // it at the start or end of the list.
+  separator: {
+    display: { default: 'block', ':first-child': 'none', ':last-child': 'none' },
+    flexShrink: 0,
+    height: '1px',
+    marginBlock: spacing['3xs'],
+    border: 'none',
+    backgroundColor: color.border,
+  },
   ringCorners: { '::before': { borderRadius: `max(0px, calc(${radius.radiusMd} - ${spacing['3xs']}))` } },
 });
 

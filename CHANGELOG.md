@@ -17,6 +17,9 @@ listed under **Changed** or **Removed** with what to do.
 - `parseThemisConfig` (checks a theme file and lists every problem), `themeVariables`, `googleFontsHref`, and
   `rateThemeColors` / `contrastLevel` for AAA / AA / AA Large / Fail contrast ratings.
 - Accordion `tone="danger"`: an error-coloured header for a section of destructive actions, as in Figma.
+- `SelectSeparator` and `ComboBoxSeparator`: a 1px divider between groups of options.
+- `SelectItem` / `ComboBoxItem` `icon`: a decorative icon before the label.
+- Select options with `onAction` (such as "Add new theme") run the action instead of becoming the value.
 
 ### Changed
 

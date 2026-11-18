@@ -20,7 +20,7 @@ export default defineComponentDocs({
       { scenario: '2–5 short options that change what\'s shown right away.', useInstead: 'SegmentedControl' },
       { scenario: 'Long lists people would rather search.', useInstead: 'a ComboBox (coming later)' },
       { scenario: 'Choosing several options.', useInstead: 'checkboxes (coming later)' },
-      { scenario: 'Running an action.', useInstead: 'ActionMenu' },
+      { scenario: 'Running actions (the one exception: an "Add new…" option at the end, see below).', useInstead: 'ActionMenu' },
     ],
   },
 
@@ -29,7 +29,8 @@ export default defineComponentDocs({
     { part: 'Input Box', description: 'The 40px box (shared with TextInput) showing the chosen option or the placeholder, with a caret (background-disabled-default when disabled). A button that opens the list.', required: true },
     { part: 'Description / Error message', description: 'Help text (caption) and the error message, as in TextInput.', required: false },
     { part: 'Dropdown', description: 'The list, 4px below the box and as wide as it: border, radius md, drop shadow, 8px padding and 4px between options (as in ActionMenu). Scrolls when long.', required: true },
-    { part: 'Dropdown Option', description: '32px option (`SelectItem`) in the input text style. Pale brand tint when highlighted; ✓ when chosen.', required: true },
+    { part: 'Dropdown Option', description: '32px option (`SelectItem`) in the input text style, with an optional decorative `icon` before the label. Pale brand tint when highlighted; ✓ when chosen.', required: true },
+    { part: 'Dropdown Divider', description: '`SelectSeparator`: a 1px line in the border colour (whatever the border-width theme) between groups of options. Screen readers skip it.', required: false },
   ],
 
   variants: {},
@@ -53,6 +54,7 @@ export default defineComponentDocs({
       'Always give a visible `label`.',
       'Keep option labels short and distinct; they\'re what typing matches against.',
       'Use a placeholder that says what to do ("Choose a country"), not a fake first option.',
+      'An "Add new…" option is announced as an option, so offer the same action somewhere else too (e.g. in an ActionMenu next to the select).',
     ],
   },
 
@@ -60,10 +62,11 @@ export default defineComponentDocs({
     do: [
       'Order options logically: alphabetically, by frequency, or in their natural order (sizes small to large).',
       'Preselect a sensible default when there is one.',
+      'Put an "Add new…" option last, after a `SelectSeparator`, with a plus `icon` and an `onAction`. Choosing it runs the action and keeps the current value.',
     ],
     dont: [
       'Use a select for 2–3 options that would fit as a SegmentedControl.',
-      'Put actions ("Delete…") among the options.',
+      'Put other actions ("Delete…", "Rename…") among the options; they belong in an ActionMenu.',
     ],
   },
 
@@ -142,11 +145,12 @@ export default defineComponentDocs({
 
   related: ['TextInput', 'SegmentedControl', 'ActionMenu'],
   notes: [
-    'Built on Figma "Input Base" / "Input Box" (shared with TextInput, src/components/TextInput/field-base.ts), "Dropdown" (node 1502-172) and "Dropdown Option" (node 1502-145).',
+    'Built on Figma "Input Base" / "Input Box" (shared with TextInput, src/components/TextInput/field-base.ts), "Dropdown" (node 1502-172), "Dropdown Option" (node 1502-145, `iconLeft` variant for `icon`) and "Dropdown Divider" (node 2421-2384).',
     'Figma\'s `empty` variants show the placeholder; `focused` and `opened` come from interaction.',
     'The caret stays the same while the list is open (Figma).',
     'The highlight tint matches ActionMenu: brand-tint, the brand colour at 7% opacity, over the list.',
     'The box shows the shared focus ring inside it for keyboard focus (as in Figma and the other inputs); options use it inside the option.',
-    'Not built yet: search while typing (ComboBox), multiple selection, and option groups with headings.',
+    'React Aria\'s Select would make an `onAction` option the value; Themis keeps the value itself and runs the action instead (only from the open list, so typing a letter on the closed box never runs it).',
+    'Not built yet: multiple selection, and option groups with headings.',
   ],
 });

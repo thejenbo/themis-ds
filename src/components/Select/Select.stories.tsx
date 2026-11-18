@@ -7,7 +7,8 @@ import { ThemeProvider } from '../../theme/ThemeProvider';
 import { collectionModes } from '../../tokens/themes';
 import { Button } from '../Button';
 import { TextInput } from '../TextInput';
-import { Select, SelectItem } from './Select';
+import { Icon } from '../Icon';
+import { Select, SelectItem, SelectSeparator } from './Select';
 import docs from './Select.docs';
 
 const roles = (
@@ -25,7 +26,7 @@ const roles = (
 const meta = {
   title: 'Inputs/Select',
   component: Select,
-  subcomponents: { SelectItem },
+  subcomponents: { SelectItem, SelectSeparator },
   tags: ['autodocs'],
   parameters: { themis: docs, docs: { description: { component: docs.summary }, story: { inline: false, height: '360px' } } },
   args: { label: 'Role', children: roles, onChange: fn() },
@@ -42,6 +43,61 @@ type Story = StoryObj<typeof meta>;
 
 /** Use the controls for every prop, and the toolbar to switch themes. */
 export const Playground: Story = { args: { description: 'Editors can change everything except billing.', placeholder: 'Choose a role' } };
+
+const onAddTheme = fn();
+
+/**
+ * An "Add new…" option after a `SelectSeparator`. Give it an `icon` and an `onAction`: choosing it runs the action
+ * and leaves the chosen option as it was. Offer the same action somewhere else too (e.g. a menu), since screen
+ * readers announce it as an option.
+ */
+export const AddNewOption: Story = {
+  args: { label: 'Theme', defaultValue: 'dark' },
+  render: (args) => (
+    <div style={{ maxWidth: 320, minHeight: 320 }}>
+      <Select {...args}>
+        <SelectItem id="light">light</SelectItem>
+        <SelectItem id="dark">dark</SelectItem>
+        <SelectSeparator />
+        <SelectItem id="add-theme" icon={<Icon name="plus" />} onAction={onAddTheme}>
+          Add new theme
+        </SelectItem>
+      </Select>
+    </div>
+  ),
+  play: async ({ args, canvas }) => {
+    onAddTheme.mockClear();
+    const box = canvas.getByRole('button', { name: /Theme/ });
+    await userEvent.click(box);
+    const separator = await screen.findByRole('separator');
+    // Figma "Dropdown Divider": 1px in the border colour.
+    await expect(separator.getBoundingClientRect().height).toBe(1);
+    // Figma "iconLeft": a 16px icon, 8px before the label.
+    const addOption = screen.getByRole('option', { name: 'Add new theme' });
+    const icon = addOption.querySelector('svg')!;
+    const label = icon.parentElement!.nextElementSibling!;
+    await expect(Math.round(icon.getBoundingClientRect().width)).toBe(16);
+    await expect(Math.round(label.getBoundingClientRect().left - icon.getBoundingClientRect().right)).toBe(8);
+    await userEvent.click(addOption);
+    await expect(onAddTheme).toHaveBeenCalledTimes(1);
+    await expect(args.onChange).not.toHaveBeenCalled();
+    await waitFor(() => expect(screen.queryByRole('listbox')).not.toBeInTheDocument());
+    await expect(box).toHaveTextContent('dark');
+
+    // Keyboard: the arrow keys skip the divider, and Enter runs the action.
+    await userEvent.keyboard('{ArrowDown}');
+    await screen.findByRole('listbox');
+    await userEvent.keyboard('{End}{Enter}');
+    await expect(onAddTheme).toHaveBeenCalledTimes(2);
+    await waitFor(() => expect(screen.queryByRole('listbox')).not.toBeInTheDocument());
+
+    // Typing a letter on the closed box jumps between themes, but never runs the action.
+    box.focus();
+    await userEvent.keyboard('a');
+    await expect(onAddTheme).toHaveBeenCalledTimes(2);
+    await expect(box).toHaveTextContent('dark');
+  },
+};
 
 /** Open, with an option chosen, mirroring the Figma "opened" variant. */
 export const Open: Story = {

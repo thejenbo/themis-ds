@@ -25,11 +25,23 @@ const id =
 const children = /[{}<>]/.test(label) ? `{${JSON.stringify(label)}}` : label
 const isDisabled = state === 'disabled'
 
+// iconLeft=true: the icon is a nested Icons instance, not a component property, so find it by type.
+const hasIcon = instance.getEnum('iconLeft', { true: true, false: false })
+let icon: string | undefined
+if (hasIcon) {
+  const iconLayer = instance.findLayers((node) => node.type === 'INSTANCE')[0]
+  if (iconLayer && iconLayer.type === 'INSTANCE') {
+    const meta = iconLayer.executeTemplate().metadata
+    icon = meta && meta.props && typeof meta.props.name === 'string' ? meta.props.name : undefined
+  }
+}
+const iconAttr = icon ? ` icon={<Icon name="${icon}" />}` : ''
+
 export default {
-  example: figma.code`<SelectItem id="${id}"${isDisabled ? ' isDisabled' : ''}>${children}</SelectItem>`,
-  imports: ['import { SelectItem } from "themis-ds"'],
+  example: figma.code`<SelectItem id="${id}"${iconAttr}${isDisabled ? ' isDisabled' : ''}>${children}</SelectItem>`,
+  imports: [icon ? 'import { Icon, SelectItem } from "themis-ds"' : 'import { SelectItem } from "themis-ds"'],
   id: 'dropdown-option',
   // Select, ComboBox and UnitInput read these to render their own item component (SelectItem, ComboBoxItem,
   // UnitInputItem) and to set the chosen option.
-  metadata: { nestable: true, props: { label, id, selected, isDisabled } },
+  metadata: { nestable: true, props: { label, id, selected, isDisabled, icon } },
 }

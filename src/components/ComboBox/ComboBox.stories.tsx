@@ -7,7 +7,7 @@ import { ThemeProvider } from '../../theme/ThemeProvider';
 import { collectionModes } from '../../tokens/themes';
 import { Button } from '../Button';
 import { Select, SelectItem } from '../Select';
-import { ComboBox, ComboBoxItem } from './ComboBox';
+import { ComboBox, ComboBoxItem, ComboBoxSeparator } from './ComboBox';
 import docs from './ComboBox.docs';
 
 const COUNTRIES = ['Australia', 'Brazil', 'Canada', 'Denmark', 'Japan', 'Kenya', 'Mexico', 'Netherlands', 'New Zealand', 'Norway', 'Portugal', 'Spain'];
@@ -20,7 +20,7 @@ const countries = COUNTRIES.map((c) => (
 const meta = {
   title: 'Inputs/ComboBox',
   component: ComboBox,
-  subcomponents: { ComboBoxItem },
+  subcomponents: { ComboBoxItem, ComboBoxSeparator },
   tags: ['autodocs'],
   parameters: { themis: docs, docs: { description: { component: docs.summary }, story: { inline: false, height: '360px' } } },
   args: { label: 'Country', placeholder: 'Search or choose a country', children: countries, onChange: fn(), onInputChange: fn() },
@@ -37,6 +37,35 @@ type Story = StoryObj<typeof meta>;
 
 /** Type to filter, or press the caret / Down arrow to see every option. */
 export const Playground: Story = { args: { description: 'Used for tax and shipping.' } };
+
+/** A `ComboBoxSeparator` between groups, here recently used fonts and the rest. */
+export const WithSeparator: Story = {
+  args: { label: 'Heading font', placeholder: 'Search fonts' },
+  render: (args) => (
+    <div style={{ maxWidth: 320, minHeight: 320 }}>
+      <ComboBox {...args}>
+        <ComboBoxItem id="recent-playfair">Playfair Display</ComboBoxItem>
+        <ComboBoxItem id="recent-montserrat">Montserrat</ComboBoxItem>
+        <ComboBoxSeparator />
+        <ComboBoxItem id="dm-sans">DM Sans</ComboBoxItem>
+        <ComboBoxItem id="fraunces">Fraunces</ComboBoxItem>
+        <ComboBoxItem id="inter">Inter</ComboBoxItem>
+        <ComboBoxItem id="lora">Lora</ComboBoxItem>
+      </ComboBox>
+    </div>
+  ),
+  play: async ({ canvas }) => {
+    const input = canvas.getByRole('combobox', { name: 'Heading font' });
+    await userEvent.click(input);
+    await userEvent.keyboard('{ArrowDown}');
+    const separator = await screen.findByRole('separator');
+    await expect(separator.getBoundingClientRect().height).toBe(1);
+    // Filtering down to one group hides the divider, so it never sits at the edge of the list.
+    await userEvent.type(input, 'in');
+    await waitFor(() => expect(screen.getAllByRole('option').map((o) => o.textContent)).toEqual(['Inter']));
+    await expect(screen.getByRole('separator', { hidden: true })).not.toBeVisible();
+  },
+};
 
 /** Interaction test: typing filters (anywhere in the name, ignoring case); choosing fills the box and calls onChange. */
 export const Filters: Story = {

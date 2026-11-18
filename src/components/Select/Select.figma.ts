@@ -40,7 +40,7 @@ const description = hasDescription ? readText('here’s some helpful context!', 
 const errorMessage = state === 'errored' ? readText('a helpful error message :-)', '') : ''
 
 // The open variants show "Dropdown Option" instances; their template passes label/id/selected up in metadata.
-type OptionProps = { label: string; id: string; selected: boolean; isDisabled: boolean }
+type OptionProps = { label: string; id: string; selected: boolean; isDisabled: boolean; icon?: string }
 const options: OptionProps[] = []
 if (base.type === 'INSTANCE') {
   base
@@ -55,7 +55,7 @@ const items = options.length
   ? options
       .map(
         (o) =>
-          `  <SelectItem id="${o.id}"${o.isDisabled ? ' isDisabled' : ''}>${
+          `  <SelectItem id="${o.id}"${o.icon ? ` icon={<Icon name="${o.icon}" />}` : ''}${o.isDisabled ? ' isDisabled' : ''}>${
             /[{}<>]/.test(o.label) ? `{${JSON.stringify(o.label)}}` : o.label
           }</SelectItem>`,
       )
@@ -72,7 +72,7 @@ export default {
   }${state === 'disabled' ? ' isDisabled' : ''}>
 ${items}
 </Select>`,
-  imports: ['import { Select, SelectItem } from "themis-ds"'],
+  imports: [options.some((o) => o.icon) ? 'import { Icon, Select, SelectItem } from "themis-ds"' : 'import { Select, SelectItem } from "themis-ds"'],
   id: 'select',
   metadata: { nestable: true },
 }

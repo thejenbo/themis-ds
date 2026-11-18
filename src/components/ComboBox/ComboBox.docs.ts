@@ -29,6 +29,7 @@ export default defineComponentDocs({
     { part: 'Caret', description: 'A button that shows every option. Out of the tab order (Down arrow does the same). The same in every state.', required: true },
     { part: 'Description / Error message', description: 'Help text (caption) and the error message, as in TextInput.', required: false },
     { part: 'Dropdown', description: 'The filtered list, shared with Select: 4px below the box and as wide as it, 8px padding, 4px between options, scrolls when long.', required: true },
+    { part: 'Dropdown Divider', description: '`ComboBoxSeparator`: a 1px line in the border colour between groups of options (e.g. recently used, then all). Hidden when filtering leaves it at the start or end of the list.', required: false },
     { part: 'No results', description: 'Shown in the list when nothing matches (`emptyText`), in the disabled-on-background colour.', required: false },
   ],
 
@@ -135,6 +136,7 @@ export default defineComponentDocs({
     'The caret is always shown and is a real button (Figma: same in every state). Errors are shown by the border and message; the caret isn\'t replaced by the error icon.',
     'Figma\'s `noResults` variant is what shows when nothing matches; the default text matches it, "no results found :-(" (`emptyText`).',
     'The box shows the shared focus ring inside it whenever it has focus (like TextInput), since that\'s where typing goes.',
+    'Options can have a decorative `icon` before the label, as in Select. `onAction` options are Select-only for now: a ComboBox\'s "Create \u201c…\u201d" option is a different feature, not built yet.',
     'Not built yet: loading options as you type, highlighting the matching letters, and choosing several options.',
   ],
 });

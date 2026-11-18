@@ -34,7 +34,7 @@ const description = hasDescription ? readText('here’s some helpful context!', 
 const errorMessage = state === 'errored' ? readText('a helpful error message :-)', '') : ''
 
 // The open variants show "Dropdown Option" instances; their template passes label/id/selected up in metadata.
-type OptionProps = { label: string; id: string; selected: boolean; isDisabled: boolean }
+type OptionProps = { label: string; id: string; selected: boolean; isDisabled: boolean; icon?: string }
 const options: OptionProps[] = []
 if (base.type === 'INSTANCE') {
   base
@@ -54,7 +54,7 @@ const items =
     ? options
         .map(
           (o) =>
-            `  <ComboBoxItem id="${o.id}"${o.isDisabled ? ' isDisabled' : ''}>${
+            `  <ComboBoxItem id="${o.id}"${o.icon ? ` icon={<Icon name="${o.icon}" />}` : ''}${o.isDisabled ? ' isDisabled' : ''}>${
               /[{}<>]/.test(o.label) ? `{${JSON.stringify(o.label)}}` : o.label
             }</ComboBoxItem>`,
         )
@@ -69,7 +69,7 @@ export default {
   }${errorMessage ? attr('errorMessage', errorMessage) : ''}${state === 'disabled' ? ' isDisabled' : ''}>
 ${items}
 </ComboBox>`,
-  imports: ['import { ComboBox, ComboBoxItem } from "themis-ds"'],
+  imports: [options.some((o) => o.icon) ? 'import { Icon, ComboBox, ComboBoxItem } from "themis-ds"' : 'import { ComboBox, ComboBoxItem } from "themis-ds"'],
   id: 'combo-box',
   metadata: { nestable: true },
 }
