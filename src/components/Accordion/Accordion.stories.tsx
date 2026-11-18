@@ -91,6 +91,21 @@ export const LongTitle: Story = {
   },
 };
 
+/** `tone="danger"` gives the header the error colour, for a section of destructive actions. */
+export const DangerTone: Story = {
+  args: {
+    tone: 'danger',
+    title: 'Danger Zone',
+    children: 'Deleting your account removes all your data. This action cannot be undone.',
+    defaultExpanded: true,
+  },
+  play: async ({ canvasElement }) => {
+    const surface = canvasElement.querySelector('[data-themis-part="surface"]')!;
+    // The header uses the theme's error colour (light demo: #AF0E0E).
+    await expect(getComputedStyle(surface).backgroundColor).toBe('rgb(175, 14, 14)');
+  },
+};
+
 /** Disabled accordions can't be opened or closed, and use the fixed system colours. */
 export const Disabled: Story = {
   render: (args) => (

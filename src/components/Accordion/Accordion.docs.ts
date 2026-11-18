@@ -41,6 +41,10 @@ export default defineComponentDocs({
   ],
 
   variants: {
+    tone: {
+      brand: 'Default. Brand-coloured header.',
+      danger: 'Error-coloured header, for a section of destructive actions (e.g. a "Danger Zone" in settings).',
+    },
     allowsMultipleExpanded: {
       true: 'AccordionGroup default: several accordions can be open at once.',
       false: 'Opening one accordion closes the others.',
@@ -86,6 +90,8 @@ export default defineComponentDocs({
     'colorTheme/color.text',
     'colorTheme/color.text-inverse',
     'colorTheme/color.brand-hover',
+    'colorTheme/color.state.error',
+    'colorTheme/color.state.error-hover',
     'system/color.background-disabled-default',
     'system/color.background-disabled-inverse',
     'system/color.text-disabled-default',
@@ -131,6 +137,7 @@ export default defineComponentDocs({
     url: 'https://www.figma.com/design/tRoAewIghL1YbnTio6fkkw/Themis-Design-System?node-id=2064-17367',
     properties: {
       defaultExpanded: { figmaProperty: 'open', type: 'VARIANT' },
+      tone: { figmaProperty: 'tone', type: 'VARIANT' },
       isDisabled: { figmaProperty: 'state', type: 'VARIANT', values: { true: 'disabled' } },
     },
     differences: [

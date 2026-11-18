@@ -27,6 +27,8 @@ import { touchTarget } from '../../utils/touch-target';
 import { baseStyles, layers } from '../Button/button-base';
 import { Icon } from '../Icon';
 
+export type AccordionTone = 'brand' | 'danger';
+
 export interface AccordionProps extends Omit<DisclosureProps, 'className' | 'style' | 'children'> {
   /** The header text. Keep it short; it wraps onto more lines if needed. */
   title: ReactNode;
@@ -38,6 +40,12 @@ export interface AccordionProps extends Omit<DisclosureProps, 'className' | 'sty
    * @default 3
    */
   headingLevel?: 1 | 2 | 3 | 4 | 5 | 6;
+  /**
+   * The header colour. `danger` (the error colour) marks a section with destructive actions, such as deleting an
+   * account.
+   * @default 'brand'
+   */
+  tone?: AccordionTone;
   /** Layout-only StyleX overrides (margin, width, grid placement). Do not restyle colours or type. */
   xstyle?: stylex.StyleXStyles;
 }
@@ -48,7 +56,7 @@ export interface AccordionProps extends Omit<DisclosureProps, 'className' | 'sty
  * On its own, use `defaultExpanded` to start open, or `isExpanded` with `onExpandedChange` to control it.
  * Inside an `AccordionGroup`, give it an `id` and use the group's `defaultExpandedKeys` / `expandedKeys` instead.
  */
-export function Accordion({ title, children, headingLevel = 3, xstyle, ...props }: AccordionProps) {
+export function Accordion({ title, children, headingLevel = 3, tone = 'brand', xstyle, ...props }: AccordionProps) {
   return (
     <Disclosure
       {...props}
@@ -79,7 +87,8 @@ export function Accordion({ title, children, headingLevel = 3, xstyle, ...props 
                     baseStyles.surface,
                     styles.header,
                     isExpanded && styles.headerOpen,
-                    layers.brand.default,
+                    tone === 'danger' && styles.headerDanger,
+                    layers[tone].default,
                     (s.isHovered || s.isPressed) && !s.isDisabled && baseStyles.stateLayerOn,
                     isDisabled && styles.headerDisabled,
                   )}
@@ -179,6 +188,7 @@ const styles = stylex.create({
     fontSize: font.sizeSm,
     fontWeight: font.weightSemibold,
   },
+  headerDanger: { backgroundColor: color.stateError },
   headerOpen: { paddingBlockEnd: spacing.xs },
   headerDisabled: { backgroundColor: system.backgroundDisabledDefault, color: system.textDisabledInverse },
   title: { position: 'relative', flexGrow: 1, minWidth: 0 },

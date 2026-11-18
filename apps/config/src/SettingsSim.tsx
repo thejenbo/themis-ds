@@ -17,6 +17,8 @@ import {
 } from 'themis-ds';
 
 import { spacing } from '../../../src/tokens/spacing.stylex';
+import { ScalesIllustration } from './illustrations/ScalesIllustration';
+import { Sparkle } from './illustrations/Sparkle';
 
 /**
  * "Settings Sim" (Figma 1936:11209): an account settings page built only from Themis components, so every token a
@@ -25,8 +27,14 @@ import { spacing } from '../../../src/tokens/spacing.stylex';
 export function SettingsSim() {
   return (
     <div {...stylex.props(styles.page)}>
+      <ScalesIllustration xstyle={styles.scales} />
       <div {...stylex.props(styles.content)}>
-        <Heading level={1} size="lg">Settings Sim</Heading>
+        <div {...stylex.props(styles.title)}>
+          <Heading level={1} size="lg">
+            Settings Sim
+          </Heading>
+          <Sparkle xstyle={styles.titleSparkle} />
+        </div>
         <div {...stylex.props(styles.toolbar)}>
           <SegmentedControl aria-label="Settings section" defaultSelectedKey="account">
             <SegmentedControlItem id="account">account</SegmentedControlItem>
@@ -97,7 +105,7 @@ export function SettingsSim() {
           </div>
         </Accordion>
 
-        <Accordion title="Danger Zone" defaultExpanded headingLevel={2}>
+        <Accordion title="Danger Zone" tone="danger" defaultExpanded headingLevel={2}>
           <div {...stylex.props(styles.spread)}>
             <div>
               <Text variant="body-medium-bold">Delete Account</Text>
@@ -111,9 +119,29 @@ export function SettingsSim() {
   );
 }
 
+// Where the scales start: under the content's right edge, so the left pan sits behind the accordions (as in Figma).
+const scalesLeft = `calc(${spacing['2xl']} + 37.3rem)`;
+
 const styles = stylex.create({
-  page: { paddingBlock: `${spacing.md} ${spacing.xl}`, paddingInline: spacing['2xl'] },
-  content: { display: 'flex', flexDirection: 'column', gap: spacing.md, maxWidth: '48rem' },
+  // The illustration sits behind the content's right edge, as in Figma; it's clipped on narrow screens.
+  page: {
+    position: 'relative',
+    overflowX: 'clip',
+    containerType: 'inline-size',
+    paddingBlock: `${spacing.md} ${spacing.xl}`,
+    paddingInline: spacing['2xl'],
+  },
+  content: { position: 'relative', display: 'flex', flexDirection: 'column', gap: spacing.md, maxWidth: '48rem' },
+  scales: {
+    position: 'absolute',
+    insetBlockStart: '29rem',
+    insetInlineStart: scalesLeft,
+    // Shrinks to fit beside the content; hidden when there isn't room for the pole to show.
+    width: `min(27.3rem, calc(100% - ${scalesLeft}))`,
+    display: { default: 'block', '@container (max-width: 56rem)': 'none' },
+  },
+  title: { display: 'flex', alignItems: 'flex-start', gap: spacing['3xs'] },
+  titleSparkle: { width: '1.3rem', flexShrink: 0 },
   toolbar: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: spacing.md, flexWrap: 'wrap' },
   stack: { display: 'flex', flexDirection: 'column', gap: spacing.md },
   row: { display: 'flex', alignItems: 'center', gap: spacing.md },

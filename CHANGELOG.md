@@ -16,6 +16,7 @@ listed under **Changed** or **Removed** with what to do.
   colours (hovers 7% darker, tints at 7%, muted text at 6:1, …), matching the Figma themes.
 - `parseThemisConfig` (checks a theme file and lists every problem), `themeVariables`, `googleFontsHref`, and
   `rateThemeColors` / `contrastLevel` for AAA / AA / AA Large / Fail contrast ratings.
+- Accordion `tone="danger"`: an error-coloured header for a section of destructive actions, as in Figma.
 
 ### Changed
 

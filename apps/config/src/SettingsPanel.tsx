@@ -97,7 +97,7 @@ function ThemeSettingsForm({ theme, onChange }: { theme: ThemeSettings; onChange
   return (
     <div {...stylex.props(styles.sections)}>
       <section {...stylex.props(styles.section)}>
-        <Heading level={2} size="md">
+        <Heading level={2} size="sm">
           Colors
         </Heading>
         {(Object.keys(COLOR_LABELS) as (keyof ThemeColors)[]).map((key) => {
@@ -122,7 +122,7 @@ function ThemeSettingsForm({ theme, onChange }: { theme: ThemeSettings; onChange
       </section>
 
       <section {...stylex.props(styles.section)}>
-        <Heading level={2} size="md">
+        <Heading level={2} size="sm">
           Borders
         </Heading>
         <Select
@@ -146,7 +146,7 @@ function ThemeSettingsForm({ theme, onChange }: { theme: ThemeSettings; onChange
       </section>
 
       <section {...stylex.props(styles.section)}>
-        <Heading level={2} size="md">
+        <Heading level={2} size="sm">
           Fonts
         </Heading>
         {(['heading', 'body'] as const).map((slot) => (
@@ -174,7 +174,7 @@ function ExportSection({ config }: { config: ThemisConfig }) {
   const [copied, setCopied] = useState(false);
   return (
     <section {...stylex.props(styles.section, styles.exportSection)}>
-      <Heading level={2} size="md">
+      <Heading level={2} size="sm">
         Export
       </Heading>
       <pre {...stylex.props(styles.code)}>{json}</pre>

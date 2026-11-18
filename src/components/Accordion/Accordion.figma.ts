@@ -14,12 +14,14 @@ const state = instance.getEnum('state', {
   disabled: 'disabled',
 })
 
+const tone = instance.getEnum('tone', { brand: 'brand', danger: 'danger' })
+
 const titleLayer = instance.findText('Accordion Header')
 const title = titleLayer.type === 'TEXT' ? titleLayer.textContent : 'Title'
 const content = instance.getSlot('Accordion Content')
 
 export default {
-  example: figma.code`<Accordion title="${title}"${open ? ' defaultExpanded' : ''}${state === 'disabled' ? ' isDisabled' : ''}>
+  example: figma.code`<Accordion title="${title}"${tone === 'danger' ? ' tone="danger"' : ''}${open ? ' defaultExpanded' : ''}${state === 'disabled' ? ' isDisabled' : ''}>
   ${content}
 </Accordion>`,
   imports: ['import { Accordion } from "themis-ds"'],

@@ -1,1 +1,1 @@
-export { Accordion, AccordionGroup, type AccordionGroupProps, type AccordionProps } from './Accordion';
+export { Accordion, AccordionGroup, type AccordionGroupProps, type AccordionProps, type AccordionTone } from './Accordion';
