@@ -22,7 +22,8 @@ type Naming =
 /** What a new theme starts from: the light theme the tool opens with. */
 const NEW_THEME: ThemeSettings = initialConfig.themes.light!;
 
-const pageFromHash = (): Page => (window.location.hash === '#docs' ? 'docs' : 'simulator');
+const PAGES: Page[] = ['simulator', 'components'];
+const pageFromHash = (): Page => PAGES.find((p) => `#${p}` === window.location.hash) ?? 'simulator';
 
 /**
  * The config tool: a sample app wearing the selected theme, and the sidebar to change it. The tool's own chrome uses
@@ -117,19 +118,8 @@ export function App() {
 
   return (
     <ThemeProvider modes={{ colorTheme: 'themis config', fontTheme: 'themis', borderWidth: 'themis config', radius: 'themis config' }} xstyle={styles.app}>
-      <AppHeader page={page} isExportDisabled={draft != null} onExport={() => setDialog('export')} />
+      <AppHeader page={page} />
       <div {...stylex.props(styles.body)}>
-        <main {...stylex.props(styles.preview)} aria-label={`Preview of the ${draft ? 'new' : selected} theme`}>
-          <ThemeProvider theme={previewTheme} xstyle={[styles.previewTheme, darkBackground && styles.previewThemeDark]}>
-            {page === 'simulator' ? (
-              <SettingsSim lightenBrandArt={darkBrand} />
-            ) : (
-              <div {...stylex.props(styles.placeholder)}>
-                <Text variant="body-large">The docs view is coming soon.</Text>
-              </div>
-            )}
-          </ThemeProvider>
-        </main>
         <aside {...stylex.props(styles.sidebar)} aria-label="Theme settings">
           <div {...stylex.props(styles.themeBar)}>
             {naming ? (
@@ -159,7 +149,24 @@ export function App() {
           <div {...stylex.props(styles.settings)}>
             <ThemeSettingsForm theme={theme} onChange={updateTheme} />
           </div>
+          {/* Export is off while a new theme is being named: it isn't part of the file yet. */}
+          <div {...stylex.props(styles.footer)}>
+            <Button size="medium" isDisabled={draft != null} onPress={() => setDialog('export')} xstyle={styles.exportButton}>
+              Export
+            </Button>
+          </div>
         </aside>
+        <main {...stylex.props(styles.preview)} aria-label={`Preview of the ${draft ? 'new' : selected} theme`}>
+          <ThemeProvider theme={previewTheme} xstyle={[styles.previewTheme, darkBackground && styles.previewThemeDark]}>
+            {page === 'simulator' ? (
+              <SettingsSim lightenBrandArt={darkBrand} />
+            ) : (
+              <div {...stylex.props(styles.placeholder)}>
+                <Text variant="body-large">The {page} view is coming soon.</Text>
+              </div>
+            )}
+          </ThemeProvider>
+        </main>
       </div>
 
       <ExportModal config={config} isOpen={dialog === 'export'} onOpenChange={(open) => setDialog(open ? 'export' : null)} />
@@ -263,35 +270,38 @@ const styles = stylex.create({
     flexDirection: 'column',
     height: '100dvh',
   },
-  // Figma: the preview fills the width, the sidebar is 350px on the right. Each scrolls on its own.
+  // Figma 2422:35486: the sidebar is 380px on the left, the preview fills the rest. Each scrolls on its own.
   body: {
     display: 'grid',
-    gridTemplateColumns: 'minmax(0, 1fr) 21.875rem',
+    gridTemplateColumns: '23.75rem minmax(0, 1fr)',
     flexGrow: 1,
     minHeight: 0,
   },
   preview: { overflowY: 'auto' },
-  // A faint brand tint behind the simulator, so its components stand out (even with borders set to none).
   // Decorative and only in this tool: the components themselves still sit on the plain background colour.
   // A decorative brand tint behind the simulator, so components stand out even with borders off. 7% is enough on
   // light backgrounds; on very dark ones it barely shows, so it goes up to 10%.
   previewTheme: { minHeight: '100%', backgroundColor: `color-mix(in srgb, ${color.brand} 7%, ${color.background})` },
   previewThemeDark: { backgroundColor: `color-mix(in srgb, ${color.brand} 10%, ${color.background})` },
   placeholder: { padding: spacing['2xl'] },
+  // A column, so the Export footer sits at the bottom when the settings are short.
   sidebar: {
+    display: 'flex',
+    flexDirection: 'column',
     overflowY: 'auto',
     backgroundColor: color.background,
-    borderInlineStartWidth: borderWidth.widthSm,
-    borderInlineStartStyle: 'solid',
-    borderInlineStartColor: color.brand,
+    borderInlineEndWidth: borderWidth.widthSm,
+    borderInlineEndStyle: 'solid',
+    borderInlineEndColor: color.brand,
   },
   // Sticks to the top of the sidebar, with the 1px line under it (Figma "Line 7").
   themeBar: {
     position: 'sticky',
     insetBlockStart: 0,
     zIndex: 1,
-    padding: spacing.md,
-    paddingBlockEnd: spacing.lg,
+    paddingInline: spacing.md,
+    paddingBlockStart: spacing.sm,
+    paddingBlockEnd: spacing.md,
     backgroundColor: color.background,
     '::after': {
       content: "''",
@@ -302,7 +312,26 @@ const styles = stylex.create({
       backgroundColor: color.border,
     },
   },
-  settings: { padding: spacing.md, paddingBlockStart: spacing.lg },
+  settings: { padding: spacing.md },
+  // Sticks to the bottom of the sidebar, with the 1px line above it (Figma 2433:38386).
+  footer: {
+    position: 'sticky',
+    insetBlockEnd: 0,
+    zIndex: 1,
+    marginBlockStart: 'auto',
+    paddingInline: spacing.md,
+    paddingBlock: spacing.sm,
+    backgroundColor: color.background,
+    '::before': {
+      content: "''",
+      position: 'absolute',
+      insetInline: spacing.md,
+      insetBlockStart: 0,
+      height: '1px',
+      backgroundColor: color.border,
+    },
+  },
+  exportButton: { width: '100%' },
 });
 
 /**

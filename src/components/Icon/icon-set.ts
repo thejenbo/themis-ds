@@ -12,6 +12,7 @@ import {
   Copy,
   CreditCard,
   EllipsisVertical,
+  ExternalLink,
   Folder,
   Heart,
   type IconNode,
@@ -73,6 +74,15 @@ export const iconSet = {
   },
   'credit-card': { shapes: CreditCard },
   'ellipsis-vertical': { shapes: EllipsisVertical },
+  'external-link': {
+    shapes: ExternalLink,
+    // Square corners on the open box; the arrow already straightens with sharp joins.
+    sharp: [
+      ['path', { d: 'M15 3h6v6' }],
+      ['path', { d: 'M10 14 21 3' }],
+      ['path', { d: 'M18 13v8H3V6h8' }],
+    ],
+  },
   folder: {
     shapes: Folder,
     // Lucide's outline with square corners; the tab slopes up from the body at x 12 to x 10.

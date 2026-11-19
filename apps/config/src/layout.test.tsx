@@ -17,7 +17,7 @@ describe('header', () => {
   test('the current page is marked and underlined; the underline slides to the other link', async () => {
     renderApp();
     const simulator = page.getByRole('link', { name: 'simulator' });
-    const docs = page.getByRole('link', { name: 'docs' });
+    const docs = page.getByRole('link', { name: 'components' });
     await expect.element(simulator).toHaveAttribute('aria-current', 'page');
     const indicator = () => document.querySelector('nav span[aria-hidden]')!;
     await expect.poll(() => near(rect(indicator()).left, rect(simulator.element()).left)).toBe(true);
@@ -28,7 +28,27 @@ describe('header', () => {
     expect(getComputedStyle(indicator()).transitionProperty).toContain('translate');
     await expect.poll(() => near(rect(indicator()).left, rect(docs.element()).left)).toBe(true);
     await expect.poll(() => near(rect(indicator()).width, rect(docs.element()).width)).toBe(true);
-    await expect.element(page.getByText('The docs view is coming soon.')).toBeVisible();
+    await expect.element(page.getByText('The components view is coming soon.')).toBeVisible();
+  });
+});
+
+describe('header links', () => {
+  test('"docs" opens the full Storybook in a new tab, and says so', async () => {
+    renderApp();
+    const docs = page.getByRole('link', { name: 'docs (opens in a new tab)' });
+    await expect.element(docs).toHaveAttribute('target', '_blank');
+    await expect.element(docs).toHaveAttribute('rel', 'noopener noreferrer');
+    expect(docs.element().getAttribute('href')).toMatch(/^https?:\/\//);
+    expect(docs.element().querySelector('svg')).not.toBeNull();
+    // It's not one of the tool's pages, so it never gets the current-page underline.
+    expect(docs.element().getAttribute('aria-current')).toBeNull();
+  });
+
+  test('the "Themis Config" wordmark is 24px at every width', async () => {
+    renderApp();
+    const wordmark = page.getByText('Themis Config', { exact: true });
+    await expect.element(wordmark).toBeVisible();
+    expect(getComputedStyle(wordmark.element()).fontSize).toBe('24px');
   });
 });
 
@@ -51,6 +71,23 @@ describe('sidebar', () => {
     await wait(50);
     expect(aside.scrollTop).toBeGreaterThan(0);
     expect(near(rect(row).top, rect(aside).top)).toBe(true);
+  });
+
+  test('sits on the left, with Export pinned to its bottom edge', async () => {
+    renderApp();
+    const aside = await sidebar();
+    expect(rect(aside).right).toBeLessThanOrEqual(rect(await preview()).left + 0.5);
+    const exportButton = page.getByRole('complementary').getByRole('button', { name: 'Export' });
+    await expect.element(exportButton).toBeVisible();
+    // Full width inside the 24px padding, at the bottom however far the settings scroll.
+    const footer = exportButton.element().parentElement!;
+    expect(getComputedStyle(footer).position).toBe('sticky');
+    expect(Math.round(rect(exportButton.element()).width)).toBe(Math.round(aside.clientWidth - 48));
+    for (const top of [0, 9999]) {
+      aside.scrollTop = top;
+      await wait(50);
+      expect(near(rect(footer).bottom, rect(aside).bottom)).toBe(true);
+    }
   });
 
   test('the ✓ and ✕ buttons keep their 40px size next to the name field', async () => {
@@ -76,7 +113,7 @@ describe('border modes', () => {
     await expect.element(exportButton).toBeVisible();
     // themis config: radius md 4px, width sm 2px (the sidebar's edge).
     expect(getComputedStyle(exportButton.element()).borderTopLeftRadius).toBe('4px');
-    expect(getComputedStyle(await sidebar()).borderInlineStartWidth).toBe('2px');
+    expect(getComputedStyle(await sidebar()).borderInlineEndWidth).toBe('2px');
     // The preview's theme doesn't set them, so it gets medium (radius md 10px), not the tool's modes.
     const save = page.getByRole('main').getByRole('button', { name: 'Save Changes' });
     await expect.element(save).toBeVisible();

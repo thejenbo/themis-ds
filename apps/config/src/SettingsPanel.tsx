@@ -18,6 +18,8 @@ import {
   type ThemeSettings,
 } from 'themis-ds';
 
+import { border as borderWidth } from '../../../src/tokens/borderWidth.stylex';
+import { color } from '../../../src/tokens/colorTheme.stylex';
 import { spacing } from '../../../src/tokens/spacing.stylex';
 
 const COLOR_LABELS: Record<keyof ThemeColors, string> = {
@@ -65,7 +67,7 @@ export function ThemeSettingsForm({ theme, onChange }: { theme: ThemeSettings; o
   return (
     <div {...stylex.props(styles.sections)}>
       <section {...stylex.props(styles.section)}>
-        <Heading level={2} size="sm">
+        <Heading level={2} size="sm" xstyle={styles.heading}>
           Colors
         </Heading>
         {(Object.keys(COLOR_LABELS) as (keyof ThemeColors)[]).map((key) => (
@@ -110,7 +112,7 @@ const ColorRow = memo(function ColorRow({ colorKey, hex, level, ratio, worstPair
       label={
         <span {...stylex.props(styles.colorLabel)}>
           {COLOR_LABELS[colorKey]}
-          <Chip variant="solid" tone={LEVEL_TONE[level]}>
+          <Chip tone={LEVEL_TONE[level]}>
             <span title={`Lowest contrast ${ratio.toFixed(2)}:1 (${worstPair})`}>{level}</span>
           </Chip>
         </span>
@@ -141,7 +143,7 @@ const BordersSection = memo(function BordersSection({
 }) {
   return (
     <section {...stylex.props(styles.section)}>
-      <Heading level={2} size="sm">
+      <Heading level={2} size="sm" xstyle={styles.heading}>
         Borders
       </Heading>
       <div {...stylex.props(styles.fields)}>
@@ -176,7 +178,7 @@ const FontsSection = memo(function FontsSection({
   const fonts = { heading, body };
   return (
     <section {...stylex.props(styles.section)}>
-      <Heading level={2} size="sm">
+      <Heading level={2} size="sm" xstyle={styles.heading}>
         Fonts
       </Heading>
       <div {...stylex.props(styles.fields)}>
@@ -200,6 +202,13 @@ const FontsSection = memo(function FontsSection({
 });
 
 const styles = stylex.create({
+  // Underlined to the width of the text (Figma 2433:38627).
+  heading: {
+    alignSelf: 'flex-start',
+    borderBlockEndWidth: borderWidth.widthSm,
+    borderBlockEndStyle: 'solid',
+    borderBlockEndColor: color.border,
+  },
   sections: { display: 'flex', flexDirection: 'column', gap: spacing.md },
   section: { display: 'flex', flexDirection: 'column', gap: spacing.sm },
   fields: { display: 'flex', flexDirection: 'column', gap: spacing.md },

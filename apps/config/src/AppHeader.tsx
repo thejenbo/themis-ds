@@ -1,7 +1,8 @@
 import * as stylex from '@stylexjs/stylex';
 import { useLayoutEffect, useRef, useState } from 'react';
+import { VisuallyHidden } from 'react-aria';
 import { Link, type LinkRenderProps } from 'react-aria-components';
-import { Button } from 'themis-ds';
+import { Icon } from 'themis-ds';
 
 import { border as borderWidth } from '../../../src/tokens/borderWidth.stylex';
 import { color } from '../../../src/tokens/colorTheme.stylex';
@@ -13,17 +14,17 @@ import { focusRing } from '../../../src/utils/focus-ring';
 import { racStyles } from '../../../src/utils/stylex-rac';
 import { Logomark } from './illustrations/Logomark';
 
-export type Page = 'simulator' | 'docs';
+export type Page = 'simulator' | 'components';
+
+/** The full Storybook ("docs" in the header). Set VITE_STORYBOOK_URL once it's hosted; locally it's `npm run storybook`. */
+export const STORYBOOK_URL = import.meta.env.VITE_STORYBOOK_URL ?? 'http://localhost:6006';
 
 interface AppHeaderProps {
   page: Page;
-  /** Export is off while a new theme is being named: it isn't part of the file yet. */
-  isExportDisabled: boolean;
-  onExport: () => void;
 }
 
-/** Figma "Frame 106": the logo, the page links and Export. Sticks to the top of the window. */
-export function AppHeader({ page, isExportDisabled, onExport }: AppHeaderProps) {
+/** The logo and the page links (Figma 2422:35488). Sticks to the top of the window. */
+export function AppHeader({ page }: AppHeaderProps) {
   const links = useRef<Partial<Record<Page, HTMLAnchorElement | null>>>({});
   // Where the current page's underline sits. It slides between links, as the Tabs indicator does; `animate` stays
   // off for the first placement so it doesn't slide in from the left on load.
@@ -42,12 +43,11 @@ export function AppHeader({ page, isExportDisabled, onExport }: AppHeaderProps) 
   return (
     <header {...stylex.props(styles.header)}>
       <Link href="#simulator" aria-label="Themis config" {...racStyles<LinkRenderProps>((s) => [styles.brand, focusRing.base, s.isFocusVisible && focusRing.visible])}>
-        <Logomark />
-        <span {...stylex.props(styles.wordmark)}>Themis</span>
-        <span {...stylex.props(styles.suffix)}>config</span>
+        <Logomark xstyle={styles.logomark} />
+        <span {...stylex.props(styles.wordmark)}>Themis Config</span>
       </Link>
       <nav aria-label="Pages" {...stylex.props(styles.nav)}>
-        {(['simulator', 'docs'] as const).map((p) => (
+        {(['simulator', 'components'] as const).map((p) => (
           <Link
             key={p}
             ref={(el) => {
@@ -60,6 +60,17 @@ export function AppHeader({ page, isExportDisabled, onExport }: AppHeaderProps) 
             {p}
           </Link>
         ))}
+        {/* Not a page of the tool: it opens the full Storybook in a new tab. */}
+        <Link
+          href={STORYBOOK_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          {...racStyles<LinkRenderProps>((s) => [styles.link, styles.external, styles.hoverable, focusRing.base, s.isFocusVisible && focusRing.visible])}
+        >
+          docs
+          <Icon name="external-link" size="small" />
+          <VisuallyHidden>(opens in a new tab)</VisuallyHidden>
+        </Link>
         {indicator && (
           <span
             aria-hidden="true"
@@ -68,9 +79,6 @@ export function AppHeader({ page, isExportDisabled, onExport }: AppHeaderProps) 
           />
         )}
       </nav>
-      <Button size="medium" isDisabled={isExportDisabled} onPress={onExport}>
-        Export
-      </Button>
     </header>
   );
 }
@@ -82,8 +90,8 @@ const styles = stylex.create({
     zIndex: 1,
     display: 'flex',
     alignItems: 'center',
-    // Figma: 108px from the logo to the links (not a token).
-    gap: '6.75rem',
+    // Figma: 113px from the logo to the links (not a token).
+    gap: '7.0625rem',
     paddingBlock: spacing.sm,
     paddingInlineStart: spacing.md,
     paddingInlineEnd: spacing.sm,
@@ -101,21 +109,13 @@ const styles = stylex.create({
     textDecoration: 'none',
     flexShrink: 0,
   },
-  // Figma type/heading/md.
+  logomark: { width: '2.5rem', height: 'auto' },
+  // Figma type/heading/base (bold), held at its 24px size: the typography tokens grow it to 32px on wide screens.
   wordmark: {
     fontFamily: fontTheme.familyHeading,
-    fontSize: font.size2xl,
-    lineHeight: font.lineHeightLg,
+    fontSize: '1.5rem',
+    lineHeight: '2rem',
     fontWeight: font.weightBold,
-  },
-  // Figma type/caption/base, sitting on the wordmark's baseline.
-  suffix: {
-    alignSelf: 'flex-end',
-    marginInlineStart: `calc(${spacing['2xs']} - ${spacing.xs})`,
-    paddingBlockEnd: '5px',
-    fontFamily: fontTheme.familyBody,
-    fontSize: font.sizeCaption,
-    lineHeight: font.lineHeightCaption,
   },
   nav: { position: 'relative', display: 'flex', alignItems: 'center', gap: spacing.xl, flexGrow: 1 },
   // Figma type/input/base; the current page is underlined.
@@ -131,6 +131,8 @@ const styles = stylex.create({
     borderBlockEndColor: 'transparent',
   },
   // Other pages show the underline on hover; the current page's comes from the sliding indicator.
+  // "docs" sits at the far end of the header, its icon 4px after the text.
+  external: { marginInlineStart: 'auto', display: 'inline-flex', alignItems: 'center', gap: spacing['2xs'] },
   hoverable: { borderBlockEndColor: { default: 'transparent', ':hover': color.border } },
   indicator: {
     position: 'absolute',
