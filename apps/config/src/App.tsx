@@ -340,11 +340,12 @@ const styles = stylex.create({
     borderInlineEndStyle: 'solid',
     borderInlineEndColor: color.brand,
   },
-  // Sticks to the top of the sidebar, with the 1px line under it (Figma "Line 7").
+  // Sticks to the top of the sidebar, with a full-width line under it in the sidebar's border width and colour.
   themeBar: {
     position: 'sticky',
     insetBlockStart: 0,
-    zIndex: 1,
+    // Above the sticky section headings (1), so one pushed up by the next section slides under the row.
+    zIndex: 2,
     paddingInline: spacing.md,
     paddingBlockStart: spacing.sm,
     paddingBlockEnd: spacing.md,
@@ -352,14 +353,15 @@ const styles = stylex.create({
     '::after': {
       content: "''",
       position: 'absolute',
-      insetInline: spacing.md,
+      insetInline: 0,
       insetBlockEnd: 0,
-      height: '1px',
+      height: borderWidth.widthSm,
       backgroundColor: color.border,
     },
   },
-  settings: { padding: spacing.md },
-  // Sticks to the bottom of the sidebar, with the 1px line above it (Figma 2433:38386).
+  // 24px from the line to the first heading's text (Figma 2437:2652), less the sticky heading's own top padding.
+  settings: { padding: spacing.md, paddingBlockStart: spacing.sm },
+  // Sticks to the bottom of the sidebar, with the same full-width line above it.
   footer: {
     position: 'sticky',
     insetBlockEnd: 0,
@@ -371,9 +373,9 @@ const styles = stylex.create({
     '::before': {
       content: "''",
       position: 'absolute',
-      insetInline: spacing.md,
+      insetInline: 0,
       insetBlockStart: 0,
-      height: '1px',
+      height: borderWidth.widthSm,
       backgroundColor: color.border,
     },
   },

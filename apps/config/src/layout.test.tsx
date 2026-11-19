@@ -105,6 +105,48 @@ describe('sidebar', () => {
     expect(near(rect(colors).top, rect(row).bottom)).toBe(true);
   });
 
+  test('a heading’s underline becomes a full-width bottom border while it’s stuck, until it’s scrolled away', async () => {
+    renderApp();
+    const aside = await sidebar();
+    const bar = aside.firstElementChild!;
+    // A short window, so the sidebar can scroll far enough for Borders to reach the top.
+    aside.style.maxHeight = '500px';
+    const [colors, borders] = [...aside.querySelectorAll('h2')];
+    const title = colors!.querySelector('button > span')!;
+    const line = (h: Element) => getComputedStyle(h, '::after');
+    // In place: an underline the width of the title, 2px black, on the heading's bottom edge (where the border goes).
+    await expect.poll(() => line(colors!).width).toBe(`${(title as HTMLElement).offsetWidth}px`);
+    expect(line(colors!).height).toBe('2px');
+    expect(line(colors!).backgroundColor).toBe('rgb(0, 0, 0)');
+    expect(line(colors!).bottom).toBe('0px');
+    expect(Math.round(rect(colors!).bottom - rect(title).bottom)).toBe(10);
+    // Stuck: across the whole heading (the sidebar's width), on its bottom edge.
+    aside.scrollTop = 300;
+    await expect.poll(() => line(colors!).width).toBe(`${aside.clientWidth}px`);
+    expect(line(colors!).bottom).toBe('0px');
+    expect(line(colors!).left).toBe('0px');
+    expect(line(borders!).width).toBe(`${(borders!.querySelector('button > span') as HTMLElement).offsetWidth}px`);
+    // Borders arriving pushes Colors up under the theme row: it keeps its border until it's out of view.
+    // (Borders 40px below the row leaves 24px of Colors showing.)
+    const target = aside.scrollTop + rect(borders!).top - rect(bar).bottom - 40;
+    aside.scrollTop = target;
+    expect(aside.scrollTop).toBe(target);
+    await wait(50);
+    expect(rect(colors!).bottom).toBeGreaterThan(rect(bar).bottom);
+    await expect.poll(() => line(colors!).width).toBe(`${aside.clientWidth}px`);
+    // In the last few pixels it drops the border, which would sit right under the theme row's line (a double line).
+    aside.scrollTop += rect(colors!).bottom - rect(bar).bottom - 6;
+    await wait(50);
+    expect(Math.round(rect(colors!).bottom - rect(bar).bottom)).toBe(6);
+    await expect.poll(() => line(colors!).width).toBe(`${(title as HTMLElement).offsetWidth}px`);
+    // Scrolled back to the top, it's an underline again. The widening is a short transition.
+    aside.scrollTop = 0;
+    await expect.poll(() => line(colors!).width).toBe(`${(title as HTMLElement).offsetWidth}px`);
+    expect(line(colors!).transitionDuration).toBe('0.1s');
+    // And the theme row is drawn over the heading sliding under it.
+    expect(Number(getComputedStyle(bar).zIndex)).toBeGreaterThan(Number(getComputedStyle(colors!).zIndex));
+  });
+
   test('nothing in a section draws over the sticky headings (the colour code control did)', async () => {
     renderApp();
     await sidebar();
@@ -119,9 +161,40 @@ describe('sidebar', () => {
     expect(getComputedStyle(page.getByRole('heading', { name: 'Colors' }).element()).zIndex).toBe('1');
   });
 
-  test('open sections are 64px apart, from the last field to the next heading (Figma 2422:35486)', async () => {
+  test('closed sections: 24px below the theme row’s line, then 32px between 38px headings (Figma 2437:2652)', async () => {
     renderApp();
-    await sidebar();
+    const aside = await sidebar();
+    for (const name of ['Colors', 'Borders', 'Fonts']) await page.getByRole('button', { name: new RegExp(`^${name}`) }).click();
+    // A closed panel keeps its padding under hidden="until-found"; that made closed headings 110px apart.
+    const titles = [...aside.querySelectorAll('h2 button > span:first-child')].map((t) => rect(t));
+    expect(Math.round(titles[0]!.top - rect(aside.firstElementChild!).bottom)).toBe(24);
+    // Figma: 38px headings (title, 8px, underline) 32px apart, so one title starts 70px after the last.
+    expect(titles.slice(1).map((t, i) => Math.round(t.top - titles[i]!.top))).toEqual([70, 70]);
+  });
+
+  test('the lines under the theme row and above Export are full width, 2px and black like the other borders', async () => {
+    renderApp();
+    const aside = await sidebar();
+    const footer = aside.lastElementChild!;
+    for (const line of [getComputedStyle(aside.firstElementChild!, '::after'), getComputedStyle(footer, '::before')]) {
+      expect(line.width).toBe(`${aside.clientWidth}px`);
+      expect(line.height).toBe('2px');
+      expect(line.backgroundColor).toBe('rgb(0, 0, 0)');
+    }
+  });
+
+  test('open sections: 24px under the heading and between fields, 64px to the next heading (Figma 2437:2201)', async () => {
+    renderApp();
+    const aside = await sidebar();
+    const colors = aside.querySelector('h2')!;
+    const control = page.getByRole('radiogroup', { name: 'Color code for every field' }).element();
+    const label = (name: string) => [...aside.querySelectorAll('label')].find((l) => l.textContent?.startsWith(name))!;
+    const brandLabel = label('Brand');
+    const textLabel = label('Text');
+    const brandSwatch = page.getByRole('button', { name: /Pick the brand color/ }).element();
+    expect(Math.round(rect(control).top - rect(colors).bottom)).toBe(24);
+    expect(Math.round(rect(brandLabel).top - rect(control).bottom)).toBe(24);
+    expect(Math.round(rect(textLabel).top - rect(brandSwatch).bottom)).toBe(24);
     const lastColor = page.getByRole('button', { name: /Pick the success color/ }).element();
     const borders = page.getByRole('button', { name: /^Borders/ }).element();
     expect(Math.round(rect(borders).top - rect(lastColor).bottom)).toBe(64);

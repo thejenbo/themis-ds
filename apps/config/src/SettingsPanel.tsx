@@ -78,6 +78,11 @@ export function ThemeSettingsForm({ theme, onChange, colorFormats, onColorFormat
       latest.current.onColorFormatsChange({ ...latest.current.colorFormats, [key]: format }),
     [],
   );
+  const setAllFormats = useCallback(
+    (format: ColorFormat) =>
+      latest.current.onColorFormatsChange(Object.fromEntries(COLOR_KEYS.map((k) => [k, format])) as ColorFormats),
+    [],
+  );
   const formatOf = (key: keyof ThemeColors) => colorFormats[key] ?? 'hex';
   // The control shows the code all six fields share. Once one field is switched on its own, none is selected, and
   // choosing any switches them all again.
@@ -88,42 +93,67 @@ export function ThemeSettingsForm({ theme, onChange, colorFormats, onColorFormat
   // Which sections are closed. Remembered in this browser, like the themes.
   const [collapsed, setCollapsed] = useState<ReadonlySet<SectionId>>(loadCollapsed);
   useEffect(() => saveCollapsed(collapsed), [collapsed]);
-  const section = (id: SectionId) => ({
-    isExpanded: !collapsed.has(id),
-    onExpandedChange: (open: boolean) =>
+  const toggle = useCallback(
+    (id: SectionId, open: boolean) =>
       setCollapsed((prev) => {
         const next = new Set(prev);
         if (open) next.delete(id);
         else next.add(id);
         return next;
       }),
+    [],
+  );
+  const section = (id: SectionId) => ({
+    isExpanded: !collapsed.has(id),
+    onExpandedChange: (open: boolean) => toggle(id, open),
   });
   const failing = (Object.keys(COLOR_LABELS) as (keyof ThemeColors)[]).filter((key) => ratings[key].level === 'Fail');
-  const borders = { borderWidth: theme.borderWidth ?? 'medium', radius: theme.radius ?? 'medium' } as const;
-  const fontNames = {
-    heading: typeof fonts.heading === 'string' ? fonts.heading : fonts.heading.family,
-    body: typeof fonts.body === 'string' ? fonts.body : fonts.body.family,
-  };
+  const borderWidth = theme.borderWidth ?? 'medium';
+  const radius = theme.radius ?? 'medium';
+  const headingFont = typeof fonts.heading === 'string' ? fonts.heading : fonts.heading.family;
+  const bodyFont = typeof fonts.body === 'string' ? fonts.body : fonts.body.family;
+  const bordersOpen = !collapsed.has('borders');
+  const fontsOpen = !collapsed.has('fonts');
+
+  // Borders and Fonts don't change while a colour does, so the same elements are reused and React skips them on
+  // colour slider steps (keeps those steps quick; see the lag test in colors.test.tsx).
+  const bordersSection = useMemo(
+    () => (
+      <SidebarSection
+        title="Borders"
+        summary={`${firstWord(BORDER_WIDTH_LABELS[borderWidth])} · ${firstWord(RADIUS_LABELS[radius])}`}
+        isExpanded={bordersOpen}
+        onExpandedChange={(open) => toggle('borders', open)}
+      >
+        <BordersSection borderWidth={borderWidth} radius={radius} onChange={update} />
+      </SidebarSection>
+    ),
+    [borderWidth, radius, bordersOpen, toggle, update],
+  );
+  const fontsSection = useMemo(
+    () => (
+      <SidebarSection
+        title="Fonts"
+        summary={
+          <>
+            <span style={{ fontFamily: JSON.stringify(headingFont) }}>{headingFont}</span>·
+            <span style={{ fontFamily: JSON.stringify(bodyFont) }}>{bodyFont}</span>
+          </>
+        }
+        isExpanded={fontsOpen}
+        onExpandedChange={(open) => toggle('fonts', open)}
+      >
+        <FontsSection heading={headingFont} body={bodyFont} onChange={update} />
+      </SidebarSection>
+    ),
+    [headingFont, bodyFont, fontsOpen, toggle, update],
+  );
 
   return (
     <div {...stylex.props(styles.sections)}>
       <SidebarSection title="Colors" summary={<ColorsSummary colors={theme.colors} failing={failing} />} {...section('colors')}>
-        <div {...stylex.props(styles.fields, styles.colorFields)}>
-          <SegmentedControl
-            aria-label="Color code for every field"
-            size="micro"
-            selectedKey={sharedFormat}
-            onSelectionChange={(key) =>
-              onColorFormatsChange(Object.fromEntries(COLOR_KEYS.map((k) => [k, key as ColorFormat])) as ColorFormats)
-            }
-            xstyle={styles.formatControl}
-          >
-            {FORMATS.map((format) => (
-              <SegmentedControlItem key={format} id={format}>
-                {format.toUpperCase()}
-              </SegmentedControlItem>
-            ))}
-          </SegmentedControl>
+        <div {...stylex.props(styles.fields)}>
+          <ColorCodeControl selected={sharedFormat} onChange={setAllFormats} />
           {COLOR_KEYS.map((key) => (
             <ColorRow
               key={key}
@@ -139,25 +169,8 @@ export function ThemeSettingsForm({ theme, onChange, colorFormats, onColorFormat
           ))}
         </div>
       </SidebarSection>
-      <SidebarSection
-        title="Borders"
-        summary={`${firstWord(BORDER_WIDTH_LABELS[borders.borderWidth])} · ${firstWord(RADIUS_LABELS[borders.radius])}`}
-        {...section('borders')}
-      >
-        <BordersSection borderWidth={borders.borderWidth} radius={borders.radius} onChange={update} />
-      </SidebarSection>
-      <SidebarSection
-        title="Fonts"
-        summary={
-          <>
-            <span style={{ fontFamily: JSON.stringify(fontNames.heading) }}>{fontNames.heading}</span>·
-            <span style={{ fontFamily: JSON.stringify(fontNames.body) }}>{fontNames.body}</span>
-          </>
-        }
-        {...section('fonts')}
-      >
-        <FontsSection heading={fontNames.heading} body={fontNames.body} onChange={update} />
-      </SidebarSection>
+      {bordersSection}
+      {fontsSection}
     </div>
   );
 }
@@ -181,6 +194,34 @@ function ColorsSummary({ colors, failing }: { colors: ThemeColors; failing: (key
     </>
   );
 }
+
+/**
+ * HEX / RGB / HSL / HSB for every colour field at once. Memoised (with a stable `onChange`) so slider steps don't
+ * re-render it.
+ */
+const ColorCodeControl = memo(function ColorCodeControl({
+  selected,
+  onChange,
+}: {
+  selected: ColorFormat | typeof MIXED;
+  onChange: (format: ColorFormat) => void;
+}) {
+  return (
+    <SegmentedControl
+      aria-label="Color code for every field"
+      size="micro"
+      selectedKey={selected}
+      onSelectionChange={(key) => onChange(key as ColorFormat)}
+      xstyle={styles.formatControl}
+    >
+      {FORMATS.map((format) => (
+        <SegmentedControlItem key={format} id={format}>
+          {format.toUpperCase()}
+        </SegmentedControlItem>
+      ))}
+    </SegmentedControl>
+  );
+});
 
 interface ColorRowProps {
   colorKey: keyof ThemeColors;
@@ -289,7 +330,7 @@ const FontsSection = memo(function FontsSection({
 });
 
 const styles = stylex.create({
-  sections: { display: 'flex', flexDirection: 'column', gap: spacing.sm },
+  sections: { display: 'flex', flexDirection: 'column', gap: spacing.md },
   // The closed Colors summary: six 12px dots, outlined so one that matches the background still shows.
   dots: { display: 'inline-flex', alignItems: 'center', gap: spacing['2xs'] },
   dot: {
@@ -303,8 +344,6 @@ const styles = stylex.create({
     borderColor: color.border,
   },
   fields: { display: 'flex', flexDirection: 'column', gap: spacing.md },
-  // Six colours, so a tighter stack than the other sections (Figma 2422:35688).
-  colorFields: { gap: spacing.sm },
   // Figma 2434:39151: the micro control at the end of the row, above the fields.
   formatControl: { alignSelf: 'flex-end' },
   colorLabel: { display: 'inline-flex', alignItems: 'center', gap: spacing.xs },
