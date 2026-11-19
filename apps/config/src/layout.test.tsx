@@ -62,6 +62,71 @@ describe('sidebar', () => {
     expect([16, 18]).toContain(size);
   });
 
+  test('a section closes to a one-line summary, and stays closed on the next visit', async () => {
+    renderApp();
+    const borders = page.getByRole('button', { name: 'Borders' });
+    const widthField = page.getByRole('complementary').getByRole('button', { name: /Medium - Distinct/ });
+    await expect.element(borders).toHaveAttribute('aria-expanded', 'true');
+    await expect.element(widthField).toBeVisible();
+    await borders.click();
+    await expect.element(page.getByRole('button', { name: /^Borders/ })).toHaveAttribute('aria-expanded', 'false');
+    await expect.element(page.getByRole('button', { name: 'Borders Medium · Medium' })).toBeVisible();
+    // Its fields are hidden (and out of the accessibility tree) while it's closed.
+    expect(widthField.query()).toBeNull();
+    await wait(50);
+    cleanup();
+    // renderApp clears storage, so render directly over what was saved.
+    const { createRoot } = await import('react-dom/client');
+    const { App } = await import('./App');
+    const host = document.body.appendChild(document.createElement('div'));
+    const root = createRoot(host);
+    root.render(<App />);
+    await expect.element(page.getByRole('button', { name: /^Borders/ })).toHaveAttribute('aria-expanded', 'false');
+    await expect.element(page.getByRole('button', { name: 'Colors' })).toHaveAttribute('aria-expanded', 'true');
+    root.unmount();
+    host.remove();
+  });
+
+  test('a closed Colors section still says when a colour fails contrast', async () => {
+    renderApp();
+    await page.getByRole('textbox', { name: /^Brand/ }).fill('#FFFF00');
+    await userEvent.keyboard('{Tab}');
+    await page.getByRole('button', { name: 'Colors' }).click();
+    await expect.element(page.getByRole('button', { name: 'Colors Fail' })).toBeVisible();
+  });
+
+  test('section headings stick below the theme row while their section scrolls past', async () => {
+    renderApp();
+    const aside = await sidebar();
+    const row = aside.firstElementChild!;
+    const colors = page.getByRole('heading', { name: 'Colors' }).element();
+    aside.scrollTop = 300;
+    await wait(50);
+    expect(near(rect(colors).top, rect(row).bottom)).toBe(true);
+  });
+
+  test('nothing in a section draws over the sticky headings (the colour code control did)', async () => {
+    renderApp();
+    await sidebar();
+    const control = page.getByRole('radiogroup', { name: 'Color code for every field' }).element();
+    // The control's outer border is a raised ::after (z-index 1, the same as the stuck headings), drawn later, so it
+    // showed through a heading as the sidebar scrolled. Pseudo-elements can't be hit-tested, so check the cause: the
+    // panel it sits in is its own stacking context, which keeps anything raised inside it below the headings.
+    expect(getComputedStyle(control, '::after').zIndex).toBe('1');
+    const panel = page.getByRole('group', { name: 'Colors' }).element();
+    expect(panel.contains(control)).toBe(true);
+    expect(getComputedStyle(panel).isolation).toBe('isolate');
+    expect(getComputedStyle(page.getByRole('heading', { name: 'Colors' }).element()).zIndex).toBe('1');
+  });
+
+  test('open sections are 64px apart, from the last field to the next heading (Figma 2422:35486)', async () => {
+    renderApp();
+    await sidebar();
+    const lastColor = page.getByRole('button', { name: /Pick the success color/ }).element();
+    const borders = page.getByRole('button', { name: /^Borders/ }).element();
+    expect(Math.round(rect(borders).top - rect(lastColor).bottom)).toBe(64);
+  });
+
   test('the theme row stays at the top while the sidebar scrolls', async () => {
     renderApp();
     const aside = await sidebar();

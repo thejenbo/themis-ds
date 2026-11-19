@@ -2,7 +2,7 @@ import type { ProfilerOnRenderCallback } from 'react';
 import { afterEach, describe, expect, test } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
 
-import { cleanup, renderApp, wait } from './test-utils';
+import { chooseMenuItem, cleanup, nameField, renderApp, themeSelect, wait } from './test-utils';
 
 afterEach(cleanup);
 
@@ -65,5 +65,67 @@ describe('colour fields', () => {
     // simulator (that was the keyboard lag).
     expect(updates.length).toBeGreaterThan(0);
     expect(actual / base).toBeLessThan(0.17);
+  });
+});
+
+const field = (name: string) => page.getByRole('textbox', { name: new RegExp(`^${name}`) });
+/** The colour code typed in a field, as shown. */
+const code = (name: string) => (field(name).element() as HTMLInputElement).value;
+const formatButton = (name: string) => page.getByRole('button', { name: new RegExp(`^${name}.*format`) });
+const codeControl = () => page.getByRole('radiogroup', { name: 'Color code for every field' });
+
+describe('colour code control (HEX, RGB, HSL, HSB)', () => {
+  test('choosing a code switches every field; one field can then differ', async () => {
+    renderApp();
+    await expect.element(codeControl().getByRole('radio', { name: 'HEX' })).toBeChecked();
+    await codeControl().getByRole('radio', { name: 'RGB' }).click();
+    for (const name of ['Brand', 'Text', 'Background', 'Error', 'Warning', 'Success']) {
+      await expect.poll(() => code(name)).toMatch(/^\d+, \d+, \d+$/);
+    }
+    // Switch one field back on its own: the control then shows no shared code.
+    await formatButton('Text').click();
+    await page.getByRole('option', { name: 'HEX' }).click();
+    await expect.element(field('Text')).toHaveValue('#000000');
+    await expect.poll(() => code('Brand')).toMatch(/^\d+, \d+, \d+$/);
+    await expect.poll(() => codeControl().getByRole('radio', { checked: true }).query()).toBeNull();
+    // Choosing any code applies it to all six again, including the one that differed.
+    await codeControl().getByRole('radio', { name: 'HSL' }).click();
+    await expect.poll(() => code('Text')).toMatch(/^\d+, \d+%, \d+%$/);
+    await expect.poll(() => code('Brand')).toMatch(/^\d+, \d+%, \d+%$/);
+  });
+
+  test('each theme’s codes are remembered in the browser', async () => {
+    renderApp();
+    await codeControl().getByRole('radio', { name: 'HSB' }).click();
+    await expect.poll(() => code('Brand')).toMatch(/^\d+, \d+%, \d+%$/);
+    // Another theme keeps its own codes.
+    await themeSelect().click();
+    await page.getByRole('option', { name: 'dark' }).click();
+    await expect.poll(() => code('Brand')).toMatch(/^#/);
+    await themeSelect().click();
+    await page.getByRole('option', { name: 'light' }).click();
+    await expect.poll(() => code('Brand')).toMatch(/^\d+, \d+%, \d+%$/);
+    // And they come back on the next visit.
+    await wait(500);
+    renderApp({ keepStorage: true });
+    await expect.poll(() => code('Brand')).toMatch(/^\d+, \d+%, \d+%$/);
+    await expect.element(codeControl().getByRole('radio', { name: 'HSB' })).toBeChecked();
+  });
+
+  test('renaming or duplicating a theme keeps its codes', async () => {
+    renderApp();
+    await codeControl().getByRole('radio', { name: 'RGB' }).click();
+    await chooseMenuItem('Duplicate');
+    await expect.poll(() => code('Brand')).toMatch(/^\d+, \d+, \d+$/);
+    await userEvent.keyboard('{Enter}');
+    await expect.element(themeSelect()).toHaveTextContent('light copy');
+    await expect.poll(() => code('Brand')).toMatch(/^\d+, \d+, \d+$/);
+    await chooseMenuItem('Rename…');
+    await nameField().fill('lilac');
+    await userEvent.keyboard('{Enter}');
+    await expect.element(themeSelect()).toHaveTextContent('lilac');
+    await expect.poll(() => code('Brand')).toMatch(/^\d+, \d+, \d+$/);
+    await wait(500);
+    expect(Object.keys(JSON.parse(localStorage.getItem('themis-config:color-formats')!))).toEqual(['light', 'lilac']);
   });
 });

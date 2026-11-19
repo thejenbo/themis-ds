@@ -300,23 +300,34 @@ function ColorFieldInner({
 
 /** The colour as a code in the chosen format. HSL and HSB are rounded to whole numbers, as people type them. */
 export function formatColor(c: Color, format: ColorFormat): string {
-  if (format === 'hex' || format === 'rgb') return c.toString(format);
+  if (format === 'hex') return c.toString('hex');
+  // Just the values: the format button already says which format it is, and "rgb(255, 255, 255)" doesn't fit.
   const f = c.toFormat(format);
-  const [h, s, third] = f.getColorChannels().map((ch) => Math.round(f.getChannelValue(ch)));
-  return `${format}(${h}, ${s}%, ${third}%)`;
+  const [first, second, third] = f.getColorChannels().map((ch) => Math.round(f.getChannelValue(ch)));
+  return format === 'rgb' ? `${first}, ${second}, ${third}` : `${first}, ${second}%, ${third}%`;
 }
 
 /**
- * Reads a typed code, forgivingly: a hex code without "#", values without the format's name ("122 31 235" in RGB),
- * and spaces instead of commas all work. Returns null when it isn't a colour.
+ * Reads a typed code, forgivingly: a hex code without "#", values without the format's name ("122 31 235" in RGB,
+ * "226 84 52" in HSL), and spaces instead of commas all work. Returns null when it isn't a colour.
  */
 export function readColor(text: string, format: ColorFormat): Color | null {
   let t = text.trim();
   if (!t) return null;
   if (/^#?([0-9a-f]{3}|[0-9a-f]{6})$/i.test(t)) t = t.startsWith('#') ? t : `#${t}`;
   else {
-    if (!t.includes('(')) t = `${format === 'hex' ? 'rgb' : format}(${t})`;
-    t = t.replace(/\(([^)]*)\)/, (_, inner: string) => `(${inner.trim().split(/[\s,]+/).filter(Boolean).join(', ')})`);
+    const bare = !t.includes('(');
+    if (bare) t = `${format === 'hex' ? 'rgb' : format}(${t})`;
+    t = t.replace(/\(([^)]*)\)/, (_, inner: string) => {
+      const values = inner.trim().split(/[\s,]+/).filter(Boolean);
+      // Typed as shown ("226, 84%, 52%"), the percent signs are optional: "226 84 52" works in HSL and HSB.
+      if (bare && (format === 'hsl' || format === 'hsb')) {
+        values.forEach((v, i) => {
+          if (i > 0 && /^[\d.]+$/.test(v)) values[i] = `${v}%`;
+        });
+      }
+      return `(${values.join(', ')})`;
+    });
   }
   try {
     return parseColor(t);

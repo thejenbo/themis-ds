@@ -1,4 +1,4 @@
-import { parseThemisConfig, type ThemisConfig } from 'themis-ds';
+import { type ColorFormat, parseThemisConfig, type ThemeColors, type ThemisConfig } from 'themis-ds';
 
 /**
  * The tool keeps your work in this browser between visits: the theme file and which theme was open.
@@ -33,5 +33,61 @@ export function save(saved: Saved) {
     localStorage.setItem(KEY, JSON.stringify(saved));
   } catch {
     // Not saved this time; the work is still on screen.
+  }
+}
+
+/** The sidebar sections that can be closed. */
+export type SectionId = 'colors' | 'borders' | 'fonts';
+const SECTIONS_KEY = 'themis-config:collapsed';
+
+/** Which sidebar sections were closed last time (none on a first visit). */
+export function loadCollapsed(): Set<SectionId> {
+  try {
+    const data = JSON.parse(localStorage.getItem(SECTIONS_KEY) ?? '[]') as unknown;
+    return new Set(Array.isArray(data) ? data.filter((id): id is SectionId => ['colors', 'borders', 'fonts'].includes(id)) : []);
+  } catch {
+    return new Set();
+  }
+}
+
+export function saveCollapsed(collapsed: ReadonlySet<SectionId>) {
+  try {
+    localStorage.setItem(SECTIONS_KEY, JSON.stringify([...collapsed]));
+  } catch {
+    // Not remembered this time.
+  }
+}
+
+/** The colour code each field shows (HEX, RGB…), per theme. A field that isn't listed shows HEX. */
+export type ColorFormats = Partial<Record<keyof ThemeColors, ColorFormat>>;
+const FORMATS_KEY = 'themis-config:color-formats';
+const FORMAT_VALUES: readonly string[] = ['hex', 'rgb', 'hsl', 'hsb'];
+const COLOR_KEYS: readonly string[] = ['brand', 'text', 'background', 'error', 'warning', 'success'];
+
+/** Each theme's colour codes from last time, by theme name. */
+export function loadColorFormats(): Record<string, ColorFormats> {
+  try {
+    const data = JSON.parse(localStorage.getItem(FORMATS_KEY) ?? '{}') as unknown;
+    if (!data || typeof data !== 'object') return {};
+    return Object.fromEntries(
+      Object.entries(data as Record<string, unknown>).map(([theme, formats]) => [
+        theme,
+        Object.fromEntries(
+          Object.entries(formats && typeof formats === 'object' ? formats : {}).filter(
+            ([key, format]) => COLOR_KEYS.includes(key) && FORMAT_VALUES.includes(format as string),
+          ),
+        ) as ColorFormats,
+      ]),
+    );
+  } catch {
+    return {};
+  }
+}
+
+export function saveColorFormats(formats: Record<string, ColorFormats>) {
+  try {
+    localStorage.setItem(FORMATS_KEY, JSON.stringify(formats));
+  } catch {
+    // Not remembered this time.
   }
 }

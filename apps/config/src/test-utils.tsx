@@ -10,11 +10,15 @@ let container: HTMLElement | null = null;
 
 /**
  * Renders the config tool on a clean slate: nothing saved, on the simulator page. Pass `onRender` to profile how much
- * of the app each update renders.
+ * of the app each update renders, or `keepStorage` to come back to what's saved (like reloading the page).
  */
-export function renderApp({ saved, onRender }: { saved?: unknown; onRender?: ProfilerOnRenderCallback } = {}) {
+export function renderApp({
+  saved,
+  onRender,
+  keepStorage = false,
+}: { saved?: unknown; onRender?: ProfilerOnRenderCallback; keepStorage?: boolean } = {}) {
   cleanup();
-  localStorage.clear();
+  if (!keepStorage) localStorage.clear();
   if (saved !== undefined) localStorage.setItem('themis-config:v1', JSON.stringify(saved));
   history.replaceState(null, '', location.pathname);
   container = document.createElement('div');

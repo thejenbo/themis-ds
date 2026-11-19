@@ -57,20 +57,30 @@ export const Typing: Story = {
   },
 };
 
-/** More than one format: the format button switches what the code is shown and read in. "122 31 235" works in RGB. */
+/**
+ * More than one format: the format button switches what the code is shown and read in. Codes are shown as just the
+ * values ("122, 31, 235"), since the button names the format. "122 31 235" works in RGB, "226 84 52" in HSL.
+ */
 export const Formats: Story = {
   args: { formats: ['hex', 'rgb', 'hsl', 'hsb'] },
   play: async ({ canvas }) => {
     const input = canvas.getByRole('textbox', { name: 'Color' });
     await userEvent.click(canvas.getByRole('button', { name: /Color format/ }));
     await userEvent.click(await screen.findByRole('option', { name: 'RGB' }));
-    await expect(input).toHaveValue('rgb(122, 31, 235)');
+    await expect(input).toHaveValue('122, 31, 235');
     await userEvent.clear(input);
     await userEvent.type(input, '31 79 235{Enter}');
-    await expect(input).toHaveValue('rgb(31, 79, 235)');
+    await expect(input).toHaveValue('31, 79, 235');
     await userEvent.click(canvas.getByRole('button', { name: /Color format/ }));
     await userEvent.click(await screen.findByRole('option', { name: 'HSL' }));
-    await expect(input).toHaveValue('hsl(226, 84%, 52%)');
+    await expect(input).toHaveValue('226, 84%, 52%');
+    // Percent signs are optional when typing, and the full CSS form still works.
+    await userEvent.clear(input);
+    await userEvent.type(input, '0 100 50{Enter}');
+    await expect(input).toHaveValue('0, 100%, 50%');
+    await userEvent.clear(input);
+    await userEvent.type(input, 'hsl(120, 100%, 25%){Enter}');
+    await expect(input).toHaveValue('120, 100%, 25%');
   },
 };
 

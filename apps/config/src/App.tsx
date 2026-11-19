@@ -1,5 +1,5 @@
 import * as stylex from '@stylexjs/stylex';
-import { useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
+import { useDeferredValue, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Button, Modal, Text, type ThemeSettings, ThemeProvider, type ThemisConfig, ToastRegion } from 'themis-ds';
 
 import { luminance, parseHex } from '../../../src/theme/color-math';
@@ -9,14 +9,22 @@ import { spacing } from '../../../src/tokens/spacing.stylex';
 import { AppHeader, type Page } from './AppHeader';
 import { ExportModal } from './ExportModal';
 import { initialConfig } from './initial-config';
-import { loadSaved, save } from './storage';
+import { type ColorFormats, loadColorFormats, loadSaved, save, saveColorFormats } from './storage';
 import { ThemeSettingsForm } from './SettingsPanel';
 import { SettingsSim } from './SettingsSim';
 import { ThemeNameField, ThemePicker } from './ThemeBar';
 
 /** A theme being named. New and duplicated themes aren't in the file until the name is confirmed. */
 type Naming =
-  | { mode: 'new' | 'duplicate'; name: string; theme: ThemeSettings; original: ThemeSettings; error?: string }
+  | {
+      mode: 'new' | 'duplicate';
+      name: string;
+      theme: ThemeSettings;
+      original: ThemeSettings;
+      /** The colour codes its fields show; kept under the theme's name once it's confirmed. */
+      formats: ColorFormats;
+      error?: string;
+    }
   | { mode: 'rename'; name: string; from: string; error?: string };
 
 /** What a new theme starts from: the light theme the tool opens with. */
@@ -37,6 +45,9 @@ export function App() {
   const [naming, setNaming] = useState<Naming | null>(null);
   const [dialog, setDialog] = useState<'export' | 'delete' | 'discard' | 'start-over' | null>(null);
   const [page, setPage] = useState<Page>(pageFromHash);
+  // Which colour code (HEX, RGB…) each field shows, per theme. Remembered in this browser, not part of the file.
+  const [colorFormats, setColorFormats] = useState(loadColorFormats);
+  useEffect(() => saveColorFormats(colorFormats), [colorFormats]);
   const selectRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -67,6 +78,19 @@ export function App() {
   const previewTheme = useDeferredValue(theme);
   const { darkBackground, darkBrand } = useMemo(() => simulatorTones(previewTheme.colors), [previewTheme.colors]);
 
+  // Section headings stick just below the theme row, whose height changes (the name field, its error message).
+  const sidebarRef = useRef<HTMLElement>(null);
+  const themeBarRef = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    const bar = themeBarRef.current;
+    if (!bar) return;
+    const place = () => sidebarRef.current?.style.setProperty('--theme-bar-height', `${bar.offsetHeight}px`);
+    place();
+    const observer = new ResizeObserver(place);
+    observer.observe(bar);
+    return () => observer.disconnect();
+  }, []);
+
   const focusThemeSelect = () => requestAnimationFrame(() => selectRef.current?.querySelector('button')?.focus());
 
   const updateTheme = (next: ThemeSettings) => {
@@ -74,10 +98,23 @@ export function App() {
     else setConfig((c) => ({ ...c, themes: { ...c.themes, [selected]: next } }));
   };
 
-  const startNew = () => setNaming({ mode: 'new', name: '', theme: structuredClone(NEW_THEME), original: NEW_THEME });
+  const formats = draft ? draft.formats : (colorFormats[selected] ?? {});
+  const updateFormats = (next: ColorFormats) => {
+    if (draft) setNaming({ ...draft, formats: next });
+    else setColorFormats((f) => ({ ...f, [selected]: next }));
+  };
+
+  const startNew = () =>
+    setNaming({ mode: 'new', name: '', theme: structuredClone(NEW_THEME), original: NEW_THEME, formats: {} });
   const startDuplicate = () => {
     const copy = structuredClone(config.themes[selected]!);
-    setNaming({ mode: 'duplicate', name: uniqueName(`${selected} copy`, names), theme: copy, original: structuredClone(copy) });
+    setNaming({
+      mode: 'duplicate',
+      name: uniqueName(`${selected} copy`, names),
+      theme: copy,
+      original: structuredClone(copy),
+      formats: { ...colorFormats[selected] },
+    });
   };
   const startRename = () => setNaming({ mode: 'rename', name: selected, from: selected });
 
@@ -94,8 +131,10 @@ export function App() {
         ...c,
         themes: Object.fromEntries(Object.entries(c.themes).map(([key, value]) => [key === naming.from ? name : key, value])),
       }));
+      setColorFormats(({ [naming.from]: moved, ...rest }) => (moved ? { ...rest, [name]: moved } : rest));
     } else {
       setConfig((c) => ({ ...c, themes: { ...c.themes, [name]: naming.theme } }));
+      setColorFormats((f) => ({ ...f, [name]: naming.formats }));
     }
     setSelected(name);
     setNaming(null);
@@ -112,6 +151,7 @@ export function App() {
     const index = names.indexOf(selected);
     const next = names[index + 1] ?? names[index - 1]!;
     setConfig((c) => ({ ...c, themes: Object.fromEntries(Object.entries(c.themes).filter(([key]) => key !== selected)) }));
+    setColorFormats(({ [selected]: _removed, ...rest }) => rest);
     setSelected(next);
     focusThemeSelect();
   };
@@ -120,8 +160,8 @@ export function App() {
     <ThemeProvider modes={{ colorTheme: 'themis config', fontTheme: 'themis', borderWidth: 'themis config', radius: 'themis config' }} xstyle={styles.app}>
       <AppHeader page={page} />
       <div {...stylex.props(styles.body)}>
-        <aside {...stylex.props(styles.sidebar)} aria-label="Theme settings">
-          <div {...stylex.props(styles.themeBar)}>
+        <aside ref={sidebarRef} {...stylex.props(styles.sidebar)} aria-label="Theme settings">
+          <div ref={themeBarRef} {...stylex.props(styles.themeBar)}>
             {naming ? (
               <ThemeNameField
                 label={naming.mode === 'rename' ? 'Theme name' : 'New theme name'}
@@ -147,7 +187,12 @@ export function App() {
             )}
           </div>
           <div {...stylex.props(styles.settings)}>
-            <ThemeSettingsForm theme={theme} onChange={updateTheme} />
+            <ThemeSettingsForm
+              theme={theme}
+              onChange={updateTheme}
+              colorFormats={formats}
+              onColorFormatsChange={updateFormats}
+            />
           </div>
           {/* Export is off while a new theme is being named: it isn't part of the file yet. */}
           <div {...stylex.props(styles.footer)}>
@@ -240,6 +285,7 @@ export function App() {
               onPress={() => {
                 close();
                 setConfig(initialConfig);
+                setColorFormats({});
                 setSelected(Object.keys(initialConfig.themes)[0]!);
                 focusThemeSelect();
               }}

@@ -30,7 +30,7 @@ export default defineComponentDocs({
   variants: {
     formats: {
       "['hex']": 'Hex codes only, no format button. The default.',
-      "['hex', 'rgb', 'hsl', 'hsb']": 'Any of these; the format button switches which one the code is shown and read in.',
+      "['hex', 'rgb', 'hsl', 'hsb']": 'Any of these; the format button switches which one the code is shown and read in. Codes other than hex are shown as just the values ("122, 31, 235", "226, 84%, 52%"), since the button names the format.',
     },
   },
 
@@ -68,7 +68,7 @@ export default defineComponentDocs({
       formats: { figmaProperty: 'formats', type: 'VARIANT', values: { "['hex', 'rgb', 'hsl', 'hsb']": 'true' } },
     },
     differences: [
-      { topic: 'Reading the code', figma: 'Not shown.', code: 'The code is read on Enter or when leaving the field; forgiving ("7A1FEB" and "122 31 235" in RGB work). Unreadable codes show the error and keep the colour.', action: 'annotate-figma', done: '2026-11-16' },
+      { topic: 'Reading the code', figma: 'Not shown.', code: 'The code is read on Enter or when leaving the field; forgiving ("7A1FEB", "122 31 235" in RGB and "226 84 52" in HSL work, as does the full "rgb(…)" form). Unreadable codes show the error and keep the colour.', action: 'annotate-figma', done: '2026-11-16' },
     ],
   },
 
