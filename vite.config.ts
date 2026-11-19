@@ -47,6 +47,23 @@ export default defineConfig({
         extends: true,
         test: { name: 'unit', include: ['src/**/*.test.ts'], environment: 'node' },
       },
+      // The config tool (apps/config): the whole app in a real browser, its flows and the bugs caught so far.
+      {
+        extends: true,
+        resolve: { alias: { 'themis-ds': path.join(dirname, 'src/index.ts') } },
+        test: {
+          name: 'config',
+          include: ['apps/config/src/**/*.test.tsx'],
+          browser: {
+            enabled: true,
+            headless: true,
+            // The tool is laid out for desktop (preview plus a 350px sidebar).
+            viewport: { width: 1440, height: 1000 },
+            provider: playwright({}),
+            instances: [{ browser: 'chromium' }],
+          },
+        },
+      },
       {
         extends: true,
         plugins: [storybookTest({ configDir: path.join(dirname, '.storybook') })],

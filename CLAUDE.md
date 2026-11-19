@@ -7,4 +7,6 @@
 - When a component puts text on a new surface or tint (a `transform-*` overlay), add the pair to `tokens/contrast-pairs.json`
   and check it with `npm run contrast`.
 - Before finishing a change, run `npm run manifest` (validates docs against props and tokens), `npm run typecheck` and `npm test`.
+- The config tool (`apps/config`) has its own browser tests (`apps/config/src/*.test.tsx`, the `config` project in
+  `npm test`). Add one for each new flow, and for each bug fixed, so it can't come back.
 - When Storybook is running, use the `themis-storybook` MCP server (`.mcp.json`) for component info and preview URLs.
