@@ -26,10 +26,10 @@ import { Sparkle } from './illustrations/Sparkle';
  * "Settings Sim" (Figma 1936:11209): an account settings page built only from Themis components, so every token a
  * theme sets shows up somewhere.
  */
-export const SettingsSim = memo(function SettingsSim() {
+export const SettingsSim = memo(function SettingsSim({ lightenBrandArt = false }: { lightenBrandArt?: boolean }) {
   return (
     <div {...stylex.props(styles.page)}>
-      <ScalesIllustration xstyle={styles.scales} />
+      <ScalesIllustration lightenBrand={lightenBrandArt} xstyle={styles.scales} />
       <div {...stylex.props(styles.content)}>
         <div {...stylex.props(styles.title)}>
           <Heading level={1} size="lg">

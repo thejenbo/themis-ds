@@ -1,7 +1,8 @@
 import * as stylex from '@stylexjs/stylex';
-import { useDeferredValue, useEffect, useRef, useState } from 'react';
+import { useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
 import { Button, Modal, Text, type ThemeSettings, ThemeProvider, type ThemisConfig, ToastRegion } from 'themis-ds';
 
+import { luminance, parseHex } from '../../../src/theme/color-math';
 import { border as borderWidth } from '../../../src/tokens/borderWidth.stylex';
 import { color } from '../../../src/tokens/colorTheme.stylex';
 import { spacing } from '../../../src/tokens/spacing.stylex';
@@ -63,6 +64,7 @@ export function App() {
   const theme = draft ? draft.theme : config.themes[selected]!;
   // The preview follows a step behind while a slider or field is changing, so they stay quick to use.
   const previewTheme = useDeferredValue(theme);
+  const { darkBackground, darkBrand } = useMemo(() => simulatorTones(previewTheme.colors), [previewTheme.colors]);
 
   const focusThemeSelect = () => requestAnimationFrame(() => selectRef.current?.querySelector('button')?.focus());
 
@@ -118,9 +120,9 @@ export function App() {
       <AppHeader page={page} isExportDisabled={draft != null} onExport={() => setDialog('export')} />
       <div {...stylex.props(styles.body)}>
         <main {...stylex.props(styles.preview)} aria-label={`Preview of the ${draft ? 'new' : selected} theme`}>
-          <ThemeProvider theme={previewTheme} xstyle={styles.previewTheme}>
+          <ThemeProvider theme={previewTheme} xstyle={[styles.previewTheme, darkBackground && styles.previewThemeDark]}>
             {page === 'simulator' ? (
-              <SettingsSim />
+              <SettingsSim lightenBrandArt={darkBrand} />
             ) : (
               <div {...stylex.props(styles.placeholder)}>
                 <Text variant="body-large">The docs view is coming soon.</Text>
@@ -271,7 +273,10 @@ const styles = stylex.create({
   preview: { overflowY: 'auto' },
   // A faint brand tint behind the simulator, so its components stand out (even with borders set to none).
   // Decorative and only in this tool: the components themselves still sit on the plain background colour.
+  // A decorative brand tint behind the simulator, so components stand out even with borders off. 7% is enough on
+  // light backgrounds; on very dark ones it barely shows, so it goes up to 10%.
   previewTheme: { minHeight: '100%', backgroundColor: `color-mix(in srgb, ${color.brand} 7%, ${color.background})` },
+  previewThemeDark: { backgroundColor: `color-mix(in srgb, ${color.brand} 10%, ${color.background})` },
   placeholder: { padding: spacing['2xl'] },
   sidebar: {
     overflowY: 'auto',
@@ -299,3 +304,18 @@ const styles = stylex.create({
   },
   settings: { padding: spacing.md, paddingBlockStart: spacing.lg },
 });
+
+/**
+ * How the simulator's decoration adapts to a theme: a stronger page tint on a very dark background (black up to about
+ * #3B3B3B), and a lighter brand in the illustration when the brand is dark (e.g. the light demo's #7406EB).
+ */
+export function simulatorTones(colors: ThemeSettings['colors']) {
+  const lum = (hex: string) => {
+    try {
+      return luminance(parseHex(hex));
+    } catch {
+      return 1;
+    }
+  };
+  return { darkBackground: lum(colors.background) < 0.05, darkBrand: lum(colors.brand) < 0.18 };
+}

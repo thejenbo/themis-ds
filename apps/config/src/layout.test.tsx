@@ -2,7 +2,7 @@ import { afterEach, describe, expect, test, vi } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
 
 import { initialConfig } from './initial-config';
-import { chooseMenuItem, cleanup, preview, renderApp, sidebar, wait } from './test-utils';
+import { chooseMenuItem, cleanup, preview, renderApp, sidebar, themeSelect, wait } from './test-utils';
 
 afterEach(() => {
   cleanup();
@@ -74,9 +74,9 @@ describe('border modes', () => {
     renderApp({ saved: { config: { version: 1, themes: { plain } }, selected: 'plain' } });
     const exportButton = page.getByRole('button', { name: 'Export' });
     await expect.element(exportButton).toBeVisible();
-    // themis config: radius md 4px, width sm 1px (the sidebar's edge).
+    // themis config: radius md 4px, width sm 2px (the sidebar's edge).
     expect(getComputedStyle(exportButton.element()).borderTopLeftRadius).toBe('4px');
-    expect(getComputedStyle(await sidebar()).borderInlineStartWidth).toBe('1px');
+    expect(getComputedStyle(await sidebar()).borderInlineStartWidth).toBe('2px');
     // The preview's theme doesn't set them, so it gets medium (radius md 10px), not the tool's modes.
     const save = page.getByRole('main').getByRole('button', { name: 'Save Changes' });
     await expect.element(save).toBeVisible();
@@ -100,6 +100,28 @@ describe('simulator', () => {
     const surface = (await preview()).firstElementChild!;
     // Light theme: 7% of #7406EB over white.
     await expect.poll(() => getComputedStyle(surface).backgroundColor).toMatch(/color\(srgb 0\.96\d* 0\.93\d* 0\.99\d*\)|rgb\(245, 237, 254\)/);
+  });
+
+  test('on a very dark background the tint goes up to 10%', async () => {
+    renderApp();
+    await themeSelect().click();
+    await page.getByRole('option', { name: 'dark' }).click();
+    const surface = (await preview()).firstElementChild!;
+    // Dark theme: 10% of #EBBFF9 over black (7% would be 0.0645 0.0525 0.0683).
+    await expect.poll(() => getComputedStyle(surface).backgroundColor).toMatch(/color\(srgb 0\.092\d* 0\.074\d* 0\.097\d*\)|rgb\(24, 19, 25\)/);
+  });
+
+  test('the scales art lightens a dark brand by 50%, and leaves a light one alone', async () => {
+    renderApp();
+    const art = async () => {
+      await preview();
+      return getComputedStyle(document.querySelector('main svg path')!).fill;
+    };
+    // Light theme: #7406EB, halfway to white. Dark theme: #EBBFF8, as is.
+    await expect.poll(art).toMatch(/color\(srgb 0\.72\d* 0\.5[01]\d* 0\.96\d*\)|rgb\(186, 13[01], 245\)/);
+    await themeSelect().click();
+    await page.getByRole('option', { name: 'dark' }).click();
+    await expect.poll(art).toBe('rgb(235, 191, 248)');
   });
 
   test('the title has a 1px outline in the background colour, painted under the letters', async () => {

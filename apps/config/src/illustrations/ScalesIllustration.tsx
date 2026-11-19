@@ -5,17 +5,22 @@ import { useId } from 'react';
 import { color } from '../../../../src/tokens/colorTheme.stylex';
 
 const c = { brand: color.brand, line: color.border } as unknown as Record<'brand' | 'line', string>;
+/** The brand 50% of the way to white: a dark brand would otherwise read as a heavy blot. */
+const lightBrand = `color-mix(in srgb, ${c.brand} 50%, white)`;
 
 export interface ScalesIllustrationProps {
   /** Rendered width; the height follows the drawing's proportions. */
   width?: number | string;
+  /** Lighten the brand fills by 50%, for dark brands. */
+  lightenBrand?: boolean;
   xstyle?: stylex.StyleXStyles;
 }
 
 /** Decoration only: hidden from assistive tech. */
-export function ScalesIllustration({ width, xstyle }: ScalesIllustrationProps) {
+export function ScalesIllustration({ width, lightenBrand = false, xstyle }: ScalesIllustrationProps) {
   const uid = useId().replace(/[^a-zA-Z0-9_-]/g, '');
   const id = (name: string) => `${uid}${name}`;
+  const brand = lightenBrand ? lightBrand : c.brand;
   return (
     <svg
       viewBox="0 0 470 487"
@@ -30,16 +35,16 @@ export function ScalesIllustration({ width, xstyle }: ScalesIllustrationProps) {
         fillRule="evenodd"
         clipRule="evenodd"
         strokeWidth="0.999998"
-        style={{ fill: c.brand, stroke: c.line }}
+        style={{ fill: brand, stroke: c.line }}
       />
       <path
         d="M398.174 153.314C398.186 153.314 398.198 153.314 398.21 153.314V153.314C403.984 153.35 405.174 156.205 404.659 159.447C404.245 162.056 401.075 167.128 398.143 168.176C398.141 168.176 398.14 168.177 398.138 168.177C398.138 168.177 398.138 168.177 398.138 168.177C398.138 168.177 398.138 168.177 398.138 168.177L398.138 168.177V168.177C395.204 167.133 392.103 162.057 391.689 159.447C391.174 156.205 392.364 153.35 398.138 153.314V153.314C398.15 153.314 398.162 153.314 398.174 153.314Z"
         fillRule="evenodd"
         clipRule="evenodd"
         strokeWidth="0.999998"
-        style={{ fill: c.brand, stroke: c.line }}
+        style={{ fill: brand, stroke: c.line }}
       />
-      <use href={`#${id('stroke0_1183_3249')}`} style={{ fill: c.brand }} />
+      <use href={`#${id('stroke0_1183_3249')}`} style={{ fill: brand }} />
       <mask id={id('stroke1_1183_3249')} fill="white">
         <use href={`#${id('stroke0_1183_3249')}`} />
       </mask>
@@ -49,7 +54,7 @@ export function ScalesIllustration({ width, xstyle }: ScalesIllustrationProps) {
         mask={`url(#${id('stroke1_1183_3249')})`}
         style={{ stroke: c.line }}
       />
-      <use href={`#${id('stroke2_1183_3249')}`} style={{ fill: c.brand }} />
+      <use href={`#${id('stroke2_1183_3249')}`} style={{ fill: brand }} />
       <mask id={id('stroke3_1183_3249')} fill="white">
         <use href={`#${id('stroke2_1183_3249')}`} />
       </mask>
@@ -59,7 +64,7 @@ export function ScalesIllustration({ width, xstyle }: ScalesIllustrationProps) {
         mask={`url(#${id('stroke3_1183_3249')})`}
         style={{ stroke: c.line }}
       />
-      <use href={`#${id('stroke4_1183_3249')}`} style={{ fill: c.brand }} />
+      <use href={`#${id('stroke4_1183_3249')}`} style={{ fill: brand }} />
       <mask id={id('stroke5_1183_3249')} fill="white">
         <use href={`#${id('stroke4_1183_3249')}`} />
       </mask>
@@ -69,7 +74,7 @@ export function ScalesIllustration({ width, xstyle }: ScalesIllustrationProps) {
         mask={`url(#${id('stroke5_1183_3249')})`}
         style={{ stroke: c.line }}
       />
-      <use href={`#${id('stroke6_1183_3249')}`} style={{ fill: c.brand }} />
+      <use href={`#${id('stroke6_1183_3249')}`} style={{ fill: brand }} />
       <mask id={id('stroke7_1183_3249')} fill="white">
         <use href={`#${id('stroke6_1183_3249')}`} />
       </mask>
@@ -79,7 +84,7 @@ export function ScalesIllustration({ width, xstyle }: ScalesIllustrationProps) {
         mask={`url(#${id('stroke7_1183_3249')})`}
         style={{ stroke: c.line }}
       />
-      <use href={`#${id('stroke8_1183_3249')}`} style={{ fill: c.brand }} />
+      <use href={`#${id('stroke8_1183_3249')}`} style={{ fill: brand }} />
       <mask id={id('stroke9_1183_3249')} fill="white">
         <use href={`#${id('stroke8_1183_3249')}`} />
       </mask>
@@ -89,7 +94,7 @@ export function ScalesIllustration({ width, xstyle }: ScalesIllustrationProps) {
         mask={`url(#${id('stroke9_1183_3249')})`}
         style={{ stroke: c.line }}
       />
-      <use href={`#${id('stroke10_1183_3249')}`} style={{ fill: c.brand }} />
+      <use href={`#${id('stroke10_1183_3249')}`} style={{ fill: brand }} />
       <mask id={id('stroke11_1183_3249')} fill="white">
         <use href={`#${id('stroke10_1183_3249')}`} />
       </mask>
@@ -117,7 +122,7 @@ export function ScalesIllustration({ width, xstyle }: ScalesIllustrationProps) {
         clipRule="evenodd"
         style={{ fill: c.line }}
       />
-      <use href={`#${id('stroke12_1183_3249')}`} style={{ fill: c.brand }} />
+      <use href={`#${id('stroke12_1183_3249')}`} style={{ fill: brand }} />
       <mask id={id('stroke13_1183_3249')} fill="white">
         <use href={`#${id('stroke12_1183_3249')}`} />
       </mask>
@@ -134,7 +139,7 @@ export function ScalesIllustration({ width, xstyle }: ScalesIllustrationProps) {
         height="5.01234"
         rx="2.49999"
         strokeWidth="0.999998"
-        style={{ fill: c.brand, stroke: c.line }}
+        style={{ fill: brand, stroke: c.line }}
       />
       <path
         d="M398.304 167.486C398.077 167.644 398.022 167.957 398.18 168.184L446.251 237.252L447.073 236.679L399.001 167.611C398.843 167.384 398.531 167.328 398.304 167.486Z"
@@ -154,7 +159,7 @@ export function ScalesIllustration({ width, xstyle }: ScalesIllustrationProps) {
         clipRule="evenodd"
         style={{ fill: c.line }}
       />
-      <use href={`#${id('stroke14_1183_3249')}`} style={{ fill: c.brand }} />
+      <use href={`#${id('stroke14_1183_3249')}`} style={{ fill: brand }} />
       <mask id={id('stroke15_1183_3249')} fill="white">
         <use href={`#${id('stroke14_1183_3249')}`} />
       </mask>
@@ -171,7 +176,7 @@ export function ScalesIllustration({ width, xstyle }: ScalesIllustrationProps) {
         height="5.01234"
         rx="2.49999"
         strokeWidth="0.999998"
-        style={{ fill: c.brand, stroke: c.line }}
+        style={{ fill: brand, stroke: c.line }}
       />
       <path
         d="M272.642 44.3795C275.176 24.7613 266.195 12.2083 261.388 8.38402C261.754 19.0626 263.226 41.5431 266.185 46.0372C269.145 50.5312 272.25 47.4128 272.642 44.3795Z"

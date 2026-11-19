@@ -20,7 +20,7 @@ listed under **Changed** or **Removed** with what to do.
 - `SelectSeparator` and `ComboBoxSeparator`: a 1px divider between groups of options.
 - `SelectItem` / `ComboBoxItem` `icon`: a decorative icon before the label.
 - Select options with `onAction` (such as "Add new theme") run the action instead of becoming the value.
-- A "themis config" mode for radius (2/2/4/6px) and border width (1/1/2/2px), used by the config tool's own UI.
+- A "themis config" mode for radius (2/2/4/6px) and border width (1/2/3/3px), used by the config tool's own UI.
   It isn't a theme-file choice: `THEME_RADII` and `THEME_BORDER_WIDTHS` list the ones that are.
 - `<ThemeProvider theme>` treats a theme's missing border width or radius as `medium`, so it no longer picks up an
   outer provider's.
