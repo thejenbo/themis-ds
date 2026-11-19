@@ -1,6 +1,5 @@
 import { color } from '../tokens/colorTheme.stylex';
 import { font } from '../tokens/fontTheme.stylex';
-import { collectionModes, type ModeOf } from '../tokens/themes';
 import { parseHex } from './color-math';
 import { type ColorTokens, deriveColorTokens, type ThemeColors } from './derive-colors';
 
@@ -15,13 +14,22 @@ export const THEME_CONFIG_VERSION = 1;
  */
 export type FontChoice = string | { family: string; weights: number[] };
 
+/**
+ * The border widths and radii a theme file can choose. The Figma collections also have a "themis config" mode, used
+ * only by the config tool's own UI, so it isn't offered here.
+ */
+export const THEME_BORDER_WIDTHS = ['none', 'small', 'medium', 'large'] as const;
+export const THEME_RADII = ['none', 'small', 'medium', 'large'] as const;
+export type ThemeBorderWidth = (typeof THEME_BORDER_WIDTHS)[number];
+export type ThemeRadius = (typeof THEME_RADII)[number];
+
 export interface ThemeSettings {
   /** The six colours; every other colour token is worked out from them. */
   colors: ThemeColors;
   /** How heavy borders are across the system. Defaults to `medium`. */
-  borderWidth?: ModeOf<'borderWidth'>;
+  borderWidth?: ThemeBorderWidth;
   /** How rounded corners are across the system. Defaults to `medium`. */
-  radius?: ModeOf<'radius'>;
+  radius?: ThemeRadius;
   /** Heading and body fonts, from Google Fonts. Defaults to the Themis fonts. */
   fonts?: { heading: FontChoice; body: FontChoice };
 }
@@ -71,7 +79,7 @@ export function parseThemisConfig(value: unknown): { config: ThemisConfig; error
             }
           }
         }
-      for (const [key, modes] of [['borderWidth', collectionModes.borderWidth], ['radius', collectionModes.radius]] as const) {
+      for (const [key, modes] of [['borderWidth', THEME_BORDER_WIDTHS], ['radius', THEME_RADII]] as const) {
         if (theme[key] !== undefined && !(modes as readonly unknown[]).includes(theme[key])) errors.push(`${at}.${key} must be one of ${modes.join(', ')}.`);
       }
       if (theme.fonts !== undefined) {

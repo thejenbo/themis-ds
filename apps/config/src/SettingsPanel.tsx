@@ -6,13 +6,15 @@ import {
   type ChipTone,
   ColorField,
   type ContrastLevel,
-  collectionModes,
   Heading,
-  type ModeOf,
   rateThemeColors,
   Select,
   SelectItem,
+  THEME_BORDER_WIDTHS,
+  THEME_RADII,
+  type ThemeBorderWidth,
   type ThemeColors,
+  type ThemeRadius,
   type ThemeSettings,
 } from 'themis-ds';
 
@@ -29,14 +31,14 @@ const COLOR_LABELS: Record<keyof ThemeColors, string> = {
 
 const LEVEL_TONE: Record<ContrastLevel, ChipTone> = { AAA: 'success', AA: 'success', 'AA Large': 'warning', Fail: 'danger' };
 
-const BORDER_WIDTH_LABELS: Record<ModeOf<'borderWidth'>, string> = {
+const BORDER_WIDTH_LABELS: Record<ThemeBorderWidth, string> = {
   none: 'None - Borderless',
   small: 'Small - Subtle',
   medium: 'Medium - Distinct',
   large: 'Large - Bold',
 };
 
-const RADIUS_LABELS: Record<ModeOf<'radius'>, string> = {
+const RADIUS_LABELS: Record<ThemeRadius, string> = {
   none: 'None - Sharp',
   small: 'Small - Crisp',
   medium: 'Medium - Balanced',
@@ -133,8 +135,8 @@ const BordersSection = memo(function BordersSection({
   radius,
   onChange,
 }: {
-  borderWidth: ModeOf<'borderWidth'>;
-  radius: ModeOf<'radius'>;
+  borderWidth: ThemeBorderWidth;
+  radius: ThemeRadius;
   onChange: (patch: Partial<ThemeSettings>) => void;
 }) {
   return (
@@ -143,15 +145,15 @@ const BordersSection = memo(function BordersSection({
         Borders
       </Heading>
       <div {...stylex.props(styles.fields)}>
-        <Select label="Width" value={borderWidth} onChange={(v) => onChange({ borderWidth: v as ModeOf<'borderWidth'> })}>
-          {collectionModes.borderWidth.map((mode) => (
+        <Select label="Width" value={borderWidth} onChange={(v) => onChange({ borderWidth: v as ThemeBorderWidth })}>
+          {THEME_BORDER_WIDTHS.map((mode) => (
             <SelectItem key={mode} id={mode}>
               {BORDER_WIDTH_LABELS[mode]}
             </SelectItem>
           ))}
         </Select>
-        <Select label="Radius" value={radius} onChange={(v) => onChange({ radius: v as ModeOf<'radius'> })}>
-          {collectionModes.radius.map((mode) => (
+        <Select label="Radius" value={radius} onChange={(v) => onChange({ radius: v as ThemeRadius })}>
+          {THEME_RADII.map((mode) => (
             <SelectItem key={mode} id={mode}>
               {RADIUS_LABELS[mode]}
             </SelectItem>

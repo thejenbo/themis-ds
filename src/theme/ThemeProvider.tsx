@@ -42,7 +42,9 @@ export interface ThemeProviderProps {
  * the border width and radius as modes.
  */
 export function ThemeProvider({ modes: modesProp = {}, theme, loadFonts = true, children, xstyle }: ThemeProviderProps) {
-  const modes: Modes = { borderWidth: theme?.borderWidth, radius: theme?.radius, ...withoutUndefined(modesProp) };
+  // A theme is self-contained: unset width and radius mean `medium`, not whatever an outer provider uses.
+  const fromTheme: Modes = theme ? { borderWidth: theme.borderWidth ?? 'medium', radius: theme.radius ?? 'medium' } : {};
+  const modes: Modes = { ...fromTheme, ...withoutUndefined(modesProp) };
   const themeStyle = useMemo(() => (theme ? (themeVariables(theme) as CSSProperties) : undefined), [theme]);
   const fontsHref = theme && loadFonts ? googleFontsHref(theme) : null;
   useEffect(() => {

@@ -14,7 +14,8 @@
       "none",
       "small",
       "medium",
-      "large"
+      "large",
+      "themis config"
     ],
     "defaultMode": "medium"
   },
@@ -23,7 +24,8 @@
       "none",
       "small",
       "medium",
-      "large"
+      "large",
+      "themis config"
     ],
     "defaultMode": "medium"
   },

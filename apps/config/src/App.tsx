@@ -114,7 +114,7 @@ export function App() {
   };
 
   return (
-    <ThemeProvider modes={{ colorTheme: 'themis config', fontTheme: 'themis' }} xstyle={styles.app}>
+    <ThemeProvider modes={{ colorTheme: 'themis config', fontTheme: 'themis', borderWidth: 'themis config', radius: 'themis config' }} xstyle={styles.app}>
       <AppHeader page={page} isExportDisabled={draft != null} onExport={() => setDialog('export')} />
       <div {...stylex.props(styles.body)}>
         <main {...stylex.props(styles.preview)} aria-label={`Preview of the ${draft ? 'new' : selected} theme`}>

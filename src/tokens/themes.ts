@@ -43,6 +43,15 @@ const borderWidth_border_large = stylex.createTheme(borderWidth_border, {
   "widthMandatory": "3px",
 });
 
+const borderWidth_border_themisConfig = stylex.createTheme(borderWidth_border, {
+  "widthXs": "1px",
+  "widthSm": "2px",
+  "widthMd": "3px",
+  "widthLg": "3px",
+  "widthFocusRing": "2px",
+  "widthMandatory": "2px",
+});
+
 const colorTheme_color_lightDemo = stylex.createTheme(colorTheme_color, {
   "brand": "#7406EB",
   "background": "#FFFFFF",
@@ -210,6 +219,14 @@ const radius_border_large = stylex.createTheme(radius_border, {
   "radiusFull": "9999px",
 });
 
+const radius_border_themisConfig = stylex.createTheme(radius_border, {
+  "radiusXs": "0.125rem",
+  "radiusSm": "0.125rem",
+  "radiusMd": "0.25rem",
+  "radiusLg": "0.375rem",
+  "radiusFull": "9999px",
+});
+
 const radius_components_none = stylex.createTheme(radius_components, {
   "avatarIndicatorOffsetXs": "0px",
   "avatarIndicatorOffsetSm": "0px",
@@ -242,6 +259,14 @@ const radius_components_large = stylex.createTheme(radius_components, {
   "avatarIndicatorOffsetXl": "6px",
 });
 
+const radius_components_themisConfig = stylex.createTheme(radius_components, {
+  "avatarIndicatorOffsetXs": "1px",
+  "avatarIndicatorOffsetSm": "1px",
+  "avatarIndicatorOffsetMd": "1px",
+  "avatarIndicatorOffsetLg": "1px",
+  "avatarIndicatorOffsetXl": "1px",
+});
+
 const shadows_dropShadow_default = stylex.createTheme(shadows_dropShadow, {
   "blurDefault": "4px",
   "colorDefault": "#0000004d",
@@ -258,10 +283,10 @@ const shadows_dropShadow_off = stylex.createTheme(shadows_dropShadow, {
 
 /** Modes of each multi-mode collection, in Figma order. */
 export const collectionModes = {
-  "borderWidth": ["none","small","medium","large"],
+  "borderWidth": ["none","small","medium","large","themis config"],
   "colorTheme": ["light demo","dark demo","themis config","inkling"],
   "fontTheme": ["demo","inkling","themis"],
-  "radius": ["none","small","medium","large"],
+  "radius": ["none","small","medium","large","themis config"],
   "shadows": ["default","off"],
 } as const;
 
@@ -286,6 +311,7 @@ export const themes: { [C in ThemeCollection]: Record<ModeOf<C>, readonly stylex
     "small": [borderWidth_border_small],
     "medium": [borderWidth_border_medium],
     "large": [borderWidth_border_large],
+    "themis config": [borderWidth_border_themisConfig],
   },
   "colorTheme": {
     "light demo": [colorTheme_color_lightDemo],
@@ -303,6 +329,7 @@ export const themes: { [C in ThemeCollection]: Record<ModeOf<C>, readonly stylex
     "small": [radius_border_small, radius_components_small],
     "medium": [radius_border_medium, radius_components_medium],
     "large": [radius_border_large, radius_components_large],
+    "themis config": [radius_border_themisConfig, radius_components_themisConfig],
   },
   "shadows": {
     "default": [shadows_dropShadow_default],

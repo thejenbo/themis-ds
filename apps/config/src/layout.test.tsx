@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, test, vi } from 'vitest';
-import { page } from 'vitest/browser';
+import { page, userEvent } from 'vitest/browser';
 
+import { initialConfig } from './initial-config';
 import { chooseMenuItem, cleanup, preview, renderApp, sidebar, wait } from './test-utils';
 
 afterEach(() => {
@@ -63,6 +64,33 @@ describe('sidebar', () => {
     const cancel = rect(page.getByRole('button', { name: 'Cancel', exact: true }).element());
     const side = rect(await sidebar());
     expect(cancel.right).toBeLessThanOrEqual(side.right - 24 + 0.5);
+  });
+});
+
+describe('border modes', () => {
+  test('the tool’s own UI uses the "themis config" radius and width; the preview keeps the theme’s', async () => {
+    // A saved theme that leaves width and radius out (as a hand-written theme file may).
+    const plain = { colors: initialConfig.themes.light!.colors };
+    renderApp({ saved: { config: { version: 1, themes: { plain } }, selected: 'plain' } });
+    const exportButton = page.getByRole('button', { name: 'Export' });
+    await expect.element(exportButton).toBeVisible();
+    // themis config: radius md 4px, width sm 1px (the sidebar's edge).
+    expect(getComputedStyle(exportButton.element()).borderTopLeftRadius).toBe('4px');
+    expect(getComputedStyle(await sidebar()).borderInlineStartWidth).toBe('1px');
+    // The preview's theme doesn't set them, so it gets medium (radius md 10px), not the tool's modes.
+    const save = page.getByRole('main').getByRole('button', { name: 'Save Changes' });
+    await expect.element(save).toBeVisible();
+    expect(getComputedStyle(save.element()).borderTopLeftRadius).toBe('10px');
+  });
+
+  test('"themis config" isn’t offered as a width or radius for a theme', async () => {
+    renderApp();
+    for (const label of ['Width', 'Radius']) {
+      await page.getByRole('complementary').getByRole('button', { name: new RegExp(label) }).click();
+      await expect.poll(() => page.getByRole('option').elements().map((o) => o.textContent)).toHaveLength(4);
+      expect(page.getByRole('option', { name: /themis config/i }).query()).toBeNull();
+      await userEvent.keyboard('{Escape}');
+    }
   });
 });
 
