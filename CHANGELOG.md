@@ -30,6 +30,8 @@ listed under **Changed** or **Removed** with what to do.
 
 ### Changed
 
+- SegmentedControl corners follow Figma: small and medium are radius md (was sm), with the inset selected fill and
+  hover tint at sm (was xs) so the two curves run parallel. Micro is unchanged.
 - Primitives: `orange/500` is `#A35104`, as in Figma (the export was stale; components already used it).
 - ColorField shows RGB, HSL and HSB codes as just the values (`122, 31, 235`, `226, 84%, 52%`): the format button
   already names the format, and `rgb(255, 255, 255)` didn't fit the box. Typing still accepts the full form, and

@@ -91,3 +91,23 @@ export function saveColorFormats(formats: Record<string, ColorFormats>) {
     // Not remembered this time.
   }
 }
+
+const SHARE_KEY = 'themis-config:preview-share';
+
+/** On tablet, how much of the height the preview had last time (0.4 on a first visit), kept within `min` and `max`. */
+export function loadPreviewShare(min: number, max: number, fallback = 0.4): number {
+  try {
+    const value = Number(localStorage.getItem(SHARE_KEY));
+    return localStorage.getItem(SHARE_KEY) !== null && Number.isFinite(value) ? Math.min(max, Math.max(min, value)) : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+export function savePreviewShare(share: number) {
+  try {
+    localStorage.setItem(SHARE_KEY, String(Math.round(share * 1000) / 1000));
+  } catch {
+    // Not remembered this time.
+  }
+}

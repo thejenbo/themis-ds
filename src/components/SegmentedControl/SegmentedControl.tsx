@@ -100,6 +100,7 @@ export function SegmentedControl({
       }}
       {...racStyles<ToggleButtonGroupRenderProps>((s) => [
         styles.group,
+        size !== 'micro' && styles.groupMd,
         isFullWidth && styles.groupFull,
         s.isDisabled && styles.groupDisabled,
         xstyle,
@@ -142,14 +143,14 @@ export function SegmentedControlItem({ children, ...props }: SegmentedControlIte
       {...racStyles<ToggleButtonRenderProps>((s) => [
         baseStyles.root,
         styles.item,
-        corners[position],
+        size === 'micro' ? cornersSm[position] : cornersMd[position],
         size !== 'micro' && styles.itemInset,
         isFullWidth && styles.itemFull,
         touchTarget.area,
         focusRing.base,
         s.isFocusVisible && focusRing.visible,
         s.isFocusVisible && styles.itemFocused,
-        s.isFocusVisible && ringCorners[position],
+        s.isFocusVisible && (size === 'micro' ? ringCornersSm[position] : ringCornersMd[position]),
         s.isDisabled ? interactiveCursor.disabled : s.isSelected ? styles.cursorSelected : interactiveCursor.enabled,
       ])}
     >
@@ -206,6 +207,8 @@ const styles = stylex.create({
       pointerEvents: 'none',
     },
   },
+  // Figma: small and medium have border/radius/md corners; micro keeps sm.
+  groupMd: { borderRadius: radius.radiusMd },
   groupFull: { display: 'flex', width: '100%' },
   groupDisabled: { '::after': { borderColor: system.borderDisabled } },
   item: {
@@ -231,25 +234,33 @@ const styles = stylex.create({
 
 /*
  * The fill (selected) and tint (hover) layer. Figma: 10px from the item's edge to the label on each side. Micro fills
- * the item, following its corners; small and medium sit 4px inside it (itemInset) with border/radius/xs corners, so
+ * the item, following its corners; small and medium sit 4px inside it (itemInset) with border/radius/sm corners (the
+ * control's md less the 4px), so
  * they're 24px and 32px tall inside 32px and 40px items.
  */
 const surfaceSizes = stylex.create({
   micro: { paddingBlock: 0, paddingInline: `calc(2 * ${spacing['2xs']} + ${spacing['3xs']})`, borderRadius: 'inherit' },
-  small: { paddingBlock: 0, paddingInline: `calc(${spacing['2xs']} + ${spacing['3xs']})`, borderRadius: radius.radiusXs },
-  medium: { paddingBlock: spacing['2xs'], paddingInline: `calc(${spacing['2xs']} + ${spacing['3xs']})`, borderRadius: radius.radiusXs },
+  small: { paddingBlock: 0, paddingInline: `calc(${spacing['2xs']} + ${spacing['3xs']})`, borderRadius: radius.radiusSm },
+  medium: { paddingBlock: spacing['2xs'], paddingInline: `calc(${spacing['2xs']} + ${spacing['3xs']})`, borderRadius: radius.radiusSm },
 });
 
-/** Only the outer corners are rounded. */
-const corners = stylex.create({
+/** Only the outer corners are rounded, matching the control: sm for micro, md for small and medium. */
+const cornersSm = stylex.create({
   first: { borderStartStartRadius: radius.radiusSm, borderEndStartRadius: radius.radiusSm },
   middle: {},
   last: { borderStartEndRadius: radius.radiusSm, borderEndEndRadius: radius.radiusSm },
   only: { borderRadius: radius.radiusSm },
 });
 
+const cornersMd = stylex.create({
+  first: { borderStartStartRadius: radius.radiusMd, borderEndStartRadius: radius.radiusMd },
+  middle: {},
+  last: { borderStartEndRadius: radius.radiusMd, borderEndEndRadius: radius.radiusMd },
+  only: { borderRadius: radius.radiusMd },
+});
+
 /** The focus ring follows the item's corners: square inside the control, rounded at its ends. */
-const ringCorners = stylex.create({
+const ringCornersSm = stylex.create({
   first: {
     '::before': {
       borderRadius: ringOut,
@@ -266,4 +277,23 @@ const ringCorners = stylex.create({
     },
   },
   only: { '::before': { borderRadius: `calc(${radius.radiusSm} + ${ringOut})` } },
+});
+
+const ringCornersMd = stylex.create({
+  first: {
+    '::before': {
+      borderRadius: ringOut,
+      borderStartStartRadius: `calc(${radius.radiusMd} + ${ringOut})`,
+      borderEndStartRadius: `calc(${radius.radiusMd} + ${ringOut})`,
+    },
+  },
+  middle: { '::before': { borderRadius: ringOut } },
+  last: {
+    '::before': {
+      borderRadius: ringOut,
+      borderStartEndRadius: `calc(${radius.radiusMd} + ${ringOut})`,
+      borderEndEndRadius: `calc(${radius.radiusMd} + ${ringOut})`,
+    },
+  },
+  only: { '::before': { borderRadius: `calc(${radius.radiusMd} + ${ringOut})` } },
 });

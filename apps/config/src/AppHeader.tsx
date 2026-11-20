@@ -56,8 +56,11 @@ export function AppHeader({ page, compact = false }: AppHeaderProps) {
           </IconButton>
           <ActionMenu placement="bottom end">
             {PAGES.map((p) => (
-              <ActionMenuItem key={p} id={p} href={`#${p}`} aria-current={page === p ? 'page' : undefined}>
-                {p}
+              <ActionMenuItem key={p} id={p} href={`#${p}`} textValue={p}>
+                {/* The current page is underlined, as it is in the full header. Menu items don't pass on aria-current,
+                    so screen readers hear it in the name. */}
+                <span {...stylex.props(page === p && styles.menuCurrent)}>{p}</span>
+                {page === p && <VisuallyHidden> (current page)</VisuallyHidden>}
               </ActionMenuItem>
             ))}
             <ActionMenuItem id="docs" href={STORYBOOK_URL} target="_blank" rel="noopener noreferrer" textValue="docs">
@@ -163,6 +166,13 @@ const styles = stylex.create({
   // Other pages show the underline on hover; the current page's comes from the sliding indicator.
   // "docs" sits at the far end of the header, its icon 4px after the text.
   external: { marginInlineStart: 'auto', display: 'inline-flex', alignItems: 'center', gap: spacing['2xs'] },
+  // A text underline, not a border: the menu clips each label to its line, which would cut a border off.
+  menuCurrent: {
+    textDecorationLine: 'underline',
+    textDecorationThickness: borderWidth.widthSm,
+    textDecorationColor: color.border,
+    textUnderlineOffset: spacing['2xs'],
+  },
   menuExternal: { display: 'inline-flex', alignItems: 'center', gap: spacing['2xs'] },
   // No gap: the menu button pushes itself to the end.
   headerCompact: { gap: 0 },

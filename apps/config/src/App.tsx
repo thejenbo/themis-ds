@@ -17,10 +17,10 @@ import { border as borderWidth } from '../../../src/tokens/borderWidth.stylex';
 import { color } from '../../../src/tokens/colorTheme.stylex';
 import { spacing } from '../../../src/tokens/spacing.stylex';
 import { AppHeader, type Page } from './AppHeader';
-import { DrawerHandle } from './DrawerHandle';
+import { DrawerHandle, MAX_SHARE, MIN_SHARE } from './DrawerHandle';
 import { ExportModal } from './ExportModal';
 import { initialConfig } from './initial-config';
-import { type ColorFormats, loadColorFormats, loadSaved, save, saveColorFormats } from './storage';
+import { type ColorFormats, loadColorFormats, loadPreviewShare, loadSaved, save, saveColorFormats, savePreviewShare } from './storage';
 import { ThemeSettingsForm } from './SettingsPanel';
 import { SettingsSim } from './SettingsSim';
 import { ThemeNameField, ThemePicker } from './ThemeBar';
@@ -91,7 +91,9 @@ export function App() {
   // On mobile, the settings and the preview take turns in the one column.
   const [mobileView, setMobileView] = useState<'settings' | 'preview'>('settings');
   // On tablet, how much of the height the preview has; the settings drawer below it is dragged up and down.
-  const [previewShare, setPreviewShare] = useState(0.4);
+  // Remembered in this browser.
+  const [previewShare, setPreviewShare] = useState(() => loadPreviewShare(MIN_SHARE, MAX_SHARE));
+  useEffect(() => savePreviewShare(previewShare), [previewShare]);
   const tabletRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

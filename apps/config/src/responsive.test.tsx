@@ -22,9 +22,18 @@ describe('mobile (under 48em, Figma 2443:14356)', () => {
     await page.getByRole('button', { name: 'Pages' }).click();
     const items = page.getByRole('menuitem');
     await expect.element(items.first()).toBeVisible();
-    expect(items.elements().map((el) => el.textContent)).toEqual(['simulator', 'components', 'docs(opens in a new tab)']);
+    expect(items.elements().map((el) => el.textContent)).toEqual(['simulator (current page)', 'components', 'docs(opens in a new tab)']);
     // Links in an ActionMenu aren't underlined (they were, as plain links).
     for (const el of items.elements()) expect(getComputedStyle(el).textDecorationLine).toBe('none');
+    // The current page is underlined, as in the full header; the others aren't.
+    // The page name sits in the item's label wrapper.
+    const underline = (name: string) => {
+      const label = page.getByRole('menuitem', { name, exact: true }).element().firstElementChild!.firstElementChild!;
+      expect(label.textContent).toBe(name.replace(' (current page)', ''));
+      return getComputedStyle(label).textDecorationLine;
+    };
+    expect(underline('simulator (current page)')).toBe('underline');
+    expect(underline('components')).toBe('none');
     await page.getByRole('menuitem', { name: 'components' }).click();
     await expect.poll(() => location.hash).toBe('#components');
     await page.getByRole('radio', { name: 'Preview' }).click();
@@ -138,5 +147,21 @@ describe('tablet (48em to 64em)', () => {
     await userEvent.keyboard('{End}');
     await expect.element(handle).toHaveAttribute('aria-valuenow', '85');
     expect(el.getAttribute('aria-controls')).toBe(page.getByRole('main').element().id);
+  });
+
+  test('the drawer stays where it was left, after a reload', async () => {
+    await page.viewport(834, 1112);
+    renderApp();
+    const handle = page.getByRole('separator', { name: 'Resize the preview' });
+    await expect.element(handle).toHaveAttribute('aria-valuenow', '40');
+    (handle.element() as HTMLElement).focus();
+    await userEvent.keyboard('{PageDown}');
+    await expect.element(handle).toHaveAttribute('aria-valuenow', '60');
+    renderApp({ keepStorage: true });
+    await expect.element(page.getByRole('separator', { name: 'Resize the preview' })).toHaveAttribute('aria-valuenow', '60');
+    // A stored value out of range is brought back within the limits.
+    localStorage.setItem('themis-config:preview-share', '2');
+    renderApp({ keepStorage: true });
+    await expect.element(page.getByRole('separator', { name: 'Resize the preview' })).toHaveAttribute('aria-valuenow', '85');
   });
 });

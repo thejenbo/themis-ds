@@ -25,8 +25,8 @@ export default defineComponentDocs({
   },
 
   anatomy: [
-    { part: 'Container', description: 'The outer border (border-brand, radius sm). Drawn on top of the items, so it adds no size.', required: true },
-    { part: 'Item', description: 'One option. Selected: brand fill. Not selected: background fill, brand label. In small and medium the fill (and the hover tint) sits 4px (spacing.2xs) inside the control\'s border with border/radius/xs corners; in micro it fills the item.', required: true },
+    { part: 'Container', description: 'The outer border (border-brand; radius md for small and medium, sm for micro). Drawn on top of the items, so it adds no size.', required: true },
+    { part: 'Item', description: 'One option. Selected: brand fill. Not selected: background fill, brand label. In small and medium the fill (and the hover tint) sits 4px (spacing.2xs) inside the control\'s border with border/radius/sm corners (concentric with the control\'s md); in micro it fills the item.', required: true },
     { part: 'State Layer', description: 'Hover and press overlay on items that are not selected.', required: true },
   ],
 
@@ -75,7 +75,6 @@ export default defineComponentDocs({
   },
 
   tokens: [
-    'radius/border.radius.xs',
     'colorTheme/color.brand',
     'colorTheme/color.background',
     'colorTheme/color.border-brand',
@@ -91,6 +90,7 @@ export default defineComponentDocs({
     'spacing/spacing.2xs',
     'spacing/spacing.xs',
     'radius/border.radius.sm',
+    'radius/border.radius.md',
     'borderWidth/border.width.mandatory',
     'borderWidth/border.width.focus ring',
     'fontTheme/font.family.body',
@@ -136,6 +136,6 @@ export default defineComponentDocs({
   related: ['ToggleButton', 'Switch', 'RadioGroup', 'Tabs'],
   notes: [
     'Items: Figma "Segmented Control Item" (node 2052-12657). Its `left` / `right` corner variants are automatic in code (first and last item).',
-    'Radius sm at every size is intentional (unlike Button, which uses md for small and medium).',
+    'Radius md for small and medium and sm for micro, like Button; the inset fill is sm so its corners run parallel to the border (changed in Figma 2026-11-20).',
   ],
 });

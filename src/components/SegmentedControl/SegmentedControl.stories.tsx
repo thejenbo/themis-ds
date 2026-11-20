@@ -68,6 +68,10 @@ export const SelectsOnClick: Story = {
     // Only the outer corners are rounded, even when the items are passed in a Fragment.
     await expect(getComputedStyle(cm).borderTopRightRadius).toBe('0px');
     await expect(getComputedStyle(inch).borderTopLeftRadius).toBe('0px');
+    // Small: the control has md corners (10px) and the inset fill sm (6px), so the two curves run parallel.
+    await expect(getComputedStyle(canvas.getByRole('radiogroup', { name: 'Units' })).borderTopLeftRadius).toBe('10px');
+    await expect(getComputedStyle(cm).borderTopLeftRadius).toBe('10px');
+    await expect(getComputedStyle(inch.querySelector('[data-themis-part="surface"]')!).borderTopLeftRadius).toBe('6px');
   },
 };
 
