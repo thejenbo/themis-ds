@@ -18,6 +18,7 @@ import {
   type IconNode,
   Info,
   Mail,
+  Menu,
   Minus,
   Plus,
   Search,
@@ -100,6 +101,8 @@ export const iconSet = {
   },
   info: { shapes: Info },
   mail: { shapes: Mail },
+  // The "hamburger": three straight lines, so radius none only squares their ends.
+  menu: { shapes: Menu },
   minus: { shapes: Minus },
   plus: { shapes: Plus },
   search: { shapes: Search },
