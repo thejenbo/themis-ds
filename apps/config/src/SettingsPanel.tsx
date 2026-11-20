@@ -2,6 +2,7 @@ import * as stylex from '@stylexjs/stylex';
 import { memo, type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { Color } from 'react-aria-components';
 import {
+  type FontChoice,
   Chip,
   type ChipTone,
   ColorField,
@@ -28,6 +29,7 @@ import { color } from '../../../src/tokens/colorTheme.stylex';
 import { font as fontTheme } from '../../../src/tokens/fontTheme.stylex';
 import { spacing } from '../../../src/tokens/spacing.stylex';
 import { font } from '../../../src/tokens/typography.stylex';
+import { FontField } from './fonts/FontField';
 import { SidebarSection } from './SidebarSection';
 import { type ColorFormats, loadCollapsed, saveCollapsed, type SectionId } from './storage';
 
@@ -57,7 +59,6 @@ const RADIUS_LABELS: Record<ThemeRadius, string> = {
 };
 
 /** A starter list until the Google Fonts search lands. */
-const FONTS = ['Playfair Display', 'Montserrat', 'Inter', 'Fraunces', 'DM Sans', 'Lora', 'Space Grotesk', 'Fredoka'];
 
 interface ThemeSettingsFormProps {
   theme: ThemeSettings;
@@ -171,10 +172,10 @@ export function ThemeSettingsForm({
         isExpanded={fontsOpen}
         onExpandedChange={(open) => toggle('fonts', open)}
       >
-        <FontsSection heading={headingFont} body={bodyFont} onChange={update} />
+        <FontsSection heading={fonts.heading} body={fonts.body} onChange={update} />
       </SidebarSection>
     ),
-    [headingFont, bodyFont, fontsOpen, toggle, update],
+    [fonts.heading, fonts.body, fontsOpen, toggle, update],
   );
 
   const columns = layout === 'tabs';
@@ -221,7 +222,7 @@ export function ThemeSettingsForm({
           <BordersSection borderWidth={borderWidth} radius={radius} onChange={update} columns />
         </TabPanel>
         <TabPanel id="fonts" {...stylex.props(styles.tabPanel)}>
-          <FontsSection heading={headingFont} body={bodyFont} onChange={update} columns />
+          <FontsSection heading={fonts.heading} body={fonts.body} onChange={update} columns />
         </TabPanel>
       </Tabs>
     );
@@ -376,8 +377,8 @@ const FontsSection = memo(function FontsSection({
   onChange,
   columns = false,
 }: {
-  heading: string;
-  body: string;
+  heading: FontChoice;
+  body: FontChoice;
   onChange: (patch: Partial<ThemeSettings>) => void;
   /** Side by side (tablet). */
   columns?: boolean;
@@ -385,20 +386,14 @@ const FontsSection = memo(function FontsSection({
   const fonts = { heading, body };
   return (
     <div {...stylex.props(styles.fields, columns && styles.columns)}>
-        {(['heading', 'body'] as const).map((slot) => (
-          <Select
-            key={slot}
-            label={slot === 'heading' ? 'Heading' : 'Body'}
-            value={fonts[slot]}
-            onChange={(v) => onChange({ fonts: { ...fonts, [slot]: String(v) } })}
-          >
-            {FONTS.map((family) => (
-              <SelectItem key={family} id={family}>
-                {family}
-              </SelectItem>
-            ))}
-          </Select>
-        ))}
+      {(['heading', 'body'] as const).map((slot) => (
+        <FontField
+          key={slot}
+          label={slot === 'heading' ? 'Heading' : 'Body'}
+          value={fonts[slot]}
+          onChange={(choice) => onChange({ fonts: { ...fonts, [slot]: choice } })}
+        />
+      ))}
     </div>
   );
 });

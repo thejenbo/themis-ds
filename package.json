@@ -27,6 +27,7 @@
   "scripts": {
     "tokens": "tsx scripts/build-tokens.ts",
     "manifest": "tsx scripts/build-manifest.ts",
+    "fonts": "tsx scripts/build-google-fonts.ts",
     "storybook": "npm run tokens && npm run manifest && storybook dev -p 6006",
     "build-storybook": "npm run tokens && npm run manifest && storybook build",
     "build": "npm run tokens && npm run contrast -- --strict && npm run manifest && vite build && tsc -p tsconfig.build.json && cp public/themis-manifest.json src/theme/theme.schema.json dist/",
