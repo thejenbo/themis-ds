@@ -70,7 +70,7 @@ describe('sidebar', () => {
     await expect.element(widthField).toBeVisible();
     await borders.click();
     await expect.element(page.getByRole('button', { name: /^Borders/ })).toHaveAttribute('aria-expanded', 'false');
-    await expect.element(page.getByRole('button', { name: 'Borders Medium · Medium' })).toBeVisible();
+    await expect.element(page.getByRole('button', { name: 'Borders Medium width • Medium radius' })).toBeVisible();
     // Its fields are hidden (and out of the accessibility tree) while it's closed.
     expect(widthField.query()).toBeNull();
     await wait(50);
@@ -85,6 +85,17 @@ describe('sidebar', () => {
     await expect.element(page.getByRole('button', { name: 'Colors' })).toHaveAttribute('aria-expanded', 'true');
     root.unmount();
     host.remove();
+  });
+
+  test('a closed Borders section says "No width • No radius" for the borderless, sharp levels', async () => {
+    renderApp();
+    const aside = page.getByRole('complementary');
+    await aside.getByRole('button', { name: /Medium - Distinct/ }).click();
+    await page.getByRole('option', { name: 'None - Borderless' }).click();
+    await aside.getByRole('button', { name: /Medium - Balanced/ }).click();
+    await page.getByRole('option', { name: 'None - Sharp' }).click();
+    await page.getByRole('button', { name: 'Borders' }).click();
+    await expect.element(page.getByRole('button', { name: 'Borders No width • No radius' })).toBeVisible();
   });
 
   test('a closed Colors section still says when a colour fails contrast', async () => {
@@ -161,15 +172,34 @@ describe('sidebar', () => {
     expect(getComputedStyle(page.getByRole('heading', { name: 'Colors' }).element()).zIndex).toBe('1');
   });
 
-  test('closed sections: 24px below the theme row’s line, then 32px between 38px headings (Figma 2437:2652)', async () => {
+  test('closed sections: summary under the title, a full line under each, 16px to the next title (Figma 2437:2652)', async () => {
     renderApp();
     const aside = await sidebar();
+    await page.getByRole('textbox', { name: /^Brand/ }).fill('#FFFF00');
+    await userEvent.keyboard('{Tab}');
     for (const name of ['Colors', 'Borders', 'Fonts']) await page.getByRole('button', { name: new RegExp(`^${name}`) }).click();
     // A closed panel keeps its padding under hidden="until-found"; that made closed headings 110px apart.
-    const titles = [...aside.querySelectorAll('h2 button > span:first-child')].map((t) => rect(t));
+    const headings = [...aside.querySelectorAll('h2')];
+    const titles = headings.map((h) => rect(h.querySelector('button > span:first-child')!));
+    const summaries = headings.map((h) => rect(h.querySelector('button > span:nth-child(2)')!));
     expect(Math.round(titles[0]!.top - rect(aside.firstElementChild!).bottom)).toBe(24);
-    // Figma: 38px headings (title, 8px, underline) 32px apart, so one title starts 70px after the last.
-    expect(titles.slice(1).map((t, i) => Math.round(t.top - titles[i]!.top))).toEqual([70, 70]);
+    // The summary sits under the title: 8px for the Colors dots and chip, 4px for the text ones.
+    // (The Colors summary's extra 4px is padding inside it, so measure its Fail chip.)
+    const chip = rect(headings[0]!.querySelector('button > span:nth-child(2) > span > :last-child')!);
+    const tops = [chip.top, summaries[1]!.top, summaries[2]!.top];
+    expect(tops.map((top, i) => Math.round(top - titles[i]!.bottom))).toEqual([8, 4, 4]);
+    expect(summaries.map((s, i) => Math.round(s.left - titles[i]!.left))).toEqual([0, 0, 0]);
+    for (const [i, h] of headings.entries()) {
+      // 16px under the summary, a 2px line across the content width (not the title's width).
+      // (It widens from the title's width with the same short transition.)
+      await expect.poll(() => getComputedStyle(h, '::after').width).toBe(`${h.querySelector('button')!.offsetWidth}px`);
+      expect(Math.round(rect(h).bottom - summaries[i]!.bottom)).toBe(18);
+      // Then 16px to the next title.
+      if (headings[i + 1]) expect(Math.round(titles[i + 1]!.top - rect(h).bottom)).toBe(16);
+    }
+    // The chevron is centred on the title and summary together.
+    const chevron = rect(headings[1]!.querySelector('[aria-hidden="true"]')!);
+    expect(Math.abs((chevron.top + chevron.bottom) / 2 - (titles[1]!.top + summaries[1]!.bottom) / 2)).toBeLessThan(1);
   });
 
   test('the lines under the theme row and above Export are full width, 2px and black like the other borders', async () => {

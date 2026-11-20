@@ -270,7 +270,7 @@ export function App() {
       </Modal>
 
       <Modal
-        title="Start over?"
+        title="Reset themes?"
         tone="danger"
         size="small"
         isOpen={dialog === 'start-over'}
@@ -290,7 +290,7 @@ export function App() {
                 focusThemeSelect();
               }}
             >
-              Start over
+              Reset themes
             </Button>
           </>
         )}

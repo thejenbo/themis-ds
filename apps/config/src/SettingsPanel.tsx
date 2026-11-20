@@ -62,7 +62,12 @@ interface ThemeSettingsFormProps {
 }
 
 /** One theme's colours, borders and fonts: the sidebar below the theme row. */
-export function ThemeSettingsForm({ theme, onChange, colorFormats, onColorFormatsChange }: ThemeSettingsFormProps) {
+export function ThemeSettingsForm({
+  theme,
+  onChange,
+  colorFormats,
+  onColorFormatsChange,
+}: ThemeSettingsFormProps) {
   const ratings = useMemo(() => rateThemeColors(theme.colors), [theme.colors]);
   // Callbacks read the latest theme from a ref, so they never change and the memoised rows below only re-render
   // when their own value does. (Re-rendering every field on each slider step made keyboard use lag.)
@@ -121,7 +126,12 @@ export function ThemeSettingsForm({ theme, onChange, colorFormats, onColorFormat
     () => (
       <SidebarSection
         title="Borders"
-        summary={`${firstWord(BORDER_WIDTH_LABELS[borderWidth])} · ${firstWord(RADIUS_LABELS[radius])}`}
+        summary={
+          <>
+            <span>{summaryLevel(BORDER_WIDTH_LABELS[borderWidth])} width</span> <span>•</span>{' '}
+            <span>{summaryLevel(RADIUS_LABELS[radius])} radius</span>
+          </>
+        }
         isExpanded={bordersOpen}
         onExpandedChange={(open) => toggle('borders', open)}
       >
@@ -136,7 +146,7 @@ export function ThemeSettingsForm({ theme, onChange, colorFormats, onColorFormat
         title="Fonts"
         summary={
           <>
-            <span style={{ fontFamily: JSON.stringify(headingFont) }}>{headingFont}</span>·
+            <span style={{ fontFamily: JSON.stringify(headingFont) }}>{headingFont}</span> <span>•</span>{' '}
             <span style={{ fontFamily: JSON.stringify(bodyFont) }}>{bodyFont}</span>
           </>
         }
@@ -149,25 +159,29 @@ export function ThemeSettingsForm({ theme, onChange, colorFormats, onColorFormat
     [headingFont, bodyFont, fontsOpen, toggle, update],
   );
 
+  const colorFields = (
+    <div {...stylex.props(styles.fields)}>
+      <ColorCodeControl selected={sharedFormat} onChange={setAllFormats} />
+      {COLOR_KEYS.map((key) => (
+        <ColorRow
+          key={key}
+          colorKey={key}
+          format={formatOf(key)}
+          onFormatChange={setFormat}
+          hex={theme.colors[key]}
+          level={ratings[key].level}
+          ratio={ratings[key].ratio}
+          worstPair={ratings[key].worstPair}
+          onChange={setColor}
+        />
+      ))}
+    </div>
+  );
+
   return (
     <div {...stylex.props(styles.sections)}>
       <SidebarSection title="Colors" summary={<ColorsSummary colors={theme.colors} failing={failing} />} {...section('colors')}>
-        <div {...stylex.props(styles.fields)}>
-          <ColorCodeControl selected={sharedFormat} onChange={setAllFormats} />
-          {COLOR_KEYS.map((key) => (
-            <ColorRow
-              key={key}
-              colorKey={key}
-              format={formatOf(key)}
-              onFormatChange={setFormat}
-              hex={theme.colors[key]}
-              level={ratings[key].level}
-              ratio={ratings[key].ratio}
-              worstPair={ratings[key].worstPair}
-              onChange={setColor}
-            />
-          ))}
-        </div>
+        {colorFields}
       </SidebarSection>
       {bordersSection}
       {fontsSection}
@@ -176,11 +190,13 @@ export function ThemeSettingsForm({ theme, onChange, colorFormats, onColorFormat
 }
 
 const firstWord = (label: string) => label.split(' ')[0]!;
+/** The closed Borders summary's wording for a level: "No width", "Small radius". */
+const summaryLevel = (label: string) => (firstWord(label) === 'None' ? 'No' : firstWord(label));
 
 /** A closed Colors section: the six colours as dots, and a warning if any of them fails contrast. */
 function ColorsSummary({ colors, failing }: { colors: ThemeColors; failing: (keyof ThemeColors)[] }): ReactNode {
   return (
-    <>
+    <span {...stylex.props(styles.colorsSummary)}>
       <span aria-hidden="true" {...stylex.props(styles.dots)}>
         {(Object.keys(COLOR_LABELS) as (keyof ThemeColors)[]).map((key) => (
           <span key={key} {...stylex.props(styles.dot)} style={{ backgroundColor: colors[key] }} />
@@ -191,7 +207,7 @@ function ColorsSummary({ colors, failing }: { colors: ThemeColors; failing: (key
           <span title={`Fails contrast: ${failing.map((k) => COLOR_LABELS[k]).join(', ')}`}>Fail</span>
         </Chip>
       )}
-    </>
+    </span>
   );
 }
 
@@ -330,8 +346,11 @@ const FontsSection = memo(function FontsSection({
 });
 
 const styles = stylex.create({
-  sections: { display: 'flex', flexDirection: 'column', gap: spacing.md },
-  // The closed Colors summary: six 12px dots, outlined so one that matches the background still shows.
+  // 8px, plus each heading's 8px top padding: 16px from one closed heading's line to the next title (Figma 2437:2652).
+  sections: { display: 'flex', flexDirection: 'column', gap: spacing.xs },
+  // The closed Colors summary (Figma 2437:2652): 8px under the title rather than 4, the Fail chip 16px after the dots.
+  colorsSummary: { display: 'flex', alignItems: 'center', gap: spacing.sm, paddingBlockStart: spacing['2xs'] },
+  // Six 12px dots, outlined so one that matches the background still shows.
   dots: { display: 'inline-flex', alignItems: 'center', gap: spacing['2xs'] },
   dot: {
     width: '0.75rem',

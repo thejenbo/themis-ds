@@ -109,7 +109,7 @@ describe('theme actions', () => {
 
   test('Rename keeps the theme in its place and refuses a taken name', async () => {
     renderApp();
-    await chooseMenuItem('Rename…');
+    await chooseMenuItem('Rename');
     await expect.element(page.getByRole('textbox', { name: 'Theme name' })).toHaveValue('light');
     await page.getByRole('textbox', { name: 'Theme name' }).fill('dark');
     await userEvent.keyboard('{Enter}');
@@ -121,21 +121,21 @@ describe('theme actions', () => {
 
   test('Delete asks first, then selects the neighbouring theme; the last theme can’t be deleted', async () => {
     renderApp();
-    await chooseMenuItem('Delete…');
+    await chooseMenuItem('Delete');
     await expect.element(page.getByRole('alertdialog', { name: 'Delete the light theme?' })).toBeVisible();
     await page.getByRole('button', { name: 'Delete', exact: true }).click();
     await expect.poll(themeNames).toEqual(['dark']);
     await expect.element(themeSelect()).toHaveTextContent('dark');
     await themeActions().click();
-    await expect.element(menuItem('Delete…')).toHaveAttribute('aria-disabled', 'true');
+    await expect.element(menuItem('Delete')).toHaveAttribute('aria-disabled', 'true');
   });
 
-  test('Start over restores the starting themes after a confirm', async () => {
+  test('Reset themes restores the starting themes after a confirm', async () => {
     renderApp();
     await chooseMenuItem('Duplicate');
     await userEvent.keyboard('{Enter}');
-    await chooseMenuItem('Start over…');
-    await page.getByRole('alertdialog').getByRole('button', { name: 'Start over' }).click();
+    await chooseMenuItem('Reset themes');
+    await page.getByRole('alertdialog').getByRole('button', { name: 'Reset themes' }).click();
     await expect.poll(themeNames).toEqual(['light', 'dark']);
     await expect.element(themeSelect()).toHaveTextContent('light');
   });

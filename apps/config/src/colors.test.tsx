@@ -120,7 +120,7 @@ describe('colour code control (HEX, RGB, HSL, HSB)', () => {
     await userEvent.keyboard('{Enter}');
     await expect.element(themeSelect()).toHaveTextContent('light copy');
     await expect.poll(() => code('Brand')).toMatch(/^\d+, \d+, \d+$/);
-    await chooseMenuItem('Rename…');
+    await chooseMenuItem('Rename');
     await nameField().fill('lilac');
     await userEvent.keyboard('{Enter}');
     await expect.element(themeSelect()).toHaveTextContent('lilac');

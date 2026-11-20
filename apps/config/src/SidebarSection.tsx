@@ -15,7 +15,7 @@ import { racStyles } from '../../../src/utils/stylex-rac';
 
 interface SidebarSectionProps {
   title: string;
-  /** Shown beside the title while the section is closed: what's set inside, at a glance. */
+  /** Shown under the title while the section is closed: what's set inside, at a glance. */
   summary: ReactNode;
   isExpanded: boolean;
   onExpandedChange: (isExpanded: boolean) => void;
@@ -50,7 +50,12 @@ export function SidebarSection({ title, summary, isExpanded, onExpandedChange, c
         ref={headingRef}
         level={2}
         data-stuck={isStuck || undefined}
-        {...stylex.props(headingStyles.sm, styles.heading, isStuck && styles.headingStuck)}
+        {...stylex.props(
+          headingStyles.sm,
+          styles.heading,
+          !isExpanded && styles.headingClosed,
+          isStuck && styles.headingStuck,
+        )}
       >
         <Button
           slot="trigger"
@@ -62,7 +67,7 @@ export function SidebarSection({ title, summary, isExpanded, onExpandedChange, c
           {!isExpanded && <span {...stylex.props(styles.summary)}>{summary}</span>}
           <span
             aria-hidden="true"
-            {...stylex.props(styles.chevron, isExpanded ? styles.chevronPushed : styles.chevronClosed)}
+            {...stylex.props(styles.chevron, !isExpanded && styles.chevronClosed)}
           >
             <Icon name="chevron-down" size="small" />
           </span>
@@ -140,12 +145,20 @@ const styles = stylex.create({
       transitionTimingFunction: easing.standard,
     },
   },
+  // Closed (Figma 2437:2652): the summary under the title, 16px, then a line across the content width.
+  headingClosed: {
+    paddingBlockEnd: `calc(${spacing.sm} + ${borderWidth.widthSm})`,
+    '::after': { width: `calc(100% - 2 * ${spacing.md})` },
+  },
   headingStuck: { '::after': { insetInlineStart: 0, width: '100%' } },
+  // A grid: the title, the summary under it while closed, and the chevron at the end, centred on both.
   trigger: {
     position: 'relative',
-    display: 'flex',
+    display: 'grid',
+    gridTemplateColumns: '1fr auto',
     alignItems: 'center',
-    gap: spacing.xs,
+    columnGap: spacing.xs,
+    rowGap: spacing['2xs'],
     width: '100%',
     padding: 0,
     borderWidth: 0,
@@ -156,13 +169,14 @@ const styles = stylex.create({
     cursor: 'pointer',
   },
   // The underline is the heading's ::after, so it can widen while stuck.
-  title: { flexShrink: 0 },
-  // Caption text in the muted colour (6:1 on the background), floated to the end beside the chevron.
+  title: { gridColumn: 1, gridRow: 1, justifySelf: 'start' },
+  // Caption text in the muted colour (6:1 on the background), under the title.
   summary: {
+    gridColumn: 1,
+    gridRow: 2,
     display: 'flex',
-    marginInlineStart: 'auto',
     alignItems: 'center',
-    gap: spacing.xs,
+    gap: spacing['2xs'],
     minWidth: 0,
     overflow: 'hidden',
     whiteSpace: 'nowrap',
@@ -174,23 +188,22 @@ const styles = stylex.create({
     color: color.textPlaceholderDefault,
   },
   chevron: {
+    gridColumn: 2,
+    gridRow: 1,
     display: 'flex',
-    flexShrink: 0,
     transitionProperty: 'transform',
     transitionDuration: { default: duration.fast, '@media (prefers-reduced-motion: reduce)': '0s' },
     transitionTimingFunction: easing.standard,
   },
-  // While open there's no summary, so the chevron takes the free space itself.
-  chevronPushed: { marginInlineStart: 'auto' },
-  chevronClosed: { transform: 'rotate(-90deg)' },
+  chevronClosed: { gridRow: '1 / span 2', transform: 'rotate(-90deg)' },
   // Its own stacking context, so raised parts of the fields inside (the colour code control's border) can't draw over
   // the sticky headings.
   panel: { isolation: 'isolate' },
   // Only while open: a closed panel is hidden with `hidden="until-found"`, which keeps its padding. 24px from the
-  // underline to the fields, and 64px from the last field to the next title, counting the sections' 24px gap and the
-  // heading's 8px top padding (Figma 2437:2201). Closed, headings are 32px apart (Figma 2437:2652).
+  // underline to the fields, and 64px from the last field to the next title, counting the sections' 8px gap and the
+  // heading's 8px top padding (Figma 2437:2201). Closed, 16px from one heading's line to the next title (Figma 2437:2652).
   panelOpen: {
     paddingBlockStart: spacing.md,
-    paddingBlockEnd: spacing.lg,
+    paddingBlockEnd: spacing.xl,
   },
 });

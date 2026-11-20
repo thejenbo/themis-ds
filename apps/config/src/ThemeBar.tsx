@@ -63,7 +63,7 @@ export function ThemePicker({ themes, selected, onSelect, onAdd, onRename, onDup
         </TooltipTrigger>
         <ActionMenu placement="bottom end">
           <ActionMenuItem id="rename" onAction={onRename}>
-            Rename…
+            Rename
           </ActionMenuItem>
           <ActionMenuItem id="duplicate" onAction={onDuplicate}>
             Duplicate
@@ -73,11 +73,11 @@ export function ThemePicker({ themes, selected, onSelect, onAdd, onRename, onDup
           </ActionMenuItem>
           {/* A theme file needs at least one theme. */}
           <ActionMenuItem id="delete" isDanger isDisabled={names.length < 2} onAction={onDelete}>
-            Delete…
+            Delete
           </ActionMenuItem>
           {/* Replaces every theme with the starting ones (after a confirm). */}
           <ActionMenuItem id="start-over" isDanger onAction={onStartOver}>
-            Start over…
+            Reset themes
           </ActionMenuItem>
         </ActionMenu>
       </ActionMenuTrigger>
