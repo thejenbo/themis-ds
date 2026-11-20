@@ -30,6 +30,21 @@ describe('header', () => {
     await expect.poll(() => near(rect(indicator()).width, rect(docs.element()).width)).toBe(true);
     await expect.element(page.getByText('The components view is coming soon.')).toBeVisible();
   });
+
+  test('hovering another page’s link underlines it with the same rounded line as the current page’s', async () => {
+    renderApp();
+    const components = page.getByRole('link', { name: 'components' });
+    await expect.element(components).toBeVisible();
+    const line = () => getComputedStyle(components.element(), '::after');
+    expect(line().backgroundColor).toBe('rgba(0, 0, 0, 0)');
+    await page.getByRole('heading', { name: 'Settings Sim' }).hover();
+    await components.hover();
+    await expect.poll(() => line().backgroundColor).toBe('rgb(0, 0, 0)');
+    const indicator = getComputedStyle(document.querySelector('nav span[aria-hidden]')!);
+    expect(line().height).toBe(indicator.height);
+    expect(line().borderTopLeftRadius).toBe(indicator.borderTopLeftRadius);
+    expect(line().borderTopLeftRadius).not.toBe('0px');
+  });
 });
 
 describe('header links', () => {
@@ -150,10 +165,10 @@ describe('sidebar', () => {
     await wait(50);
     expect(Math.round(rect(colors!).bottom - rect(bar).bottom)).toBe(6);
     await expect.poll(() => line(colors!).width).toBe('0px');
-    // Scrolled back to the top, no line again. The widening is a short transition.
+    // Scrolled back to the top, no line again. It comes and goes at once (no transition).
     aside.scrollTop = 0;
     await expect.poll(() => line(colors!).width).toBe('0px');
-    expect(line(colors!).transitionDuration).toBe('0.1s');
+    expect(line(colors!).transitionDuration).toBe('0s');
     // And the theme row is drawn over the heading sliding under it.
     expect(Number(getComputedStyle(bar).zIndex)).toBeGreaterThan(Number(getComputedStyle(colors!).zIndex));
   });
@@ -184,7 +199,7 @@ describe('sidebar', () => {
     const seconds = (el: Element) => parseFloat(getComputedStyle(el).transitionDuration);
     const bordersPanel = page.getByRole('group', { name: 'Borders' }).element();
     await expect.poll(() => seconds(panel)).toBeGreaterThan(seconds(bordersPanel));
-    expect(seconds(panel)).toBeLessThanOrEqual(0.5);
+    expect(seconds(panel)).toBeLessThanOrEqual(0.35);
     expect(seconds(bordersPanel)).toBeGreaterThanOrEqual(0.15);
     expect(Math.round(rect(panel).width - rect(section).width)).toBe(16);
     // Closing it: the same line, now under the heading. No line on the heading itself.
@@ -227,7 +242,7 @@ describe('sidebar', () => {
     await page.getByRole('textbox', { name: /^Brand/ }).fill('#FFFF00');
     await userEvent.keyboard('{Tab}');
     for (const name of ['Colors', 'Borders', 'Fonts']) await page.getByRole('button', { name: new RegExp(`^${name}`) }).click();
-    // Let the panels finish closing (their height animates, up to 500ms).
+    // Let the panels finish closing (their height animates, up to 350ms).
     await expect.poll(() => [...aside.querySelectorAll('h2')].every((h) => h.nextElementSibling?.getBoundingClientRect().height === 0)).toBe(true);
     await wait(100);
     // A closed panel keeps its padding under hidden="until-found"; that made closed headings 110px apart.
@@ -396,6 +411,12 @@ describe('simulator', () => {
     expect(style.webkitTextStrokeWidth).toBe('2px');
     expect(style.webkitTextStrokeColor).toBe('rgb(255, 255, 255)');
     expect(style.paintOrder).toMatch(/^stroke/);
+    // The tabs' labels too, also on the tint.
+    const tab = getComputedStyle(page.getByRole('tab', { name: 'account' }).element());
+    expect(tab.webkitTextStrokeWidth).toBe('2px');
+    expect(tab.webkitTextStrokeColor).toBe('rgb(255, 255, 255)');
+    // Not the plan chip: white on brand needs no outline.
+    expect(getComputedStyle(page.getByRole('main').getByText('premium active').element()).webkitTextStrokeWidth).toBe('0px');
   });
 });
 

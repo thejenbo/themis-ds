@@ -83,7 +83,12 @@ export function AppHeader({ page, compact = false }: AppHeaderProps) {
             }}
             href={`#${p}`}
             aria-current={page === p ? 'page' : undefined}
-            {...racStyles<LinkRenderProps>((s) => [styles.link, page !== p && styles.hoverable, focusRing.base, s.isFocusVisible && focusRing.visible])}
+            {...racStyles<LinkRenderProps>((s) => [
+              styles.link,
+              page !== p && s.isHovered && styles.hovered,
+              focusRing.base,
+              s.isFocusVisible && focusRing.visible,
+            ])}
           >
             {p}
           </Link>
@@ -93,7 +98,13 @@ export function AppHeader({ page, compact = false }: AppHeaderProps) {
           href={STORYBOOK_URL}
           target="_blank"
           rel="noopener noreferrer"
-          {...racStyles<LinkRenderProps>((s) => [styles.link, styles.external, styles.hoverable, focusRing.base, s.isFocusVisible && focusRing.visible])}
+          {...racStyles<LinkRenderProps>((s) => [
+            styles.link,
+            styles.external,
+            s.isHovered && styles.hovered,
+            focusRing.base,
+            s.isFocusVisible && focusRing.visible,
+          ])}
         >
           docs
           <Icon name="external-link" size="small" />
@@ -160,9 +171,18 @@ const styles = stylex.create({
     fontFamily: fontTheme.familyBody,
     fontSize: font.sizeInput,
     lineHeight: font.lineHeightInput,
-    borderBlockEndWidth: borderWidth.widthSm,
-    borderBlockEndStyle: 'solid',
-    borderBlockEndColor: 'transparent',
+    // Room for the underline, which is drawn (rather than a border) so its ends can be rounded like the indicator's.
+    paddingBlockEnd: borderWidth.widthSm,
+    '::after': {
+      content: "''",
+      position: 'absolute',
+      insetInline: 0,
+      insetBlockEnd: 0,
+      height: borderWidth.widthSm,
+      borderRadius: radius.radiusSm,
+      backgroundColor: 'transparent',
+      pointerEvents: 'none',
+    },
   },
   // Other pages show the underline on hover; the current page's comes from the sliding indicator.
   // "docs" sits at the far end of the header, its icon 4px after the text.
@@ -177,7 +197,7 @@ const styles = stylex.create({
   menuExternal: { display: 'inline-flex', alignItems: 'center', gap: spacing['2xs'] },
   // No gap: the menu button pushes itself to the end.
   headerCompact: { gap: 0 },
-  hoverable: { borderBlockEndColor: { default: 'transparent', ':hover': color.border } },
+  hovered: { '::after': { backgroundColor: color.border } },
   indicator: {
     position: 'absolute',
     insetInlineStart: 0,

@@ -49,6 +49,10 @@ listed under **Changed** or **Removed** with what to do.
 
 ### Fixed
 
+- UnitInput and ColorField: the divider before the unit / format is the box's border colour, so it turns red with an
+  error and grey when disabled (it took the text colour), as in Figma.
+- ColorField: choosing a colour in the picker (or a new `value`) replaces an unreadable typed code and clears its
+  error.
 - `ActionMenuItem` with an `href` (a link) is no longer underlined.
 
 ## [0.1.0] - 2026-11-17

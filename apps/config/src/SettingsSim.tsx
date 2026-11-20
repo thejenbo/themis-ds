@@ -69,10 +69,13 @@ export const SettingsSim = memo(function SettingsSim({
         {/* The two views as tabs, with the plan chip at the end of the tab row. */}
         <Tabs selectedKey={view} onSelectionChange={(key) => onViewChange(key as SimView)}>
           <div {...stylex.props(styles.toolbar)}>
-            <TabList aria-label="Settings section">
-              <Tab id="account">account</Tab>
-              <Tab id="subscription">subscription</Tab>
-            </TabList>
+            {/* Outlined like the title, since the tabs sit right on the tinted page too. */}
+            <div {...stylex.props(styles.onTint)}>
+              <TabList aria-label="Settings section">
+                <Tab id="account">account</Tab>
+                <Tab id="subscription">subscription</Tab>
+              </TabList>
+            </div>
             <PlanChip data={data} />
           </div>
           {/* Only the selected panel is rendered, so each view's unsaved edits start again from what's saved. */}
@@ -180,7 +183,7 @@ const styles = stylex.create({
     width: `min(27.3rem, calc(100cqw + ${spacing['2xl']} - ${scalesLeft}))`,
     display: { default: 'block', '@container (max-width: 56rem)': 'none' },
   },
-  // Figma: the title, the only text right on the tinted page, has a 1px outside stroke in the background colour.
+  // Figma: the title, text right on the tinted page, has a 1px outside stroke in the background colour.
   // CSS strokes are centred on the outline, so 2px painted under the fill leaves 1px showing outside.
   title: {
     display: 'flex',
@@ -189,6 +192,8 @@ const styles = stylex.create({
     WebkitTextStroke: `2px ${color.background}`,
     paintOrder: 'stroke fill',
   },
+  // The same outline for the tabs' labels, the other text right on the tinted page.
+  onTint: { WebkitTextStroke: `2px ${color.background}`, paintOrder: 'stroke fill' },
   titleSparkle: { width: '1.3rem', flexShrink: 0 },
   // 24px under the tabs (the panel's own 16px, plus 8px), as between the sections.
   view: { display: 'flex', flexDirection: 'column', gap: spacing.md, paddingBlockStart: spacing.xs },

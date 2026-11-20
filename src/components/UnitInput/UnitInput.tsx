@@ -235,7 +235,8 @@ export const unitBoxStyles = stylex.create({
       borderEndEndRadius: 0,
     },
   },
-  unitField: { display: 'flex', flexShrink: 0 },
+  // Passes the box's border colour on to the divider (the button's `inherit` would otherwise get the text colour).
+  unitField: { display: 'flex', flexShrink: 0, borderColor: 'inherit' },
   // Figma "Select Box": a divider on its left in the box's border colour (red when invalid, grey when disabled).
   unit: {
     position: 'relative',

@@ -32,8 +32,18 @@ export const States: Story = {
       <ColorField {...args} label="With help" description="Used for links and buttons." />
       <ColorField {...args} label="Errored" isInvalid errorMessage="This color is too light for text." />
       <ColorField {...args} label="Disabled" isDisabled />
+      <ColorField {...args} label="Errored, with formats" formats={['hex', 'rgb']} isInvalid errorMessage="This color is too light for text." />
+      <ColorField {...args} label="Disabled, with formats" formats={['hex', 'rgb']} isDisabled />
     </div>
   ),
+  play: async ({ canvas }) => {
+    // The divider before the format is the box's border colour: red when errored, grey when disabled (as in Figma).
+    for (const name of ['Errored, with formats', 'Disabled, with formats']) {
+      const box = canvas.getByRole('textbox', { name }).parentElement!.parentElement!;
+      const format = box.querySelector('button')!;
+      await expect(getComputedStyle(format).borderLeftColor).toBe(getComputedStyle(box).borderTopColor);
+    }
+  },
 };
 
 /** Interaction test: forgiving codes are read on Enter; unreadable ones show the error and keep the colour. */
@@ -104,9 +114,16 @@ export const WithPicker: Story = {
   },
   play: async ({ canvas }) => {
     const input = canvas.getByRole('textbox', { name: 'Color' });
+    // An unreadable code first: the error shows.
+    await userEvent.clear(input);
+    await userEvent.type(input, 'nope{Enter}');
+    await expect(input).toHaveAttribute('aria-invalid', 'true');
+    // Picking a colour replaces it with the new code and clears the error.
     await userEvent.click(canvas.getByRole('button', { name: /Pick a color/ }));
     await screen.findByRole('dialog');
     await userEvent.click(screen.getByRole('option', { name: /blue/i }));
     await waitFor(() => expect(input).toHaveValue('#1F4FEB'));
+    await expect(input).not.toHaveAttribute('aria-invalid');
+    await expect(canvas.queryByText('Enter a color code, e.g. #7A1FEB')).not.toBeInTheDocument();
   },
 };

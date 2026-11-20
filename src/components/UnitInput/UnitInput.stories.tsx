@@ -128,6 +128,14 @@ export const States: Story = {
       <UnitInput {...args} label="No unit yet" defaultUnit={null} />
     </div>
   ),
+  play: async ({ canvas }) => {
+    // The divider before the unit is the box's border colour: red when invalid, grey when disabled (as in Figma).
+    for (const name of ['Invalid', 'Disabled', 'Filled']) {
+      const box = canvas.getByRole('textbox', { name }).closest('[role="group"]')!;
+      const unit = box.querySelector('button')!;
+      await expect(getComputedStyle(unit).borderLeftColor).toBe(getComputedStyle(box).borderTopColor);
+    }
+  },
 };
 
 /** Lines up with a TextInput: the same box, height and text. */

@@ -91,11 +91,11 @@ export function SidebarSection({ title, summary, isExpanded, onExpandedChange, c
 /** The open/close speed of the shorter sections (Borders, Fonts): about 200px in duration.base (150ms). */
 const PX_PER_MS = 200 / 150;
 const MIN_MS = 150;
-const MAX_MS = 500;
+const MAX_MS = 350;
 
 /**
  * How long the panel takes to open or close: in proportion to its height, so a tall section (Colors) moves at the
- * same speed as a short one instead of rushing, within 150–500ms.
+ * similar speed to a short one instead of rushing, within 150–350ms (capped a little quicker for the tallest, Colors).
  */
 function usePanelDuration(ref: React.RefObject<HTMLElement | null>) {
   const [ms, setMs] = useState(MIN_MS);
@@ -183,7 +183,7 @@ const styles = stylex.create({
     paddingBlockEnd: `calc(${spacing.xs} + ${borderWidth.widthSm})`,
     backgroundColor: color.background,
     // The border while stuck (open sections only): across the heading's full width, between the heading and the
-    // fields scrolling under it, growing in with a short, subtle transition (none with reduced motion).
+    // fields scrolling under it. It appears at once, without growing in.
     '::after': {
       content: "''",
       position: 'absolute',
@@ -193,9 +193,6 @@ const styles = stylex.create({
       height: borderWidth.widthSm,
       backgroundColor: color.border,
       pointerEvents: 'none',
-      transitionProperty: 'width',
-      transitionDuration: { default: duration.fast, '@media (prefers-reduced-motion: reduce)': '0s' },
-      transitionTimingFunction: easing.standard,
     },
   },
   // Closed (Figma 2437:2652): the summary under the title, then 16px to the section's line.

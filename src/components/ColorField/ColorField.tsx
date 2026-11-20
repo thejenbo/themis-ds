@@ -1,5 +1,5 @@
 import * as stylex from '@stylexjs/stylex';
-import { type ReactNode, useContext, useId, useRef, useState } from 'react';
+import { type ReactNode, useContext, useEffect, useId, useRef, useState } from 'react';
 import {
   Button,
   type ButtonRenderProps,
@@ -153,6 +153,18 @@ function ColorFieldInner({
   const labelId = useId();
   const formatWordId = useId();
   const formatValueId = useId();
+
+  // A colour chosen elsewhere (the picker, or a new `value`) replaces whatever is typed in the box, invalid or not:
+  // the box shows the new colour's code and any "can't read this" error goes. (Typing only changes the draft, and a
+  // commit clears it itself, so this only runs for outside changes.)
+  const colorKey = state.color.toString('hexa');
+  const lastColorKey = useRef(colorKey);
+  useEffect(() => {
+    if (colorKey === lastColorKey.current) return;
+    lastColorKey.current = colorKey;
+    setDraft(null);
+    setUnreadable(false);
+  }, [colorKey]);
 
   const commit = () => {
     if (draft === null) return;
