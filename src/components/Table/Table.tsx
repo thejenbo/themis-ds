@@ -52,8 +52,8 @@ export interface TableProps {
    */
   onRowAction?: (key: Key) => void;
   /**
-   * Drop the frame's border and rounded corners, for a table inside something that already has a border, such as
-   * an Accordion or a Modal. The lines between rows stay.
+   * Drop the frame's border, for a table inside something that already has a border, such as an Accordion or a
+   * Modal. The rounded corners and the lines between rows stay. Figma: Table `border` off.
    */
   hideBorder?: boolean;
   /** Layout-only StyleX overrides for the outer frame (margin, width, grid placement). Do not restyle colours. */
@@ -287,7 +287,7 @@ const styles = stylex.create({
     borderRadius: radius.radiusMd,
     backgroundColor: color.background,
   },
-  frameBorderless: { borderWidth: 0, borderRadius: 0 },
+  frameBorderless: { borderWidth: 0 },
   table: { width: '100%', borderCollapse: 'collapse' },
   headerRow: { backgroundColor: color.brand },
   // Figma "Table Header Cell": type/label/base in text-inverse on brand, 16px padding (the row is 56px tall).

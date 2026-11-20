@@ -24,7 +24,8 @@ listed under **Changed** or **Removed** with what to do.
 - Icon `menu` (Lucide's three lines, the "hamburger"), for a button that opens navigation or a menu.
 - Icons `upload` and `download` (Lucide's, with a square-cornered tray for radius none), for sending and saving files.
 - Tabs `isFullWidth`: the tabs share the row equally, 24px apart (Figma Tabs `full width`).
-- Table `hideBorder`: no frame around the table, for one inside an Accordion or Modal. The lines between rows stay.
+- Table `hideBorder`: no border around the table, for one inside an Accordion or Modal. Its rounded corners and the
+  lines between rows stay (Figma Table `border` off).
 - A "themis config" mode for radius (2/2/4/6px) and border width (1/2/3/3px), used by the config tool's own UI.
   It isn't a theme-file choice: `THEME_RADII` and `THEME_BORDER_WIDTHS` list the ones that are.
 - `<ThemeProvider theme>` treats a theme's missing border width or radius as `medium`, so it no longer picks up an

@@ -32,16 +32,19 @@ for (const row of instance.findConnectedInstances((node) => node.codeConnectId()
 // Fall back to the raw slot if nothing in it is connected.
 const contents = header || rows ? undefined : instance.getSlot('Table Contents')
 
+// Figma's `border` boolean is on by default; off is hideBorder.
+const hideBorder = instance.getBoolean('border', { true: '', false: ' hideBorder' })
+
 const sortProps = sortColumn
   ? ` sortDescriptor={{ column: "${sortColumn}", direction: "${sortDirection}" }} onSortChange={setSortDescriptor}`
   : ''
 
 export default {
   example: contents
-    ? figma.code`<Table aria-label="Describe this table"${sortProps}>
+    ? figma.code`<Table aria-label="Describe this table"${hideBorder}${sortProps}>
   ${contents}
 </Table>`
-    : figma.code`<Table aria-label="Describe this table"${sortProps}>
+    : figma.code`<Table aria-label="Describe this table"${hideBorder}${sortProps}>
   ${header ? header : ''}
   <TableBody>${rows ? rows : ''}
   </TableBody>

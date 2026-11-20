@@ -21,7 +21,7 @@ export default defineComponentDocs({
   },
 
   anatomy: [
-    { part: 'Frame', description: 'border/width/mandatory in color/border all round, radius md (none with `hideBorder`), so the table keeps its edge when border widths are "none". Scrolls sideways inside the border when the table is wider than its space.', required: true },
+    { part: 'Frame', description: 'border/width/mandatory in color/border all round, radius md (no border with `hideBorder`), so the table keeps its edge when border widths are "none". Scrolls sideways inside the border when the table is wider than its space.', required: true },
     { part: 'Header', description: 'A brand row of `Column` headings: type/label/base (semibold) in text-inverse, 16px padding, 56px tall.', required: true },
     { part: 'Sort arrow', description: 'On sortable columns: up for ascending, down for descending. Faint on hover or focus while unsorted. Decorative: the heading\'s button sorts.', required: false },
     { part: 'Rows', description: '56px rows of `Cell`s in the regular input text style, with a border/width/mandatory line in border-brand between them (none under the last), so rows stay separated when border widths are "none".', required: true },
@@ -31,7 +31,7 @@ export default defineComponentDocs({
 
   variants: {
     hideBorder: {
-      true: 'No border or rounded corners around the table; the lines between rows stay. For a table inside something that already has a border, such as an Accordion or a Modal.',
+      true: 'No border around the table; its rounded corners and the lines between rows stay. For a table inside something that already has a border, such as an Accordion or a Modal. Figma: `border` off.',
       false: 'A border/width/mandatory frame with radius md. The default.',
     },
   },
@@ -116,7 +116,8 @@ export default defineComponentDocs({
   figma: {
     componentKey: null,
     url: 'https://www.figma.com/design/tRoAewIghL1YbnTio6fkkw/Themis-Design-System?node-id=1457-6618',
-    properties: {},
+    // Figma's `border` boolean is the opposite way round: on (the default) is hideBorder={false}.
+    properties: { hideBorder: { figmaProperty: 'border', type: 'BOOLEAN' } },
     differences: [
       { topic: 'Row hover', figma: 'A `hovered` row state.', code: 'Rows only tint (brand-tint) and show the pointer cursor when the table has `onRowAction`; clicking anywhere on the row (outside other controls) runs it. Read-only tables have no row hover.', action: 'annotate-figma', done: '2026-11-13' },
       { topic: 'Column widths', figma: 'Equal widths.', code: 'Columns size to their content; `width` fixes one, and a `hideLabel` column shrinks to fit.', action: 'annotate-figma', done: '2026-11-13' },
