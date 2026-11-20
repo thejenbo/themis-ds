@@ -5,6 +5,7 @@ import { expect, fn, userEvent, waitFor } from 'storybook/test';
 
 import { ThemeProvider } from '../../theme/ThemeProvider';
 import { collectionModes } from '../../tokens/themes';
+import { Accordion } from '../Accordion';
 import { ActionMenu, ActionMenuItem, ActionMenuTrigger } from '../ActionMenu';
 import { IconButton } from '../IconButton';
 import { Cell, Column, Row, Table, TableBody, TableHeader } from './Table';
@@ -217,6 +218,24 @@ export const Keyboard: Story = {
 };
 
 /** No rows: one full-width "No results" row. */
+/** `hideBorder`: inside an Accordion, which has its own border, the table drops its frame. The lines between rows stay. */
+export const HideBorder: Story = {
+  render: (args) => (
+    <div style={{ maxWidth: 640 }}>
+      <Accordion title="Projects" defaultExpanded>
+        <ProjectsTable {...args} hideBorder />
+      </Accordion>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const frame = canvasElement.querySelector('table')!.parentElement!;
+    await expect(getComputedStyle(frame).borderTopWidth).toBe('0px');
+    await expect(getComputedStyle(frame).borderTopLeftRadius).toBe('0px');
+    const firstRow = canvasElement.querySelector('tbody tr')!;
+    await expect(getComputedStyle(firstRow).borderBottomWidth).not.toBe('0px');
+  },
+};
+
 export const Empty: Story = {
   render: () => <ProjectsTable projects={[]} />,
   play: async ({ canvas }) => {

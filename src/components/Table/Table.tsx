@@ -51,6 +51,11 @@ export interface TableProps {
    * an `id` and a `Cell` with `isRowHeader`.
    */
   onRowAction?: (key: Key) => void;
+  /**
+   * Drop the frame's border and rounded corners, for a table inside something that already has a border, such as
+   * an Accordion or a Modal. The lines between rows stay.
+   */
+  hideBorder?: boolean;
   /** Layout-only StyleX overrides for the outer frame (margin, width, grid placement). Do not restyle colours. */
   xstyle?: stylex.StyleXStyles;
 }
@@ -61,13 +66,13 @@ export interface TableProps {
  * controls in cells such as an ActionMenu). Columns size to their content; on narrow screens the table scrolls
  * sideways inside its rounded border.
  */
-export function Table({ children, sortDescriptor, onSortChange, onRowAction, xstyle, ...labelling }: TableProps) {
+export function Table({ children, sortDescriptor, onSortChange, onRowAction, hideBorder = false, xstyle, ...labelling }: TableProps) {
   const header = Children.toArray(children).find(
     (c): c is ReactElement<TableHeaderProps> => isValidElement(c) && c.type === TableHeader,
   );
   const columnCount = Math.max(1, Children.toArray(header?.props.children).filter(isValidElement).length);
   return (
-    <div {...stylex.props(styles.frame, xstyle)}>
+    <div {...stylex.props(styles.frame, hideBorder && styles.frameBorderless, xstyle)}>
       <TableContext.Provider value={{ sortDescriptor, onSortChange, onRowAction, columnCount }}>
         <table {...labelling} {...stylex.props(styles.table)}>
           {children}
@@ -282,6 +287,7 @@ const styles = stylex.create({
     borderRadius: radius.radiusMd,
     backgroundColor: color.background,
   },
+  frameBorderless: { borderWidth: 0, borderRadius: 0 },
   table: { width: '100%', borderCollapse: 'collapse' },
   headerRow: { backgroundColor: color.brand },
   // Figma "Table Header Cell": type/label/base in text-inverse on brand, 16px padding (the row is 56px tall).

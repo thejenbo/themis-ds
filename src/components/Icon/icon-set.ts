@@ -11,6 +11,7 @@ import {
   CircleCheck,
   Copy,
   CreditCard,
+  Download,
   EllipsisVertical,
   ExternalLink,
   Folder,
@@ -26,6 +27,7 @@ import {
   Shuffle,
   Trash,
   TriangleAlert,
+  Upload,
   User,
   X,
 } from 'lucide';
@@ -74,6 +76,15 @@ export const iconSet = {
     ],
   },
   'credit-card': { shapes: CreditCard },
+  download: {
+    shapes: Download,
+    // Square corners on the tray, as on upload.
+    sharp: [
+      ['path', { d: 'M12 15V3' }],
+      ['path', { d: 'M21 15v6H3v-6' }],
+      ['path', { d: 'm7 10 5 5 5-5' }],
+    ],
+  },
   'ellipsis-vertical': { shapes: EllipsisVertical },
   'external-link': {
     shapes: ExternalLink,
@@ -140,6 +151,15 @@ export const iconSet = {
       ['path', { d: 'M12 3.4 21.4 20.4H2.6Z' }],
       ['path', { d: 'M12 9.4v4.6' }, { detail: true }],
       ['path', { d: 'M12 16.9h.01' }, { detail: true }],
+    ],
+  },
+  upload: {
+    shapes: Upload,
+    // Square corners on the tray; the arrow already straightens with sharp joins.
+    sharp: [
+      ['path', { d: 'M12 3v12' }],
+      ['path', { d: 'm17 8-5-5-5 5' }],
+      ['path', { d: 'M21 15v6H3v-6' }],
     ],
   },
   user: { shapes: User },

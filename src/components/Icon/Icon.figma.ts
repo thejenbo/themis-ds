@@ -20,6 +20,7 @@ const name = instance.getEnum('name', {
   'circle-check': 'circle-check',
   copy: 'copy',
   'credit-card': 'credit-card',
+  download: 'download',
   'ellipsis-vertical': 'ellipsis-vertical',
   'external-link': 'external-link',
   folder: 'folder',
@@ -34,6 +35,7 @@ const name = instance.getEnum('name', {
   shuffle: 'shuffle',
   trash: 'trash',
   'triangle-alert': 'triangle-alert',
+  upload: 'upload',
   user: 'user',
   x: 'x',
 })

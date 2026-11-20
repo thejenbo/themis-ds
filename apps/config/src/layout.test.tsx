@@ -320,7 +320,7 @@ describe('simulator', () => {
     renderApp();
     const art = async () => {
       await preview();
-      return getComputedStyle(document.querySelector('main svg path')!).fill;
+      return getComputedStyle(document.querySelector('[data-sim-part="scales"] svg path')!).fill;
     };
     // Light theme: #7406EB, halfway to white. Dark theme: #EBBFF8, as is.
     await expect.poll(art).toMatch(/color\(srgb 0\.72\d* 0\.5[01]\d* 0\.96\d*\)|rgb\(186, 13[01], 245\)/);

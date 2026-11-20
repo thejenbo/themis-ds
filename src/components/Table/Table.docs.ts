@@ -21,7 +21,7 @@ export default defineComponentDocs({
   },
 
   anatomy: [
-    { part: 'Frame', description: 'border/width/mandatory in color/border all round, radius md, so the table keeps its edge when border widths are "none". Scrolls sideways inside the border when the table is wider than its space.', required: true },
+    { part: 'Frame', description: 'border/width/mandatory in color/border all round, radius md (none with `hideBorder`), so the table keeps its edge when border widths are "none". Scrolls sideways inside the border when the table is wider than its space.', required: true },
     { part: 'Header', description: 'A brand row of `Column` headings: type/label/base (semibold) in text-inverse, 16px padding, 56px tall.', required: true },
     { part: 'Sort arrow', description: 'On sortable columns: up for ascending, down for descending. Faint on hover or focus while unsorted. Decorative: the heading\'s button sorts.', required: false },
     { part: 'Rows', description: '56px rows of `Cell`s in the regular input text style, with a border/width/mandatory line in border-brand between them (none under the last), so rows stay separated when border widths are "none".', required: true },
@@ -29,7 +29,12 @@ export default defineComponentDocs({
     { part: 'Empty state', description: 'One full-width row with `emptyText` ("No results") when there are no rows.', required: false },
   ],
 
-  variants: {},
+  variants: {
+    hideBorder: {
+      true: 'No border or rounded corners around the table; the lines between rows stay. For a table inside something that already has a border, such as an Accordion or a Modal.',
+      false: 'A border/width/mandatory frame with radius md. The default.',
+    },
+  },
 
   accessibility: {
     providedByBase: [

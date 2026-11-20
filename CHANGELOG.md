@@ -22,7 +22,9 @@ listed under **Changed** or **Removed** with what to do.
 - Select options with `onAction` (such as "Add new theme") run the action instead of becoming the value.
 - Icon `external-link` (Lucide's, with a square-cornered box for radius none), for links that open elsewhere.
 - Icon `menu` (Lucide's three lines, the "hamburger"), for a button that opens navigation or a menu.
+- Icons `upload` and `download` (Lucide's, with a square-cornered tray for radius none), for sending and saving files.
 - Tabs `isFullWidth`: the tabs share the row equally, 24px apart (Figma Tabs `full width`).
+- Table `hideBorder`: no frame around the table, for one inside an Accordion or Modal. The lines between rows stay.
 - A "themis config" mode for radius (2/2/4/6px) and border width (1/2/3/3px), used by the config tool's own UI.
   It isn't a theme-file choice: `THEME_RADII` and `THEME_BORDER_WIDTHS` list the ones that are.
 - `<ThemeProvider theme>` treats a theme's missing border width or radius as `medium`, so it no longer picks up an
@@ -30,6 +32,8 @@ listed under **Changed** or **Removed** with what to do.
 
 ### Changed
 
+- Accordion content has 16px below it (was 8px), matching its sides, so a row of buttons at the end doesn't sit
+  tight against the border.
 - SegmentedControl corners follow Figma: small and medium are radius md (was sm), with the inset selected fill and
   hover tint at sm (was xs) so the two curves run parallel. Micro is unchanged.
 - Primitives: `orange/500` is `#A35104`, as in Figma (the export was stale; components already used it).

@@ -3,17 +3,20 @@ import * as stylex from '@stylexjs/stylex';
 import { useId } from 'react';
 
 import { color } from '../../../../src/tokens/colorTheme.stylex';
+import { lightBrand } from './ScalesIllustration';
 
 const c = { brand: color.brand, line: color.border } as unknown as Record<'brand' | 'line', string>;
 
 export interface SparkleProps {
   /** Rendered width; the height follows the drawing's proportions. */
   width?: number | string;
+  /** Lighten the brand fill by 50%, as the scales illustration does for dark brands, so the two match. */
+  lightenBrand?: boolean;
   xstyle?: stylex.StyleXStyles;
 }
 
 /** Decoration only: hidden from assistive tech. */
-export function Sparkle({ width, xstyle }: SparkleProps) {
+export function Sparkle({ width, lightenBrand = false, xstyle }: SparkleProps) {
   const uid = useId().replace(/[^a-zA-Z0-9_-]/g, '');
   const id = (name: string) => `${uid}${name}`;
   return (
@@ -25,7 +28,7 @@ export function Sparkle({ width, xstyle }: SparkleProps) {
       focusable="false"
       {...stylex.props(styles.svg, xstyle)}
     >
-      <use href={`#${id('stroke0_2002_21842')}`} style={{ fill: c.brand }} />
+      <use href={`#${id('stroke0_2002_21842')}`} style={{ fill: lightenBrand ? lightBrand : c.brand }} />
       <mask id={id('stroke1_2002_21842')} fill="white">
         <use href={`#${id('stroke0_2002_21842')}`} />
       </mask>

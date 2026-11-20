@@ -36,7 +36,7 @@ export default defineComponentDocs({
       required: true,
     },
     { part: 'Chevron', description: 'Points right when closed and down when open. Decorative.', required: true },
-    { part: 'Content', description: 'The section revealed when open. Any content; body text by default.', required: true },
+    { part: 'Content', description: 'The section revealed when open. Any content; body text by default. 8px above it (below the header), 16px at the sides and below.', required: true },
     { part: 'AccordionGroup', description: 'Stacks accordions with spacing.xs between them.', required: false },
   ],
 

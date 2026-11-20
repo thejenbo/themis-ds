@@ -6,7 +6,7 @@ import { color } from '../../../../src/tokens/colorTheme.stylex';
 
 const c = { brand: color.brand, line: color.border } as unknown as Record<'brand' | 'line', string>;
 /** The brand 50% of the way to white: a dark brand would otherwise read as a heavy blot. */
-const lightBrand = `color-mix(in srgb, ${c.brand} 50%, white)`;
+export const lightBrand = `color-mix(in srgb, ${c.brand} 50%, white)`;
 
 export interface ScalesIllustrationProps {
   /** Rendered width; the height follows the drawing's proportions. */

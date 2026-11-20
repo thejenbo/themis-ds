@@ -141,6 +141,8 @@ const innerRadius = `calc(${radius.radiusMd} - ${borderWidth.widthSm})`;
 // Figma draws the border inside the padding, so take the border width off the padding to match its sizes.
 const padBlock = `calc(${spacing.xs} - ${borderWidth.widthSm})`;
 const padInline = `calc(${spacing.sm} - ${borderWidth.widthSm})`;
+// Below the content: 16px, the same as the sides. 8px looked tight under a row of buttons (2026-11-20).
+const padContentEnd = `calc(${spacing.sm} - ${borderWidth.widthSm})`;
 const motion = { default: duration.base, '@media (prefers-reduced-motion: reduce)': '0s' };
 
 const styles = stylex.create({
@@ -214,7 +216,7 @@ const styles = stylex.create({
   },
   content: {
     paddingBlockStart: spacing.xs,
-    paddingBlockEnd: padBlock,
+    paddingBlockEnd: padContentEnd,
     paddingInline: padInline,
     backgroundColor: color.background,
     color: color.text,
