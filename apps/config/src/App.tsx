@@ -1,12 +1,23 @@
 import * as stylex from '@stylexjs/stylex';
 import { useDeferredValue, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { Button, Modal, Text, type ThemeSettings, ThemeProvider, type ThemisConfig, ToastRegion } from 'themis-ds';
+import {
+  Button,
+  Modal,
+  SegmentedControl,
+  SegmentedControlItem,
+  Text,
+  type ThemeSettings,
+  ThemeProvider,
+  type ThemisConfig,
+  ToastRegion,
+} from 'themis-ds';
 
 import { luminance, parseHex } from '../../../src/theme/color-math';
 import { border as borderWidth } from '../../../src/tokens/borderWidth.stylex';
 import { color } from '../../../src/tokens/colorTheme.stylex';
 import { spacing } from '../../../src/tokens/spacing.stylex';
 import { AppHeader, type Page } from './AppHeader';
+import { DrawerHandle } from './DrawerHandle';
 import { ExportModal } from './ExportModal';
 import { initialConfig } from './initial-config';
 import { type ColorFormats, loadColorFormats, loadSaved, save, saveColorFormats } from './storage';
@@ -31,6 +42,33 @@ type Naming =
 const NEW_THEME: ThemeSettings = initialConfig.themes.light!;
 
 const PAGES: Page[] = ['simulator', 'components'];
+
+/**
+ * How the tool is laid out for the window's width:
+ * - `desktop` (64em and up): the settings in a sidebar on the left, the preview beside them.
+ * - `tablet` (48em to 64em): the preview on top, the settings under it as tabs, Export beside the theme.
+ * - `mobile` (under 48em, Figma 2443:14356): one column, settings or preview (a switch under the theme), Export
+ *   pinned to the bottom.
+ * 48em is the breakpoint the type scale uses too.
+ */
+type Layout = 'mobile' | 'tablet' | 'desktop';
+const WIDE = '(min-width: 64em)';
+const MEDIUM = '(min-width: 48em)';
+const currentLayout = (): Layout => (matchMedia(WIDE).matches ? 'desktop' : matchMedia(MEDIUM).matches ? 'tablet' : 'mobile');
+
+function useLayout() {
+  const [layout, setLayout] = useState(currentLayout);
+  useEffect(() => {
+    const queries = [matchMedia(WIDE), matchMedia(MEDIUM)];
+    const update = () => setLayout(currentLayout());
+    for (const q of queries) q.addEventListener('change', update);
+    return () => queries.forEach((q) => q.removeEventListener('change', update));
+  }, []);
+  return layout;
+}
+
+const PREVIEW_ID = 'preview';
+
 const pageFromHash = (): Page => PAGES.find((p) => `#${p}` === window.location.hash) ?? 'simulator';
 
 /**
@@ -49,6 +87,12 @@ export function App() {
   const [colorFormats, setColorFormats] = useState(loadColorFormats);
   useEffect(() => saveColorFormats(colorFormats), [colorFormats]);
   const selectRef = useRef<HTMLDivElement>(null);
+  const layout = useLayout();
+  // On mobile, the settings and the preview take turns in the one column.
+  const [mobileView, setMobileView] = useState<'settings' | 'preview'>('settings');
+  // On tablet, how much of the height the preview has; the settings drawer below it is dragged up and down.
+  const [previewShare, setPreviewShare] = useState(0.4);
+  const tabletRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const onHash = () => setPage(pageFromHash());
@@ -78,18 +122,19 @@ export function App() {
   const previewTheme = useDeferredValue(theme);
   const { darkBackground, darkBrand } = useMemo(() => simulatorTones(previewTheme.colors), [previewTheme.colors]);
 
-  // Section headings stick just below the theme row, whose height changes (the name field, its error message).
-  const sidebarRef = useRef<HTMLElement>(null);
+  // Section headings (and tablet's tabs) stick just below the theme row, whose height changes (the name field, its
+  // error message). Set on whatever scrolls them: the sidebar, or mobile's single column.
+  const scrollerRef = useRef<HTMLElement>(null);
   const themeBarRef = useRef<HTMLDivElement>(null);
   useLayoutEffect(() => {
     const bar = themeBarRef.current;
     if (!bar) return;
-    const place = () => sidebarRef.current?.style.setProperty('--theme-bar-height', `${bar.offsetHeight}px`);
+    const place = () => scrollerRef.current?.style.setProperty('--theme-bar-height', `${bar.offsetHeight}px`);
     place();
     const observer = new ResizeObserver(place);
     observer.observe(bar);
     return () => observer.disconnect();
-  }, []);
+  }, [layout]);
 
   const focusThemeSelect = () => requestAnimationFrame(() => selectRef.current?.querySelector('button')?.focus());
 
@@ -156,63 +201,127 @@ export function App() {
     focusThemeSelect();
   };
 
+  const themeRow = naming ? (
+    <ThemeNameField
+      label={naming.mode === 'rename' ? 'Theme name' : 'New theme name'}
+      confirmLabel={naming.mode === 'rename' ? 'Rename theme' : 'Create theme'}
+      value={naming.name}
+      error={naming.error}
+      onChange={(name) => setNaming({ ...naming, name, error: undefined })}
+      onConfirm={confirmName}
+      onCancel={cancelNaming}
+    />
+  ) : (
+    <ThemePicker
+      themes={config.themes}
+      selected={selected}
+      onSelect={setSelected}
+      onAdd={startNew}
+      onRename={startRename}
+      onDuplicate={startDuplicate}
+      onDelete={() => setDialog('delete')}
+      onStartOver={() => setDialog('start-over')}
+      selectRef={selectRef}
+    />
+  );
+  const settings = (
+    <div {...stylex.props(styles.settings)}>
+      <ThemeSettingsForm
+        theme={theme}
+        onChange={updateTheme}
+        colorFormats={formats}
+        onColorFormatsChange={updateFormats}
+        layout={layout === 'tablet' ? 'tabs' : 'sections'}
+      />
+    </div>
+  );
+  // Export is off while a new theme is being named: it isn't part of the file yet. Full width, except beside the
+  // theme on tablet.
+  const exportButton = (
+    <Button
+      size="medium"
+      isDisabled={draft != null}
+      onPress={() => setDialog('export')}
+      xstyle={layout !== 'tablet' && styles.exportButton}
+    >
+      Export
+    </Button>
+  );
+  const preview = (
+    <main
+      id={PREVIEW_ID}
+      {...stylex.props(styles.preview, layout === 'mobile' && styles.previewMobile)}
+      aria-label={`Preview of the ${draft ? 'new' : selected} theme`}
+    >
+      <ThemeProvider theme={previewTheme} xstyle={[styles.previewTheme, darkBackground && styles.previewThemeDark]}>
+        {page === 'simulator' ? (
+          <SettingsSim lightenBrandArt={darkBrand} />
+        ) : (
+          <div {...stylex.props(styles.placeholder)}>
+            <Text variant="body-large">The {page} view is coming soon.</Text>
+          </div>
+        )}
+      </ThemeProvider>
+    </main>
+  );
+
   return (
     <ThemeProvider modes={{ colorTheme: 'themis config', fontTheme: 'themis', borderWidth: 'themis config', radius: 'themis config' }} xstyle={styles.app}>
-      <AppHeader page={page} />
-      <div {...stylex.props(styles.body)}>
-        <aside ref={sidebarRef} {...stylex.props(styles.sidebar)} aria-label="Theme settings">
-          <div ref={themeBarRef} {...stylex.props(styles.themeBar)}>
-            {naming ? (
-              <ThemeNameField
-                label={naming.mode === 'rename' ? 'Theme name' : 'New theme name'}
-                confirmLabel={naming.mode === 'rename' ? 'Rename theme' : 'Create theme'}
-                value={naming.name}
-                error={naming.error}
-                onChange={(name) => setNaming({ ...naming, name, error: undefined })}
-                onConfirm={confirmName}
-                onCancel={cancelNaming}
-              />
-            ) : (
-              <ThemePicker
-                themes={config.themes}
-                selected={selected}
-                onSelect={setSelected}
-                onAdd={startNew}
-                onRename={startRename}
-                onDuplicate={startDuplicate}
-                onDelete={() => setDialog('delete')}
-                onStartOver={() => setDialog('start-over')}
-                selectRef={selectRef}
-              />
-            )}
-          </div>
-          <div {...stylex.props(styles.settings)}>
-            <ThemeSettingsForm
-              theme={theme}
-              onChange={updateTheme}
-              colorFormats={formats}
-              onColorFormatsChange={updateFormats}
-            />
-          </div>
-          {/* Export is off while a new theme is being named: it isn't part of the file yet. */}
-          <div {...stylex.props(styles.footer)}>
-            <Button size="medium" isDisabled={draft != null} onPress={() => setDialog('export')} xstyle={styles.exportButton}>
-              Export
-            </Button>
-          </div>
-        </aside>
-        <main {...stylex.props(styles.preview)} aria-label={`Preview of the ${draft ? 'new' : selected} theme`}>
-          <ThemeProvider theme={previewTheme} xstyle={[styles.previewTheme, darkBackground && styles.previewThemeDark]}>
-            {page === 'simulator' ? (
-              <SettingsSim lightenBrandArt={darkBrand} />
-            ) : (
-              <div {...stylex.props(styles.placeholder)}>
-                <Text variant="body-large">The {page} view is coming soon.</Text>
+      <AppHeader page={page} compact={layout === 'mobile'} />
+      {layout === 'desktop' && (
+        <div {...stylex.props(styles.body)}>
+          <aside ref={scrollerRef} {...stylex.props(styles.sidebar)} aria-label="Theme settings">
+            <div ref={themeBarRef} {...stylex.props(styles.themeBar)}>
+              {themeRow}
+            </div>
+            {settings}
+            <div {...stylex.props(styles.footer)}>{exportButton}</div>
+          </aside>
+          {preview}
+        </div>
+      )}
+      {layout === 'tablet' && (
+        <div
+          ref={tabletRef}
+          {...stylex.props(styles.bodyTablet)}
+          style={{ gridTemplateRows: `minmax(0, ${previewShare * 100}%) minmax(0, 1fr)` }}
+        >
+          {preview}
+          <div {...stylex.props(styles.drawer)}>
+            <DrawerHandle value={previewShare} onChange={setPreviewShare} containerRef={tabletRef} controls={PREVIEW_ID} />
+            <aside ref={scrollerRef} {...stylex.props(styles.sidebar, styles.sidebarTablet)} aria-label="Theme settings">
+              <div ref={themeBarRef} {...stylex.props(styles.themeBar, styles.themeBarTablet)}>
+                <div {...stylex.props(styles.grow)}>{themeRow}</div>
+                {exportButton}
               </div>
-            )}
-          </ThemeProvider>
-        </main>
-      </div>
+              {settings}
+            </aside>
+          </div>
+        </div>
+      )}
+      {layout === 'mobile' && (
+        <div ref={scrollerRef as React.RefObject<HTMLDivElement>} {...stylex.props(styles.column)}>
+          <div ref={themeBarRef} {...stylex.props(styles.themeBar, styles.themeBarMobile)}>
+            {themeRow}
+            <SegmentedControl
+              aria-label="Show"
+              size="medium"
+              isFullWidth
+              selectedKey={mobileView}
+              onSelectionChange={(key) => setMobileView(key as 'settings' | 'preview')}
+            >
+              <SegmentedControlItem id="settings">Settings</SegmentedControlItem>
+              <SegmentedControlItem id="preview">Preview</SegmentedControlItem>
+            </SegmentedControl>
+          </div>
+          {mobileView === 'settings' ? (
+            <aside aria-label="Theme settings">{settings}</aside>
+          ) : (
+            preview
+          )}
+          <div {...stylex.props(styles.footer)}>{exportButton}</div>
+        </div>
+      )}
 
       <ExportModal config={config} isOpen={dialog === 'export'} onOpenChange={(open) => setDialog(open ? 'export' : null)} />
 
@@ -323,7 +432,28 @@ const styles = stylex.create({
     flexGrow: 1,
     minHeight: 0,
   },
+  // Tablet: the preview on top, the settings under it, each scrolling on its own.
+  // The rows come from the drawer's position (40% preview to start).
+  bodyTablet: {
+    display: 'grid',
+    flexGrow: 1,
+    minHeight: 0,
+  },
+  // The settings drawer: a line along its top, the grab handle, then the settings scrolling on their own.
+  drawer: {
+    display: 'flex',
+    flexDirection: 'column',
+    minHeight: 0,
+    backgroundColor: color.background,
+    borderBlockStartWidth: borderWidth.widthSm,
+    borderBlockStartStyle: 'solid',
+    borderBlockStartColor: color.border,
+  },
+  // Mobile: one column that scrolls, with the theme row stuck to the top and Export to the bottom.
+  column: { display: 'flex', flexDirection: 'column', flexGrow: 1, minHeight: 0, overflowY: 'auto' },
   preview: { overflowY: 'auto' },
+  // Mobile: in the column's flow, filling the space between the theme row and Export.
+  previewMobile: { overflowY: 'visible', flexGrow: 1 },
   // Decorative and only in this tool: the components themselves still sit on the plain background colour.
   // A decorative brand tint behind the simulator, so components stand out even with borders off. 7% is enough on
   // light backgrounds; on very dark ones it barely shows, so it goes up to 10%.
@@ -380,6 +510,13 @@ const styles = stylex.create({
     },
   },
   exportButton: { width: '100%' },
+  // Tablet: the drawer draws the line above; no edge on the side.
+  sidebarTablet: { flexGrow: 1, minHeight: 0, borderInlineEndWidth: 0 },
+  // Tablet: Export at the end of the theme row, lined up with the select's box.
+  themeBarTablet: { display: 'flex', alignItems: 'flex-end', gap: spacing.xs },
+  grow: { flexGrow: 1, minWidth: 0 },
+  // Mobile: the Settings | Preview switch 16px under the theme.
+  themeBarMobile: { display: 'flex', flexDirection: 'column', gap: spacing.sm },
 });
 
 /**

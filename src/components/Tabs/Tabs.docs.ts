@@ -32,7 +32,12 @@ export default defineComponentDocs({
     { part: 'Tab Content', description: 'The panel (`TabPanel`) for the selected tab, 16px below the tabs.', required: true },
   ],
 
-  variants: {},
+  variants: {
+    isFullWidth: {
+      true: 'The tabs share the row\'s width equally, 24px apart (16px otherwise), each label at the start of its share and the indicator across all of it. For a few tabs filling a panel, such as a settings drawer.',
+      false: 'Each tab fits its label. The default.',
+    },
+  },
 
   accessibility: {
     providedByBase: [
@@ -77,6 +82,7 @@ export default defineComponentDocs({
     'spacing/spacing.2xs',
     'spacing/spacing.xs',
     'spacing/spacing.sm',
+    'spacing/spacing.md',
     'radius/border.radius.sm',
     'borderWidth/border.width.focus ring',
     'fontTheme/font.family.heading',
@@ -110,7 +116,9 @@ export default defineComponentDocs({
   figma: {
     componentKey: null,
     url: 'https://www.figma.com/design/tRoAewIghL1YbnTio6fkkw/Themis-Design-System?node-id=2064-17412',
-    properties: {},
+    properties: {
+      isFullWidth: { figmaProperty: 'full width', type: 'VARIANT' },
+    },
     differences: [
       { topic: 'Indicator and overflow', figma: 'Not shown.', code: 'The selected bar slides from the old tab to the new one, and the row scrolls sideways when the tabs don\'t fit.', action: 'annotate-figma', done: '2026-11-13' },
     ],
@@ -120,6 +128,6 @@ export default defineComponentDocs({
   notes: [
     'Tab items: Figma "Tab Item" (node 2064-17395). Its `state` variants map to React Aria states: active = selected, hovered, focused, disabled.',
     'The 4px indicator height comes from Figma\'s Component Tokens (tabs/item/indicator/height/default).',
-    'Figma\'s `track` variant was removed; there is no line under the whole row for now.',
+    'Figma\'s single-value `track` variant became `full width` (false / true) on 2026-11-19; there is still no line under the whole row.',
   ],
 });

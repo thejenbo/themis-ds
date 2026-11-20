@@ -2,7 +2,7 @@ import * as stylex from '@stylexjs/stylex';
 import { useLayoutEffect, useRef, useState } from 'react';
 import { VisuallyHidden } from 'react-aria';
 import { Link, type LinkRenderProps } from 'react-aria-components';
-import { Icon } from 'themis-ds';
+import { ActionMenu, ActionMenuItem, ActionMenuTrigger, Icon, IconButton } from 'themis-ds';
 
 import { border as borderWidth } from '../../../src/tokens/borderWidth.stylex';
 import { color } from '../../../src/tokens/colorTheme.stylex';
@@ -15,16 +15,19 @@ import { racStyles } from '../../../src/utils/stylex-rac';
 import { Logomark } from './illustrations/Logomark';
 
 export type Page = 'simulator' | 'components';
+const PAGES: Page[] = ['simulator', 'components'];
 
 /** The full Storybook ("docs" in the header). Set VITE_STORYBOOK_URL once it's hosted; locally it's `npm run storybook`. */
 export const STORYBOOK_URL = import.meta.env.VITE_STORYBOOK_URL ?? 'http://localhost:6006';
 
 interface AppHeaderProps {
   page: Page;
+  /** Small screens (Figma 2443:14356): a smaller logo, and the links in a menu behind a hamburger button. */
+  compact?: boolean;
 }
 
 /** The logo and the page links (Figma 2422:35488). Sticks to the top of the window. */
-export function AppHeader({ page }: AppHeaderProps) {
+export function AppHeader({ page, compact = false }: AppHeaderProps) {
   const links = useRef<Partial<Record<Page, HTMLAnchorElement | null>>>({});
   // Where the current page's underline sits. It slides between links, as the Tabs indicator does; `animate` stays
   // off for the first placement so it doesn't slide in from the left on load.
@@ -41,13 +44,34 @@ export function AppHeader({ page }: AppHeaderProps) {
   }, [page]);
 
   return (
-    <header {...stylex.props(styles.header)}>
+    <header {...stylex.props(styles.header, compact && styles.headerCompact)}>
       <Link href="#simulator" aria-label="Themis config" {...racStyles<LinkRenderProps>((s) => [styles.brand, focusRing.base, s.isFocusVisible && focusRing.visible])}>
-        <Logomark xstyle={styles.logomark} />
-        <span {...stylex.props(styles.wordmark)}>Themis Config</span>
+        <Logomark xstyle={[styles.logomark, compact && styles.logomarkCompact]} />
+        <span {...stylex.props(styles.wordmark, compact && styles.wordmarkCompact)}>Themis Config</span>
       </Link>
+      {compact ? (
+        <ActionMenuTrigger>
+          <IconButton aria-label="Pages" variant="subtle" tone="neutral" size="small" xstyle={styles.menuButton}>
+            <Icon name="menu" />
+          </IconButton>
+          <ActionMenu placement="bottom end">
+            {PAGES.map((p) => (
+              <ActionMenuItem key={p} id={p} href={`#${p}`} aria-current={page === p ? 'page' : undefined}>
+                {p}
+              </ActionMenuItem>
+            ))}
+            <ActionMenuItem id="docs" href={STORYBOOK_URL} target="_blank" rel="noopener noreferrer" textValue="docs">
+              <span {...stylex.props(styles.menuExternal)}>
+                docs
+                <Icon name="external-link" size="small" />
+                <VisuallyHidden>(opens in a new tab)</VisuallyHidden>
+              </span>
+            </ActionMenuItem>
+          </ActionMenu>
+        </ActionMenuTrigger>
+      ) : (
       <nav aria-label="Pages" {...stylex.props(styles.nav)}>
-        {(['simulator', 'components'] as const).map((p) => (
+        {PAGES.map((p) => (
           <Link
             key={p}
             ref={(el) => {
@@ -79,6 +103,7 @@ export function AppHeader({ page }: AppHeaderProps) {
           />
         )}
       </nav>
+      )}
     </header>
   );
 }
@@ -110,6 +135,7 @@ const styles = stylex.create({
     flexShrink: 0,
   },
   logomark: { width: '2.5rem', height: 'auto' },
+  logomarkCompact: { width: '1.875rem' },
   // Figma type/heading/base (bold), held at its 24px size: the typography tokens grow it to 32px on wide screens.
   wordmark: {
     fontFamily: fontTheme.familyHeading,
@@ -117,6 +143,10 @@ const styles = stylex.create({
     lineHeight: '2rem',
     fontWeight: font.weightBold,
   },
+  // Figma type/heading/sm at its 16px size.
+  wordmarkCompact: { fontSize: '1rem', lineHeight: '1.5rem' },
+  // The button is 32px; the icon lines up with the header's 24px row, as in Figma.
+  menuButton: { marginInlineStart: 'auto', marginBlock: `calc(-1 * ${spacing['2xs']})` },
   nav: { position: 'relative', display: 'flex', alignItems: 'center', gap: spacing.xl, flexGrow: 1 },
   // Figma type/input/base; the current page is underlined.
   link: {
@@ -133,6 +163,9 @@ const styles = stylex.create({
   // Other pages show the underline on hover; the current page's comes from the sliding indicator.
   // "docs" sits at the far end of the header, its icon 4px after the text.
   external: { marginInlineStart: 'auto', display: 'inline-flex', alignItems: 'center', gap: spacing['2xs'] },
+  menuExternal: { display: 'inline-flex', alignItems: 'center', gap: spacing['2xs'] },
+  // No gap: the menu button pushes itself to the end.
+  headerCompact: { gap: 0 },
   hoverable: { borderBlockEndColor: { default: 'transparent', ':hover': color.border } },
   indicator: {
     position: 'absolute',

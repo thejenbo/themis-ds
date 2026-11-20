@@ -131,6 +131,45 @@ export const Controlled: Story = {
   },
 };
 
+/** `isFullWidth`: the tabs share the row equally, 24px apart, labels at the start, the indicator across each share. */
+export const FullWidth: Story = {
+  args: {
+    children: (
+      <>
+        <TabList aria-label="Theme settings">
+          <Tab id="colors">Colors</Tab>
+          <Tab id="borders">Borders</Tab>
+          <Tab id="fonts">Fonts</Tab>
+        </TabList>
+        <TabPanel id="colors">
+          <p style={text}>Six colours, all passing.</p>
+        </TabPanel>
+        <TabPanel id="borders">
+          <p style={text}>Medium width, medium radius.</p>
+        </TabPanel>
+        <TabPanel id="fonts">
+          <p style={text}>Playfair Display and Montserrat.</p>
+        </TabPanel>
+      </>
+    ),
+  },
+  render: (args) => (
+    <div style={{ width: 480 }}>
+      <Tabs {...args} isFullWidth />
+    </div>
+  ),
+  play: async ({ canvas }) => {
+    const widths = canvas.getAllByRole('tab').map((tab) => tab.getBoundingClientRect().width);
+    for (const w of widths) await expect(w).toBeCloseTo(widths[0]!, 1);
+    // Together with the 24px gaps, they fill the row.
+    const list = canvas.getByRole('tablist');
+    await expect(Math.abs(widths.reduce((a, b) => a + b, 0) + 2 * 24 - list.getBoundingClientRect().width)).toBeLessThan(1);
+    // The selected indicator spans the whole tab.
+    const tab = canvas.getByRole('tab', { name: 'Colors' });
+    await waitFor(() => expect(tab.lastElementChild!.getBoundingClientRect().width).toBeCloseTo(widths[0]!, 1));
+  },
+};
+
 /** When the tabs don't fit, the row scrolls sideways. */
 export const ManyTabs: Story = {
   args: {

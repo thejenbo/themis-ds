@@ -1,5 +1,5 @@
 import * as stylex from '@stylexjs/stylex';
-import type { ReactNode } from 'react';
+import { createContext, type ReactNode, useContext } from 'react';
 import {
   composeRenderProps,
   SelectionIndicator,
@@ -32,6 +32,12 @@ import { touchTarget } from '../../utils/touch-target';
 export interface TabsProps extends Omit<AriaTabsProps, 'className' | 'style' | 'orientation'> {
   /** A `TabList` followed by one `TabPanel` per tab (matched by `id`). */
   children: ReactNode;
+  /**
+   * Share the row's width equally between the tabs, 24px apart, each label at the start of its share and the
+   * indicator across all of it. A tab whose label needs more room still grows to fit it.
+   * @default false
+   */
+  isFullWidth?: boolean;
   /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colours or size. */
   xstyle?: stylex.StyleXStyles;
 }
@@ -41,13 +47,17 @@ export interface TabsProps extends Omit<AriaTabsProps, 'className' | 'style' | '
  * Built on React Aria `Tabs`: arrow keys move between tabs and select them, Home/End jump to the ends, and each tab
  * is linked to its panel. Horizontal only for now.
  */
-export function Tabs({ children, xstyle, ...props }: TabsProps) {
+export function Tabs({ children, isFullWidth = false, xstyle, ...props }: TabsProps) {
   return (
-    <AriaTabs {...props} {...racStyles<TabsRenderProps>(() => [styles.tabs, xstyle])}>
-      {children}
-    </AriaTabs>
+    <FullWidthContext.Provider value={isFullWidth}>
+      <AriaTabs {...props} {...racStyles<TabsRenderProps>(() => [styles.tabs, xstyle])}>
+        {children}
+      </AriaTabs>
+    </FullWidthContext.Provider>
   );
 }
+
+const FullWidthContext = createContext(false);
 
 export interface TabListProps<T extends object> extends Omit<AriaTabListProps<T>, 'className' | 'style'> {
   /** `Tab`s, each with an `id` matching a `TabPanel`. */
@@ -59,7 +69,8 @@ export interface TabListProps<T extends object> extends Omit<AriaTabListProps<T>
  * If the tabs don't fit, the row scrolls sideways.
  */
 export function TabList<T extends object>(props: TabListProps<T>) {
-  return <AriaTabList {...props} {...racStyles<TabListRenderProps>(() => [styles.list])} />;
+  const isFullWidth = useContext(FullWidthContext);
+  return <AriaTabList {...props} {...racStyles<TabListRenderProps>(() => [styles.list, isFullWidth && styles.listFullWidth])} />;
 }
 
 export interface TabProps extends Omit<AriaTabProps, 'className' | 'style'> {
@@ -71,12 +82,14 @@ export interface TabProps extends Omit<AriaTabProps, 'className' | 'style'> {
 
 /** One tab. Selected: brand indicator under the label. Hovered: a pale brand indicator. */
 export function Tab({ children, ...props }: TabProps) {
+  const isFullWidth = useContext(FullWidthContext);
   return (
     <AriaTab
       {...props}
       data-themis-touch-target=""
       {...racStyles<TabRenderProps>((s) => [
         styles.tab,
+        isFullWidth && styles.tabFullWidth,
         s.isDisabled && styles.disabled,
         touchTarget.area,
         s.isDisabled ? interactiveCursor.disabled : s.isSelected ? styles.cursorSelected : interactiveCursor.enabled,
@@ -138,6 +151,8 @@ const styles = stylex.create({
     scrollbarWidth: 'none',
     '::-webkit-scrollbar': { display: 'none' },
   },
+  // Equal-width tabs get more room between them (Figma Tabs `full width=true`).
+  listFullWidth: { gap: spacing.md },
   tab: {
     position: 'relative',
     zIndex: 1,
@@ -159,6 +174,8 @@ const styles = stylex.create({
     userSelect: 'none',
     WebkitTapHighlightColor: 'transparent',
   },
+  // Equal shares of the row (Figma Tabs `full width=true`: Tab Items set to fill).
+  tabFullWidth: { flexGrow: 1, flexBasis: 0 },
   disabled: { color: color.textDisabledOnBackground },
   cursorSelected: { cursor: 'default' },
   label: { position: 'relative' },

@@ -162,6 +162,8 @@ const styles = stylex.create({
     lineHeight: font.lineHeightLabel,
     fontWeight: font.weightSemibold,
     whiteSpace: 'nowrap',
+    // Items with an `href` render as links: no underline, like the other items.
+    textDecoration: 'none',
     outline: 'none',
     userSelect: 'none',
     // The highlight tint (see `tone`), fading in and out. Behind the label (the item is its own stacking context).

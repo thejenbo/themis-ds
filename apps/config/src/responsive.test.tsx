@@ -1,0 +1,142 @@
+import { afterEach, describe, expect, test } from 'vitest';
+import { page, userEvent } from 'vitest/browser';
+
+import { renderApp } from './test-utils';
+
+const rect = (el: Element) => el.getBoundingClientRect();
+const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+// The other config tests run at 1440 × 1000 (desktop); put that back after each one here.
+afterEach(async () => {
+  await page.viewport(1440, 1000);
+});
+
+describe('mobile (under 48em, Figma 2443:14356)', () => {
+  test('the header has the 16px wordmark and the page links in a menu behind a hamburger button', async () => {
+    await page.viewport(402, 874);
+    renderApp();
+    const wordmark = page.getByText('Themis Config', { exact: true });
+    await expect.element(wordmark).toBeVisible();
+    expect(getComputedStyle(wordmark.element()).fontSize).toBe('16px');
+    expect(page.getByRole('navigation', { name: 'Pages' }).query()).toBeNull();
+    await page.getByRole('button', { name: 'Pages' }).click();
+    const items = page.getByRole('menuitem');
+    await expect.element(items.first()).toBeVisible();
+    expect(items.elements().map((el) => el.textContent)).toEqual(['simulator', 'components', 'docs(opens in a new tab)']);
+    // Links in an ActionMenu aren't underlined (they were, as plain links).
+    for (const el of items.elements()) expect(getComputedStyle(el).textDecorationLine).toBe('none');
+    await page.getByRole('menuitem', { name: 'components' }).click();
+    await expect.poll(() => location.hash).toBe('#components');
+    await page.getByRole('radio', { name: 'Preview' }).click();
+    await expect.element(page.getByText('The components view is coming soon.')).toBeVisible();
+  });
+
+  test('Settings and Preview take turns above Export, which stays at the bottom of the window', async () => {
+    await page.viewport(402, 874);
+    renderApp();
+    const settings = page.getByRole('complementary', { name: 'Theme settings' });
+    const preview = page.getByRole('main');
+    const exportButton = page.getByRole('button', { name: 'Export' });
+    // Settings first: the sections, and no preview.
+    await expect.element(settings).toBeVisible();
+    expect(preview.query()).toBeNull();
+    await expect.element(page.getByRole('radio', { name: 'Settings' })).toBeChecked();
+    expect(Math.round(rect(exportButton.element()).bottom)).toBe(874 - 16);
+
+    await page.getByRole('radio', { name: 'Preview' }).click();
+    await expect.element(preview).toBeVisible();
+    expect(settings.query()).toBeNull();
+    // The preview sits where the sections were: under the theme row and the switch, above Export.
+    const switcher = page.getByRole('radiogroup', { name: 'Show' }).element();
+    expect(rect(preview.element()).top).toBeGreaterThan(rect(switcher).bottom);
+    // Export stays pinned to the bottom while the preview scrolls under it.
+    const column = preview.element().parentElement!;
+    column.scrollTop = 400;
+    await wait(50);
+    expect(column.scrollTop).toBeGreaterThan(0);
+    expect(Math.round(rect(exportButton.element()).bottom)).toBe(874 - 16);
+  });
+});
+
+describe('tablet (48em to 64em)', () => {
+  test('the preview sits on top, with the settings under it and Export beside the theme', async () => {
+    await page.viewport(834, 1112);
+    renderApp();
+    await expect.element(page.getByRole('main')).toBeVisible();
+    const preview = page.getByRole('main').element();
+    const settings = page.getByRole('complementary', { name: 'Theme settings' }).element();
+    expect(Math.round(rect(settings).top)).toBeGreaterThanOrEqual(Math.round(rect(preview).bottom));
+    expect(Math.round(rect(preview).width)).toBe(834);
+    // Export at the end of the theme row, level with the select's box.
+    const exportButton = page.getByRole('button', { name: 'Export' }).element();
+    const actions = page.getByRole('button', { name: /^Actions for the/ }).element();
+    expect(Math.round(rect(exportButton).top)).toBe(Math.round(rect(actions).top));
+    expect(rect(exportButton).left).toBeGreaterThan(rect(actions).right);
+  });
+
+  test('Colors, Borders and Fonts are equal-width tabs that say what’s set, with the fields in two columns', async () => {
+    await page.viewport(834, 1112);
+    renderApp();
+    await expect.element(page.getByRole('tab', { name: 'Colors' })).toHaveAttribute('aria-selected', 'true');
+    await expect.element(page.getByRole('tab', { name: 'Borders Medium width • Medium radius' })).toBeVisible();
+    await expect.element(page.getByRole('tab', { name: 'Fonts Playfair Display • Montserrat' })).toBeVisible();
+    const widths = page.getByRole('tab').elements().map((t) => Math.round(rect(t).width));
+    expect(new Set(widths).size).toBe(1);
+    const label = (name: string) => [...document.querySelectorAll('label')].find((l) => l.textContent?.startsWith(name))!;
+    // The colour code control at the start of the row, above the fields.
+    const control = page.getByRole('radiogroup', { name: 'Color code for every field' }).element();
+    expect(Math.round(rect(control).left)).toBe(Math.round(rect(label('Brand')).left));
+    // Brand, Text and Background down the left; Error, Warning and Success down the right.
+    const left = ['Brand', 'Text', 'Background'].map((n) => rect(label(n)));
+    const right = ['Error', 'Warning', 'Success'].map((n) => rect(label(n)));
+    expect(new Set(left.map((r) => Math.round(r.left))).size).toBe(1);
+    expect(new Set(right.map((r) => Math.round(r.left))).size).toBe(1);
+    expect(right[0]!.left).toBeGreaterThan(left[0]!.right);
+    left.forEach((r, i) => {
+      expect(Math.round(r.top)).toBe(Math.round(right[i]!.top));
+      if (i > 0) expect(r.top).toBeGreaterThan(left[i - 1]!.top);
+    });
+    // A failing colour shows on the Colors tab.
+    await page.getByRole('textbox', { name: /^Brand/ }).fill('#FFFF00');
+    await userEvent.keyboard('{Tab}');
+    await page.getByRole('tab', { name: /^Borders/ }).click();
+    await expect.element(page.getByRole('tab', { name: 'Colors Fail' })).toBeVisible();
+    // Borders' two fields side by side too.
+    const width = page.getByText('Width', { exact: true });
+    await expect.element(width).toBeVisible();
+    const radius = page.getByText('Radius', { exact: true }).element();
+    expect(Math.round(rect(width.element()).top)).toBe(Math.round(rect(radius).top));
+    expect(rect(radius).left).toBeGreaterThan(rect(width.element()).right);
+  });
+
+  test('the settings drawer drags up and down, or moves with the arrow keys', async () => {
+    await page.viewport(834, 1112);
+    renderApp();
+    const handle = page.getByRole('separator', { name: 'Resize the preview' });
+    await expect.element(handle).toHaveAttribute('aria-valuenow', '40');
+    const preview = () => rect(page.getByRole('main').element());
+    const before = preview().height;
+    // Drag it 200px up from where it's grabbed: the preview shrinks by as much, without a jump.
+    const el = handle.element() as HTMLElement;
+    const start = rect(el);
+    const y = start.top + start.height / 2;
+    const fire = (type: string, clientY: number) =>
+      el.dispatchEvent(new PointerEvent(type, { bubbles: true, pointerId: 1, button: 0, clientY, clientX: 400, isPrimary: true }));
+    el.setPointerCapture = () => {};
+    el.hasPointerCapture = () => true;
+    fire('pointerdown', y);
+    fire('pointermove', y - 200);
+    await wait(50);
+    expect(Math.round(before - preview().height)).toBe(200);
+    // It stops at 15%, so there's always some preview to see.
+    fire('pointermove', 0);
+    await expect.element(handle).toHaveAttribute('aria-valuenow', '15');
+    // Keyboard: arrows move it 5% of the height, End takes it as low as it goes.
+    el.focus();
+    await userEvent.keyboard('{ArrowDown}');
+    await expect.element(handle).toHaveAttribute('aria-valuenow', '20');
+    await userEvent.keyboard('{End}');
+    await expect.element(handle).toHaveAttribute('aria-valuenow', '85');
+    expect(el.getAttribute('aria-controls')).toBe(page.getByRole('main').element().id);
+  });
+});

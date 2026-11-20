@@ -22,6 +22,7 @@ listed under **Changed** or **Removed** with what to do.
 - Select options with `onAction` (such as "Add new theme") run the action instead of becoming the value.
 - Icon `external-link` (Lucide's, with a square-cornered box for radius none), for links that open elsewhere.
 - Icon `menu` (Lucide's three lines, the "hamburger"), for a button that opens navigation or a menu.
+- Tabs `isFullWidth`: the tabs share the row equally, 24px apart (Figma Tabs `full width`).
 - A "themis config" mode for radius (2/2/4/6px) and border width (1/2/3/3px), used by the config tool's own UI.
   It isn't a theme-file choice: `THEME_RADII` and `THEME_BORDER_WIDTHS` list the ones that are.
 - `<ThemeProvider theme>` treats a theme's missing border width or radius as `medium`, so it no longer picks up an
@@ -33,6 +34,10 @@ listed under **Changed** or **Removed** with what to do.
 - ColorField shows RGB, HSL and HSB codes as just the values (`122, 31, 235`, `226, 84%, 52%`): the format button
   already names the format, and `rgb(255, 255, 255)` didn't fit the box. Typing still accepts the full form, and
   percent signs are now optional (`226 84 52` in HSL).
+
+### Fixed
+
+- `ActionMenuItem` with an `href` (a link) is no longer underlined.
 
 ## [0.1.0] - 2026-11-17
 

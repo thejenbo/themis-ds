@@ -10,6 +10,10 @@ import {
   rateThemeColors,
   SegmentedControl,
   SegmentedControlItem,
+  Tab,
+  TabList,
+  TabPanel,
+  Tabs,
   Select,
   SelectItem,
   THEME_BORDER_WIDTHS,
@@ -21,7 +25,9 @@ import {
 } from 'themis-ds';
 
 import { color } from '../../../src/tokens/colorTheme.stylex';
+import { font as fontTheme } from '../../../src/tokens/fontTheme.stylex';
 import { spacing } from '../../../src/tokens/spacing.stylex';
+import { font } from '../../../src/tokens/typography.stylex';
 import { SidebarSection } from './SidebarSection';
 import { type ColorFormats, loadCollapsed, saveCollapsed, type SectionId } from './storage';
 
@@ -59,6 +65,11 @@ interface ThemeSettingsFormProps {
   /** The colour code each field shows; a field that isn't listed shows HEX. */
   colorFormats: ColorFormats;
   onColorFormatsChange: (formats: ColorFormats) => void;
+  /**
+   * `sections`: Colors, Borders and Fonts open and close, one under the other (the desktop sidebar and mobile).
+   * `tabs`: one tab each, labelled with what's set inside, and the fields in two columns (tablet).
+   */
+  layout?: 'sections' | 'tabs';
 }
 
 /** One theme's colours, borders and fonts: the sidebar below the theme row. */
@@ -67,6 +78,7 @@ export function ThemeSettingsForm({
   onChange,
   colorFormats,
   onColorFormatsChange,
+  layout = 'sections',
 }: ThemeSettingsFormProps) {
   const ratings = useMemo(() => rateThemeColors(theme.colors), [theme.colors]);
   // Callbacks read the latest theme from a ref, so they never change and the memoised rows below only re-render
@@ -120,18 +132,28 @@ export function ThemeSettingsForm({
   const bordersOpen = !collapsed.has('borders');
   const fontsOpen = !collapsed.has('fonts');
 
+  // What's set in each area at a glance: beside a closed section's title, or in its tab.
+  const colorsSummary = <ColorsSummary colors={theme.colors} failing={failing} />;
+  const bordersSummary = (
+    <>
+      <span>{summaryLevel(BORDER_WIDTH_LABELS[borderWidth])} width</span> <span>•</span>{' '}
+      <span>{summaryLevel(RADIUS_LABELS[radius])} radius</span>
+    </>
+  );
+  const fontsSummary = (
+    <>
+      <span style={{ fontFamily: JSON.stringify(headingFont) }}>{headingFont}</span> <span>•</span>{' '}
+      <span style={{ fontFamily: JSON.stringify(bodyFont) }}>{bodyFont}</span>
+    </>
+  );
+
   // Borders and Fonts don't change while a colour does, so the same elements are reused and React skips them on
   // colour slider steps (keeps those steps quick; see the lag test in colors.test.tsx).
   const bordersSection = useMemo(
     () => (
       <SidebarSection
         title="Borders"
-        summary={
-          <>
-            <span>{summaryLevel(BORDER_WIDTH_LABELS[borderWidth])} width</span> <span>•</span>{' '}
-            <span>{summaryLevel(RADIUS_LABELS[radius])} radius</span>
-          </>
-        }
+        summary={bordersSummary}
         isExpanded={bordersOpen}
         onExpandedChange={(open) => toggle('borders', open)}
       >
@@ -144,12 +166,7 @@ export function ThemeSettingsForm({
     () => (
       <SidebarSection
         title="Fonts"
-        summary={
-          <>
-            <span style={{ fontFamily: JSON.stringify(headingFont) }}>{headingFont}</span> <span>•</span>{' '}
-            <span style={{ fontFamily: JSON.stringify(bodyFont) }}>{bodyFont}</span>
-          </>
-        }
+        summary={fontsSummary}
         isExpanded={fontsOpen}
         onExpandedChange={(open) => toggle('fonts', open)}
       >
@@ -159,9 +176,10 @@ export function ThemeSettingsForm({
     [headingFont, bodyFont, fontsOpen, toggle, update],
   );
 
+  const columns = layout === 'tabs';
   const colorFields = (
-    <div {...stylex.props(styles.fields)}>
-      <ColorCodeControl selected={sharedFormat} onChange={setAllFormats} />
+    <div {...stylex.props(styles.fields, columns && styles.columns, columns && styles.colorColumns)}>
+      <ColorCodeControl selected={sharedFormat} onChange={setAllFormats} atStart={columns} />
       {COLOR_KEYS.map((key) => (
         <ColorRow
           key={key}
@@ -178,9 +196,39 @@ export function ThemeSettingsForm({
     </div>
   );
 
+  if (layout === 'tabs') {
+    const tab = (title: string, summary: ReactNode) => (
+      <span {...stylex.props(styles.tabLabel)}>
+        {title}
+        <span {...stylex.props(styles.tabSummary)}>{summary}</span>
+      </span>
+    );
+    return (
+      <Tabs isFullWidth>
+        {/* Sticks below the theme row, so the three areas stay named while the fields scroll. */}
+        <div {...stylex.props(styles.tabBar)}>
+          <TabList aria-label="Theme settings">
+            <Tab id="colors">{tab('Colors', colorsSummary)}</Tab>
+            <Tab id="borders">{tab('Borders', bordersSummary)}</Tab>
+            <Tab id="fonts">{tab('Fonts', fontsSummary)}</Tab>
+          </TabList>
+        </div>
+        <TabPanel id="colors" {...stylex.props(styles.tabPanel)}>
+          {colorFields}
+        </TabPanel>
+        <TabPanel id="borders" {...stylex.props(styles.tabPanel)}>
+          <BordersSection borderWidth={borderWidth} radius={radius} onChange={update} columns />
+        </TabPanel>
+        <TabPanel id="fonts" {...stylex.props(styles.tabPanel)}>
+          <FontsSection heading={headingFont} body={bodyFont} onChange={update} columns />
+        </TabPanel>
+      </Tabs>
+    );
+  }
+
   return (
     <div {...stylex.props(styles.sections)}>
-      <SidebarSection title="Colors" summary={<ColorsSummary colors={theme.colors} failing={failing} />} {...section('colors')}>
+      <SidebarSection title="Colors" summary={colorsSummary} {...section('colors')}>
         {colorFields}
       </SidebarSection>
       {bordersSection}
@@ -218,9 +266,12 @@ function ColorsSummary({ colors, failing }: { colors: ThemeColors; failing: (key
 const ColorCodeControl = memo(function ColorCodeControl({
   selected,
   onChange,
+  atStart = false,
 }: {
   selected: ColorFormat | typeof MIXED;
   onChange: (format: ColorFormat) => void;
+  /** At the start of the row (tablet) rather than the end. */
+  atStart?: boolean;
 }) {
   return (
     <SegmentedControl
@@ -228,7 +279,7 @@ const ColorCodeControl = memo(function ColorCodeControl({
       size="micro"
       selectedKey={selected}
       onSelectionChange={(key) => onChange(key as ColorFormat)}
-      xstyle={styles.formatControl}
+      xstyle={[styles.formatControl, atStart && styles.formatControlStart]}
     >
       {FORMATS.map((format) => (
         <SegmentedControlItem key={format} id={format}>
@@ -290,13 +341,16 @@ const BordersSection = memo(function BordersSection({
   borderWidth,
   radius,
   onChange,
+  columns = false,
 }: {
   borderWidth: ThemeBorderWidth;
   radius: ThemeRadius;
   onChange: (patch: Partial<ThemeSettings>) => void;
+  /** Side by side (tablet). */
+  columns?: boolean;
 }) {
   return (
-    <div {...stylex.props(styles.fields)}>
+    <div {...stylex.props(styles.fields, columns && styles.columns)}>
         <Select label="Width" value={borderWidth} onChange={(v) => onChange({ borderWidth: v as ThemeBorderWidth })}>
           {THEME_BORDER_WIDTHS.map((mode) => (
             <SelectItem key={mode} id={mode}>
@@ -319,14 +373,17 @@ const FontsSection = memo(function FontsSection({
   heading,
   body,
   onChange,
+  columns = false,
 }: {
   heading: string;
   body: string;
   onChange: (patch: Partial<ThemeSettings>) => void;
+  /** Side by side (tablet). */
+  columns?: boolean;
 }) {
   const fonts = { heading, body };
   return (
-    <div {...stylex.props(styles.fields)}>
+    <div {...stylex.props(styles.fields, columns && styles.columns)}>
         {(['heading', 'body'] as const).map((slot) => (
           <Select
             key={slot}
@@ -348,6 +405,29 @@ const FontsSection = memo(function FontsSection({
 const styles = stylex.create({
   // 8px, plus each heading's 8px top padding: 16px from one closed heading's line to the next title (Figma 2437:2652).
   sections: { display: 'flex', flexDirection: 'column', gap: spacing.xs },
+  // Prototype tabs: the tab row sticks below the theme row, on a strip as wide as the sidebar.
+  tabBar: {
+    position: 'sticky',
+    insetBlockStart: 'var(--theme-bar-height, 0px)',
+    zIndex: 1,
+    marginInline: `calc(-1 * ${spacing.md})`,
+    paddingInline: spacing.md,
+    backgroundColor: color.background,
+  },
+  // A tab's title, with what's set inside under it in caption text (as a closed section shows it).
+  tabLabel: { display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: spacing['2xs'] },
+  tabSummary: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: spacing['2xs'],
+    whiteSpace: 'nowrap',
+    fontFamily: fontTheme.familyBody,
+    fontSize: font.sizeCaption,
+    lineHeight: font.lineHeightCaption,
+    fontWeight: font.weightRegular,
+    color: color.textPlaceholderDefault,
+  },
+  tabPanel: { paddingBlock: spacing.md },
   // The closed Colors summary (Figma 2437:2652): 8px under the title rather than 4, the Fail chip 16px after the dots.
   colorsSummary: { display: 'flex', alignItems: 'center', gap: spacing.sm, paddingBlockStart: spacing['2xs'] },
   // Six 12px dots, outlined so one that matches the background still shows.
@@ -363,7 +443,13 @@ const styles = stylex.create({
     borderColor: color.border,
   },
   fields: { display: 'flex', flexDirection: 'column', gap: spacing.md },
+  // Two columns (tablet tabs); the colour code control keeps a row of its own.
+  columns: { display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', columnGap: spacing.md },
+  // The colours fill down each column: brand, text and background on the left; error, warning and success on the
+  // right. The code control takes the first row.
+  colorColumns: { gridTemplateRows: 'repeat(4, auto)', gridAutoFlow: 'column' },
   // Figma 2434:39151: the micro control at the end of the row, above the fields.
-  formatControl: { alignSelf: 'flex-end' },
+  formatControl: { alignSelf: 'flex-end', gridColumn: '1 / -1', justifySelf: 'end' },
+  formatControlStart: { alignSelf: 'flex-start', justifySelf: 'start' },
   colorLabel: { display: 'inline-flex', alignItems: 'center', gap: spacing.xs },
 });
