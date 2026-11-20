@@ -7,6 +7,7 @@ import {
   SegmentedControlItem,
   Text,
   type ThemeSettings,
+  rateThemeColors,
   ThemeProvider,
   type ThemisConfig,
   ToastRegion,
@@ -124,6 +125,8 @@ export function App() {
   const theme = draft ? draft.theme : config.themes[selected]!;
   // The preview follows a step behind while a slider or field is changing, so they stay quick to use.
   const previewTheme = useDeferredValue(theme);
+  // The logomark's scales tip while any colour in the theme fails contrast.
+  const isUnbalanced = useMemo(() => Object.values(rateThemeColors(theme.colors)).some((r) => r.level === 'Fail'), [theme.colors]);
   const { darkBackground, darkBrand } = useMemo(() => simulatorTones(previewTheme.colors), [previewTheme.colors]);
 
   // Section headings (and tablet's tabs) stick just below the theme row, whose height changes (the name field, its
@@ -276,7 +279,13 @@ export function App() {
 
   return (
     <ThemeProvider modes={{ colorTheme: 'themis config', fontTheme: 'themis', borderWidth: 'themis config', radius: 'themis config' }} xstyle={styles.app}>
-      <AppHeader page={page} compact={layout === 'mobile'} besideSidebar={layout === 'desktop'} />
+      <AppHeader
+        page={page}
+        compact={layout === 'mobile'}
+        besideSidebar={layout === 'desktop'}
+        brand={theme.colors.brand}
+        isUnbalanced={isUnbalanced}
+      />
       {layout === 'desktop' && (
         <div {...stylex.props(styles.body)}>
           <aside ref={scrollerRef} {...stylex.props(styles.sidebar)} aria-label="Theme settings">

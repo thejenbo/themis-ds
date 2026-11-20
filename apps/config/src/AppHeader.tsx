@@ -27,10 +27,14 @@ interface AppHeaderProps {
   compact?: boolean;
   /** Desktop, with the sidebar on the left: the page links start 24px after the sidebar's divider. */
   besideSidebar?: boolean;
+  /** The brand colour of the theme being edited: the logomark is filled with it. */
+  brand?: string;
+  /** A colour in the theme fails contrast: the logomark's scales tip. */
+  isUnbalanced?: boolean;
 }
 
 /** The logo and the page links (Figma 2422:35488). Sticks to the top of the window. */
-export function AppHeader({ page, compact = false, besideSidebar = false }: AppHeaderProps) {
+export function AppHeader({ page, compact = false, besideSidebar = false, brand, isUnbalanced = false }: AppHeaderProps) {
   const links = useRef<Partial<Record<Page, HTMLAnchorElement | null>>>({});
   // Where the current page's underline sits. It slides between links, as the Tabs indicator does; `animate` stays
   // off for the first placement so it doesn't slide in from the left on load.
@@ -49,7 +53,7 @@ export function AppHeader({ page, compact = false, besideSidebar = false }: AppH
   return (
     <header {...stylex.props(styles.header, compact && styles.headerCompact, besideSidebar && styles.headerBesideSidebar)}>
       <Link href="#simulator" aria-label="Themis config" {...racStyles<LinkRenderProps>((s) => [styles.brand, besideSidebar && styles.brandBesideSidebar, focusRing.base, s.isFocusVisible && focusRing.visible])}>
-        <Logomark xstyle={[styles.logomark, compact && styles.logomarkCompact]} />
+        <Logomark brand={brand} isUnbalanced={isUnbalanced} xstyle={[styles.logomark, compact && styles.logomarkCompact]} />
         <span {...stylex.props(styles.wordmark, compact && styles.wordmarkCompact)}>Themis Config</span>
       </Link>
       {compact ? (
@@ -151,8 +155,9 @@ const styles = stylex.create({
     textDecoration: 'none',
     flexShrink: 0,
   },
-  logomark: { width: '2.5rem', height: 'auto' },
-  logomarkCompact: { width: '1.875rem' },
+  // The scales (48 × 40): 30px tall beside the 32px wordmark line, 24px tall in the compact header.
+  logomark: { width: '2.25rem', height: 'auto' },
+  logomarkCompact: { width: '1.8rem' },
   // Figma type/heading/base (bold), held at its 24px size: the typography tokens grow it to 32px on wide screens.
   wordmark: {
     fontFamily: fontTheme.familyHeading,

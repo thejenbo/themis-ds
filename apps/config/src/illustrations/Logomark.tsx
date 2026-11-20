@@ -1,19 +1,89 @@
 import * as stylex from '@stylexjs/stylex';
 
-/** The Themis logomark (Figma "Logomark", 45×24): drawn in the text colour. Decorative; the wordmark names it. */
-export function Logomark({ xstyle }: { xstyle?: stylex.StyleXStyles }) {
+import { duration } from '../../../../src/tokens/motion.stylex';
+
+interface LogomarkProps {
+  /** The fill: the brand colour of the theme being edited. Without it the mark is drawn in the text colour. */
+  brand?: string;
+  /** Tip the scales, as when a colour in the theme fails contrast: the beam tilts and one pan drops. */
+  isUnbalanced?: boolean;
+  xstyle?: stylex.StyleXStyles;
+}
+
+/**
+ * The Themis logomark: a pair of scales, drawn in lines like the Themis icons (logomark option E, 2026-11-20).
+ * Filled with the theme's brand colour and outlined in the text colour, so a pale brand still reads. When the theme
+ * fails contrast the scales tip, as if no longer equal. Decorative; the wordmark names it.
+ *
+ * Each part is drawn twice: a wider outline in the text colour underneath, then the brand-coloured part on top,
+ * leaving a thin outline (OUTLINE units) all round.
+ */
+export function Logomark({ brand, isUnbalanced = false, xstyle }: LogomarkProps) {
+  const fill = brand ?? 'currentColor';
+  const parts = (role: 'outline' | 'fill') => {
+    const color = role === 'outline' ? 'currentColor' : fill;
+    const line = role === 'outline' ? LINE + 2 * OUTLINE : LINE;
+    // Filled bars (pole, base) get their outline from a stroke under the fill.
+    const bar = role === 'outline' ? { stroke: color, strokeWidth: 2 * OUTLINE } : {};
+    return (
+      <g>
+        <g fill={color} {...bar}>
+          <rect x="22.5" y="2.5" width="3" height="29.5" rx="0.75" />
+          <rect x="16.5" y="31.5" width="15" height="3" rx="0.75" />
+          <rect x="10.5" y="35.5" width="27" height="3" rx="0.75" />
+        </g>
+        <g fill="none" stroke={color} strokeWidth={line} strokeLinecap="round" strokeLinejoin="round">
+          <path d="M5 11.5H43" {...stylex.props(styles.part, styles.beam, isUnbalanced && styles.beamTipped)} />
+          {/* Each pan hangs from its end of the beam, and rises or drops with it. */}
+          <g {...stylex.props(styles.part, isUnbalanced && styles.panDown)}>
+            <path d="M5 11.5L1.5 23M5 11.5L8.5 23" />
+            <path d="M1.5 23h7a3.5 3.5 0 0 1-7 0z" fill={role === 'fill' ? fill : color} />
+          </g>
+          <g {...stylex.props(styles.part, isUnbalanced && styles.panUp)}>
+            <path d="M43 11.5L39.5 23M43 11.5L46.5 23" />
+            <path d="M39.5 23h7a3.5 3.5 0 0 1-7 0z" fill={role === 'fill' ? fill : color} />
+          </g>
+        </g>
+      </g>
+    );
+  };
   return (
-    <svg width="45" height="24" viewBox="0 0 45 24" fill="none" aria-hidden="true" {...stylex.props(styles.svg, xstyle)}>
-      <path
-        d="M35.5635 12.2524C35.0344 12.2524 34.6009 11.8388 34.5329 11.3141C33.7052 4.92537 28.4502 0 22.091 0C15.7318 0 10.4768 4.92537 9.64915 11.3141C9.58117 11.8388 9.14761 12.2524 8.61857 12.2524H1C0.447715 12.2524 0 12.7001 0 13.2524V15.2261C0 15.7784 0.447715 16.2261 1 16.2261H12.312C12.9994 16.2261 13.4835 15.5455 13.3567 14.8699C13.248 14.2909 13.1911 13.6925 13.1911 13.0803C13.1911 12.8013 13.2029 12.5251 13.2261 12.2524C13.6281 7.51941 17.4436 3.80822 22.0911 3.80822C26.7386 3.80822 30.5541 7.51941 30.9561 12.2524C30.9792 12.5251 30.991 12.8012 30.9911 13.0802L30.9911 13.0803C30.9911 13.6925 30.9341 14.2909 30.8254 14.8699C30.6986 15.5455 31.1827 16.2261 31.8701 16.2261H43.9768C44.529 16.2261 44.9768 15.7784 44.9768 15.2261V13.2524C44.9768 12.7001 44.529 12.2524 43.9768 12.2524H35.5635ZM45 21.2373C45 20.685 44.5523 20.2373 44 20.2373H1C0.447715 20.2373 0 20.685 0 21.2373V23C0 23.5523 0.447715 24 1 24H44C44.5523 24 45 23.5523 45 23V21.2373Z"
-        fillRule="evenodd"
-        clipRule="evenodd"
-        fill="currentColor"
-      />
+    <svg
+      width="48"
+      height="40"
+      viewBox="0 0 48 40"
+      fill="none"
+      aria-hidden="true"
+      data-unbalanced={isUnbalanced || undefined}
+      {...stylex.props(styles.svg, xstyle)}
+    >
+      {parts('outline')}
+      {parts('fill')}
     </svg>
   );
 }
 
+/** The width of the lines, and of the outline around every part, in viewBox units. */
+const LINE = 3;
+const OUTLINE = 0.6;
+/** How far the scales tip, and how far each beam end (and its pan) moves with it: 19 × sin 8°. */
+const TILT = '-8deg';
+const DROP = '2.6px';
+
+// A tip with a little settle at the end, like a balance coming to rest. None with reduced motion.
+const tip = {
+  transitionProperty: 'transform',
+  transitionDuration: { default: `calc(${duration.slow} * 3)`, '@media (prefers-reduced-motion: reduce)': '0s' },
+  transitionTimingFunction: 'cubic-bezier(0.34, 1.4, 0.64, 1)',
+} as const;
+
 const styles = stylex.create({
-  svg: { display: 'block', flexShrink: 0 },
+  // The outline reaches a little past the drawing's edges (0.6 units), so let it show.
+  svg: { display: 'block', flexShrink: 0, overflow: 'visible' },
+  part: { transformBox: 'view-box', ...tip },
+  // The beam pivots on the pole.
+  beam: { transformOrigin: '24px 11.5px' },
+  beamTipped: { transform: `rotate(${TILT})` },
+  panDown: { transform: `translateY(${DROP})` },
+  panUp: { transform: `translateY(-${DROP})` },
 });

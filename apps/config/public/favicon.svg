@@ -1,0 +1,16 @@
+<!-- The Themis logomark (the scales, option E), for the browser tab: in the text colour, light or dark. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -4 48 48" width="48" height="48">
+  <style>
+    .ink { stroke: #000; fill: #000; }
+    @media (prefers-color-scheme: dark) { .ink { stroke: #fff; fill: #fff; } }
+  </style>
+  <g class="ink">
+    <rect x="22.5" y="2.5" width="3" height="29.5" rx="0.75" stroke="none"/>
+    <rect x="16.5" y="31.5" width="15" height="3" rx="0.75" stroke="none"/>
+    <rect x="10.5" y="35.5" width="27" height="3" rx="0.75" stroke="none"/>
+    <g fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 11.5H43M5 11.5L1.5 23M5 11.5L8.5 23M43 11.5L39.5 23M43 11.5L46.5 23"/>
+      <path d="M1.5 23h7a3.5 3.5 0 0 1-7 0zM39.5 23h7a3.5 3.5 0 0 1-7 0z"/>
+    </g>
+  </g>
+</svg>

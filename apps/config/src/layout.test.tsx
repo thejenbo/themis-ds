@@ -62,6 +62,24 @@ describe('header links', () => {
     expect(docs.element().getAttribute('aria-current')).toBeNull();
   });
 
+  test('the logomark is filled with the theme’s brand and tips while a colour fails contrast', async () => {
+    renderApp();
+    const mark = () => document.querySelector('header svg')!;
+    await expect.poll(() => mark()?.querySelectorAll('rect').length).toBeGreaterThan(0);
+    // The fill layer (drawn last) takes the brand; the outline under it is the text colour.
+    const fillRect = [...mark().querySelectorAll('rect')].at(-1)!;
+    expect(fillRect.closest('g')!.getAttribute('fill')?.toLowerCase()).toBe('#7406eb');
+    expect(mark().hasAttribute('data-unbalanced')).toBe(false);
+    const beam = () => [...mark().querySelectorAll('path')].filter((p) => p.getAttribute('d') === 'M5 11.5H43').at(-1)!;
+    expect(getComputedStyle(beam()).transform).toBe('none');
+    // A brand that fails contrast: the scales tip.
+    await page.getByRole('textbox', { name: /^Brand/ }).fill('#FFFF00');
+    await userEvent.keyboard('{Tab}');
+    await expect.poll(() => mark().hasAttribute('data-unbalanced')).toBe(true);
+    expect(getComputedStyle(beam()).transform).not.toBe('none');
+    expect([...mark().querySelectorAll('rect')].at(-1)!.closest('g')!.getAttribute('fill')?.toLowerCase()).toBe('#ffff00');
+  });
+
   test('on desktop the page links start 24px after the sidebar’s divider', async () => {
     renderApp();
     const aside = await sidebar();
