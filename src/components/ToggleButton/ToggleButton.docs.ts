@@ -50,6 +50,10 @@ export default defineComponentDocs({
       true: 'On: filled with the brand colour, like a default Button.',
       false: 'Off: outlined, like an outline Button. Control it with `isSelected` and `onChange`, or let it manage itself with `defaultSelected`.',
     },
+    isDeselectable: {
+      true: 'Pressing it while on turns it off. The default.',
+      false: 'One of a set where one must always be chosen (pick a plan): while on, presses do nothing, and it shows no hover or press effect and keeps the default cursor.',
+    },
     size: {
       micro: '24px tall. Dense UIs. On touch screens, leave at least 20px between micro toggles in every direction (see Touch targets).',
       small: '32px tall. The default.',

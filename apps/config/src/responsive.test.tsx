@@ -89,7 +89,7 @@ describe('tablet (48em to 64em)', () => {
     await expect.element(page.getByRole('tab', { name: 'Colors' })).toHaveAttribute('aria-selected', 'true');
     await expect.element(page.getByRole('tab', { name: 'Borders Medium width • Medium radius' })).toBeVisible();
     await expect.element(page.getByRole('tab', { name: 'Fonts Playfair Display • Montserrat' })).toBeVisible();
-    const widths = page.getByRole('tab').elements().map((t) => Math.round(rect(t).width));
+    const widths = page.getByRole('tablist', { name: 'Theme settings' }).getByRole('tab').elements().map((t) => Math.round(rect(t).width));
     expect(new Set(widths).size).toBe(1);
     const label = (name: string) => [...document.querySelectorAll('label')].find((l) => l.textContent?.startsWith(name))!;
     // The colour code control at the start of the row, above the fields.

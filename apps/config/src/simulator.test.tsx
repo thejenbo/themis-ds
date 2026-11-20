@@ -11,7 +11,7 @@ afterEach(() => {
 
 const sim = () => page.getByRole('main');
 const toasts = () => page.getByRole('region', { name: 'Settings Sim notifications' });
-const showSubscription = () => sim().getByRole('radio', { name: 'subscription' }).click();
+const showSubscription = () => sim().getByRole('tab', { name: 'subscription' }).click();
 /** Waits for a toast in the simulator's region to say `text`. */
 const toastSays = (text: string) => expect.poll(() => toasts().query()?.textContent ?? '').toContain(text);
 
@@ -24,6 +24,10 @@ describe('Settings Sim: subscription (Figma 2422:36732)', () => {
     const plans = sim().getByRole('group', { name: 'Plans' }).getByRole('button');
     expect(plans.elements().map((el) => el.getAttribute('aria-pressed'))).toEqual(['false', 'false', 'true']);
     await expect.element(sim().getByText('your plan')).toBeVisible();
+    // The chosen plan can't be turned off, so it has the default cursor (no hover or press either).
+    const chosen = plans.elements()[2] as HTMLElement;
+    expect(getComputedStyle(chosen).cursor).toBe('default');
+    expect(getComputedStyle(plans.elements()[0]!).cursor).toBe('pointer');
     await expect.element(sim().getByText('Visa', { exact: true })).toBeVisible();
     await expect.element(sim().getByText('Expires 12/28')).toBeVisible();
     expect(sim().getByRole('table', { name: 'Statements' }).getByRole('row').elements()).toHaveLength(5);
@@ -77,11 +81,13 @@ describe('Settings Sim: subscription (Figma 2422:36732)', () => {
     expect(localStorage.getItem('themis-config:sim')).not.toContain('5555');
   });
 
-  test('automatic payments save with their own button', async () => {
+  test('automatic payments save as soon as they change (no Save button)', async () => {
     renderApp();
     await showSubscription();
+    const payment = sim().getByRole('group', { name: 'Payment Method' });
+    await expect.element(payment).toBeVisible();
+    expect(payment.getByRole('button', { name: 'Save Changes' }).query()).toBeNull();
     await sim().getByText('Automatic Payments', { exact: true }).click();
-    await sim().getByRole('button', { name: 'Save Changes' }).nth(1).click();
     await toastSays('Automatic payments are off.');
     await expect.element(sim().getByText(/^Payment due on /)).toBeVisible();
   });
@@ -176,10 +182,19 @@ describe('Settings Sim: account', () => {
 describe('Settings Sim: page', () => {
   test('the plan chip shows when the plan renews, on hover or focus (Figma 2424:37702)', async () => {
     renderApp();
-    await sim().getByText('premium active').hover();
+    // React Aria ignores the first hover after the page loads, until the pointer has moved, as a real one would have.
+    await sim().getByRole('heading', { name: 'Settings Sim' }).hover();
+    await sim().getByRole('button', { name: 'About your plan' }).hover();
     await expect
       .poll(() => page.getByRole('tooltip').query()?.textContent ?? '')
       .toMatch(/^Your plan will renew in \d+ days?\. To make changes, go to the subscription section\.$/);
+    // The arrow points at the info icon, not the middle of the chip.
+    const offset = () => {
+      const arrow = page.getByRole('tooltip').element().querySelector('svg')!.getBoundingClientRect();
+      const icon = sim().getByRole('button', { name: 'About your plan' }).element().querySelector('svg')!.getBoundingClientRect();
+      return Math.abs(arrow.left + arrow.width / 2 - (icon.left + icon.width / 2));
+    };
+    await expect.poll(offset).toBeLessThan(1.5);
   });
 
   test('the scales stay at the bottom of the preview as it scrolls', async () => {
@@ -195,5 +210,105 @@ describe('Settings Sim: page', () => {
     scroller!.scrollTop = 300;
     await new Promise((r) => setTimeout(r, 50));
     expect(bottomOf(art)).toBe(viewBottom());
+  });
+});
+
+describe('Settings Sim: narrow screens', () => {
+  afterEach(async () => {
+    await page.viewport(1440, 1000);
+  });
+  const rect = (el: Element) => el.getBoundingClientRect();
+  const uploadImage = async () => {
+    const canvas = Object.assign(document.createElement('canvas'), { width: 20, height: 20 });
+    const blob = await new Promise<Blob>((r) => canvas.toBlob((b) => r(b!), 'image/png'));
+    await userEvent.upload(document.querySelector('main input[type="file"]') as HTMLInputElement, new File([blob], 'me.png', { type: 'image/png' }));
+  };
+
+  test('on phones, the image buttons drop "Image", sit 8px apart at the end of the row, and keep their full names', async () => {
+    await page.viewport(402, 874);
+    renderApp();
+    await page.getByRole('radio', { name: 'Preview' }).click();
+    await uploadImage();
+    const update = sim().getByRole('button', { name: 'Update Image' });
+    const remove = sim().getByRole('button', { name: 'Delete Image' });
+    await expect.element(remove).toBeVisible();
+    // What's shown (the hidden "Image" still counts in textContent).
+    expect((update.element() as HTMLElement).innerText).toBe('Update');
+    expect((remove.element() as HTMLElement).innerText).toBe('Delete');
+    expect(Math.round(rect(remove.element()).left - rect(update.element()).right)).toBe(8);
+    // Both on the avatar's line, ending where the switch ends.
+    const toggle = sim().getByRole('switch', { name: /Online Indicator/ }).element().closest('label')!;
+    expect(Math.round(rect(remove.element()).right)).toBe(Math.round(rect(toggle).right));
+  });
+
+  test('on desktop, the image buttons keep "Image"', async () => {
+    renderApp();
+    await uploadImage();
+    const remove = sim().getByRole('button', { name: 'Delete Image' });
+    await expect.element(remove).toBeVisible();
+    expect((remove.element() as HTMLElement).innerText.replace(/\s/g, '')).toBe('DeleteImage');
+  });
+
+  test('the plan chip’s info icon is Chip’s 12px size', async () => {
+    renderApp();
+    const button = sim().getByRole('button', { name: 'About your plan' });
+    await expect.element(button).toBeVisible();
+    const icon = button.element().querySelector('svg')!;
+    expect(Math.round(icon.getBoundingClientRect().width)).toBe(12);
+  });
+
+  test('on a wider phone (500px), the card’s Update still sits at the end of its row', async () => {
+    await page.viewport(500, 874);
+    renderApp();
+    await page.getByRole('radio', { name: 'Preview' }).click();
+    await sim().getByRole('tab', { name: 'subscription' }).click();
+    const card = sim().getByRole('button', { name: 'Update', exact: true });
+    await expect.element(card).toBeVisible();
+    const toggle = sim().getByRole('switch', { name: /Automatic Payments/ }).element().closest('label')!;
+    expect(Math.round(rect(card.element()).right)).toBe(Math.round(rect(toggle).right));
+  });
+
+  test('on phones, the Update buttons sit at the end of their rows', async () => {
+    await page.viewport(402, 874);
+    renderApp();
+    await page.getByRole('radio', { name: 'Preview' }).click();
+    const end = (name: string | RegExp) => Math.round(rect(sim().getByRole('switch', { name }).element().closest('label')!).right);
+    const email = sim().getByRole('button', { name: 'Update', exact: true });
+    await expect.element(email).toBeVisible();
+    expect(Math.round(rect(email.element()).right)).toBe(end(/Two Factor/));
+    await sim().getByRole('tab', { name: 'subscription' }).click();
+    const card = sim().getByRole('button', { name: 'Update', exact: true });
+    await expect.element(card).toBeVisible();
+    expect(Math.round(rect(card.element()).right)).toBe(end(/Automatic Payments/));
+  });
+
+  test('plan cards are three across, or full width one per row: never two and one', async () => {
+    renderApp();
+    await sim().getByRole('tab', { name: 'subscription' }).click();
+    const cards = () => sim().getByRole('group', { name: 'Plans' }).getByRole('button').elements().map((el) => rect(el));
+    await expect.poll(() => new Set(cards().map((r) => Math.round(r.top))).size).toBe(1);
+    for (const width of [834, 600, 402]) {
+      await page.viewport(width, 1000);
+      // Under 48em the tool shows the settings or the preview, one at a time.
+      if (width < 768 && !page.getByRole('radio', { name: 'Preview' }).query()?.matches(':checked')) {
+        await page.getByRole('radio', { name: 'Preview' }).click();
+      }
+      // The view stays on subscription through every layout change.
+      await expect.element(sim().getByRole('tab', { name: 'subscription' })).toHaveAttribute('aria-selected', 'true');
+      await expect.poll(() => new Set(cards().map((r) => Math.round(r.top))).size).toBe(width === 834 ? 1 : 3);
+      if (width !== 834) {
+        const group = rect(sim().getByRole('group', { name: 'Plans' }).element());
+        for (const r of cards()) expect(Math.round(r.width)).toBe(Math.round(group.width));
+      }
+    }
+  });
+
+  test('on tablets the sections fill the width; on desktop they stop at 768px', async () => {
+    renderApp();
+    const accordion = () => sim().getByRole('button', { name: 'Avatar' }).element().closest('h2')!.parentElement!;
+    await expect.element(sim().getByRole('button', { name: 'Avatar' })).toBeVisible();
+    expect(Math.round(rect(accordion()).width)).toBe(768);
+    await page.viewport(834, 1112);
+    await expect.poll(() => Math.round(rect(accordion()).width)).toBe(834 - 2 * 24);
   });
 });

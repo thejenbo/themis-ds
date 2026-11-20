@@ -167,6 +167,7 @@ export function ThemeSettingsForm({
       <SidebarSection
         title="Fonts"
         summary={fontsSummary}
+        isLast
         isExpanded={fontsOpen}
         onExpandedChange={(open) => toggle('fonts', open)}
       >

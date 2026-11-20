@@ -160,6 +160,28 @@ export const Placements: Story = {
   },
 };
 
+/** Border width "none": the tooltip keeps its outline (border/width/mandatory, 1px there), as in Figma. */
+export const NoBorderWidth: Story = {
+  tags: ['!autodocs'],
+  render: (args) => (
+    <ThemeProvider modes={{ borderWidth: 'none' }}>
+      <div style={{ padding: '24px 24px 120px' }}>
+        <TooltipTrigger defaultOpen>
+          <Button variant="outline">Share</Button>
+          <Tooltip {...args} placement="bottom start">
+            Some extra info
+          </Tooltip>
+        </TooltipTrigger>
+      </div>
+    </ThemeProvider>
+  ),
+  play: async ({ canvas }) => {
+    const tooltip = await canvas.findByRole('tooltip');
+    await expect(getComputedStyle(tooltip).borderTopWidth).toBe('1px');
+    await expect(getComputedStyle(tooltip.querySelector('svg path:last-of-type')!).strokeWidth).toBe('1px');
+  },
+};
+
 /** Open in each colour theme. */
 export const ThemeMatrix: Story = {
   tags: ['!autodocs'],

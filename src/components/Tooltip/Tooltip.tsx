@@ -139,10 +139,10 @@ const styles = stylex.create({
     // Figma: 320px at most; never closer than spacing.sm to the screen edges.
     maxWidth: `min(20rem, calc(100vw - 2 * ${spacing.sm}))`,
     // Figma's stroke is inside the box, so the border comes off the padding (40px tall for one line).
-    paddingBlock: `calc(${spacing.xs} - ${borderWidth.widthSm})`,
-    paddingInline: `calc(${spacing.sm} - ${borderWidth.widthSm})`,
+    paddingBlock: `calc(${spacing.xs} - ${borderWidth.widthMandatory})`,
+    paddingInline: `calc(${spacing.sm} - ${borderWidth.widthMandatory})`,
     borderStyle: 'solid',
-    borderWidth: borderWidth.widthSm,
+    borderWidth: borderWidth.widthMandatory,
     borderColor: color.border,
     borderRadius: radius.radiusMd,
     backgroundColor: color.background,
@@ -162,11 +162,11 @@ const styles = stylex.create({
   arrowSvg: { display: 'block', flexShrink: 0, overflow: 'visible' },
   arrowFill: { fill: color.background },
   // The svg's y=4 is the box's outer edge; move the clip up by the border width, to its inner edge.
-  arrowClip: { transform: `translateY(calc(-1 * ${borderWidth.widthSm}))` },
+  arrowClip: { transform: `translateY(calc(-1 * ${borderWidth.widthMandatory}))` },
   arrowLine: {
     fill: 'none',
     stroke: color.border,
-    strokeWidth: borderWidth.widthSm,
+    strokeWidth: borderWidth.widthMandatory,
     strokeLinejoin: 'miter',
   },
 });
@@ -186,8 +186,8 @@ const enter = stylex.create({
  * box's outer edge, as in Figma, and take the border back off the cross axis so it points at the trigger's middle.
  */
 const ARROW_IN = 4;
-const inset = `calc(${borderWidth.widthSm} - ${ARROW_IN}px)`;
-const unborder = `calc(-1 * ${borderWidth.widthSm})`;
+const inset = `calc(${borderWidth.widthMandatory} - ${ARROW_IN}px)`;
+const unborder = `calc(-1 * ${borderWidth.widthMandatory})`;
 const arrowAt = stylex.create({
   top: { width: '18px', height: '12px', marginTop: inset, marginLeft: unborder },
   bottom: { width: '18px', height: '12px', marginBottom: inset, marginLeft: unborder },

@@ -26,7 +26,7 @@ export default defineComponentDocs({
 
   anatomy: [
     { part: 'Tooltip Trigger', description: 'Wraps the control and the tooltip (`TooltipTrigger`). The control must be focusable, such as a Button or IconButton.', required: true },
-    { part: 'Tooltip Content', description: 'The box: background fill, border (border-width sm), radius md, drop shadow. At most 320px wide.', required: true },
+    { part: 'Tooltip Content', description: 'The box: background fill, border (border/width/mandatory, so it keeps an outline when border widths are "none"), radius md, drop shadow. At most 320px wide.', required: true },
     { part: 'Tooltip Heading', description: 'Optional short heading (`title`), label style.', required: false },
     { part: 'Text', description: 'The hint (`children`), body style.', required: true },
     { part: 'Arrow', description: 'Points at the middle of the trigger. Joined to the box: the border runs around it.', required: true },
@@ -84,7 +84,7 @@ export default defineComponentDocs({
     'spacing/spacing.xs',
     'spacing/spacing.sm',
     'radius/border.radius.md',
-    'borderWidth/border.width.sm',
+    'borderWidth/border.width.mandatory',
     'shadows/drop shadow.x.default',
     'shadows/drop shadow.y.default',
     'shadows/drop shadow.blur.default',

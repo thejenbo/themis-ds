@@ -8,6 +8,7 @@ import { border as borderWidth } from '../../../src/tokens/borderWidth.stylex';
 import { color } from '../../../src/tokens/colorTheme.stylex';
 import { font as fontTheme } from '../../../src/tokens/fontTheme.stylex';
 import { duration, easing } from '../../../src/tokens/motion.stylex';
+import { border as radius } from '../../../src/tokens/radius.stylex';
 import { spacing } from '../../../src/tokens/spacing.stylex';
 import { font } from '../../../src/tokens/typography.stylex';
 import { focusRing } from '../../../src/utils/focus-ring';
@@ -182,6 +183,8 @@ const styles = stylex.create({
     insetInlineStart: 0,
     insetBlockEnd: 0,
     height: borderWidth.widthSm,
+    // Rounded ends, like the settings sections' lines and the Tabs indicator.
+    borderRadius: radius.radiusSm,
     backgroundColor: color.border,
     pointerEvents: 'none',
   },

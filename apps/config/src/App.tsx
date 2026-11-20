@@ -22,7 +22,7 @@ import { ExportModal } from './ExportModal';
 import { initialConfig } from './initial-config';
 import { type ColorFormats, loadColorFormats, loadPreviewShare, loadSaved, save, saveColorFormats, savePreviewShare } from './storage';
 import { ThemeSettingsForm } from './SettingsPanel';
-import { SettingsSim } from './SettingsSim';
+import { SettingsSim, type SimView } from './SettingsSim';
 import { ThemeNameField, ThemePicker } from './ThemeBar';
 
 /** A theme being named. New and duplicated themes aren't in the file until the name is confirmed. */
@@ -90,6 +90,8 @@ export function App() {
   const layout = useLayout();
   // On mobile, the settings and the preview take turns in the one column.
   const [mobileView, setMobileView] = useState<'settings' | 'preview'>('settings');
+  // The simulator's account / subscription view, kept here so it survives the preview remounting on a layout change.
+  const [simView, setSimView] = useState<SimView>('account');
   // On tablet, how much of the height the preview has; the settings drawer below it is dragged up and down.
   // Remembered in this browser.
   const [previewShare, setPreviewShare] = useState(() => loadPreviewShare(MIN_SHARE, MAX_SHARE));
@@ -257,7 +259,12 @@ export function App() {
     >
       <ThemeProvider theme={previewTheme} xstyle={[styles.previewTheme, darkBackground && styles.previewThemeDark]}>
         {page === 'simulator' ? (
-          <SettingsSim lightenBrandArt={darkBrand} />
+          <SettingsSim
+            lightenBrandArt={darkBrand}
+            view={simView}
+            onViewChange={setSimView}
+            toastPlacement={layout === 'tablet' ? 'top-right' : 'bottom-right'}
+          />
         ) : (
           <div {...stylex.props(styles.placeholder)}>
             <Text variant="body-large">The {page} view is coming soon.</Text>

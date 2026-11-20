@@ -24,6 +24,9 @@ listed under **Changed** or **Removed** with what to do.
 - Icon `menu` (Lucide's three lines, the "hamburger"), for a button that opens navigation or a menu.
 - Icons `upload` and `download` (Lucide's, with a square-cornered tray for radius none), for sending and saving files.
 - Tabs `isFullWidth`: the tabs share the row equally, 24px apart (Figma Tabs `full width`).
+- ToggleButton `isDeselectable={false}`: for one of a set where one must always be chosen. While on, presses do
+  nothing, and it shows no hover or press effect and keeps the default cursor.
+- ToastRegion `topOffset`: extra space above top-corner toasts, such as a sticky header's height.
 - Table `hideBorder`: no border around the table, for one inside an Accordion or Modal. Its rounded corners and the
   lines between rows stay (Figma Table `border` off).
 - A "themis config" mode for radius (2/2/4/6px) and border width (1/2/3/3px), used by the config tool's own UI.
@@ -33,6 +36,8 @@ listed under **Changed** or **Removed** with what to do.
 
 ### Changed
 
+- Tooltip's border (and its arrow's outline) is border/width/mandatory (was sm), as in Figma, so tooltips keep an
+  outline in themes with no border width.
 - Accordion content has 16px below it (was 8px), matching its sides, so a row of buttons at the end doesn't sit
   tight against the border.
 - SegmentedControl corners follow Figma: small and medium are radius md (was sm), with the inset selected fill and

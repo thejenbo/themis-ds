@@ -16,6 +16,8 @@ const ROLES = [
 ];
 
 const BIO_LIMIT = 500;
+/** The page container is phone-sized (the Settings Sim page is the query container). */
+const PHONE = '@container (max-width: 40rem)';
 // Photos are shrunk to this size before they're stored, so they fit in the browser's storage.
 const AVATAR_SIZE = 160;
 const MAX_UPLOAD_BYTES = 10 * 1024 * 1024;
@@ -87,7 +89,7 @@ function AvatarSection({ data, update }: ViewProps) {
   return (
     <Accordion title="Avatar" defaultExpanded headingLevel={2}>
       <div {...stylex.props(styles.stack)}>
-        <div {...stylex.props(styles.row)}>
+        <div {...stylex.props(styles.row, styles.avatarRow, styles.endOnMobile)}>
           <Avatar
             name={data.displayName || 'Themis'}
             initials={data.displayName ? undefined : 'T'}
@@ -95,14 +97,27 @@ function AvatarSection({ data, update }: ViewProps) {
             size="lg"
             status={data.onlineIndicator ? 'online' : undefined}
           />
-          <Button variant="outline" iconLeft={<Icon name="upload" />} onPress={() => fileRef.current?.click()}>
-            {hasImage ? 'Update Image' : 'Upload Image'}
-          </Button>
-          {hasImage && (
-            <Button variant="outline" tone="danger" iconLeft={<Icon name="trash" />} onPress={() => setConfirmingDelete(true)}>
-              Delete Image
+          <div {...stylex.props(styles.imageButtons, styles.pushEnd)}>
+            <Button
+              variant="outline"
+              iconLeft={<Icon name="upload" />}
+              aria-label={hasImage ? 'Update Image' : 'Upload Image'}
+              onPress={() => fileRef.current?.click()}
+            >
+              <ImageLabel verb={hasImage ? 'Update' : 'Upload'} />
             </Button>
-          )}
+            {hasImage && (
+              <Button
+                variant="outline"
+                tone="danger"
+                iconLeft={<Icon name="trash" />}
+                aria-label="Delete Image"
+                onPress={() => setConfirmingDelete(true)}
+              >
+                <ImageLabel verb="Delete" />
+              </Button>
+            )}
+          </div>
           <input
             ref={fileRef}
             type="file"
@@ -155,6 +170,16 @@ function AvatarSection({ data, update }: ViewProps) {
         <Text variant="body-base">Your avatar will show your initials instead. You can upload a new image at any time.</Text>
       </Modal>
     </Accordion>
+  );
+}
+
+/** "Update Image", or just "Update" when the row is too narrow for both buttons' full labels. */
+function ImageLabel({ verb }: { verb: string }) {
+  return (
+    <>
+      {verb}
+      <span {...stylex.props(styles.imageWord)}>Image</span>
+    </>
   );
 }
 
@@ -212,13 +237,13 @@ function LoginSection({ data, update }: ViewProps) {
   return (
     <Accordion title="Login" defaultExpanded headingLevel={2}>
       <div {...stylex.props(styles.stack)}>
-        <div {...stylex.props(styles.row)}>
+        <div {...stylex.props(styles.row, styles.endOnMobile)}>
           <div {...stylex.props(styles.minWidth)}>
             {/* Figma "Settings Sim - Account": type/label/base, then the address in type/input/base. */}
             <Text variant="label">Email</Text>
             <p {...stylex.props(styles.emailValue)}>{data.email}</p>
           </div>
-          <Button variant="outline" iconLeft={<Icon name="mail" />} onPress={() => setEditing(true)}>
+          <Button variant="outline" iconLeft={<Icon name="mail" />} onPress={() => setEditing(true)} xstyle={styles.pushEnd}>
             Update
           </Button>
         </div>
@@ -352,6 +377,15 @@ async function shrinkImage(file: File): Promise<string> {
 const styles = stylex.create({
   stack: { display: 'flex', flexDirection: 'column', gap: spacing.md },
   row: { display: 'flex', alignItems: 'center', gap: spacing.md, flexWrap: 'wrap' },
+  // On phones, buttons sit at the end of their row, lined up with the switches.
+  endOnMobile: { justifyContent: { default: null, [PHONE]: 'space-between' } },
+  // …and stay there when they wrap onto a line of their own.
+  pushEnd: { marginInlineStart: { default: null, [PHONE]: 'auto' } },
+  // A query container, so the buttons can shorten their labels before they wrap.
+  avatarRow: { containerType: 'inline-size' },
+  imageButtons: { display: 'flex', alignItems: 'center', gap: spacing.xs, flexWrap: 'wrap' },
+  // "Image" goes when the row is narrower than the avatar and both full-length buttons.
+  imageWord: { marginInlineStart: '0.25em', display: { default: null, '@container (max-width: 27rem)': 'none' } },
   minWidth: { minWidth: 0 },
   emailValue: {
     margin: 0,

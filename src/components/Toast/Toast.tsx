@@ -189,6 +189,12 @@ export interface ToastRegionProps {
    * @default { info: 'Info', success: 'Success', warning: 'Warning', danger: 'Error' }
    */
   statusLabels?: ToastStatusLabels;
+  /**
+   * Extra space above top-corner toasts, such as the height of a sticky app header they shouldn't cover
+   * (any CSS length). Bottom placements ignore it.
+   * @default '0px'
+   */
+  topOffset?: string;
 }
 
 /**
@@ -201,6 +207,7 @@ export function ToastRegion({
   'aria-label': ariaLabel,
   closeLabel = 'Close',
   statusLabels = defaultStatusLabels,
+  topOffset,
 }: ToastRegionProps) {
   const ariaQueue = queues.get(queue);
   if (!ariaQueue) throw new Error('ToastRegion: `queue` must come from createToastQueue().');
@@ -211,7 +218,12 @@ export function ToastRegion({
       <style href="themis-toast-transitions" precedence="default">
         {toastTransitionCss}
       </style>
-      <AriaToastRegion queue={ariaQueue} aria-label={ariaLabel} {...stylex.props(styles.region, regionPlacement[placement])}>
+      <AriaToastRegion
+        queue={ariaQueue}
+        aria-label={ariaLabel}
+        {...stylex.props(styles.region, regionPlacement[placement])}
+        style={topOffset ? ({ '--themis-toast-top-offset': topOffset } as CSSProperties) : undefined}
+      >
         {({ toast: queued }) => (
           <RegionContext.Provider value={{ queued, close: () => ariaQueue.close(queued.key), closeLabel, statusLabels, from }}>
             <Toast {...queued.content} />
@@ -442,7 +454,7 @@ const styles = stylex.create({
   },
 });
 
-const safeTop = `calc(${edge} + env(safe-area-inset-top, 0px))`;
+const safeTop = `calc(${edge} + var(--themis-toast-top-offset, 0px) + env(safe-area-inset-top, 0px))`;
 const safeBottom = `calc(${edge} + env(safe-area-inset-bottom, 0px))`;
 
 /** The newest toast is always nearest the edge: first in the list for top placements, last for bottom ones. */

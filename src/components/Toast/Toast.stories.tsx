@@ -29,11 +29,13 @@ const PLACEMENTS: ToastPlacement[] = ['bottom-right', 'bottom-left', 'top-right'
 function Demo({
   options,
   placement,
+  topOffset,
   label = 'Show toast',
   children,
 }: {
   options: ToastOptions | (() => ToastOptions);
   placement?: ToastPlacement;
+  topOffset?: string;
   label?: string;
   children?: ReactNode;
 }) {
@@ -42,7 +44,7 @@ function Demo({
     <div style={{ display: 'grid', gap: 16, justifyItems: 'start' }}>
       {children}
       <Button onPress={() => queue.show(typeof options === 'function' ? options() : options)}>{label}</Button>
-      <ToastRegion queue={queue} placement={placement} />
+      <ToastRegion queue={queue} placement={placement} topOffset={topOffset} />
     </div>
   );
 }
@@ -188,6 +190,18 @@ export const Placements: Story = {
     await expect(Math.round(box.top)).toBe(24);
     await expect(Math.round(box.left)).toBe(24);
     await expect(Math.round(box.width)).toBe(500);
+  },
+};
+
+/** `topOffset`: top-corner toasts sit below a 64px sticky header instead of covering it. */
+export const TopOffset: Story = {
+  render: (args) => (
+    <Demo placement="top-right" topOffset="64px" label="Show under the header" options={{ ...args, timeout: null }} />
+  ),
+  play: async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Show under the header' }));
+    const toast = await canvas.findByRole('alertdialog', { name: /Changes saved/ });
+    await expect(Math.round(toast.getBoundingClientRect().top)).toBe(64 + 24);
   },
 };
 

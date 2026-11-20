@@ -108,6 +108,8 @@ function PlanSection({ data, update }: ViewProps) {
             <div key={p.id} {...stylex.props(styles.planWrap)}>
               <ToggleButton
                 isSelected={plan === p.id}
+                // One plan is always chosen: the chosen card can't be turned off, so it shows no hover or press.
+                isDeselectable={false}
                 onChange={() => setPlan(p.id)}
                 size="medium"
                 xstyle={styles.planButton}
@@ -140,19 +142,8 @@ function PlanSection({ data, update }: ViewProps) {
 }
 
 function PaymentSection({ data, update }: ViewProps) {
-  const [autoPay, setAutoPay] = useState(data.autoPay);
   const [editing, setEditing] = useState(false);
   const { card } = data;
-  const save = () => {
-    if (autoPay === data.autoPay) {
-      simToast.show({ tone: 'info', description: 'No changes to save.' });
-      return;
-    }
-    update(
-      { autoPay },
-      { title: 'Payment settings saved', description: autoPay ? 'Your card will be charged when your plan renews.' : 'Automatic payments are off.' },
-    );
-  };
   return (
     <Accordion title="Payment Method" defaultExpanded headingLevel={2}>
       <div {...stylex.props(styles.stack)}>
@@ -166,24 +157,24 @@ function PaymentSection({ data, update }: ViewProps) {
               <Text variant="body-base">Expires {card.expiry}</Text>
             </div>
           </div>
-          <Button variant="outline" iconLeft={<Icon name="credit-card" />} onPress={() => setEditing(true)}>
+          <Button variant="outline" iconLeft={<Icon name="credit-card" />} onPress={() => setEditing(true)} xstyle={styles.pushEnd}>
             Update
           </Button>
         </div>
         <Switch
           labelPosition="left"
           description="Charge my payment method automatically when my subscription renews"
-          isSelected={autoPay}
-          onChange={setAutoPay}
+          isSelected={data.autoPay}
+          onChange={(on) =>
+            update(
+              { autoPay: on },
+              { title: 'Payment settings saved', description: on ? 'Your card will be charged when your plan renews.' : 'Automatic payments are off.' },
+            )
+          }
           xstyle={styles.setting}
         >
           Automatic Payments
         </Switch>
-        <div {...stylex.props(styles.actions)}>
-          <Button iconLeft={<Icon name="check" />} onPress={save}>
-            Save Changes
-          </Button>
-        </div>
       </div>
       <PaymentModal isOpen={editing} onOpenChange={setEditing} card={card} update={update} />
     </Accordion>
@@ -254,10 +245,11 @@ const styles = stylex.create({
   planSummary: { display: 'flex', flexDirection: 'column', gap: spacing.xs },
   // The "(save 20%)" note: Figma type/button/micro.
   saving: { marginInlineStart: spacing['2xs'], fontSize: font.size2xs, lineHeight: font.lineHeightXs },
-  // Figma: three 224px cards 24px apart; they wrap on narrow screens.
+  // Figma: three 224px cards 24px apart.
   plans: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(12rem, 1fr))',
+    // Three across, or one per row (full width) when three don't fit: never two and one.
+    gridTemplateColumns: { default: 'repeat(3, minmax(0, 1fr))', '@container (max-width: 48rem)': 'minmax(0, 1fr)' },
     gap: spacing.md,
     alignSelf: 'stretch',
     // Room for the "your plan" chip, which sits over the card's top edge.
@@ -270,7 +262,8 @@ const styles = stylex.create({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
-    gap: spacing.md,
+    // Stacked one per row (full width), the cards are wide and short: less space between their lines.
+    gap: { default: spacing.md, '@container sim-page (max-width: 48rem)': spacing.xs },
     width: `calc(100cqw - 2 * ${spacing.sm})`,
     paddingBlock: spacing.xs,
     textAlign: 'start',
@@ -281,7 +274,17 @@ const styles = stylex.create({
   planCardIdle: { color: color.text },
   // Figma type/heading/md.
   planName: { fontFamily: fontTheme.familyHeading, fontSize: font.size2xl, lineHeight: font.lineHeightLg, fontWeight: font.weightBold },
-  price: { display: 'flex', alignItems: 'baseline', flexWrap: 'wrap', columnGap: spacing['2xs'], marginBlockStart: `calc(-1 * ${spacing.md} + ${spacing['2xs']})` },
+  // 4px under the plan name (pulling back the card's gap).
+  price: {
+    display: 'flex',
+    alignItems: 'baseline',
+    flexWrap: 'wrap',
+    columnGap: spacing['2xs'],
+    marginBlockStart: {
+      default: `calc(-1 * ${spacing.md} + ${spacing['2xs']})`,
+      '@container sim-page (max-width: 48rem)': `calc(-1 * ${spacing.xs} + ${spacing['2xs']})`,
+    },
+  },
   // Figma type/body/large.
   priceAmount: { fontSize: font.sizeLg, lineHeight: font.lineHeightMd },
   caption: { fontSize: font.sizeCaption, lineHeight: font.lineHeightCaption },
@@ -290,8 +293,12 @@ const styles = stylex.create({
   // Figma: a neutral chip over the current plan's top edge, 8px in from its end.
   yourPlan: { position: 'absolute', insetBlockStart: `calc(-1 * ${spacing.xs})`, insetInlineEnd: spacing.xs, pointerEvents: 'none' },
   actions: { display: 'flex', justifyContent: 'flex-end', alignSelf: 'stretch' },
-  cardRow: { gap: spacing.md, flexWrap: 'wrap' },
+  // On phones, Update sits at the end of the row, lined up with the switch.
+  // Full width (the section lines things up at the start), so Update can sit at the end on phones.
+  cardRow: { alignSelf: 'stretch', gap: spacing.md, flexWrap: 'wrap', justifyContent: { default: null, '@container (max-width: 40rem)': 'space-between' } },
   cardDetails: { gap: spacing.sm },
+  // …and stays there when it wraps onto a line of its own.
+  pushEnd: { marginInlineStart: { default: null, '@container (max-width: 40rem)': 'auto' } },
   // Figma: the card brand in a brand-coloured block, type/heading/md in the inverse text colour.
   brand: {
     paddingBlock: spacing.xs,

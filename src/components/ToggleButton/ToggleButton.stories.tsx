@@ -139,6 +139,54 @@ export const Controlled: Story = {
 };
 
 /** Disabled toggles keep showing whether they are on or off, using the fixed system colours. */
+/**
+ * `isDeselectable={false}`: three plans, one always chosen. The chosen one ignores presses and shows no hover tint,
+ * press shrink or pointer cursor.
+ */
+export const OneAlwaysChosen: Story = {
+  render: function Render(args) {
+    const [plan, setPlan] = useState('growth');
+    return (
+      <div role="group" aria-label="Plan" style={{ display: 'flex', gap: 8 }}>
+        {['basic', 'growth', 'premium'].map((id) => (
+          <ToggleButton {...args} key={id} isDeselectable={false} isSelected={plan === id} onChange={() => setPlan(id)}>
+            {id}
+          </ToggleButton>
+        ))}
+      </div>
+    );
+  },
+  play: async ({ canvas }) => {
+    const growth = canvas.getByRole('button', { name: 'growth' });
+    await expect(growth).toHaveAttribute('aria-pressed', 'true');
+    // Pressing the chosen one changes nothing.
+    await userEvent.click(growth);
+    await expect(growth).toHaveAttribute('aria-pressed', 'true');
+    await expect(getComputedStyle(growth).cursor).toBe('default');
+    // Hovering it shows no tint (its state layer stays hidden); hovering another does.
+    await userEvent.hover(growth);
+    const layer = (el: HTMLElement) => getComputedStyle(el.querySelector('[data-themis-part="surface"]')!, '::before').opacity;
+    await expect(layer(growth)).toBe('0');
+    const basic = canvas.getByRole('button', { name: 'basic' });
+    await expect(getComputedStyle(basic).cursor).toBe('pointer');
+    await userEvent.click(basic);
+    await expect(basic).toHaveAttribute('aria-pressed', 'true');
+    await expect(growth).toHaveAttribute('aria-pressed', 'false');
+  },
+};
+
+/** Uncontrolled with `isDeselectable={false}`: once on, it stays on. */
+export const StaysOn: Story = {
+  args: { isDeselectable: false, children: 'Subscribe' },
+  play: async ({ canvas }) => {
+    const button = canvas.getByRole('button', { name: 'Subscribe' });
+    await userEvent.click(button);
+    await expect(button).toHaveAttribute('aria-pressed', 'true');
+    await userEvent.click(button);
+    await expect(button).toHaveAttribute('aria-pressed', 'true');
+  },
+};
+
 export const Disabled: Story = {
   render: (args) =>
     row(
