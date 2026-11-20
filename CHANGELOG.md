@@ -36,6 +36,7 @@ listed under **Changed** or **Removed** with what to do.
 
 ### Changed
 
+- SegmentedControl items are tighter: 8px from each item's edge to its label (was 10px), 16px between labels.
 - Tooltip's border (and its arrow's outline) is border/width/mandatory (was sm), as in Figma, so tooltips keep an
   outline in themes with no border width.
 - Accordion content has 16px below it (was 8px), matching its sides, so a row of buttons at the end doesn't sit

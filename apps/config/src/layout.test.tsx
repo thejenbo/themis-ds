@@ -31,15 +31,18 @@ describe('header', () => {
     await expect.element(page.getByText('The components view is coming soon.')).toBeVisible();
   });
 
-  test('hovering another page’s link underlines it with the same rounded line as the current page’s', async () => {
+  test('hovering another page’s link shows a paler version of the current page’s rounded line', async () => {
     renderApp();
     const components = page.getByRole('link', { name: 'components' });
     await expect.element(components).toBeVisible();
     const line = () => getComputedStyle(components.element(), '::after');
-    expect(line().backgroundColor).toBe('rgba(0, 0, 0, 0)');
+    expect(line().opacity).toBe('0');
     await page.getByRole('heading', { name: 'Settings Sim' }).hover();
     await components.hover();
-    await expect.poll(() => line().backgroundColor).toBe('rgb(0, 0, 0)');
+    // Paler than the current page's line (40%, like the Tabs hover), fading in.
+    await expect.poll(() => line().opacity).toBe('0.4');
+    expect(line().backgroundColor).toBe('rgb(0, 0, 0)');
+    expect(line().transitionProperty).toBe('opacity');
     const indicator = getComputedStyle(document.querySelector('nav span[aria-hidden]')!);
     expect(line().height).toBe(indicator.height);
     expect(line().borderTopLeftRadius).toBe(indicator.borderTopLeftRadius);
@@ -57,6 +60,13 @@ describe('header links', () => {
     expect(docs.element().querySelector('svg')).not.toBeNull();
     // It's not one of the tool's pages, so it never gets the current-page underline.
     expect(docs.element().getAttribute('aria-current')).toBeNull();
+  });
+
+  test('on desktop the page links start 24px after the sidebar’s divider', async () => {
+    renderApp();
+    const aside = await sidebar();
+    const first = page.getByRole('link', { name: 'simulator' }).element();
+    expect(Math.round(rect(first).left - rect(aside).right)).toBe(24);
   });
 
   test('the "Themis Config" wordmark is 24px at every width', async () => {

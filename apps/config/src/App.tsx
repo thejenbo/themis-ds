@@ -276,7 +276,7 @@ export function App() {
 
   return (
     <ThemeProvider modes={{ colorTheme: 'themis config', fontTheme: 'themis', borderWidth: 'themis config', radius: 'themis config' }} xstyle={styles.app}>
-      <AppHeader page={page} compact={layout === 'mobile'} />
+      <AppHeader page={page} compact={layout === 'mobile'} besideSidebar={layout === 'desktop'} />
       {layout === 'desktop' && (
         <div {...stylex.props(styles.body)}>
           <aside ref={scrollerRef} {...stylex.props(styles.sidebar)} aria-label="Theme settings">

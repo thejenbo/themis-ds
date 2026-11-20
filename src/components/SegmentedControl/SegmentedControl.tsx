@@ -233,15 +233,14 @@ const styles = stylex.create({
 });
 
 /*
- * The fill (selected) and tint (hover) layer. Figma: 10px from the item's edge to the label on each side. Micro fills
- * the item, following its corners; small and medium sit 4px inside it (itemInset) with border/radius/sm corners (the
- * control's md less the 4px), so
- * they're 24px and 32px tall inside 32px and 40px items.
+ * The fill (selected) and tint (hover) layer. Figma: 8px from the item's edge to the label on each side (10px until
+ * 2026-11-20). Micro fills the item, following its corners; small and medium sit 4px inside it (itemInset) with
+ * border/radius/sm corners (the control's md less the 4px), so they're 24px and 32px tall inside 32px and 40px items.
  */
 const surfaceSizes = stylex.create({
-  micro: { paddingBlock: 0, paddingInline: `calc(2 * ${spacing['2xs']} + ${spacing['3xs']})`, borderRadius: 'inherit' },
-  small: { paddingBlock: 0, paddingInline: `calc(${spacing['2xs']} + ${spacing['3xs']})`, borderRadius: radius.radiusSm },
-  medium: { paddingBlock: spacing['2xs'], paddingInline: `calc(${spacing['2xs']} + ${spacing['3xs']})`, borderRadius: radius.radiusSm },
+  micro: { paddingBlock: 0, paddingInline: `calc(2 * ${spacing['2xs']})`, borderRadius: 'inherit' },
+  small: { paddingBlock: 0, paddingInline: spacing['2xs'], borderRadius: radius.radiusSm },
+  medium: { paddingBlock: spacing['2xs'], paddingInline: spacing['2xs'], borderRadius: radius.radiusSm },
 });
 
 /** Only the outer corners are rounded, matching the control: sm for micro, md for small and medium. */

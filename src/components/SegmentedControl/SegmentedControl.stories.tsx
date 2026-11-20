@@ -72,6 +72,11 @@ export const SelectsOnClick: Story = {
     await expect(getComputedStyle(canvas.getByRole('radiogroup', { name: 'Units' })).borderTopLeftRadius).toBe('10px');
     await expect(getComputedStyle(cm).borderTopLeftRadius).toBe('10px');
     await expect(getComputedStyle(inch.querySelector('[data-themis-part="surface"]')!).borderTopLeftRadius).toBe('6px');
+    // 8px from each item's edge to its label (Figma, since 2026-11-20).
+    const label = inch.querySelector('[data-themis-part="surface"] > span')!.getBoundingClientRect();
+    const item = inch.getBoundingClientRect();
+    await expect(Math.round(label.left - item.left)).toBe(8);
+    await expect(Math.round(item.right - label.right)).toBe(8);
   },
 };
 

@@ -25,10 +25,12 @@ interface AppHeaderProps {
   page: Page;
   /** Small screens (Figma 2443:14356): a smaller logo, and the links in a menu behind a hamburger button. */
   compact?: boolean;
+  /** Desktop, with the sidebar on the left: the page links start 24px after the sidebar's divider. */
+  besideSidebar?: boolean;
 }
 
 /** The logo and the page links (Figma 2422:35488). Sticks to the top of the window. */
-export function AppHeader({ page, compact = false }: AppHeaderProps) {
+export function AppHeader({ page, compact = false, besideSidebar = false }: AppHeaderProps) {
   const links = useRef<Partial<Record<Page, HTMLAnchorElement | null>>>({});
   // Where the current page's underline sits. It slides between links, as the Tabs indicator does; `animate` stays
   // off for the first placement so it doesn't slide in from the left on load.
@@ -45,8 +47,8 @@ export function AppHeader({ page, compact = false }: AppHeaderProps) {
   }, [page]);
 
   return (
-    <header {...stylex.props(styles.header, compact && styles.headerCompact)}>
-      <Link href="#simulator" aria-label="Themis config" {...racStyles<LinkRenderProps>((s) => [styles.brand, focusRing.base, s.isFocusVisible && focusRing.visible])}>
+    <header {...stylex.props(styles.header, compact && styles.headerCompact, besideSidebar && styles.headerBesideSidebar)}>
+      <Link href="#simulator" aria-label="Themis config" {...racStyles<LinkRenderProps>((s) => [styles.brand, besideSidebar && styles.brandBesideSidebar, focusRing.base, s.isFocusVisible && focusRing.visible])}>
         <Logomark xstyle={[styles.logomark, compact && styles.logomarkCompact]} />
         <span {...stylex.props(styles.wordmark, compact && styles.wordmarkCompact)}>Themis Config</span>
       </Link>
@@ -74,7 +76,7 @@ export function AppHeader({ page, compact = false }: AppHeaderProps) {
           </ActionMenu>
         </ActionMenuTrigger>
       ) : (
-      <nav aria-label="Pages" {...stylex.props(styles.nav)}>
+      <nav aria-label="Pages" {...stylex.props(styles.nav, besideSidebar && styles.navBesideSidebar)}>
         {PAGES.map((p) => (
           <Link
             key={p}
@@ -163,6 +165,11 @@ const styles = stylex.create({
   // The button is 32px; the icon lines up with the header's 24px row, as in Figma.
   menuButton: { marginInlineStart: 'auto', marginBlock: `calc(-1 * ${spacing['2xs']})` },
   nav: { position: 'relative', display: 'flex', alignItems: 'center', gap: spacing.xl, flexGrow: 1 },
+  // Desktop: the logo's slot ends at the sidebar's edge (380px, App's sidebar column), and the links start 24px
+  // after the divider, lined up with the preview's side.
+  headerBesideSidebar: { gap: 0 },
+  brandBesideSidebar: { width: `calc(23.75rem - ${spacing.md})` },
+  navBesideSidebar: { marginInlineStart: spacing.md },
   // Figma type/input/base; the current page is underlined.
   link: {
     position: 'relative',
@@ -180,8 +187,12 @@ const styles = stylex.create({
       insetBlockEnd: 0,
       height: borderWidth.widthSm,
       borderRadius: radius.radiusSm,
-      backgroundColor: 'transparent',
+      backgroundColor: color.border,
+      opacity: 0,
       pointerEvents: 'none',
+      transitionProperty: 'opacity',
+      transitionDuration: { default: duration.base, '@media (prefers-reduced-motion: reduce)': '0s' },
+      transitionTimingFunction: easing.standard,
     },
   },
   // Other pages show the underline on hover; the current page's comes from the sliding indicator.
@@ -197,7 +208,8 @@ const styles = stylex.create({
   menuExternal: { display: 'inline-flex', alignItems: 'center', gap: spacing['2xs'] },
   // No gap: the menu button pushes itself to the end.
   headerCompact: { gap: 0 },
-  hovered: { '::after': { backgroundColor: color.border } },
+  // Hover: a paler line than the current page's, fading in, like the Tabs hover indicator (40% of the line colour).
+  hovered: { '::after': { opacity: 0.4 } },
   indicator: {
     position: 'absolute',
     insetInlineStart: 0,
