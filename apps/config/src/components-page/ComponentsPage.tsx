@@ -1,7 +1,7 @@
 import * as stylex from '@stylexjs/stylex';
 import { memo, type RefObject, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Button as AriaButton, type ButtonRenderProps } from 'react-aria-components';
-import { Heading, Select, SelectItem, Text, TextInput, type ThemeSettings } from 'themis-ds';
+import { Heading, SearchField, Select, SelectItem, Text, type ThemeSettings } from 'themis-ds';
 
 import { border as borderWidth } from '../../../../src/tokens/borderWidth.stylex';
 import { color } from '../../../../src/tokens/colorTheme.stylex';
@@ -105,7 +105,7 @@ const ComponentList = memo(function ComponentList() {
     <div ref={pageRef} {...stylex.props(styles.page, hasIndex && styles.pageWithIndex)}>
       <div {...stylex.props(styles.list)}>
         <div {...stylex.props(styles.tools)}>
-          <TextInput label="Find a component" type="search" placeholder="Button, inputs…" value={query} onChange={setQuery} xstyle={styles.tool} />
+          <SearchField label="Find a component" placeholder="Button, inputs…" value={query} onChange={setQuery} xstyle={styles.tool} />
           {!hasIndex && (
             <Select label="Category" value={category} onChange={(k) => setCategory(String(k))} xstyle={styles.tool}>
               {[ALL, ...GROUPS.map((g) => g.category)].map((c) => (

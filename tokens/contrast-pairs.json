@@ -75,7 +75,8 @@
       "surface": "colorTheme/color.background-inverse",
       "usedBy": [
         "Button/IconButton neutral default",
-        "Chip neutral solid"
+        "Chip neutral solid",
+        "SearchField clear button"
       ]
     },
     {
@@ -148,7 +149,8 @@
       "text": "colorTheme/color.text-inverse",
       "surface": "colorTheme/color.background-inverse-hover",
       "usedBy": [
-        "Button/IconButton neutral default hover"
+        "Button/IconButton neutral default hover",
+        "SearchField clear button"
       ]
     },
     {
@@ -283,6 +285,78 @@
       ],
       "overlay": "colorTheme/color.inverse-tint",
       "minimum": 3
+    },
+    {
+      "id": "code-text",
+      "text": "system/color.code.text",
+      "surface": "system/color.code.background",
+      "usedBy": [
+        "Code",
+        "CodeBlock"
+      ]
+    },
+    {
+      "id": "code-comment",
+      "text": "system/color.code.comment",
+      "surface": "system/color.code.background",
+      "usedBy": [
+        "Code",
+        "CodeBlock"
+      ]
+    },
+    {
+      "id": "code-string",
+      "text": "system/color.code.string",
+      "surface": "system/color.code.background",
+      "usedBy": [
+        "Code",
+        "CodeBlock"
+      ]
+    },
+    {
+      "id": "code-number",
+      "text": "system/color.code.number",
+      "surface": "system/color.code.background",
+      "usedBy": [
+        "Code",
+        "CodeBlock"
+      ]
+    },
+    {
+      "id": "code-keyword",
+      "text": "system/color.code.keyword",
+      "surface": "system/color.code.background",
+      "usedBy": [
+        "Code",
+        "CodeBlock"
+      ]
+    },
+    {
+      "id": "code-function",
+      "text": "system/color.code.function",
+      "surface": "system/color.code.background",
+      "usedBy": [
+        "Code",
+        "CodeBlock"
+      ]
+    },
+    {
+      "id": "code-property",
+      "text": "system/color.code.property",
+      "surface": "system/color.code.background",
+      "usedBy": [
+        "Code",
+        "CodeBlock"
+      ]
+    },
+    {
+      "id": "code-parameter",
+      "text": "system/color.code.parameter",
+      "surface": "system/color.code.background",
+      "usedBy": [
+        "Code",
+        "CodeBlock"
+      ]
     }
   ]
 }

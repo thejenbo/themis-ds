@@ -3,7 +3,6 @@ import {
   ArrowUp,
   Bell,
   Calendar,
-  Check,
   ChevronDown,
   ChevronUp,
   ChevronsUpDown,
@@ -58,7 +57,9 @@ export const iconSet = {
   'arrow-up': { shapes: ArrowUp },
   bell: { shapes: Bell },
   calendar: { shapes: Calendar },
-  check: { shapes: Check },
+  // Lucide's check, drawn from its short arm to its long one, so where it draws itself in (Checkbox) it goes left to
+  // right.
+  check: { shapes: [['path', { d: 'm4 12 5 5L20 6' }]] },
   // Drawn for Themis (Figma's "caret-down"): the arrow on Select, ComboBox and UnitInput triggers. Wider than Lucide's
   // chevron-down (14.5 × 7.25 on the grid instead of 12 × 6), like the arrow Figma draws there.
   'caret-down': { shapes: [['path', { d: 'M4.75 8.5 12 15.75l7.25-7.25' }]] },

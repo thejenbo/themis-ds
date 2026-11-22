@@ -124,6 +124,251 @@
           "targetVariableSetName": "Primitives"
         }
       }
+    },
+    "code": {
+      "background": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.15294117647058825,
+            0.1568627450980392,
+            0.13333333333333333
+          ],
+          "alpha": 1,
+          "hex": "#272822"
+        },
+        "$description": "Code and CodeBlock background (Monokai), the same in every theme.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:2474:141",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL"
+          ],
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:2474:132",
+            "targetVariableName": "color/monokai/background",
+            "targetVariableSetId": "VariableCollectionId:1627:175",
+            "targetVariableSetName": "Primitives"
+          }
+        }
+      },
+      "text": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9725490196078431,
+            0.9725490196078431,
+            0.9490196078431372
+          ],
+          "alpha": 1,
+          "hex": "#F8F8F2"
+        },
+        "$description": "Code text colour (Monokai), the same in every theme.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:2474:142",
+          "com.figma.scopes": [
+            "TEXT_FILL",
+            "SHAPE_FILL"
+          ],
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:2474:133",
+            "targetVariableName": "color/monokai/foreground",
+            "targetVariableSetId": "VariableCollectionId:1627:175",
+            "targetVariableSetName": "Primitives"
+          }
+        }
+      },
+      "comment": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.5843137254901961,
+            0.5647058823529412,
+            0.4666666666666667
+          ],
+          "alpha": 1,
+          "hex": "#959077"
+        },
+        "$description": "Code comment colour (Monokai), the same in every theme.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:2474:143",
+          "com.figma.scopes": [
+            "TEXT_FILL",
+            "SHAPE_FILL"
+          ],
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:2474:134",
+            "targetVariableName": "color/monokai/comment",
+            "targetVariableSetId": "VariableCollectionId:1627:175",
+            "targetVariableSetName": "Primitives"
+          }
+        }
+      },
+      "string": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9019607843137255,
+            0.8588235294117647,
+            0.4549019607843137
+          ],
+          "alpha": 1,
+          "hex": "#E6DB74"
+        },
+        "$description": "Code string colour (Monokai), the same in every theme.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:2474:144",
+          "com.figma.scopes": [
+            "TEXT_FILL",
+            "SHAPE_FILL"
+          ],
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:2474:135",
+            "targetVariableName": "color/monokai/yellow",
+            "targetVariableSetId": "VariableCollectionId:1627:175",
+            "targetVariableSetName": "Primitives"
+          }
+        }
+      },
+      "number": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.6823529411764706,
+            0.5058823529411764,
+            1
+          ],
+          "alpha": 1,
+          "hex": "#AE81FF"
+        },
+        "$description": "Code number colour (Monokai), the same in every theme.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:2474:145",
+          "com.figma.scopes": [
+            "TEXT_FILL",
+            "SHAPE_FILL"
+          ],
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:2474:136",
+            "targetVariableName": "color/monokai/purple",
+            "targetVariableSetId": "VariableCollectionId:1627:175",
+            "targetVariableSetName": "Primitives"
+          }
+        }
+      },
+      "keyword": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            0.2901960784313726,
+            0.5529411764705883
+          ],
+          "alpha": 1,
+          "hex": "#FF4A8D"
+        },
+        "$description": "Code keyword colour (Monokai), the same in every theme.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:2474:146",
+          "com.figma.scopes": [
+            "TEXT_FILL",
+            "SHAPE_FILL"
+          ],
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:2474:137",
+            "targetVariableName": "color/monokai/pink",
+            "targetVariableSetId": "VariableCollectionId:1627:175",
+            "targetVariableSetName": "Primitives"
+          }
+        }
+      },
+      "function": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.6509803921568628,
+            0.8862745098039215,
+            0.1803921568627451
+          ],
+          "alpha": 1,
+          "hex": "#A6E22E"
+        },
+        "$description": "Code function colour (Monokai), the same in every theme.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:2474:147",
+          "com.figma.scopes": [
+            "TEXT_FILL",
+            "SHAPE_FILL"
+          ],
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:2474:138",
+            "targetVariableName": "color/monokai/green",
+            "targetVariableSetId": "VariableCollectionId:1627:175",
+            "targetVariableSetName": "Primitives"
+          }
+        }
+      },
+      "property": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.4,
+            0.8509803921568627,
+            0.9372549019607843
+          ],
+          "alpha": 1,
+          "hex": "#66D9EF"
+        },
+        "$description": "Code property colour (Monokai), the same in every theme.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:2474:148",
+          "com.figma.scopes": [
+            "TEXT_FILL",
+            "SHAPE_FILL"
+          ],
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:2474:140",
+            "targetVariableName": "color/monokai/blue",
+            "targetVariableSetId": "VariableCollectionId:1627:175",
+            "targetVariableSetName": "Primitives"
+          }
+        }
+      },
+      "parameter": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9921568627450981,
+            0.592156862745098,
+            0.12156862745098039
+          ],
+          "alpha": 1,
+          "hex": "#FD971F"
+        },
+        "$description": "Code parameter colour (Monokai), the same in every theme.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:2474:149",
+          "com.figma.scopes": [
+            "TEXT_FILL",
+            "SHAPE_FILL"
+          ],
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:2474:139",
+            "targetVariableName": "color/monokai/orange",
+            "targetVariableSetId": "VariableCollectionId:1627:175",
+            "targetVariableSetName": "Primitives"
+          }
+        }
+      }
     }
   },
   "$extensions": {

@@ -58,6 +58,15 @@ export const color = stylex.defineVars({
   "coral500": "#FA383B",
   "eggplant500": "#7406EB",
   "eggplant050": "#EBBFF9",
+  "monokaiBackground": "#272822",
+  "monokaiForeground": "#F8F8F2",
+  "monokaiComment": "#959077",
+  "monokaiYellow": "#E6DB74",
+  "monokaiPurple": "#AE81FF",
+  "monokaiPink": "#FF4A8D",
+  "monokaiGreen": "#A6E22E",
+  "monokaiOrange": "#FD971F",
+  "monokaiBlue": "#66D9EF",
 });
 
 export const darken = stylex.defineVars({

@@ -15,6 +15,7 @@ export const font = stylex.defineVars({
   "sizeLabel": "1rem",
   "sizeCaption": "0.75rem",
   "sizeInput": "1rem",
+  "sizeCode": "0.875rem",
   "lineHeightXs": "1rem",
   "lineHeightSm": { default: "1.5rem", "@media (min-width: 48em)": "1.75rem" },
   "lineHeightMd": { default: "2rem", "@media (min-width: 48em)": "2.25rem" },
@@ -24,7 +25,9 @@ export const font = stylex.defineVars({
   "lineHeightLabel": "1.5rem",
   "lineHeightCaption": "1rem",
   "lineHeightInput": "1.5rem",
+  "lineHeightCode": "1.375rem",
   "weightRegular": "400",
   "weightSemibold": "600",
   "weightBold": "700",
+  "familyCode": "\"Space Mono\"",
 });

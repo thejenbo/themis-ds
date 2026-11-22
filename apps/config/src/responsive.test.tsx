@@ -12,7 +12,8 @@ afterEach(async () => {
 });
 
 describe('mobile (under 48em, Figma 2443:14356)', () => {
-  test('the header has the 16px wordmark and the page links in a menu behind a hamburger button', async () => {
+  // It ends on the components page, which loads every story: that can take most of the default 15s in a full run.
+  test('the header has the 16px wordmark and the page links in a menu behind a hamburger button', { timeout: 45000 }, async () => {
     await page.viewport(402, 874);
     renderApp();
     const wordmark = page.getByText('Themis Config', { exact: true });

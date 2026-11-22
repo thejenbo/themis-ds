@@ -143,6 +143,36 @@
     },
     "booleans": []
   },
+  "Code": {
+    "category": "Typography",
+    "summary": "Code inside a sentence, such as a file name, prop or short snippet, in Space Mono on Monokai in every theme.",
+    "enums": {
+      "language": {
+        "values": [
+          "json",
+          "tsx",
+          "text"
+        ],
+        "default": "text"
+      }
+    },
+    "booleans": []
+  },
+  "CodeBlock": {
+    "category": "Typography",
+    "summary": "A block of code, such as a file or a snippet to copy, in Space Mono on Monokai in every theme.",
+    "enums": {
+      "language": {
+        "values": [
+          "json",
+          "tsx",
+          "text"
+        ],
+        "default": "text"
+      }
+    },
+    "booleans": []
+  },
   "ColorArea": {
     "category": "Color",
     "summary": "Picks a colour by dragging a thumb over a square of colours that changes along two channels.",
@@ -560,6 +590,18 @@
       "isDisabled",
       "isInvalid",
       "isOptional",
+      "isReadOnly",
+      "isRequired"
+    ]
+  },
+  "SearchField": {
+    "category": "Inputs",
+    "summary": "A text field for search terms, with a search icon and a round button that clears what was typed.",
+    "enums": {},
+    "booleans": [
+      "hideIcon",
+      "isDisabled",
+      "isInvalid",
       "isReadOnly",
       "isRequired"
     ]

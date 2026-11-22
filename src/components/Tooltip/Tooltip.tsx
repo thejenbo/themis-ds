@@ -34,7 +34,7 @@ export interface TooltipTriggerProps extends TooltipTriggerComponentProps {
   /**
    * Milliseconds the pointer rests on the trigger before the tooltip shows. Once one tooltip is showing, moving
    * to another trigger shows its tooltip straight away. Keyboard focus shows it immediately.
-   * @default 700
+   * @default 400
    */
   delay?: number;
 }
@@ -43,7 +43,7 @@ export interface TooltipTriggerProps extends TooltipTriggerComponentProps {
  * Connects a Tooltip to the element it describes. The first child is the trigger (a Button, IconButton or other
  * focusable Themis control); the second is the `Tooltip`.
  */
-export function TooltipTrigger({ delay = 700, ...props }: TooltipTriggerProps) {
+export function TooltipTrigger({ delay = 400, ...props }: TooltipTriggerProps) {
   return <AriaTooltipTrigger delay={delay} {...props} />;
 }
 

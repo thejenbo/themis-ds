@@ -120,6 +120,16 @@
             "ALL_SCOPES"
           ]
         }
+      },
+      "code": {
+        "$type": "number",
+        "$value": 14,
+        "$extensions": {
+          "com.figma.variableId": "VariableID:2474:151",
+          "com.figma.scopes": [
+            "FONT_SIZE"
+          ]
+        }
       }
     },
     "line height": {
@@ -212,6 +222,16 @@
             "ALL_SCOPES"
           ]
         }
+      },
+      "code": {
+        "$type": "number",
+        "$value": 22,
+        "$extensions": {
+          "com.figma.variableId": "VariableID:2474:152",
+          "com.figma.scopes": [
+            "LINE_HEIGHT"
+          ]
+        }
       }
     },
     "weight": {
@@ -242,6 +262,19 @@
           "com.figma.variableId": "VariableID:1666:227",
           "com.figma.scopes": [
             "FONT_STYLE"
+          ]
+        }
+      }
+    },
+    "family": {
+      "code": {
+        "$type": "string",
+        "$value": "Space Mono",
+        "$description": "Code and CodeBlock: Space Mono in every theme.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:2474:150",
+          "com.figma.scopes": [
+            "FONT_FAMILY"
           ]
         }
       }

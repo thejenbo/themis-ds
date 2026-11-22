@@ -89,7 +89,7 @@ export default defineComponentDocs({
   motion: [
     {
       trigger: 'Ticked',
-      property: 'The check draws itself in',
+      property: 'The check draws itself in, from left to right',
       duration: 'motion/duration.fast',
       easing: 'motion/easing.standard',
       reducedMotion: 'The check appears instantly.',

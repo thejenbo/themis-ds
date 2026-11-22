@@ -1,9 +1,6 @@
 import * as stylex from '@stylexjs/stylex';
-import { Button, Icon, Modal, Text, type ThemisConfig, toast } from 'themis-ds';
+import { Button, Code, CodeBlock, Icon, Modal, Text, type ThemisConfig, toast } from 'themis-ds';
 
-import { border as borderWidth } from '../../../src/tokens/borderWidth.stylex';
-import { color } from '../../../src/tokens/colorTheme.stylex';
-import { border as radius } from '../../../src/tokens/radius.stylex';
 import { spacing } from '../../../src/tokens/spacing.stylex';
 
 const FILE_NAME = 'themis.theme.json';
@@ -55,12 +52,12 @@ export function ExportModal({ config, isOpen, onOpenChange }: ExportModalProps) 
     >
       <div {...stylex.props(styles.body)}>
         <Text variant="body-base">
-          Save this as <code>{FILE_NAME}</code> in your project, then pass a theme to{' '}
-          <code>{'<ThemeProvider theme={config.themes.light}>'}</code>.
+          Save this as <Code>{FILE_NAME}</Code> in your project, then pass a theme to{' '}
+          <Code language="tsx">{'<ThemeProvider theme={config.themes.light}>'}</Code>.
         </Text>
-        <pre {...stylex.props(styles.code)} tabIndex={0} aria-label="Theme file">
+        <CodeBlock language="json" aria-label="Theme file" xstyle={styles.code}>
           {json}
-        </pre>
+        </CodeBlock>
       </div>
     </Modal>
   );
@@ -68,18 +65,6 @@ export function ExportModal({ config, isOpen, onOpenChange }: ExportModalProps) 
 
 const styles = stylex.create({
   body: { display: 'flex', flexDirection: 'column', gap: spacing.sm },
-  code: {
-    margin: 0,
-    maxHeight: '50vh',
-    overflow: 'auto',
-    padding: spacing.sm,
-    borderWidth: borderWidth.widthSm,
-    borderStyle: 'solid',
-    borderColor: color.border,
-    borderRadius: radius.radiusMd,
-    fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-    fontSize: '0.8125rem',
-    lineHeight: 1.5,
-    whiteSpace: 'pre',
-  },
+  // The actions stay in view: the file scrolls instead.
+  code: { maxHeight: '50vh' },
 });

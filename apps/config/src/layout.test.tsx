@@ -470,4 +470,17 @@ describe('export', () => {
     const anchor = click.mock.contexts[0] as HTMLAnchorElement;
     expect(anchor.download).toBe('themis.theme.json');
   });
+
+  test('the theme file is a Monokai code block, and the file name and usage are inline code', async () => {
+    renderApp();
+    await page.getByRole('button', { name: 'Export' }).click();
+    const block = page.getByRole('region', { name: 'Theme file' }).element();
+    expect(getComputedStyle(block).backgroundColor).toBe('rgb(39, 40, 34)');
+    expect(getComputedStyle(block).fontFamily).toMatch(/^"?Space Mono"?/);
+    // JSON keys in Monokai blue.
+    expect(getComputedStyle(page.getByRole('region', { name: 'Theme file' }).getByText('"themes"').element()).color).toBe('rgb(102, 217, 239)');
+    const inline = page.getByRole('dialog').getByText('themis.theme.json', { exact: true }).element();
+    expect(inline.tagName).toBe('CODE');
+    expect(getComputedStyle(inline).backgroundColor).toBe('rgb(39, 40, 34)');
+  });
 });

@@ -125,7 +125,7 @@ export default defineComponentDocs({
       title: { figmaProperty: 'heading', type: 'VARIANT' },
     },
     differences: [
-      { topic: 'Delay', figma: 'Not shown.', code: 'Shows after 700ms of hover (React Aria\'s default is 1500ms) or straight away on keyboard focus. Change it per trigger with `TooltipTrigger delay`.', action: 'annotate-figma', done: '2026-11-13' },
+      { topic: 'Delay', figma: 'Not shown.', code: 'Shows after 400ms of hover (React Aria\'s default is 1500ms) or straight away on keyboard focus. Change it per trigger with `TooltipTrigger delay`.', action: 'annotate-figma', done: '2026-11-13' },
       { topic: 'Spacing', figma: 'Not drawn.', code: '4px (spacing.2xs) from the trigger to the arrow tip.', action: 'annotate-figma', done: '2026-11-13' },
       { topic: 'Width', figma: 'Hugs the example text.', code: 'Up to 320px, never closer than 16px to the screen edges; text wraps.', action: 'annotate-figma', done: '2026-11-13' },
     ],

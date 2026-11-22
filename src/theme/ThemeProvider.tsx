@@ -6,6 +6,7 @@ import { color } from '../tokens/colorTheme.stylex';
 import { iconStyle } from './icon-style.stylex';
 import { themes, type Modes, type ThemeCollection } from '../tokens/themes';
 import { font } from '../tokens/fontTheme.stylex';
+import { addStylesheet } from './add-stylesheet';
 import { googleFontsHref, type ThemeSettings, themeVariables } from './theme-config';
 
 export interface ThemeProviderProps {
@@ -68,24 +69,6 @@ export function ThemeProvider({ modes: modesProp = {}, theme, loadFonts = true, 
 }
 
 const withoutUndefined = (modes: Modes): Modes => Object.fromEntries(Object.entries(modes).filter(([, v]) => v !== undefined));
-
-/** Adds a stylesheet link (and Google Fonts' preconnects) to the page head, once per URL. */
-function addStylesheet(href: string) {
-  if (typeof document === 'undefined' || document.querySelector(`link[data-themis-fonts="${CSS.escape(href)}"]`)) return;
-  for (const origin of ['https://fonts.googleapis.com', 'https://fonts.gstatic.com']) {
-    if (document.querySelector(`link[rel="preconnect"][href="${origin}"]`)) continue;
-    const pre = document.createElement('link');
-    pre.rel = 'preconnect';
-    pre.href = origin;
-    if (origin.includes('gstatic')) pre.crossOrigin = '';
-    document.head.appendChild(pre);
-  }
-  const link = document.createElement('link');
-  link.rel = 'stylesheet';
-  link.href = href;
-  link.dataset.themisFonts = href;
-  document.head.appendChild(link);
-}
 
 const sharpIcons = stylex.createTheme(iconStyle, { join: 'miter', cap: 'butt', dotCap: 'square', round: 'none', sharp: 'inline' });
 const roundIcons = stylex.createTheme(iconStyle, { join: 'round', cap: 'round', dotCap: 'round', round: 'inline', sharp: 'none' });

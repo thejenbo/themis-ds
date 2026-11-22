@@ -62,6 +62,10 @@ describe('components page', { timeout: 45000 }, () => {
       'ColorSlider',
       'ColorSwatch',
     ]);
+    // The search field's clear button brings everything back.
+    await page.getByRole('button', { name: 'Clear search' }).click();
+    await expect.poll(() => document.querySelectorAll('[data-component-stage]').length).toBeGreaterThan(30);
+    expect(page.getByRole('searchbox', { name: 'Find a component' }).element()).toHaveValue('');
   });
 
   test('with room, an index beside the cards jumps to a component and follows the scroll', async () => {
