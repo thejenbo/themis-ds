@@ -26,7 +26,7 @@
   },
   "scripts": {
     "tokens": "tsx scripts/build-tokens.ts",
-    "manifest": "tsx scripts/build-manifest.ts",
+    "manifest": "tsx scripts/build-manifest.ts && tsx scripts/build-playground.ts",
     "fonts": "tsx scripts/build-google-fonts.ts",
     "storybook": "npm run tokens && npm run manifest && storybook dev -p 6006",
     "build-storybook": "npm run tokens && npm run manifest && storybook build",

@@ -37,7 +37,7 @@ describe('mobile (under 48em, Figma 2443:14356)', () => {
     await page.getByRole('menuitem', { name: 'components' }).click();
     await expect.poll(() => location.hash).toBe('#components');
     await page.getByRole('radio', { name: 'Preview' }).click();
-    await expect.element(page.getByText('The components view is coming soon.')).toBeVisible();
+    await expect.element(page.getByRole('searchbox', { name: 'Find a component' })).toBeVisible();
   });
 
   test('Settings and Preview take turns above Export, which stays at the bottom of the window', async () => {

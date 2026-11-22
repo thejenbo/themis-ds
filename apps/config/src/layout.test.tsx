@@ -28,7 +28,7 @@ describe('header', () => {
     expect(getComputedStyle(indicator()).transitionProperty).toContain('translate');
     await expect.poll(() => near(rect(indicator()).left, rect(docs.element()).left)).toBe(true);
     await expect.poll(() => near(rect(indicator()).width, rect(docs.element()).width)).toBe(true);
-    await expect.element(page.getByText('The components view is coming soon.')).toBeVisible();
+    await expect.element(page.getByRole('searchbox', { name: 'Find a component' })).toBeVisible();
   });
 
   test('hovering another page’s link shows a paler version of the current page’s rounded line', async () => {

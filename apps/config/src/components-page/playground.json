@@ -1,0 +1,772 @@
+{
+  "Accordion": {
+    "category": "Disclosure",
+    "summary": "A header that shows or hides a section of content. Group several with AccordionGroup.",
+    "enums": {
+      "headingLevel": {
+        "values": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6"
+        ],
+        "default": "3"
+      },
+      "tone": {
+        "values": [
+          "brand",
+          "danger"
+        ],
+        "default": "brand"
+      }
+    },
+    "booleans": [
+      "isDisabled"
+    ]
+  },
+  "ActionMenu": {
+    "category": "Overlays",
+    "summary": "A list of actions that opens from a button, such as \"Rename / Duplicate / Delete\" for a row or card.",
+    "enums": {
+      "placement": {
+        "values": [
+          "bottom start",
+          "bottom end",
+          "top start",
+          "top end"
+        ],
+        "default": "bottom start"
+      }
+    },
+    "booleans": []
+  },
+  "Avatar": {
+    "category": "Data display",
+    "summary": "A person's photo or initials at a fixed size, with an optional status dot.",
+    "enums": {
+      "size": {
+        "values": [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl"
+        ],
+        "default": "md"
+      },
+      "status": {
+        "values": [
+          "online"
+        ],
+        "default": null
+      },
+      "variant": {
+        "values": [
+          "solid",
+          "outline"
+        ],
+        "default": "solid"
+      }
+    },
+    "booleans": []
+  },
+  "Button": {
+    "category": "Actions",
+    "summary": "Triggers an action or event, such as submitting a form, opening a dialog or saving a change.",
+    "enums": {
+      "size": {
+        "values": [
+          "micro",
+          "small",
+          "medium"
+        ],
+        "default": "small"
+      },
+      "tone": {
+        "values": [
+          "brand",
+          "neutral",
+          "danger",
+          "warning",
+          "success"
+        ],
+        "default": "brand"
+      },
+      "variant": {
+        "values": [
+          "default",
+          "outline",
+          "subtle"
+        ],
+        "default": "default"
+      }
+    },
+    "booleans": [
+      "isDisabled"
+    ]
+  },
+  "Checkbox": {
+    "category": "Inputs",
+    "summary": "A single yes/no choice that takes effect when a form is submitted, such as agreeing to terms or opting into emails.",
+    "enums": {},
+    "booleans": [
+      "isDisabled",
+      "isIndeterminate",
+      "isInvalid",
+      "isReadOnly",
+      "isRequired"
+    ]
+  },
+  "Chip": {
+    "category": "Data display",
+    "summary": "A small read-only label for a status or category, such as \"Paid\" or \"Overdue\" in a table row.",
+    "enums": {
+      "tone": {
+        "values": [
+          "neutral",
+          "brand",
+          "success",
+          "warning",
+          "danger"
+        ],
+        "default": "neutral"
+      },
+      "variant": {
+        "values": [
+          "outline",
+          "solid"
+        ],
+        "default": "outline"
+      }
+    },
+    "booleans": []
+  },
+  "ColorArea": {
+    "category": "Color",
+    "summary": "Picks a colour by dragging a thumb over a square of colours that changes along two channels.",
+    "enums": {
+      "xChannel": {
+        "values": [
+          "hue",
+          "saturation",
+          "brightness",
+          "lightness",
+          "red",
+          "green",
+          "blue",
+          "alpha"
+        ],
+        "default": null
+      },
+      "yChannel": {
+        "values": [
+          "hue",
+          "saturation",
+          "brightness",
+          "lightness",
+          "red",
+          "green",
+          "blue",
+          "alpha"
+        ],
+        "default": null
+      }
+    },
+    "booleans": [
+      "isDisabled"
+    ]
+  },
+  "ColorField": {
+    "category": "Color",
+    "summary": "A colour typed as a code (hex, optionally RGB, HSL or HSB), with a swatch beside it that opens a ColorPicker.",
+    "enums": {
+      "defaultFormat": {
+        "values": [
+          "hex",
+          "rgb",
+          "hsl",
+          "hsb"
+        ],
+        "default": null
+      },
+      "format": {
+        "values": [
+          "hex",
+          "rgb",
+          "hsl",
+          "hsb"
+        ],
+        "default": null
+      },
+      "placement": {
+        "values": [
+          "bottom",
+          "bottom left",
+          "bottom right",
+          "bottom start",
+          "bottom end",
+          "top",
+          "top left",
+          "top right",
+          "top start",
+          "top end",
+          "left",
+          "left top",
+          "left bottom",
+          "start",
+          "start top",
+          "start bottom",
+          "right",
+          "right top",
+          "right bottom",
+          "end",
+          "end top",
+          "end bottom"
+        ],
+        "default": "bottom end"
+      }
+    },
+    "booleans": [
+      "isDisabled",
+      "isInvalid",
+      "isOptional",
+      "isRequired",
+      "showAdvanced"
+    ]
+  },
+  "ColorPicker": {
+    "category": "Color",
+    "summary": "A colour swatch that opens a picker: a saturation × brightness area and a hue slider, with optional advanced sliders and recent colours.",
+    "enums": {
+      "placement": {
+        "values": [
+          "bottom",
+          "bottom left",
+          "bottom right",
+          "bottom start",
+          "bottom end",
+          "top",
+          "top left",
+          "top right",
+          "top start",
+          "top end",
+          "left",
+          "left top",
+          "left bottom",
+          "start",
+          "start top",
+          "start bottom",
+          "right",
+          "right top",
+          "right bottom",
+          "end",
+          "end top",
+          "end bottom"
+        ],
+        "default": "bottom start"
+      },
+      "size": {
+        "values": [
+          "small",
+          "medium",
+          "large"
+        ],
+        "default": "large"
+      }
+    },
+    "booleans": [
+      "isDisabled",
+      "showAdvanced"
+    ]
+  },
+  "ColorPickerSwatch": {
+    "category": "Color",
+    "summary": "A colour swatch you can press, e.g. the button that opens a ColorPicker, or a recent colour inside one.",
+    "enums": {
+      "size": {
+        "values": [
+          "medium",
+          "small",
+          "large"
+        ],
+        "default": "large"
+      }
+    },
+    "booleans": [
+      "isDisabled"
+    ]
+  },
+  "ColorRangeSlider": {
+    "category": "Color",
+    "summary": "Picks a span of one colour channel, such as a range of hues, with a start and an end thumb.",
+    "enums": {
+      "channel": {
+        "values": [
+          "hue",
+          "saturation",
+          "brightness",
+          "lightness",
+          "red",
+          "green",
+          "blue",
+          "alpha"
+        ],
+        "default": null
+      },
+      "colorSpace": {
+        "values": [
+          "rgb",
+          "hsl",
+          "hsb"
+        ],
+        "default": null
+      }
+    },
+    "booleans": [
+      "isDisabled",
+      "showSwatches",
+      "showValue"
+    ]
+  },
+  "ColorSlider": {
+    "category": "Color",
+    "summary": "Changes one channel of a colour, such as its hue or opacity, along a track that shows the colours on offer.",
+    "enums": {
+      "channel": {
+        "values": [
+          "hue",
+          "saturation",
+          "brightness",
+          "lightness",
+          "red",
+          "green",
+          "blue",
+          "alpha"
+        ],
+        "default": null
+      }
+    },
+    "booleans": [
+      "isDisabled",
+      "showValue"
+    ]
+  },
+  "ColorSwatch": {
+    "category": "Color",
+    "summary": "Shows a colour as a small square, e.g. next to a colour's name or value.",
+    "enums": {
+      "size": {
+        "values": [
+          "small",
+          "medium",
+          "large"
+        ],
+        "default": "medium"
+      },
+      "variant": {
+        "values": [
+          "solid",
+          "outline",
+          "empty"
+        ],
+        "default": "solid"
+      }
+    },
+    "booleans": []
+  },
+  "ComboBox": {
+    "category": "Inputs",
+    "summary": "A text box that suggests options as you type, such as a country or a teammate, for lists too long to scroll.",
+    "enums": {},
+    "booleans": [
+      "allowsCustomValue",
+      "isDisabled",
+      "isInvalid",
+      "isOptional",
+      "isReadOnly",
+      "isRequired"
+    ]
+  },
+  "Heading": {
+    "category": "Typography",
+    "summary": "A page or section heading in the heading font, using the Figma type/heading styles.",
+    "enums": {
+      "level": {
+        "values": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6"
+        ],
+        "default": null
+      },
+      "size": {
+        "values": [
+          "xl",
+          "lg",
+          "md",
+          "base",
+          "sm",
+          "xs"
+        ],
+        "default": null
+      }
+    },
+    "booleans": []
+  },
+  "Icon": {
+    "category": "Data display",
+    "summary": "A line icon from the Themis set (a chosen subset of Lucide), whose stroke and corners follow the theme.",
+    "enums": {
+      "name": {
+        "values": [
+          "arrow-down",
+          "arrow-up",
+          "bell",
+          "calendar",
+          "check",
+          "caret-down",
+          "chevron-down",
+          "chevron-up",
+          "chevrons-up-down",
+          "circle-alert",
+          "circle-check",
+          "copy",
+          "x",
+          "credit-card",
+          "download",
+          "ellipsis-vertical",
+          "external-link",
+          "folder",
+          "heart",
+          "info",
+          "mail",
+          "menu",
+          "minus",
+          "plus",
+          "search",
+          "settings",
+          "shuffle",
+          "trash",
+          "triangle-alert",
+          "upload",
+          "user"
+        ],
+        "default": null
+      },
+      "size": {
+        "values": [
+          "xsmall",
+          "small",
+          "medium",
+          "large",
+          "xlarge"
+        ],
+        "default": "small"
+      }
+    },
+    "booleans": []
+  },
+  "IconButton": {
+    "category": "Actions",
+    "summary": "A button that shows only an icon, for compact actions such as toolbars and table rows.",
+    "enums": {
+      "size": {
+        "values": [
+          "micro",
+          "small",
+          "medium"
+        ],
+        "default": "small"
+      },
+      "tone": {
+        "values": [
+          "brand",
+          "neutral",
+          "danger",
+          "warning",
+          "success",
+          "neutral-inverse"
+        ],
+        "default": "brand"
+      },
+      "variant": {
+        "values": [
+          "default",
+          "outline",
+          "subtle"
+        ],
+        "default": "default"
+      }
+    },
+    "booleans": [
+      "isDisabled"
+    ]
+  },
+  "Modal": {
+    "category": "Overlays",
+    "summary": "A dialog shown on top of the page, which people must respond to or close before going back.",
+    "enums": {
+      "size": {
+        "values": [
+          "small",
+          "medium",
+          "large"
+        ],
+        "default": "medium"
+      },
+      "tone": {
+        "values": [
+          "brand",
+          "danger"
+        ],
+        "default": "brand"
+      }
+    },
+    "booleans": [
+      "hideActionBorder",
+      "showCloseButton"
+    ]
+  },
+  "NumberInput": {
+    "category": "Inputs",
+    "summary": "A number field with up and down buttons, such as a quantity or a number of guests.",
+    "enums": {},
+    "booleans": [
+      "isDisabled",
+      "isInvalid",
+      "isOptional",
+      "isReadOnly",
+      "isRequired"
+    ]
+  },
+  "RadioGroup": {
+    "category": "Inputs",
+    "summary": "Picks exactly one of a few options that are all visible at once, such as a delivery speed or a plan.",
+    "enums": {
+      "orientation": {
+        "values": [
+          "vertical",
+          "horizontal"
+        ],
+        "default": "vertical"
+      }
+    },
+    "booleans": [
+      "isDisabled",
+      "isInvalid",
+      "isOptional",
+      "isReadOnly",
+      "isRequired"
+    ]
+  },
+  "SegmentedControl": {
+    "category": "Selection",
+    "summary": "A row of joined buttons for picking one option that takes effect straight away, such as units or views.",
+    "enums": {
+      "size": {
+        "values": [
+          "micro",
+          "small",
+          "medium"
+        ],
+        "default": "small"
+      }
+    },
+    "booleans": [
+      "isDisabled",
+      "isFullWidth"
+    ]
+  },
+  "Select": {
+    "category": "Inputs",
+    "summary": "Picks one option from a list that opens below the field, such as a country or a role.",
+    "enums": {},
+    "booleans": [
+      "isDisabled",
+      "isInvalid",
+      "isOptional",
+      "isRequired"
+    ]
+  },
+  "Slider": {
+    "category": "Inputs",
+    "summary": "Picks a number from a range by dragging a thumb along a track, such as volume or opacity.",
+    "enums": {},
+    "booleans": [
+      "isDisabled",
+      "showValue"
+    ]
+  },
+  "Switch": {
+    "category": "Selection",
+    "summary": "Turns a setting on or off straight away, such as \"Email notifications\".",
+    "enums": {
+      "labelPosition": {
+        "values": [
+          "right",
+          "left"
+        ],
+        "default": "right"
+      },
+      "size": {
+        "values": [
+          "micro",
+          "small",
+          "medium"
+        ],
+        "default": "small"
+      }
+    },
+    "booleans": [
+      "isDisabled",
+      "isReadOnly"
+    ]
+  },
+  "Table": {
+    "category": "Data display",
+    "summary": "Rows of data in columns, with optional sorting and a row action, such as a list of projects or invoices.",
+    "enums": {},
+    "booleans": [
+      "hideBorder"
+    ]
+  },
+  "Tabs": {
+    "category": "Navigation",
+    "summary": "Switches between panels of related content in the same place, such as \"Overview / Activity / Settings\".",
+    "enums": {},
+    "booleans": [
+      "isDisabled",
+      "isFullWidth"
+    ]
+  },
+  "Text": {
+    "category": "Typography",
+    "summary": "Body text, labels and captions in the body font, using the Figma type/body, type/label and type/caption styles.",
+    "enums": {
+      "variant": {
+        "values": [
+          "body-large",
+          "body-large-bold",
+          "body-medium",
+          "body-medium-bold",
+          "body-base",
+          "body-bold",
+          "label",
+          "caption"
+        ],
+        "default": "body-base"
+      }
+    },
+    "booleans": []
+  },
+  "TextArea": {
+    "category": "Inputs",
+    "summary": "A multi-line text field for longer answers, such as a bio, feedback or a message.",
+    "enums": {},
+    "booleans": [
+      "isDisabled",
+      "isInvalid",
+      "isOptional",
+      "isReadOnly",
+      "isRequired"
+    ]
+  },
+  "TextInput": {
+    "category": "Inputs",
+    "summary": "A single-line text field with a label, optional help text, character count and error message.",
+    "enums": {
+      "type": {
+        "values": [
+          "text",
+          "email",
+          "tel",
+          "url",
+          "search",
+          "password"
+        ],
+        "default": "text"
+      }
+    },
+    "booleans": [
+      "isDisabled",
+      "isInvalid",
+      "isOptional",
+      "isReadOnly",
+      "isRequired"
+    ]
+  },
+  "Toast": {
+    "category": "Feedback",
+    "summary": "A brief message in a corner of the screen about something that just happened, such as \"Changes saved\".",
+    "enums": {
+      "tone": {
+        "values": [
+          "info",
+          "brand",
+          "danger",
+          "warning",
+          "success"
+        ],
+        "default": "info"
+      }
+    },
+    "booleans": [
+      "showCloseButton"
+    ]
+  },
+  "ToggleButton": {
+    "category": "Actions",
+    "summary": "A button that stays on or off, such as a filter or a formatting control.",
+    "enums": {
+      "size": {
+        "values": [
+          "micro",
+          "small",
+          "medium"
+        ],
+        "default": "small"
+      }
+    },
+    "booleans": [
+      "isDeselectable",
+      "isDisabled"
+    ]
+  },
+  "Tooltip": {
+    "category": "Overlays",
+    "summary": "A short hint about a control, shown when it is hovered or focused, such as \"Copy link\" on an icon button.",
+    "enums": {
+      "placement": {
+        "values": [
+          "top",
+          "bottom",
+          "left",
+          "right",
+          "top start",
+          "top end",
+          "bottom start",
+          "bottom end"
+        ],
+        "default": "top"
+      }
+    },
+    "booleans": []
+  },
+  "UnitInput": {
+    "category": "Inputs",
+    "summary": "A number with its unit in one box, such as a weight in kg or lb, or a length in cm or in.",
+    "enums": {},
+    "booleans": [
+      "isDisabled",
+      "isInvalid",
+      "isOptional",
+      "isReadOnly",
+      "isRequired"
+    ]
+  }
+}

@@ -1,5 +1,5 @@
 import * as stylex from '@stylexjs/stylex';
-import { useDeferredValue, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { lazy, Suspense, useDeferredValue, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import {
   Button,
   Modal,
@@ -24,6 +24,8 @@ import { initialConfig } from './initial-config';
 import { type ColorFormats, loadColorFormats, loadPreviewShare, loadSaved, save, saveColorFormats, savePreviewShare } from './storage';
 import { ThemeSettingsForm } from './SettingsPanel';
 import { SettingsSim, type SimView } from './SettingsSim';
+
+const ComponentsPage = lazy(() => import('./components-page/ComponentsPage'));
 import { ThemeNameField, ThemePicker } from './ThemeBar';
 
 /** A theme being named. New and duplicated themes aren't in the file until the name is confirmed. */
@@ -260,20 +262,28 @@ export function App() {
       {...stylex.props(styles.preview, layout === 'mobile' && styles.previewMobile)}
       aria-label={`Preview of the ${draft ? 'new' : selected} theme`}
     >
-      <ThemeProvider theme={previewTheme} xstyle={[styles.previewTheme, darkBackground && styles.previewThemeDark]}>
-        {page === 'simulator' ? (
+      {page === 'simulator' ? (
+        <ThemeProvider theme={previewTheme} xstyle={[styles.previewTheme, darkBackground && styles.previewThemeDark]}>
           <SettingsSim
             lightenBrandArt={darkBrand}
             view={simView}
             onViewChange={setSimView}
             toastPlacement={layout === 'tablet' ? 'top-right' : 'bottom-right'}
           />
-        ) : (
-          <div {...stylex.props(styles.placeholder)}>
-            <Text variant="body-large">The {page} view is coming soon.</Text>
-          </div>
-        )}
-      </ThemeProvider>
+        </ThemeProvider>
+      ) : (
+        // In the tool's own style, with each component in a sandbox that takes the theme. Loaded on demand: it brings
+        // every component's stories with it.
+        <Suspense
+          fallback={
+            <div {...stylex.props(styles.placeholder)}>
+              <Text variant="body-large">Loading the components…</Text>
+            </div>
+          }
+        >
+          <ComponentsPage theme={previewTheme} />
+        </Suspense>
+      )}
     </main>
   );
 

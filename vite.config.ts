@@ -8,6 +8,8 @@ import { playwright } from '@vitest/browser-playwright';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 
+import { storiesWithoutTests } from './apps/config/stories-without-tests';
+
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
@@ -51,6 +53,8 @@ export default defineConfig({
       {
         extends: true,
         resolve: { alias: { 'themis-ds': path.join(dirname, 'src/index.ts') } },
+        // As in the app (apps/config/vite.config.ts): stories render there without Storybook's test library.
+        plugins: [storiesWithoutTests()],
         test: {
           name: 'config',
           include: ['apps/config/src/**/*.test.tsx'],

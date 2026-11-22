@@ -5,6 +5,8 @@ import stylex from '@stylexjs/unplugin';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 
+import { storiesWithoutTests } from './stories-without-tests';
+
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(dirname, '../..');
 
@@ -21,8 +23,14 @@ export default defineConfig({
       unstable_moduleResolution: { type: 'commonJS', rootDir: repoRoot },
     }),
     react(),
+    // The components page renders stories but never runs their tests: skip Storybook's test library there.
+    storiesWithoutTests(),
   ],
-  resolve: { alias: { 'themis-ds': path.join(repoRoot, 'src/index.ts') } },
+  resolve: {
+    alias: {
+      'themis-ds': path.join(repoRoot, 'src/index.ts'),
+    },
+  },
   server: { port: 5174 },
   build: { outDir: path.join(dirname, 'dist'), emptyOutDir: true },
 });
