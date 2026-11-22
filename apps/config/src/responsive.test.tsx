@@ -165,3 +165,18 @@ describe('tablet (48em to 64em)', () => {
     await expect.element(page.getByRole('separator', { name: 'Resize the preview' })).toHaveAttribute('aria-valuenow', '85');
   });
 });
+
+describe('changing layout', () => {
+  test('the current page keeps its underline after the window has been phone-width (it shrank to nothing)', async () => {
+    renderApp();
+    await page.getByRole('link', { name: 'components' }).click();
+    const underline = () => document.querySelector<HTMLElement>('nav[aria-label="Pages"] > span[aria-hidden]');
+    const link = () => document.querySelector('nav[aria-label="Pages"] a[aria-current="page"]')!;
+    await expect.poll(() => underline()?.offsetWidth).toBe(Math.round(link().getBoundingClientRect().width));
+    await page.viewport(402, 874);
+    await expect.element(page.getByRole('button', { name: 'Pages' })).toBeVisible();
+    await page.viewport(1440, 1000);
+    await expect.poll(() => link()?.textContent).toBe('components');
+    await expect.poll(() => underline()?.offsetWidth).toBe(Math.round(link().getBoundingClientRect().width));
+  });
+});

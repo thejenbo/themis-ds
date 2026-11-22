@@ -48,7 +48,9 @@ export function AppHeader({ page, compact = false, besideSidebar = false, brand,
     const observer = new ResizeObserver(place);
     observer.observe(el);
     return () => observer.disconnect();
-  }, [page]);
+    // The links are new ones after the header has been compact (a phone-width window), so it measures again then too;
+    // otherwise it kept measuring the removed link and the underline shrank to nothing.
+  }, [page, compact]);
 
   return (
     <header {...stylex.props(styles.header, compact && styles.headerCompact, besideSidebar && styles.headerBesideSidebar)}>
