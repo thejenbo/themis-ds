@@ -168,17 +168,19 @@ const styles = stylex.create({
     borderBlockEndStyle: 'solid',
     borderBlockEndColor: color.border,
   },
+  // The wordmark stands on the same ground as the scales: its baseline lines up with the bottom of their base (an
+  // SVG's baseline is its bottom edge).
   brand: {
     position: 'relative',
     display: 'flex',
-    alignItems: 'center',
+    alignItems: 'baseline',
     gap: spacing.xs,
     color: color.text,
     textDecoration: 'none',
     flexShrink: 0,
   },
   // The scales (48 × 40): 30px tall beside the 32px wordmark line, 24px tall in the compact header.
-  brandLink: { position: 'relative', display: 'flex', alignItems: 'center', gap: spacing.xs, color: color.text, textDecoration: 'none' },
+  brandLink: { position: 'relative', display: 'flex', alignItems: 'baseline', gap: spacing.xs, color: color.text, textDecoration: 'none' },
   scalesButton: { position: 'relative', display: 'inline-flex', padding: 0, borderWidth: 0, backgroundColor: 'transparent' },
   logomark: { width: '2.25rem', height: 'auto' },
   logomarkCompact: { width: '1.8rem' },
