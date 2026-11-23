@@ -132,7 +132,7 @@ export default defineComponentDocs({
     differences: [
       { topic: 'Height', figma: 'Fixed example heights.', code: 'Stays spacing.lg from the top and bottom of the screen; the content scrolls.', action: 'annotate-figma', done: '2026-11-13' },
       { topic: 'Overlay blur', figma: 'overlay-tint with a 10px blur.', code: 'The same, but the blur is removed when the user asks for reduced transparency.', action: 'annotate-figma', done: '2026-11-13' },
-      { topic: 'Close button', figma: 'A `Close Button` property.', code: '`showCloseButton` is on by default when there are no actions, and can be shown alongside actions too.', action: 'annotate-figma', done: '2026-11-13' },
+      { topic: 'Close button', figma: 'A `Close Button` variant, which can be combined with actions when there is a header (added 2026-11-23).', code: '`showCloseButton` is on by default when there are no actions, and can be shown alongside actions too.', action: 'annotate-figma', done: '2026-11-13' },
     ],
   },
 

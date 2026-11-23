@@ -145,7 +145,7 @@ export default defineComponentDocs({
 
   related: ['IconButton', 'Button', 'Modal', 'Toast'],
   notes: [
-    'Items: Figma "Action Menu Item" (node 2194-12252). `state` comes from interaction (hovered and focused are both the highlighted item, since React Aria moves focus with the pointer); `danger` is `isDanger`; `iconLeft` is on when `icon` is passed.',
+    'Items: Figma "Action Menu Item" (node 2194-12252). `state` comes from interaction (hovered and focused are both the highlighted item, since React Aria moves focus with the pointer); `danger` is `isDanger`; `iconLeft` is on when `icon` is passed (the "Icon Left" slot holds it); `trailing` shows a "Trailing" slot for content after the label in the children, such as an external-link icon on a link that opens a new tab.',
     'Trigger: Figma "Action Menu Trigger" (node 2194-12854), a micro subtle IconButton, with the menu 8px below it, lined up with its start edge.',
     'Separators, section headings, submenus and checkable items are not designed yet.',
   ],

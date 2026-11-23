@@ -145,7 +145,7 @@ export default defineComponentDocs({
 
   related: ['TextInput', 'SegmentedControl', 'ActionMenu'],
   notes: [
-    'Built on Figma "Input Base" / "Input Box" (shared with TextInput, src/components/TextInput/field-base.ts), "Dropdown" (node 1502-172), "Dropdown Option" (node 1502-145, `iconLeft` variant for `icon`) and "Dropdown Divider" (node 2421-2384).',
+    'Built on Figma "Input Base" / "Input Box" (shared with TextInput, src/components/TextInput/field-base.ts), "Dropdown" (node 1502-172), "Dropdown Option" (node 1502-145: `iconLeft` with an "Icon Left" slot for `icon`, which takes any decorative content such as color dots; `trailing` with a "Trailing" slot for extra children after the label, such as a muted caption) and "Dropdown Divider" (node 2421-2384).',
     'Figma\'s `empty` variants show the placeholder; `focused` and `opened` come from interaction.',
     'The caret stays the same while the list is open (Figma).',
     'The highlight tint matches ActionMenu: brand-tint, the brand color at 7% opacity, over the list.',
