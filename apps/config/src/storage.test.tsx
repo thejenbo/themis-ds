@@ -11,7 +11,7 @@ const KEY = 'themis-config:v1';
 describe('saving work in the browser', () => {
   test('changes are saved shortly after they are made', async () => {
     renderApp();
-    await chooseMenuItem('Duplicate');
+    await chooseMenuItem('Duplicate "light"');
     await userEvent.keyboard('{Enter}');
     await wait(500);
     const saved = JSON.parse(localStorage.getItem(KEY)!);

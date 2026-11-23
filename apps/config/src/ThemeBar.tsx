@@ -62,22 +62,22 @@ export function ThemePicker({ themes, selected, onSelect, onAdd, onRename, onDup
           <Tooltip>Theme actions</Tooltip>
         </TooltipTrigger>
         <ActionMenu placement="bottom end">
-          <ActionMenuItem id="rename" onAction={onRename}>
-            Rename
+          <ActionMenuItem id="rename" textValue={`Rename "${selected}"`} aria-label={`Rename "${selected}"`} onAction={onRename}>
+            <QuotedName verb="Rename" name={selected} />
           </ActionMenuItem>
-          <ActionMenuItem id="duplicate" onAction={onDuplicate}>
-            Duplicate
+          <ActionMenuItem id="duplicate" textValue={`Duplicate "${selected}"`} aria-label={`Duplicate "${selected}"`} onAction={onDuplicate}>
+            <QuotedName verb="Duplicate" name={selected} />
           </ActionMenuItem>
           <ActionMenuItem id="add" onAction={onAdd}>
             Add new theme
           </ActionMenuItem>
           {/* A theme file needs at least one theme. */}
-          <ActionMenuItem id="delete" isDanger isDisabled={names.length < 2} onAction={onDelete}>
-            Delete
+          <ActionMenuItem id="delete" textValue={`Delete "${selected}"`} aria-label={`Delete "${selected}"`} isDanger isDisabled={names.length < 2} onAction={onDelete}>
+            <QuotedName verb="Delete" name={selected} />
           </ActionMenuItem>
           {/* Replaces every theme with the starting ones (after a confirm). */}
           <ActionMenuItem id="start-over" isDanger onAction={onStartOver}>
-            Reset themes
+            Reset all themes
           </ActionMenuItem>
         </ActionMenu>
       </ActionMenuTrigger>
@@ -136,9 +136,28 @@ export function ThemeNameField({ label, value, error, confirmLabel, onChange, on
   );
 }
 
+/**
+ * A menu label naming the current theme, e.g. Rename "dark". A long name is cut short with an ellipsis inside the
+ * quotes (Delete "really long the…"), so the action and both quotes always show. The menu is at most 20rem wide and
+ * never wider than the window. The item's `aria-label` gives the same words as one name (the spans, being flex items,
+ * would otherwise be read with spaces between them).
+ */
+function QuotedName({ verb, name }: { verb: string; name: string }) {
+  return (
+    <span {...stylex.props(styles.quoted)}>
+      <span {...stylex.props(styles.keep)}>{verb} "</span>
+      <span {...stylex.props(styles.name)}>{name}</span>
+      <span {...stylex.props(styles.keep)}>"</span>
+    </span>
+  );
+}
+
 const styles = stylex.create({
   // Buttons line up with the box, not the label, and stay put when an error appears under the field.
   row: { display: 'flex', alignItems: 'flex-start', gap: spacing.xs },
   grow: { flexGrow: 1, minWidth: 0 },
+  quoted: { display: 'flex', minWidth: 0, whiteSpace: 'pre' },
+  keep: { flexShrink: 0 },
+  name: { minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis' },
   button: { flexShrink: 0, marginBlockStart: `calc(${font.lineHeightLabel} + ${spacing['2xs']})` },
 });

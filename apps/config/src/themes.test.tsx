@@ -100,7 +100,7 @@ describe('naming a new theme', () => {
 describe('theme actions', () => {
   test('Duplicate prefills "<name> copy" with the same values', async () => {
     renderApp();
-    await chooseMenuItem('Duplicate');
+    await chooseMenuItem('Duplicate "light"');
     await expect.element(nameField()).toHaveValue('light copy');
     await userEvent.keyboard('{Enter}');
     await expect.poll(themeNames).toEqual(['light', 'dark', 'light copy']);
@@ -109,7 +109,7 @@ describe('theme actions', () => {
 
   test('Rename keeps the theme in its place and refuses a taken name', async () => {
     renderApp();
-    await chooseMenuItem('Rename');
+    await chooseMenuItem('Rename "light"');
     await expect.element(page.getByRole('textbox', { name: 'Theme name' })).toHaveValue('light');
     await page.getByRole('textbox', { name: 'Theme name' }).fill('dark');
     await userEvent.keyboard('{Enter}');
@@ -121,21 +121,55 @@ describe('theme actions', () => {
 
   test('Delete asks first, then selects the neighboring theme; the last theme can’t be deleted', async () => {
     renderApp();
-    await chooseMenuItem('Delete');
+    await chooseMenuItem('Delete "light"');
     await expect.element(page.getByRole('alertdialog', { name: 'Delete the light theme?' })).toBeVisible();
     await page.getByRole('button', { name: 'Delete', exact: true }).click();
     await expect.poll(themeNames).toEqual(['dark']);
     await expect.element(themeSelect()).toHaveTextContent('dark');
     await themeActions().click();
-    await expect.element(menuItem('Delete')).toHaveAttribute('aria-disabled', 'true');
+    await expect.element(menuItem('Delete "dark"')).toHaveAttribute('aria-disabled', 'true');
   });
 
-  test('Reset themes restores the starting themes after a confirm', async () => {
+  test('the actions name the theme; a long name is cut short inside the quotes, and the menu stays on screen', async () => {
+    await page.viewport(375, 812);
+    try {
+      renderApp();
+      await themeActions().click();
+      const labels = page.getByRole('menuitem').elements().map((el) => el.textContent);
+      expect(labels).toEqual(['Rename "light"', 'Duplicate "light"', 'Add new theme', 'Delete "light"', 'Reset all themes']);
+      await userEvent.keyboard('{Escape}');
+
+      const long = 'a really long theme name that will not fit in the menu';
+      await chooseMenuItem('Rename "light"');
+      await nameField().fill(long);
+      await userEvent.keyboard('{Enter}');
+      await themeActions().click();
+      const item = menuItem(`Delete "${long}"`);
+      await expect.element(item).toBeVisible();
+      const spans = [...item.element().querySelectorAll('span')];
+      const name = spans.find((s) => s.textContent === long)!;
+      const close = name.nextElementSibling!;
+      expect(name.previousElementSibling!.textContent).toBe('Delete "');
+      expect(close.textContent).toBe('"');
+      // The name is cut short (with an ellipsis), but the closing quote still shows inside the item.
+      expect(name.scrollWidth).toBeGreaterThan(name.clientWidth);
+      expect(getComputedStyle(name).textOverflow).toBe('ellipsis');
+      const itemBox = item.element().getBoundingClientRect();
+      expect(close.getBoundingClientRect().right).toBeLessThanOrEqual(itemBox.right);
+      const menu = item.element().closest('[role="menu"]')!.getBoundingClientRect();
+      expect(menu.left).toBeGreaterThanOrEqual(0);
+      expect(menu.right).toBeLessThanOrEqual(375);
+    } finally {
+      await page.viewport(1440, 1000);
+    }
+  });
+
+  test('Reset all themes restores the starting themes after a confirm', async () => {
     renderApp();
-    await chooseMenuItem('Duplicate');
+    await chooseMenuItem('Duplicate "light"');
     await userEvent.keyboard('{Enter}');
-    await chooseMenuItem('Reset themes');
-    await page.getByRole('alertdialog').getByRole('button', { name: 'Reset themes' }).click();
+    await chooseMenuItem('Reset all themes');
+    await page.getByRole('alertdialog', { name: 'Reset all themes?' }).getByRole('button', { name: 'Reset all themes' }).click();
     await expect.poll(themeNames).toEqual(['light', 'dark']);
     await expect.element(themeSelect()).toHaveTextContent('light');
   });

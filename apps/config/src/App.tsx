@@ -451,7 +451,7 @@ export function App() {
       </Modal>
 
       <Modal
-        title="Reset themes?"
+        title="Reset all themes?"
         tone="danger"
         size="small"
         isOpen={dialog === 'start-over'}
@@ -471,7 +471,7 @@ export function App() {
                 focusThemeSelect();
               }}
             >
-              Reset themes
+              Reset all themes
             </Button>
           </>
         )}

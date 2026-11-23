@@ -116,12 +116,12 @@ describe('color code control (HEX, RGB, HSL, HSB)', () => {
   test('renaming or duplicating a theme keeps its codes', async () => {
     renderApp();
     await codeControl().getByRole('radio', { name: 'RGB' }).click();
-    await chooseMenuItem('Duplicate');
+    await chooseMenuItem('Duplicate "light"');
     await expect.poll(() => code('Brand')).toMatch(/^\d+, \d+, \d+$/);
     await userEvent.keyboard('{Enter}');
     await expect.element(themeSelect()).toHaveTextContent('light copy');
     await expect.poll(() => code('Brand')).toMatch(/^\d+, \d+, \d+$/);
-    await chooseMenuItem('Rename');
+    await chooseMenuItem('Rename "light copy"');
     await nameField().fill('lilac');
     await userEvent.keyboard('{Enter}');
     await expect.element(themeSelect()).toHaveTextContent('lilac');
