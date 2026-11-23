@@ -438,13 +438,36 @@ describe('simulator', () => {
     renderApp();
     const art = async () => {
       await preview();
-      return getComputedStyle(document.querySelector('[data-sim-part="scales"] svg path')!).fill;
+      // A brand-filled part: the first star's fill.
+      return getComputedStyle(document.querySelector('[data-sim-part="scales"] [data-part="star"] path')!).fill;
     };
     // Light theme: #7406EB, halfway to white. Dark theme: #EBBFF8, as is.
     await expect.poll(art).toMatch(/color\(srgb 0\.72\d* 0\.5[01]\d* 0\.96\d*\)|rgb\(186, 13[01], 245\)/);
     await themeSelect().click();
     await page.getByRole('option', { name: 'dark' }).click();
     await expect.poll(art).toBe('rgb(235, 191, 248)');
+  });
+
+  test('the scales art’s outlines take the theme’s border width (none when borderless); the strings stay as drawn', async () => {
+    renderApp();
+    await preview();
+    const outline = () => document.querySelector('[data-sim-part="scales"] svg path[mask]') as SVGPathElement;
+    await expect.poll(() => outline()).toBeTruthy();
+    // An inside stroke: twice the width, masked to its shape, not scaled with the drawing.
+    expect(outline().getAttribute('vector-effect')).toBe('non-scaling-stroke');
+    // Medium: border/width/sm is 2px, so a 4px stroke shows 2px inside the shape.
+    expect(getComputedStyle(outline()).strokeWidth).toBe('4px');
+    await page.getByRole('button', { name: /Width/ }).click();
+    await page.getByRole('option', { name: 'Large - Bold' }).click();
+    await expect.poll(() => getComputedStyle(outline()).strokeWidth).toBe('6px');
+    // Borderless: no outlines at all.
+    await page.getByRole('button', { name: /Width/ }).click();
+    await page.getByRole('option', { name: 'None - Borderless' }).click();
+    await expect.poll(() => getComputedStyle(outline()).strokeWidth).toBe('0px');
+    // The strings are filled shapes with no stroke, so they don't change.
+    const string = document.querySelector('[data-sim-part="scales"] svg path[fill-rule="evenodd"]:not([mask])') as SVGPathElement;
+    expect(getComputedStyle(string).strokeWidth).toBe('1px');
+    expect(string.getAttribute('vector-effect')).toBeNull();
   });
 
   test('the title has a 1px outline in the background colour, painted under the letters', async () => {

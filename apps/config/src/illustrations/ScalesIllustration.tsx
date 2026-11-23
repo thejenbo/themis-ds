@@ -1,279 +1,220 @@
-// Generated from Figma (Scales Illustration, node 1183:3249). Brand fills follow color.brand and lines color.border.
 import * as stylex from '@stylexjs/stylex';
-import { useId } from 'react';
+import { type ReactNode, useId, useRef } from 'react';
 
+import { border as borderWidth } from '../../../../src/tokens/borderWidth.stylex';
 import { color } from '../../../../src/tokens/colorTheme.stylex';
+import { duration } from '../../../../src/tokens/motion.stylex';
+import { HANG, LEFT_ARM, type MarkPart, POST, RIGHT_ARM } from './logomark-shapes';
+import { TILT_DEG } from './Logomark';
+import { ARM_SHINES, BASE_SHINES, BASE_STEPS, FINIAL_SHINE, PANS, POST_FULL, ROD_SHINE } from './scales-illustration-shapes';
+import { starPath } from './star';
+import { useTwinkleOnThemeChange } from './twinkle';
+import type { ThemeRadius } from 'themis-ds';
 
 const c = { brand: color.brand, line: color.border } as unknown as Record<'brand' | 'line', string>;
 /** The brand 50% of the way to white: a dark brand would otherwise read as a heavy blot. */
 export const lightBrand = `color-mix(in srgb, ${c.brand} 50%, white)`;
+/**
+ * The outlines take the theme's border width (border/width/sm: none in borderless themes, 1px small, 2px medium, 3px
+ * large) and stay that width on screen whatever size the illustration is drawn at. The strings keep their drawn
+ * lines in every theme.
+ */
+const width = borderWidth.widthSm as unknown as string;
 
 export interface ScalesIllustrationProps {
   /** Rendered width; the height follows the drawing's proportions. */
   width?: number | string;
   /** Lighten the brand fills by 50%, for dark brands. */
   lightenBrand?: boolean;
+  /** Tip the scales, as the logomark does while a theme colour fails contrast. */
+  isUnbalanced?: boolean;
+  /**
+   * `rocking`: the scales tip back and forth and the stars twinkle, over and over (a loading screen). Still with
+   * reduced motion.
+   * @default 'still'
+   */
+  motion?: 'still' | 'rocking';
+  /** The theme's radius: the stars' points are sharp with none, softer from small to large. */
+  radius?: ThemeRadius;
   xstyle?: stylex.StyleXStyles;
 }
 
-/** Decoration only: hidden from assistive tech. */
-export function ScalesIllustration({ width, lightenBrand = false, xstyle }: ScalesIllustrationProps) {
+/**
+ * The stars: where Figma has them, the two small ones a little bigger (bottom left by a quarter, far left by half) so
+ * a large theme's inside outline still leaves the brand showing.
+ */
+const STAR_SPOTS = [
+  { cx: 112.07, cy: 377.97, r: 22.97 * 1.25 },
+  { cx: 346.39, cy: 314.57, r: 30.91 },
+  { cx: 12.11, cy: 188.18, r: 11.3 * 1.5 },
+];
+
+/** How each pan moves with the end of its arm when the arms turn by `deg` around the top of the post. */
+function panShift(i: number, deg: number) {
+  const [x, y] = HANG[i]!;
+  const a = (deg * Math.PI) / 180;
+  const dx = x - 240.24;
+  const dy = y - 104;
+  return `translate(${(240.24 + dx * Math.cos(a) - dy * Math.sin(a) - x).toFixed(2)}px, ${(104 + dx * Math.sin(a) + dy * Math.cos(a) - y).toFixed(
+    2,
+  )}px)`;
+}
+const TIPPED = [panShift(0, -TILT_DEG), panShift(1, -TILT_DEG)];
+
+/**
+ * The Themis scales (Figma 2484:2768): a finial, curved arms and pans hung on strings, a stepped base, sparkles and
+ * highlights. The logomark's drawing in full, and it moves the same way: the arms turn 8° when a colour fails contrast
+ * and each pan moves with the end of its arm. The stars twinkle when the theme changes. Decoration only: hidden from
+ * assistive tech.
+ */
+export function ScalesIllustration({
+  width: renderWidth,
+  lightenBrand = false,
+  isUnbalanced = false,
+  motion = 'still',
+  radius = 'medium',
+  xstyle,
+}: ScalesIllustrationProps) {
   const uid = useId().replace(/[^a-zA-Z0-9_-]/g, '');
-  const id = (name: string) => `${uid}${name}`;
+  const shine = { fill: 'white', fillOpacity: 0.5 };
   const brand = lightenBrand ? lightBrand : c.brand;
-  return (
-    <svg
-      viewBox="0 0 470 487"
-      width={width}
-      fill="none"
-      aria-hidden="true"
-      focusable="false"
-      {...stylex.props(styles.svg, xstyle)}
+  const rocking = motion === 'rocking';
+  const stars = [useRef<SVGGElement>(null), useRef<SVGGElement>(null), useRef<SVGGElement>(null)];
+  useTwinkleOnThemeChange(stars, !rocking);
+
+  // A shape with an inside stroke (the Figma export's): twice the width, masked to the shape. Anything in `shine` is
+  // drawn between the fill and the outline, so it stays inside the outline's edge.
+  const inside = (key: string, d: string, shine?: ReactNode, evenOdd = false) => (
+    <g key={key}>
+      <path d={d} fillRule={evenOdd ? 'evenodd' : undefined} style={{ fill: brand }} />
+      {shine}
+      <mask id={`${uid}${key}`} fill="white">
+        <path d={d} fillRule={evenOdd ? 'evenodd' : undefined} />
+      </mask>
+      <path d={d} mask={`url(#${uid}${key})`} vectorEffect="non-scaling-stroke" style={{ stroke: c.line, strokeWidth: `calc(2 * ${width})` }} />
+    </g>
+  );
+  const at = ({ at: [x, y] }: MarkPart, d: string, attrs: React.SVGProps<SVGPathElement>) => (
+    <path d={d} transform={`translate(${x} ${y})`} vectorEffect="non-scaling-stroke" {...attrs} />
+  );
+  // The arms and post join without a seam: their outlines first (a stroke under the fill), then their fills.
+  const outline = { style: { fill: c.line, stroke: c.line, strokeWidth: `calc(2 * ${width})`, strokeLinejoin: 'round' as const } };
+  const fill = { style: { fill: brand } };
+  const arms = (content: ReactNode) => (
+    <g data-part="arms" {...stylex.props(styles.turning, styles.arms, rocking ? styles.armsRocking : isUnbalanced && styles.armsTipped)}>
+      {content}
+    </g>
+  );
+  const pan = (i: number, content: ReactNode) => (
+    <g
+      key={i}
+      data-part="pan"
+      {...stylex.props(styles.turning, rocking && (i === 0 ? styles.leftPanRocking : styles.rightPanRocking))}
+      style={!rocking && isUnbalanced ? { transform: TIPPED[i] } : undefined}
     >
-      <path
-        d="M118.76 153.314C118.772 153.314 118.784 153.314 118.796 153.314V153.314C124.57 153.35 125.759 156.205 125.245 159.447C124.831 162.057 121.659 167.131 118.725 168.177C118.725 168.177 118.724 168.177 118.724 168.177C118.724 168.177 118.724 168.177 118.724 168.177C118.724 168.177 118.724 168.177 118.724 168.177L118.724 168.177V168.177C115.79 167.133 112.689 162.057 112.274 159.447C111.76 156.205 112.95 153.35 118.724 153.314V153.314C118.736 153.314 118.748 153.314 118.76 153.314Z"
-        fillRule="evenodd"
-        clipRule="evenodd"
-        strokeWidth="0.999998"
-        style={{ fill: brand, stroke: c.line }}
-      />
-      <path
-        d="M398.174 153.314C398.186 153.314 398.198 153.314 398.21 153.314V153.314C403.984 153.35 405.174 156.205 404.659 159.447C404.245 162.056 401.075 167.128 398.143 168.176C398.141 168.176 398.14 168.177 398.138 168.177C398.138 168.177 398.138 168.177 398.138 168.177C398.138 168.177 398.138 168.177 398.138 168.177L398.138 168.177V168.177C395.204 167.133 392.103 162.057 391.689 159.447C391.174 156.205 392.364 153.35 398.138 153.314V153.314C398.15 153.314 398.162 153.314 398.174 153.314Z"
-        fillRule="evenodd"
-        clipRule="evenodd"
-        strokeWidth="0.999998"
-        style={{ fill: brand, stroke: c.line }}
-      />
-      <use href={`#${id('stroke0_1183_3249')}`} style={{ fill: brand }} />
-      <mask id={id('stroke1_1183_3249')} fill="white">
-        <use href={`#${id('stroke0_1183_3249')}`} />
-      </mask>
-      <path
-        d="M335.497 463.951V461.927C335.497 456.404 331.02 451.927 325.497 451.927H192.27C186.747 451.927 182.27 456.404 182.27 461.927V463.951H335.497Z"
-        strokeWidth="2"
-        mask={`url(#${id('stroke1_1183_3249')})`}
-        style={{ stroke: c.line }}
-      />
-      <use href={`#${id('stroke2_1183_3249')}`} style={{ fill: brand }} />
-      <mask id={id('stroke3_1183_3249')} fill="white">
-        <use href={`#${id('stroke2_1183_3249')}`} />
-      </mask>
-      <path
-        d="M352.522 486.999V480.945C352.522 469.9 343.568 460.945 332.522 460.945H186.246C175.201 460.945 166.246 469.9 166.246 480.945V486.999H352.522Z"
-        strokeWidth="2"
-        mask={`url(#${id('stroke3_1183_3249')})`}
-        style={{ stroke: c.line }}
-      />
-      <use href={`#${id('stroke4_1183_3249')}`} style={{ fill: brand }} />
-      <mask id={id('stroke5_1183_3249')} fill="white">
-        <use href={`#${id('stroke4_1183_3249')}`} />
-      </mask>
-      <path
-        d="M113.425 397.73L96.2662 404.083C95.8311 404.244 95.8311 404.859 96.2662 405.021L113.425 411.373C113.561 411.424 113.669 411.532 113.72 411.669L120.069 428.836C120.23 429.271 120.846 429.271 121.007 428.836L127.355 411.669C127.406 411.532 127.514 411.424 127.651 411.373L144.809 405.021C145.244 404.859 145.244 404.244 144.809 404.083L127.651 397.73C127.514 397.679 127.406 397.571 127.355 397.435L121.007 380.267C120.846 379.832 120.23 379.832 120.069 380.267L113.72 397.435C113.669 397.571 113.561 397.679 113.425 397.73Z"
-        strokeWidth="2"
-        mask={`url(#${id('stroke5_1183_3249')})`}
-        style={{ stroke: c.line }}
-      />
-      <use href={`#${id('stroke6_1183_3249')}`} style={{ fill: brand }} />
-      <mask id={id('stroke7_1183_3249')} fill="white">
-        <use href={`#${id('stroke6_1183_3249')}`} />
-      </mask>
-      <path
-        d="M363.14 327.569L339.768 336.222C339.333 336.383 339.333 336.999 339.768 337.16L363.14 345.813C363.277 345.864 363.385 345.972 363.435 346.108L372.083 369.493C372.244 369.928 372.86 369.928 373.021 369.493L381.669 346.108C381.72 345.972 381.828 345.864 381.965 345.813L405.336 337.16C405.771 336.999 405.771 336.383 405.336 336.222L381.965 327.569C381.828 327.518 381.72 327.41 381.669 327.273L373.021 303.889C372.86 303.454 372.244 303.454 372.083 303.889L363.435 327.273C363.385 327.41 363.277 327.518 363.14 327.569Z"
-        strokeWidth="2"
-        mask={`url(#${id('stroke7_1183_3249')})`}
-        style={{ stroke: c.line }}
-      />
-      <use href={`#${id('stroke8_1183_3249')}`} style={{ fill: brand }} />
-      <mask id={id('stroke9_1183_3249')} fill="white">
-        <use href={`#${id('stroke8_1183_3249')}`} />
-      </mask>
-      <path
-        d="M9.2873 197.974L1.26644 200.944C0.831249 201.105 0.831248 201.721 1.26644 201.882L9.2873 204.852C9.42415 204.902 9.53204 205.01 9.58266 205.147L12.5503 213.172C12.7114 213.607 13.3272 213.607 13.4883 213.172L16.4559 205.147C16.5066 205.01 16.6145 204.902 16.7513 204.852L24.7722 201.882C25.2074 201.721 25.2074 201.105 24.7722 200.944L16.7513 197.974C16.6145 197.924 16.5066 197.816 16.4559 197.679L13.4883 189.654C13.3272 189.219 12.7114 189.219 12.5503 189.654L9.58266 197.679C9.53204 197.816 9.42415 197.924 9.2873 197.974Z"
-        strokeWidth="2"
-        mask={`url(#${id('stroke9_1183_3249')})`}
-        style={{ stroke: c.line }}
-      />
-      <use href={`#${id('stroke10_1183_3249')}`} style={{ fill: brand }} />
-      <mask id={id('stroke11_1183_3249')} fill="white">
-        <use href={`#${id('stroke10_1183_3249')}`} />
-      </mask>
-      <path
-        d="M251.373 70.9381V100.876C250.146 100.661 248.828 100.593 247.465 100.635C244.349 100.731 239.361 102.11 235.336 104.102C226.099 103.272 214.937 104.203 201.086 109.371C196.856 110.949 192.545 113.477 188.239 116.313C185.214 118.305 182.015 120.571 178.745 122.888L178.744 122.888L178.744 122.888L178.737 122.893C177.368 123.863 175.986 124.842 174.599 125.814C165.021 132.522 154.616 139.289 142.87 143.335C131.244 147.339 118.285 148.679 103.531 144.41C89.6059 140.382 73.7451 131.258 55.7304 114.028C53.7304 112.115 50.5615 112.11 48.6052 114.067C46.6505 116.023 46.6478 119.199 48.6441 121.113C67.5465 139.228 84.8228 149.429 100.749 154.037C117.76 158.958 132.843 157.386 146.129 152.81C159.294 148.276 170.672 140.796 180.342 134.023C181.831 132.98 183.268 131.962 184.662 130.974L184.672 130.967L184.685 130.958L184.691 130.954L184.691 130.954C187.892 128.686 190.869 126.577 193.745 124.683C197.87 121.966 201.43 119.937 204.585 118.76C216.814 114.198 226.351 113.414 234.022 114.047C237.68 116.883 242.584 119.31 245.749 119.978C247.72 120.395 249.639 120.558 251.373 120.324V452.929H265.393V120.266C267.223 120.58 269.279 120.425 271.394 119.978C274.56 119.31 279.463 116.883 283.121 114.047C290.792 113.414 300.329 114.198 312.558 118.76C315.714 119.937 319.273 121.966 323.398 124.683C326.274 126.577 329.249 128.685 332.45 130.952L332.452 130.953L332.453 130.954L332.458 130.958L332.46 130.959L332.467 130.964C333.865 131.955 335.307 132.976 336.801 134.023C346.471 140.796 357.849 148.276 371.014 152.81C384.3 157.386 399.383 158.958 416.394 154.037C432.32 149.429 449.597 139.228 468.499 121.113C470.495 119.199 470.493 116.023 468.538 114.067C466.582 112.11 463.413 112.115 461.413 114.028C443.398 131.258 427.537 140.382 413.613 144.41C398.858 148.679 385.899 147.339 374.274 143.335C362.527 139.289 352.122 132.522 342.545 125.814C341.158 124.842 339.776 123.863 338.406 122.893L338.399 122.888L338.398 122.888L338.398 122.887C335.127 120.57 331.928 118.304 328.904 116.313C324.599 113.477 320.287 110.949 316.057 109.371C302.206 104.203 291.044 103.272 281.807 104.102C277.783 102.11 272.794 100.731 269.678 100.635C268.175 100.589 266.725 100.677 265.393 100.947V70.9381C269.584 68.0793 272.404 62.736 272.404 56.6161C272.404 55.3776 272.288 54.1709 272.069 53.0102C277.214 48.6909 278.252 41.4027 277.306 33.519C276.104 23.4984 266.896 4.00822 258.383 0C249.87 4.00822 240.87 23.4984 239.668 33.519C238.734 41.3102 239.737 48.52 244.726 52.857C244.488 54.0647 244.362 55.3231 244.362 56.6161C244.362 62.736 247.182 68.0793 251.373 70.9381Z"
-        strokeWidth="2"
-        mask={`url(#${id('stroke11_1183_3249')})`}
-        style={{ stroke: c.line }}
-      />
-      <path
-        d="M118.89 167.486C118.663 167.644 118.608 167.957 118.766 168.184L166.837 237.252L167.659 236.679L119.587 167.611C119.429 167.384 119.117 167.328 118.89 167.486Z"
-        fillRule="evenodd"
-        clipRule="evenodd"
-        style={{ fill: c.line }}
-      />
-      <path
-        d="M119.463 167.486C119.69 167.644 119.745 167.957 119.587 168.184L71.5162 237.252L70.6943 236.679L118.766 167.611C118.924 167.384 119.236 167.328 119.463 167.486Z"
-        fillRule="evenodd"
-        clipRule="evenodd"
-        style={{ fill: c.line }}
-      />
-      <path
-        d="M118.676 233.959L118.676 168.825C118.676 168.549 118.9 168.324 119.177 168.324C119.453 168.324 119.677 168.549 119.677 168.825L119.677 233.959L118.676 233.959Z"
-        fillRule="evenodd"
-        clipRule="evenodd"
-        style={{ fill: c.line }}
-      />
-      <use href={`#${id('stroke12_1183_3249')}`} style={{ fill: brand }} />
-      <mask id={id('stroke13_1183_3249')} fill="white">
-        <use href={`#${id('stroke12_1183_3249')}`} />
-      </mask>
-      <path
-        d="M70.1039 238.969H167.248V238.969C167.248 249.484 158.724 258.008 148.209 258.008H89.1429C78.6279 258.008 70.1039 249.484 70.1039 238.969V238.969Z"
-        strokeWidth="2"
-        mask={`url(#${id('stroke13_1183_3249')})`}
-        style={{ stroke: c.line }}
-      />
-      <rect
-        x="65.5965"
-        y="234.459"
-        width="106.159"
-        height="5.01234"
-        rx="2.49999"
-        strokeWidth="0.999998"
-        style={{ fill: brand, stroke: c.line }}
-      />
-      <path
-        d="M398.304 167.486C398.077 167.644 398.022 167.957 398.18 168.184L446.251 237.252L447.073 236.679L399.001 167.611C398.843 167.384 398.531 167.328 398.304 167.486Z"
-        fillRule="evenodd"
-        clipRule="evenodd"
-        style={{ fill: c.line }}
-      />
-      <path
-        d="M398.877 167.486C399.104 167.644 399.16 167.957 399.002 168.184L350.931 237.252L350.109 236.679L398.18 167.611C398.338 167.384 398.65 167.328 398.877 167.486Z"
-        fillRule="evenodd"
-        clipRule="evenodd"
-        style={{ fill: c.line }}
-      />
-      <path
-        d="M398.09 233.959L398.09 168.825C398.09 168.549 398.314 168.324 398.591 168.324C398.867 168.324 399.091 168.549 399.091 168.825L399.091 233.959L398.09 233.959Z"
-        fillRule="evenodd"
-        clipRule="evenodd"
-        style={{ fill: c.line }}
-      />
-      <use href={`#${id('stroke14_1183_3249')}`} style={{ fill: brand }} />
-      <mask id={id('stroke15_1183_3249')} fill="white">
-        <use href={`#${id('stroke14_1183_3249')}`} />
-      </mask>
-      <path
-        d="M349.518 238.969H446.662V238.969C446.662 249.484 438.138 258.008 427.623 258.008H368.557C358.042 258.008 349.518 249.484 349.518 238.969V238.969Z"
-        strokeWidth="2"
-        mask={`url(#${id('stroke15_1183_3249')})`}
-        style={{ stroke: c.line }}
-      />
-      <rect
-        x="345.011"
-        y="234.459"
-        width="106.159"
-        height="5.01234"
-        rx="2.49999"
-        strokeWidth="0.999998"
-        style={{ fill: brand, stroke: c.line }}
-      />
-      <path
-        d="M272.642 44.3795C275.176 24.7613 266.195 12.2083 261.388 8.38402C261.754 19.0626 263.226 41.5431 266.185 46.0372C269.145 50.5312 272.25 47.4128 272.642 44.3795Z"
-        fill="white"
-        fillOpacity="0.5"
-      />
-      <path
-        d="M268.898 54.111C265.694 54.9126 263.557 54.445 262.89 54.111C262.89 60.1233 265.894 64.1315 267.897 61.6264C269.499 59.6223 269.232 55.7811 268.898 54.111Z"
-        fill="white"
-        fillOpacity="0.5"
-      />
-      <path
-        d="M277.65 104.994C275.466 103.352 269.237 103.293 266.395 103.469C274.553 104.308 279.547 108.792 279.381 107.146C279.292 106.267 278.421 105.573 277.65 104.994Z"
-        fill="white"
-        fillOpacity="0.5"
-      />
-      <path
-        d="M294.692 107.206C302.805 106.725 309.832 108.724 321.717 115.201C310.365 112.697 302.799 110.201 294.692 107.206Z"
-        fill="white"
-        fillOpacity="0.5"
-      />
-      <rect x="260.386" y="120.247" width="3.00445" height="329.676" fill="white" fillOpacity="0.5" />
-      <path
-        d="M343.009 478.339C340.505 476.335 328.487 465.312 327.486 464.812C340.004 460.804 348.016 471.826 348.517 476.837C348.917 480.845 345.512 480.343 343.009 478.339Z"
-        fill="white"
-        fillOpacity="0.5"
-      />
-      <path
-        d="M426.026 249.397C428.57 248.456 441.803 244.552 442.601 244.045C440.1 254.861 428.602 255.863 424.736 254.042C421.643 252.586 423.482 250.337 426.026 249.397Z"
-        fill="white"
-        fillOpacity="0.5"
-      />
-      <path
-        d="M146.718 249.397C149.261 248.456 162.494 244.552 163.292 244.045C160.792 254.861 149.294 255.863 145.427 254.042C142.334 252.586 144.174 250.337 146.718 249.397Z"
-        fill="white"
-        fillOpacity="0.5"
-      />
-      <path
-        d="M330.386 459.369C329.433 458.612 324.862 454.445 324.481 454.256C329.243 452.741 332.29 456.908 332.481 458.801C332.633 460.316 331.338 460.127 330.386 459.369Z"
-        fill="white"
-        fillOpacity="0.5"
-      />
-      <path
-        d="M467.385 119.245C467.924 117.575 468.14 114.234 464.689 114.234C464.869 115.278 465.659 117.742 467.385 119.245Z"
-        fill="white"
-        fillOpacity="0.5"
-      />
-      <rect x="346.514" y="235.483" width="103.153" height="2.00411" rx="0.999998" fill="white" fillOpacity="0.5" />
-      <rect x="67.0995" y="235.483" width="103.153" height="2.00411" rx="0.999998" fill="white" fillOpacity="0.5" />
-      <path
-        d="M401.094 161.832C399.492 162.233 399.091 159.327 399.091 157.824H403.097C403.097 158.993 402.697 161.431 401.094 161.832Z"
-        fill="white"
-        fillOpacity="0.5"
-      />
-      <path
-        d="M122.181 162.333C120.579 162.734 120.178 159.828 120.178 158.325H124.184C124.184 159.494 123.783 161.932 122.181 162.333Z"
-        fill="white"
-        fillOpacity="0.5"
-      />
-      <defs>
-        <path
-          id={id('stroke0_1183_3249')}
-          d="M182.27 461.927C182.27 456.404 186.747 451.927 192.27 451.927H325.497C331.02 451.927 335.497 456.404 335.497 461.927V463.951H182.27V461.927Z"
-        />
-        <path
-          id={id('stroke2_1183_3249')}
-          d="M166.246 480.945C166.246 469.9 175.201 460.945 186.246 460.945H332.522C343.568 460.945 352.522 469.9 352.522 480.945V486.999H166.246V480.945Z"
-        />
-        <path
-          id={id('stroke4_1183_3249')}
-          d="M120.069 380.267C120.23 379.832 120.846 379.832 121.007 380.267L127.355 397.435C127.406 397.571 127.514 397.679 127.651 397.73L144.809 404.083C145.244 404.244 145.244 404.859 144.809 405.021L127.651 411.373C127.514 411.424 127.406 411.532 127.355 411.669L121.007 428.836C120.846 429.271 120.23 429.271 120.069 428.836L113.72 411.669C113.669 411.532 113.561 411.424 113.425 411.373L96.2662 405.021C95.8311 404.859 95.8311 404.244 96.2662 404.083L113.425 397.73C113.561 397.679 113.669 397.571 113.72 397.435L120.069 380.267Z"
-        />
-        <path
-          id={id('stroke6_1183_3249')}
-          d="M372.083 303.889C372.244 303.454 372.86 303.454 373.021 303.889L381.669 327.273C381.72 327.41 381.828 327.518 381.965 327.569L405.336 336.222C405.771 336.383 405.771 336.999 405.336 337.16L381.965 345.813C381.828 345.864 381.72 345.972 381.669 346.108L373.021 369.493C372.86 369.928 372.244 369.928 372.083 369.493L363.435 346.108C363.385 345.972 363.277 345.864 363.14 345.813L339.768 337.16C339.333 336.999 339.333 336.383 339.768 336.222L363.14 327.569C363.277 327.518 363.385 327.41 363.435 327.273L372.083 303.889Z"
-        />
-        <path
-          id={id('stroke8_1183_3249')}
-          d="M12.5503 189.654C12.7114 189.219 13.3272 189.219 13.4883 189.654L16.4559 197.679C16.5066 197.816 16.6145 197.924 16.7513 197.974L24.7722 200.944C25.2074 201.105 25.2074 201.721 24.7722 201.882L16.7513 204.852C16.6145 204.902 16.5066 205.01 16.4559 205.147L13.4883 213.172C13.3272 213.607 12.7114 213.607 12.5503 213.172L9.58266 205.147C9.53204 205.01 9.42415 204.902 9.2873 204.852L1.26644 201.882C0.831248 201.721 0.831249 201.105 1.26644 200.944L9.2873 197.974C9.42415 197.924 9.53204 197.816 9.58266 197.679L12.5503 189.654Z"
-        />
-        <path
-          id={id('stroke10_1183_3249')}
-          d="M251.373 100.876V70.9381C247.182 68.0793 244.362 62.736 244.362 56.6161C244.362 55.3231 244.488 54.0647 244.726 52.857C239.737 48.52 238.734 41.3102 239.668 33.519C240.87 23.4984 249.87 4.00822 258.383 0C266.896 4.00822 276.104 23.4984 277.306 33.519C278.252 41.4027 277.214 48.6909 272.069 53.0102C272.288 54.1709 272.404 55.3776 272.404 56.6161C272.404 62.736 269.584 68.0793 265.393 70.9381V100.947C266.725 100.677 268.175 100.589 269.678 100.635C272.794 100.731 277.783 102.11 281.807 104.102C291.044 103.272 302.206 104.203 316.057 109.371C320.287 110.949 324.599 113.477 328.904 116.313C331.928 118.304 335.127 120.57 338.398 122.887L338.398 122.888L338.399 122.888L338.406 122.893C339.776 123.863 341.158 124.842 342.545 125.814C352.122 132.522 362.527 139.289 374.274 143.335C385.899 147.339 398.858 148.679 413.613 144.41C427.537 140.382 443.398 131.258 461.413 114.028C463.413 112.115 466.582 112.11 468.538 114.067C470.493 116.023 470.495 119.199 468.499 121.113C449.597 139.228 432.32 149.429 416.394 154.037C399.383 158.958 384.3 157.386 371.014 152.81C357.849 148.276 346.471 140.796 336.801 134.023C335.307 132.976 333.865 131.955 332.467 130.964L332.46 130.959L332.458 130.958L332.453 130.954L332.452 130.953L332.45 130.952C329.249 128.685 326.274 126.577 323.398 124.683C319.273 121.966 315.714 119.937 312.558 118.76C300.329 114.198 290.792 113.414 283.121 114.047C279.463 116.883 274.56 119.31 271.394 119.978C269.279 120.425 267.223 120.58 265.393 120.266V452.929H251.373V120.324C249.639 120.558 247.72 120.395 245.749 119.978C242.584 119.31 237.68 116.883 234.022 114.047C226.351 113.414 216.814 114.198 204.585 118.76C201.43 119.937 197.87 121.966 193.745 124.683C190.869 126.577 187.892 128.686 184.691 130.954L184.691 130.954L184.685 130.958L184.672 130.967L184.662 130.974C183.268 131.962 181.831 132.98 180.342 134.023C170.672 140.796 159.294 148.276 146.129 152.81C132.843 157.386 117.76 158.958 100.749 154.037C84.8228 149.429 67.5465 139.228 48.6441 121.113C46.6478 119.199 46.6505 116.023 48.6052 114.067C50.5615 112.11 53.7304 112.115 55.7304 114.028C73.7451 131.258 89.6059 140.382 103.531 144.41C118.285 148.679 131.244 147.339 142.87 143.335C154.616 139.289 165.021 132.522 174.599 125.814C175.986 124.842 177.368 123.863 178.737 122.893L178.744 122.888L178.744 122.888L178.745 122.888C182.015 120.571 185.214 118.305 188.239 116.313C192.545 113.477 196.856 110.949 201.086 109.371C214.937 104.203 226.099 103.272 235.336 104.102C239.361 102.11 244.349 100.731 247.465 100.635C248.828 100.593 250.146 100.661 251.373 100.876Z"
-          fillRule="evenodd"
-          clipRule="evenodd"
-        />
-        <path
-          id={id('stroke12_1183_3249')}
-          d="M70.1039 238.969H167.248V238.969C167.248 249.484 158.724 258.008 148.209 258.008H89.1429C78.6279 258.008 70.1039 249.484 70.1039 238.969V238.969Z"
-        />
-        <path
-          id={id('stroke14_1183_3249')}
-          d="M349.518 238.969H446.662V238.969C446.662 249.484 438.138 258.008 427.623 258.008H368.557C358.042 258.008 349.518 249.484 349.518 238.969V238.969Z"
-        />
-      </defs>
+      {content}
+    </g>
+  );
+
+  return (
+    <svg viewBox="0 0 438 455" width={renderWidth} fill="none" aria-hidden="true" focusable="false" {...stylex.props(styles.svg, xstyle)}>
+      {STAR_SPOTS.map(({ cx, cy, r }) => starPath(cx, cy, r, radius)).map((d, i) => (
+        <g key={i} ref={stars[i]} data-part="star" {...stylex.props(styles.star, rocking && styles.starTwinkling, rocking && STAR_DELAY[i])}>
+          {inside(`star${i}`, d)}
+        </g>
+      ))}
+      {/* The strings, behind the arms and bowls. */}
+      {PANS.map((p, i) =>
+        pan(
+          i,
+          p.strings.map((d) => <path key={d} d={d} fillRule="evenodd" style={{ fill: c.line }} />),
+        ),
+      )}
+      {arms(
+        <>
+          {at(LEFT_ARM, LEFT_ARM.d[0]!, outline)}
+          {at(RIGHT_ARM, RIGHT_ARM.d[0]!, outline)}
+        </>,
+      )}
+      {at(POST, POST_FULL, outline)}
+      {arms(
+        <>
+          {at(LEFT_ARM, LEFT_ARM.d[0]!, fill)}
+          {at(RIGHT_ARM, RIGHT_ARM.d[0]!, fill)}
+          {ARM_SHINES.map((d) => (
+            <path key={d} d={d} {...shine} />
+          ))}
+        </>,
+      )}
+      {at(POST, POST_FULL, fill)}
+      <rect {...ROD_SHINE} {...shine} />
+      <path d={FINIAL_SHINE} {...shine} />
+      {/* The base over the bottom of the rod, its outline included. */}
+      {BASE_STEPS.map((d, i) => inside(`base${i}`, d, <path d={BASE_SHINES[i]} {...shine} />))}
+      {PANS.map((p, i) =>
+        pan(
+          i,
+          <>
+            {inside(`bowl${i}`, p.bowl, <path d={p.bowlShine} {...shine} />)}
+            {/* The rim: its fill, its shine, then its outline over both. */}
+            <rect {...p.rim} style={{ fill: brand }} />
+            <rect {...p.rimShine} {...shine} />
+            <rect {...p.rim} vectorEffect="non-scaling-stroke" style={{ fill: 'none', stroke: c.line, strokeWidth: width }} />
+          </>,
+        ),
+      )}
     </svg>
   );
 }
 
-const styles = stylex.create({ svg: { display: 'block', height: 'auto', overflow: 'visible' } });
+// Rocking (the loading screen): the arms swing between -8° and 8° and each pan swings with the end of its arm
+// (panShift at ±8°, worked out here because keyframes need fixed values).
+const rock = stylex.keyframes({ from: { transform: 'rotate(-8deg)' }, to: { transform: 'rotate(8deg)' } });
+const rockLeftPan = stylex.keyframes({ from: { transform: 'translate(6.93px, 17.66px)' }, to: { transform: 'translate(-4.41px, -18.44px)' } });
+const rockRightPan = stylex.keyframes({ from: { transform: 'translate(4.41px, -18.51px)' }, to: { transform: 'translate(-6.93px, 17.73px)' } });
+const twinkle = stylex.keyframes({
+  '0%': { transform: 'scale(1) rotate(0deg)', opacity: 1 },
+  '20%': { transform: 'scale(1.3) rotate(18deg)', opacity: 0.75 },
+  '38%': { transform: 'scale(0.92) rotate(0deg)', opacity: 1 },
+  '50%, 100%': { transform: 'scale(1) rotate(0deg)', opacity: 1 },
+});
+const ROCK = '1.4s';
+const rocks = {
+  animationDuration: ROCK,
+  animationTimingFunction: 'ease-in-out',
+  animationIterationCount: 'infinite',
+  animationDirection: 'alternate',
+} as const;
+
+const styles = stylex.create({
+  svg: { display: 'block', height: 'auto', overflow: 'visible' },
+  // Tipping, as the logomark: a little settle at the end, like a balance coming to rest. None with reduced motion.
+  turning: {
+    transformBox: 'view-box',
+    transitionProperty: 'transform',
+    transitionDuration: { default: `calc(${duration.slow} * 3)`, '@media (prefers-reduced-motion: reduce)': '0s' },
+    transitionTimingFunction: 'cubic-bezier(0.34, 1.4, 0.64, 1)',
+  },
+  // The arms turn around the top of the post.
+  arms: { transformOrigin: '240.24px 104px' },
+  armsTipped: { transform: 'rotate(-8deg)' },
+  armsRocking: { animationName: { default: rock, '@media (prefers-reduced-motion: reduce)': 'none' }, ...rocks },
+  leftPanRocking: { animationName: { default: rockLeftPan, '@media (prefers-reduced-motion: reduce)': 'none' }, ...rocks },
+  rightPanRocking: { animationName: { default: rockRightPan, '@media (prefers-reduced-motion: reduce)': 'none' }, ...rocks },
+  // Each star twinkles around its own middle.
+  star: { transformBox: 'fill-box', transformOrigin: 'center' },
+  starTwinkling: {
+    animationName: { default: twinkle, '@media (prefers-reduced-motion: reduce)': 'none' },
+    animationDuration: '1.8s',
+    animationTimingFunction: 'ease-in-out',
+    animationIterationCount: 'infinite',
+  },
+});
+
+// The stars take turns.
+const delays = stylex.create({
+  first: { animationDelay: '0s' },
+  second: { animationDelay: '0.6s' },
+  third: { animationDelay: '1.2s' },
+});
+const STAR_DELAY = [delays.first, delays.second, delays.third];

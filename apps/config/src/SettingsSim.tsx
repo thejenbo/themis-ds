@@ -2,7 +2,7 @@ import * as stylex from '@stylexjs/stylex';
 import { memo, useLayoutEffect, useRef, useState } from 'react';
 import { useFocusRing } from 'react-aria';
 import { Focusable } from 'react-aria-components';
-import { Chip, Heading, Icon, Tab, TabList, TabPanel, Tabs, ToastRegion, Tooltip, TooltipTrigger } from 'themis-ds';
+import { Chip, Heading, Icon, Tab, TabList, TabPanel, Tabs, type ThemeRadius, ToastRegion, Tooltip, TooltipTrigger } from 'themis-ds';
 
 import { color } from '../../../src/tokens/colorTheme.stylex';
 import { border as radius } from '../../../src/tokens/radius.stylex';
@@ -24,6 +24,10 @@ export type SimView = 'account' | 'subscription';
  */
 interface SettingsSimProps {
   lightenBrandArt?: boolean;
+  /** Tip the scales illustration, as the logomark does, while a theme colour fails contrast. */
+  isUnbalanced?: boolean;
+  /** The theme's radius: the stars' points follow it. */
+  radius?: ThemeRadius;
   /**
    * Which view shows. Held by the app, not here: changing layout (desktop, tablet, phone) remounts the preview, and
    * the view should stay put.
@@ -40,6 +44,8 @@ interface SettingsSimProps {
 
 export const SettingsSim = memo(function SettingsSim({
   lightenBrandArt = false,
+  isUnbalanced = false,
+  radius = 'medium',
   view,
   onViewChange,
   toastPlacement = 'bottom-right',
@@ -64,7 +70,7 @@ export const SettingsSim = memo(function SettingsSim({
           <Heading level={1} size="lg">
             Settings Sim
           </Heading>
-          <Sparkle lightenBrand={lightenBrandArt} xstyle={styles.titleSparkle} />
+          <Sparkle lightenBrand={lightenBrandArt} radius={radius} xstyle={styles.titleSparkle} />
         </div>
         {/* The two views as tabs, with the plan chip at the end of the tab row. */}
         <Tabs selectedKey={view} onSelectionChange={(key) => onViewChange(key as SimView)}>
@@ -93,7 +99,7 @@ export const SettingsSim = memo(function SettingsSim({
       </div>
       {/* Pinned to the bottom of the preview as it scrolls, behind the content (Figma: it stands at the bottom). */}
       <div aria-hidden="true" data-sim-part="scales" {...stylex.props(styles.scalesDock)}>
-        <ScalesIllustration lightenBrand={lightenBrandArt} xstyle={styles.scales} />
+        <ScalesIllustration lightenBrand={lightenBrandArt} isUnbalanced={isUnbalanced} radius={radius} xstyle={styles.scales} />
       </div>
       {/* The simulator's toasts, inside the preview so they're drawn in the theme being edited. */}
       <ToastRegion
@@ -194,7 +200,8 @@ const styles = stylex.create({
   },
   // The same outline for the tabs' labels, the other text right on the tinted page.
   onTint: { WebkitTextStroke: `2px ${color.background}`, paintOrder: 'stroke fill' },
-  titleSparkle: { width: '1.3rem', flexShrink: 0 },
+  // Big enough that a large theme's inside outline still leaves the brand showing.
+  titleSparkle: { width: '2.25rem', flexShrink: 0 },
   // 24px under the tabs (the panel's own 16px, plus 8px), as between the sections.
   view: { display: 'flex', flexDirection: 'column', gap: spacing.md, paddingBlockStart: spacing.xs },
   toolbar: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: spacing.md, flexWrap: 'wrap' },

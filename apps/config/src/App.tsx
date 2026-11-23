@@ -24,6 +24,8 @@ import { initialConfig } from './initial-config';
 import { type ColorFormats, loadColorFormats, loadPreviewShare, loadSaved, save, saveColorFormats, savePreviewShare } from './storage';
 import { COLOR_KEYS, type ContrastTab } from './contrast/contrast-copy';
 import { ContrastModal } from './contrast/ContrastModal';
+import { ScalesIllustration } from './illustrations/ScalesIllustration';
+import { announceThemeChange } from './illustrations/twinkle';
 import { ThemeSettingsForm } from './SettingsPanel';
 import { SettingsSim, type SimView } from './SettingsSim';
 
@@ -139,6 +141,12 @@ export function App() {
   const [contrastTab, setContrastTab] = useState<ContrastTab | null>(null);
   const [showContrastTokens, setShowContrastTokens] = useState(false);
   const { darkBackground, darkBrand } = useMemo(() => simulatorTones(previewTheme.colors), [previewTheme.colors]);
+  // The stars twinkle whenever the theme changes (not when the app first opens).
+  const firstTheme = useRef(true);
+  useEffect(() => {
+    if (firstTheme.current) firstTheme.current = false;
+    else announceThemeChange();
+  }, [previewTheme]);
 
   // Section headings (and tablet's tabs) stick just below the theme row, whose height changes (the name field, its
   // error message). Set on whatever scrolls them: the sidebar, or mobile's single column.
@@ -276,6 +284,8 @@ export function App() {
         <ThemeProvider theme={previewTheme} xstyle={[styles.previewTheme, darkBackground && styles.previewThemeDark]}>
           <SettingsSim
             lightenBrandArt={darkBrand}
+            isUnbalanced={isUnbalanced}
+            radius={previewTheme.radius ?? 'medium'}
             view={simView}
             onViewChange={setSimView}
             toastPlacement={layout === 'tablet' ? 'top-right' : 'bottom-right'}
@@ -286,7 +296,12 @@ export function App() {
         // every component's stories with it.
         <Suspense
           fallback={
-            <div {...stylex.props(styles.placeholder)}>
+            // The scales rock and the stars twinkle until the components arrive: the scales in the theme being edited,
+            // the words in the tool's own style.
+            <div {...stylex.props(styles.loading)}>
+              <ThemeProvider theme={previewTheme} xstyle={styles.loadingScales}>
+                <ScalesIllustration motion="rocking" lightenBrand={darkBrand} radius={previewTheme.radius ?? 'medium'} />
+              </ThemeProvider>
               <Text variant="body-large">Loading the components…</Text>
             </div>
           }
@@ -508,7 +523,17 @@ const styles = stylex.create({
   // light backgrounds; on very dark ones it barely shows, so it goes up to 10%.
   previewTheme: { minHeight: '100%', backgroundColor: `color-mix(in srgb, ${color.brand} 7%, ${color.background})` },
   previewThemeDark: { backgroundColor: `color-mix(in srgb, ${color.brand} 10%, ${color.background})` },
-  placeholder: { padding: spacing['2xl'] },
+  // The components page's loading screen: the rocking scales in the middle of the preview, the words under them.
+  loading: {
+    minHeight: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.md,
+    padding: spacing['2xl'],
+  },
+  loadingScales: { width: 'min(16rem, 60%)' },
   // A column, so the Export footer sits at the bottom when the settings are short.
   sidebar: {
     display: 'flex',
