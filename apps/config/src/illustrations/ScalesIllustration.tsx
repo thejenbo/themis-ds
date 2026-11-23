@@ -193,7 +193,9 @@ const twinkle = stylex.keyframes({
   '38%': { transform: 'scale(0.92) rotate(0deg)', opacity: 1 },
   '50%, 100%': { transform: 'scale(1) rotate(0deg)', opacity: 1 },
 });
-const ROCK = '1.4s';
+/** One swing of the rocking scales, in seconds; they swing there and back (`alternate`), so a full round is twice this. */
+export const ROCK_SECONDS = 1.4;
+const ROCK = `${ROCK_SECONDS}s`;
 const rocks = {
   animationDuration: ROCK,
   animationTimingFunction: 'ease-in-out',

@@ -89,6 +89,19 @@ describe('components page', { timeout: 45000 }, () => {
     await expect.poll(current).toBe('Button');
   });
 
+  // Read only and Required changed nothing you could see, and Invalid showed nothing on a checkbox without a message.
+  test('only switches that show something: Invalid shows an example error, and there is no Read only or Required', async () => {
+    renderApp();
+    await page.getByRole('link', { name: 'components' }).click();
+    const controls = page.getByRole('group', { name: 'Checkbox properties', exact: true });
+    await expect.element(controls.getByRole('switch', { name: 'Invalid' })).toBeVisible();
+    expect(controls.getByRole('switch', { name: 'Read only' }).query()).toBeNull();
+    expect(controls.getByRole('switch', { name: 'Required' }).query()).toBeNull();
+    expect(stage('Checkbox').textContent).not.toContain('An example error message.');
+    await controls.getByText('Invalid', { exact: true }).click();
+    await expect.poll(() => stage('Checkbox').textContent).toContain('An example error message.');
+  });
+
   test('without room, a category select filters the list instead', async () => {
     await page.viewport(834, 1112);
     renderApp();

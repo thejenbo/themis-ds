@@ -26,8 +26,8 @@ interface ManifestComponent {
 }
 
 // State props that a switch shows off well. Left out: ones the person drives by using the component (isSelected,
-// isOpen, isExpanded, isAdvancedOpen), ones that only make sense in code (isDecorative, isRowHeader), and fine
-// behavior details that change nothing you can see (allowsEmptyCollection, isWheelDisabled…).
+// isOpen, isExpanded, isAdvancedOpen), ones that only make sense in code (isDecorative, isRowHeader), and behavior
+// that changes nothing you can see (isReadOnly, isRequired, allowsEmptyCollection, isWheelDisabled…).
 const SKIP = new Set([
   'as',
   'role',
@@ -37,6 +37,8 @@ const SKIP = new Set([
   'isAdvancedOpen',
   'isDecorative',
   'isRowHeader',
+  'isReadOnly',
+  'isRequired',
   'isPending',
   'isEntering',
   'isExiting',
@@ -70,6 +72,8 @@ const out = Object.fromEntries(
         .filter(([name, prop]) => isSwitch(name, prop))
         .map(([name]) => name)
         .sort(),
+      // Invalid shows an example error message on components that take one (a checkbox shows nothing without it).
+      hasErrorMessage: 'errorMessage' in c.props,
     },
   ]),
 );

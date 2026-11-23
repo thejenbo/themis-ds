@@ -29,7 +29,7 @@
     "manifest": "tsx scripts/build-manifest.ts && tsx scripts/build-playground.ts",
     "fonts": "tsx scripts/build-google-fonts.ts",
     "storybook": "npm run tokens && npm run manifest && storybook dev -p 6006",
-    "build-storybook": "npm run tokens && npm run manifest && storybook build",
+    "build-storybook": "npm run tokens && npm run manifest && storybook build && tsx scripts/storybook-title.ts",
     "build": "npm run tokens && npm run contrast -- --strict && npm run manifest && vite build && tsc -p tsconfig.build.json && cp public/themis-manifest.json src/theme/theme.schema.json dist/",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",

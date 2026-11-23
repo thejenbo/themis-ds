@@ -23,6 +23,8 @@ export interface ComponentEntry {
   controls: Control[];
   /** The story opens an overlay (Modal): the page shows a button to open it instead. */
   isOverlay: boolean;
+  /** Takes an `errorMessage`: turning Invalid on shows an example one. */
+  hasErrorMessage: boolean;
 }
 
 interface PlaygroundData {
@@ -30,6 +32,7 @@ interface PlaygroundData {
   summary: string;
   enums: Record<string, { values: (string | number)[]; default: unknown }>;
   booleans: string[];
+  hasErrorMessage: boolean;
 }
 
 /** The parts of a CSF stories file the page uses. */
@@ -131,6 +134,7 @@ export const COMPONENTS: ComponentEntry[] = Object.entries(storyModules)
       Story,
       controls: controlsFor(entry, args),
       isOverlay: args.isOpen === true,
+      hasErrorMessage: entry.hasErrorMessage,
     };
   })
   .filter((c): c is ComponentEntry => c !== null)

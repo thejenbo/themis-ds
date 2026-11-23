@@ -37,10 +37,13 @@ export const Toggles: Story = {
     const row = checkbox.closest('label')!;
     const mark = row.querySelector('path')!;
     await expect(getComputedStyle(mark).strokeDashoffset).toBe('1px');
+    // Hidden too, not just dashed away: WebKit (every iOS browser) painted a dot where the dash met the line's start.
+    await expect(getComputedStyle(mark).visibility).toBe('hidden');
     await userEvent.click(canvas.getByText('Email me about new features'));
     await expect(args.onChange).toHaveBeenLastCalledWith(true);
     await expect(checkbox).toBeChecked();
     await waitFor(() => expect(getComputedStyle(mark).strokeDashoffset).toBe('0px'));
+    await expect(getComputedStyle(mark).visibility).toBe('visible');
     await userEvent.click(document.body);
     const user = userEvent.setup();
     await user.tab();
@@ -48,6 +51,8 @@ export const Toggles: Story = {
     await waitFor(() => expect(getComputedStyle(row).outlineStyle).toBe('dashed'));
     await user.keyboard(' ');
     await expect(args.onChange).toHaveBeenLastCalledWith(false);
+    // Once it has drawn itself out, the mark is hidden again.
+    await waitFor(() => expect(getComputedStyle(mark).visibility).toBe('hidden'));
   },
 };
 

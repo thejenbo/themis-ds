@@ -118,11 +118,15 @@ const styles = stylex.create({
   drawable: {
     strokeDasharray: 1,
     strokeDashoffset: 0,
-    transitionProperty: 'stroke-dashoffset',
+    // Visibility switches at the end of the transition when hiding, and at once when showing, so the line draws
+    // itself out and in as before.
+    transitionProperty: 'stroke-dashoffset, visibility',
     transitionDuration: { default: duration.fast, '@media (prefers-reduced-motion: reduce)': '0s' },
     transitionTimingFunction: easing.standard,
   },
-  undrawn: { strokeDashoffset: 1 },
+  // Hidden as well as dashed away: WebKit (Safari, and every iOS browser) still paints a round line cap where the
+  // offset dash meets the start of the line, which left a dot in an empty checkbox.
+  undrawn: { strokeDashoffset: 1, visibility: 'hidden' },
   fade: {
     transitionProperty: 'opacity',
     transitionDuration: { default: duration.fast, '@media (prefers-reduced-motion: reduce)': '0s' },

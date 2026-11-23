@@ -24,7 +24,8 @@
     },
     "booleans": [
       "isDisabled"
-    ]
+    ],
+    "hasErrorMessage": false
   },
   "ActionMenu": {
     "category": "Overlays",
@@ -40,7 +41,8 @@
         "default": "bottom start"
       }
     },
-    "booleans": []
+    "booleans": [],
+    "hasErrorMessage": false
   },
   "Avatar": {
     "category": "Data display",
@@ -70,7 +72,8 @@
         "default": "solid"
       }
     },
-    "booleans": []
+    "booleans": [],
+    "hasErrorMessage": false
   },
   "Button": {
     "category": "Actions",
@@ -105,7 +108,8 @@
     },
     "booleans": [
       "isDisabled"
-    ]
+    ],
+    "hasErrorMessage": false
   },
   "Checkbox": {
     "category": "Inputs",
@@ -114,10 +118,9 @@
     "booleans": [
       "isDisabled",
       "isIndeterminate",
-      "isInvalid",
-      "isReadOnly",
-      "isRequired"
-    ]
+      "isInvalid"
+    ],
+    "hasErrorMessage": true
   },
   "Chip": {
     "category": "Data display",
@@ -141,7 +144,8 @@
         "default": "outline"
       }
     },
-    "booleans": []
+    "booleans": [],
+    "hasErrorMessage": false
   },
   "Code": {
     "category": "Typography",
@@ -156,7 +160,8 @@
         "default": "text"
       }
     },
-    "booleans": []
+    "booleans": [],
+    "hasErrorMessage": false
   },
   "CodeBlock": {
     "category": "Typography",
@@ -171,7 +176,8 @@
         "default": "text"
       }
     },
-    "booleans": []
+    "booleans": [],
+    "hasErrorMessage": false
   },
   "ColorArea": {
     "category": "Color",
@@ -206,7 +212,8 @@
     },
     "booleans": [
       "isDisabled"
-    ]
+    ],
+    "hasErrorMessage": false
   },
   "ColorField": {
     "category": "Color",
@@ -262,9 +269,9 @@
       "isDisabled",
       "isInvalid",
       "isOptional",
-      "isRequired",
       "showAdvanced"
-    ]
+    ],
+    "hasErrorMessage": true
   },
   "ColorPicker": {
     "category": "Color",
@@ -309,7 +316,8 @@
     "booleans": [
       "isDisabled",
       "showAdvanced"
-    ]
+    ],
+    "hasErrorMessage": false
   },
   "ColorPickerSwatch": {
     "category": "Color",
@@ -326,7 +334,8 @@
     },
     "booleans": [
       "isDisabled"
-    ]
+    ],
+    "hasErrorMessage": false
   },
   "ColorRangeSlider": {
     "category": "Color",
@@ -358,7 +367,8 @@
       "isDisabled",
       "showSwatches",
       "showValue"
-    ]
+    ],
+    "hasErrorMessage": false
   },
   "ColorSlider": {
     "category": "Color",
@@ -381,7 +391,8 @@
     "booleans": [
       "isDisabled",
       "showValue"
-    ]
+    ],
+    "hasErrorMessage": false
   },
   "ColorSwatch": {
     "category": "Color",
@@ -404,7 +415,8 @@
         "default": "solid"
       }
     },
-    "booleans": []
+    "booleans": [],
+    "hasErrorMessage": false
   },
   "ComboBox": {
     "category": "Inputs",
@@ -414,10 +426,9 @@
       "allowsCustomValue",
       "isDisabled",
       "isInvalid",
-      "isOptional",
-      "isReadOnly",
-      "isRequired"
-    ]
+      "isOptional"
+    ],
+    "hasErrorMessage": true
   },
   "Heading": {
     "category": "Typography",
@@ -446,7 +457,8 @@
         "default": null
       }
     },
-    "booleans": []
+    "booleans": [],
+    "hasErrorMessage": false
   },
   "Icon": {
     "category": "Data display",
@@ -499,7 +511,8 @@
         "default": "small"
       }
     },
-    "booleans": []
+    "booleans": [],
+    "hasErrorMessage": false
   },
   "IconButton": {
     "category": "Actions",
@@ -535,7 +548,8 @@
     },
     "booleans": [
       "isDisabled"
-    ]
+    ],
+    "hasErrorMessage": false
   },
   "Modal": {
     "category": "Overlays",
@@ -560,7 +574,8 @@
     "booleans": [
       "hideActionBorder",
       "showCloseButton"
-    ]
+    ],
+    "hasErrorMessage": false
   },
   "NumberInput": {
     "category": "Inputs",
@@ -569,10 +584,9 @@
     "booleans": [
       "isDisabled",
       "isInvalid",
-      "isOptional",
-      "isReadOnly",
-      "isRequired"
-    ]
+      "isOptional"
+    ],
+    "hasErrorMessage": true
   },
   "RadioGroup": {
     "category": "Inputs",
@@ -589,10 +603,9 @@
     "booleans": [
       "isDisabled",
       "isInvalid",
-      "isOptional",
-      "isReadOnly",
-      "isRequired"
-    ]
+      "isOptional"
+    ],
+    "hasErrorMessage": true
   },
   "SearchField": {
     "category": "Inputs",
@@ -601,10 +614,9 @@
     "booleans": [
       "hideIcon",
       "isDisabled",
-      "isInvalid",
-      "isReadOnly",
-      "isRequired"
-    ]
+      "isInvalid"
+    ],
+    "hasErrorMessage": true
   },
   "SegmentedControl": {
     "category": "Selection",
@@ -622,7 +634,8 @@
     "booleans": [
       "isDisabled",
       "isFullWidth"
-    ]
+    ],
+    "hasErrorMessage": false
   },
   "Select": {
     "category": "Inputs",
@@ -631,9 +644,9 @@
     "booleans": [
       "isDisabled",
       "isInvalid",
-      "isOptional",
-      "isRequired"
-    ]
+      "isOptional"
+    ],
+    "hasErrorMessage": true
   },
   "Slider": {
     "category": "Inputs",
@@ -642,7 +655,8 @@
     "booleans": [
       "isDisabled",
       "showValue"
-    ]
+    ],
+    "hasErrorMessage": false
   },
   "Switch": {
     "category": "Selection",
@@ -665,9 +679,9 @@
       }
     },
     "booleans": [
-      "isDisabled",
-      "isReadOnly"
-    ]
+      "isDisabled"
+    ],
+    "hasErrorMessage": false
   },
   "Table": {
     "category": "Data display",
@@ -675,7 +689,8 @@
     "enums": {},
     "booleans": [
       "hideBorder"
-    ]
+    ],
+    "hasErrorMessage": false
   },
   "Tabs": {
     "category": "Navigation",
@@ -684,7 +699,8 @@
     "booleans": [
       "isDisabled",
       "isFullWidth"
-    ]
+    ],
+    "hasErrorMessage": false
   },
   "Text": {
     "category": "Typography",
@@ -704,7 +720,8 @@
         "default": "body-base"
       }
     },
-    "booleans": []
+    "booleans": [],
+    "hasErrorMessage": false
   },
   "TextArea": {
     "category": "Inputs",
@@ -713,10 +730,9 @@
     "booleans": [
       "isDisabled",
       "isInvalid",
-      "isOptional",
-      "isReadOnly",
-      "isRequired"
-    ]
+      "isOptional"
+    ],
+    "hasErrorMessage": true
   },
   "TextInput": {
     "category": "Inputs",
@@ -737,10 +753,9 @@
     "booleans": [
       "isDisabled",
       "isInvalid",
-      "isOptional",
-      "isReadOnly",
-      "isRequired"
-    ]
+      "isOptional"
+    ],
+    "hasErrorMessage": true
   },
   "Toast": {
     "category": "Feedback",
@@ -759,7 +774,8 @@
     },
     "booleans": [
       "showCloseButton"
-    ]
+    ],
+    "hasErrorMessage": false
   },
   "ToggleButton": {
     "category": "Actions",
@@ -777,7 +793,8 @@
     "booleans": [
       "isDeselectable",
       "isDisabled"
-    ]
+    ],
+    "hasErrorMessage": false
   },
   "Tooltip": {
     "category": "Overlays",
@@ -797,7 +814,8 @@
         "default": "top"
       }
     },
-    "booleans": []
+    "booleans": [],
+    "hasErrorMessage": false
   },
   "UnitInput": {
     "category": "Inputs",
@@ -806,9 +824,8 @@
     "booleans": [
       "isDisabled",
       "isInvalid",
-      "isOptional",
-      "isReadOnly",
-      "isRequired"
-    ]
+      "isOptional"
+    ],
+    "hasErrorMessage": true
   }
 }

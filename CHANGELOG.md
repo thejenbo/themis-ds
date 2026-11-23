@@ -57,6 +57,8 @@ listed under **Changed** or **Removed** with what to do.
 - `ActionMenuItem` with an `href` (a link) is no longer underlined.
 - Table: its visually hidden column labels stay inside the table's scrolling frame, so a narrow layout no longer
   scrolls sideways.
+- Icon `drawn={false}`: the line is hidden once it has drawn itself out. In Safari and every iOS browser, a round
+  line cap left a dot behind, e.g. in an empty Checkbox.
 
 ### Removed
 

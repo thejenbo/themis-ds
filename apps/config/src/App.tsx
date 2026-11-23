@@ -25,12 +25,23 @@ import { initialConfig } from './initial-config';
 import { type ColorFormats, loadColorFormats, loadPreviewShare, loadSaved, save, saveColorFormats, savePreviewShare } from './storage';
 import { COLOR_KEYS, type ContrastTab } from './contrast/contrast-copy';
 import { ContrastModal } from './contrast/ContrastModal';
-import { ScalesIllustration } from './illustrations/ScalesIllustration';
+import { ROCK_SECONDS, ScalesIllustration } from './illustrations/ScalesIllustration';
 import { announceThemeChange } from './illustrations/twinkle';
 import { ThemeSettingsForm } from './SettingsPanel';
 import { SettingsSim, type SimView } from './SettingsSim';
 
-const ComponentsPage = lazy(() => import('./components-page/ComponentsPage'));
+/**
+ * The components page loads on demand. The loading scales get at least one full round of rocking (there and back)
+ * before it appears, so the animation reads as intended instead of flashing by; a slow load just takes longer. Only
+ * the actual load waits: once loaded the page opens at once. No wait with reduced motion (the scales stand still)
+ * or in tests.
+ */
+const MIN_LOADING_MS = 2 * ROCK_SECONDS * 1000;
+const ComponentsPage = lazy(() => {
+  const page = import('./components-page/ComponentsPage');
+  const wait = import.meta.env.MODE === 'test' || matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : MIN_LOADING_MS;
+  return Promise.all([page, new Promise((resolve) => setTimeout(resolve, wait))]).then(([module]) => module);
+});
 import { ThemeNameField, ThemePicker } from './ThemeBar';
 
 /** A theme being named. New and duplicated themes aren't in the file until the name is confirmed. */

@@ -6,6 +6,9 @@ import { spacing } from '../../../../src/tokens/spacing.stylex';
 import type { ComponentEntry, Control } from './registry';
 import { Sandbox } from './Sandbox';
 
+/** Shown under a component that takes an error message while its Invalid switch is on. */
+const EXAMPLE_ERROR = 'An example error message.';
+
 /**
  * One component on the components page: what it's for, the component itself on a stage, and controls for its design
  * props. The card and controls are in the config tool's style; the component is in a sandbox with the theme being
@@ -16,6 +19,8 @@ export const ComponentCard = memo(function ComponentCard({ entry }: { entry: Com
   const [overlayOpen, setOverlayOpen] = useState(false);
   const set = (prop: string, value: unknown) => setValues((v) => ({ ...v, [prop]: value }));
   const { Story } = entry;
+  // Invalid on its own only changes a text field's border; with a message it shows what the person would see.
+  const shown = values.isInvalid && entry.hasErrorMessage ? { ...values, errorMessage: EXAMPLE_ERROR } : values;
 
   return (
     <div {...stylex.props(styles.body)}>
@@ -32,10 +37,10 @@ export const ComponentCard = memo(function ComponentCard({ entry }: { entry: Com
           {entry.isOverlay ? (
             <>
               <Button onPress={() => setOverlayOpen(true)}>Open {entry.name.toLowerCase()}</Button>
-              <Story {...values} isOpen={overlayOpen} onOpenChange={setOverlayOpen} />
+              <Story {...shown} isOpen={overlayOpen} onOpenChange={setOverlayOpen} />
             </>
           ) : (
-            <Story {...values} />
+            <Story {...shown} />
           )}
         </StoryBoundary>
       </Sandbox>
