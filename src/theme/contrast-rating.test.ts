@@ -35,7 +35,7 @@ describe('rateThemeColors', () => {
     for (const rating of Object.values(r)) expect(rating.ratio).toBeGreaterThanOrEqual(4.5);
   });
 
-  it('flags a colour that fails, and names the pair', () => {
+  it('flags a color that fails, and names the pair', () => {
     const r = rateThemeColors({ brand: '#7406EB', text: '#000000', background: '#FFFFFF', error: '#AF0E0E', warning: '#FFD000', success: '#2C6E2F' });
     expect(r.warning.level).toBe('Fail');
     expect(r.warning.worstPair).toMatch(/warning/);
@@ -46,13 +46,13 @@ describe('rateThemeColors', () => {
   });
 
   it('lists every check, but leaves disabled text out of the rating (WCAG exempts it)', () => {
-    // A mid-grey text colour: the disabled grey (worked out from text and background) is lower than text itself.
+    // A mid-gray text color: the disabled gray (worked out from text and background) is lower than text itself.
     const r = rateThemeColors({ brand: '#7406EB', text: '#595959', background: '#FFFFFF', error: '#AF0E0E', warning: '#A35104', success: '#2C6E2F' });
     const disabled = r.background.checks.find((c) => c.id === 'disabled')!;
     expect(disabled.advisory).toBe(true);
     expect(r.background.worstPair).toBe('text');
     expect(r.background.checks.map((c) => c.id)).toEqual(['text', 'disabled']);
-    // Each check carries the colours it measured, with hover tints composited.
+    // Each check carries the colors it measured, with hover tints composited.
     const tint = r.brand.checks.find((c) => c.id === 'text-brand-on-brand-tint')!;
     expect(tint.textHex).toBe('#7406EB');
     expect(tint.surfaceHex).toMatch(/^#[0-9A-F]{6}$/);
@@ -78,7 +78,7 @@ describe('suggestPassingColor', () => {
   });
 
   it('gives up when no shade gets there', () => {
-    // On a mid-grey background, brand can't reach 4.5:1 with both the page and white text at once.
+    // On a mid-gray background, brand can't reach 4.5:1 with both the page and white text at once.
     expect(suggestPassingColor({ ...base, background: '#777777', text: '#000000' }, 'brand')).toBeNull();
   });
 });

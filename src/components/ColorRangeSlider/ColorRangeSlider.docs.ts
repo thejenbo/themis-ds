@@ -4,7 +4,7 @@ export default defineComponentDocs({
   name: 'ColorRangeSlider',
   status: 'beta',
   category: 'Color',
-  summary: 'Picks a span of one colour channel, such as a range of hues, with a start and an end thumb.',
+  summary: 'Picks a span of one color channel, such as a range of hues, with a start and an end thumb.',
   base: {
     package: 'react-aria-components',
     component: 'Slider',
@@ -14,10 +14,10 @@ export default defineComponentDocs({
   usage: {
     whenToUse: [
       'Choosing a band of a channel, e.g. the hues a palette may use or a range of lightness.',
-      'Filtering by colour, e.g. "show images between these hues".',
+      'Filtering by color, e.g. "show images between these hues".',
     ],
     whenNotToUse: [
-      { scenario: 'Picking a single colour.', useInstead: 'ColorSlider' },
+      { scenario: 'Picking a single color.', useInstead: 'ColorSlider' },
       { scenario: 'A range of plain numbers.', useInstead: 'Slider (range coming later)' },
     ],
   },
@@ -25,13 +25,13 @@ export default defineComponentDocs({
   anatomy: [
     { part: 'Label and value', description: 'With `label`: the label and the range (`showValue`), label style, 8px above the track.', required: false },
     { part: 'Track', description: 'As ColorSlider: a 16px pill with a border, showing the channel from minimum to maximum of `color` (hue: always the full-strength rainbow).', required: true },
-    { part: 'Swatches', description: 'With `showSwatches`: a 24px swatch of each end\'s colour (border/radius/md, border/width/sm border in color/border), 4px above its thumb, always shown. The slider makes room for them above the track.', required: false },
-    { part: 'Start and end thumbs', description: 'As ColorSlider\'s thumb, each filled with the colour at its end of the range. The one being dragged grows to 36px.', required: true },
+    { part: 'Swatches', description: 'With `showSwatches`: a 24px swatch of each end\'s color (border/radius/md, border/width/sm border in color/border), 4px above its thumb, always shown. The slider makes room for them above the track.', required: false },
+    { part: 'Start and end thumbs', description: 'As ColorSlider\'s thumb, each filled with the color at its end of the range. The one being dragged grows to 36px.', required: true },
   ],
 
   variants: {
     channel: {
-      hue: 'A span of the colour wheel, 0–360°.',
+      hue: 'A span of the color wheel, 0–360°.',
       'other channels': 'saturation, lightness, brightness, red, green, blue or alpha, in that channel\'s units.',
     },
     showValue: {
@@ -39,7 +39,7 @@ export default defineComponentDocs({
       false: 'No value in the label row.',
     },
     showSwatches: {
-      false: 'Only the thumbs show the end colours. The default.',
+      false: 'Only the thumbs show the end colors. The default.',
       true: 'A swatch above each thumb as well, e.g. for the two stops of a gradient.',
     },
   },
@@ -64,12 +64,12 @@ export default defineComponentDocs({
 
   guidelines: {
     do: [
-      'Set `color` to the colour the range is taken from, so saturation, lightness and other tracks show the real colours on offer.',
+      'Set `color` to the color the range is taken from, so saturation, lightness and other tracks show the real colors on offer.',
       'Save with `onChangeEnd`.',
-      'Turn on `showSwatches` when the two end colours are the result, e.g. gradient stops.',
+      'Turn on `showSwatches` when the two end colors are the result, e.g. gradient stops.',
     ],
     dont: [
-      'Use it for a single colour; a ColorSlider has one thumb.',
+      'Use it for a single color; a ColorSlider has one thumb.',
     ],
   },
 
@@ -123,6 +123,6 @@ export default defineComponentDocs({
 
   related: ['ColorSlider', 'Slider'],
   notes: [
-    'React Aria has no two-thumb colour slider, so this is React Aria\'s `Slider` with two thumbs, with the channel\'s range, steps, value format and gradient taken from `color`.',
+    'React Aria has no two-thumb color slider, so this is React Aria\'s `Slider` with two thumbs, with the channel\'s range, steps, value format and gradient taken from `color`.',
   ],
 });

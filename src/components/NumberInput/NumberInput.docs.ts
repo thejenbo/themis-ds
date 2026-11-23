@@ -25,9 +25,9 @@ export default defineComponentDocs({
 
   anatomy: [
     { part: 'Label', description: 'The field\'s name (`label`), label style. "(optional)" is added with `isOptional`.', required: true },
-    { part: 'Input Box', description: 'The 40px box shared with TextInput: red border when invalid, grey with border-disabled when disabled.', required: true },
+    { part: 'Input Box', description: 'The 40px box shared with TextInput: red border when invalid, gray with border-disabled when disabled.', required: true },
     { part: 'Number', description: 'The number in the input text style, formatted for the locale; placeholder while empty.', required: true },
-    { part: 'Steppers', description: 'Up and down buttons (Figma "Number Stepper", in "Icon Right"), 16px from the number. Each greys out at its limit (stepper `atMin` / `atMax`).', required: true },
+    { part: 'Steppers', description: 'Up and down buttons (Figma "Number Stepper", in "Icon Right"), 16px from the number. Each grays out at its limit (stepper `atMin` / `atMax`).', required: true },
     { part: 'Description / Error message', description: 'Help text (caption) and the error message, as in TextInput.', required: false },
   ],
 

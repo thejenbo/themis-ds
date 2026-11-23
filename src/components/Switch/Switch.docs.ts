@@ -32,13 +32,13 @@ export default defineComponentDocs({
     {
       part: 'Track',
       description:
-        'The pill. Filled with the brand colour when on, outlined when off. Carries the focus ring and, on touch screens, a 44px touch area. Shrinks slightly while pressed.',
+        'The pill. Filled with the brand color when on, outlined when off. Carries the focus ring and, on touch screens, a 44px touch area. Shrinks slightly while pressed.',
       required: true,
     },
     {
       part: 'State Layer',
       description:
-        'Overlay on the track on hover and press. Its colour is calculated from the track: lightening on dark colours, darkening on light ones.',
+        'Overlay on the track on hover and press. Its color is calculated from the track: lightening on dark colors, darkening on light ones.',
       required: true,
     },
     { part: 'Thumb', description: 'The circle. Slides to the right when on, to the left when off.', required: true },
@@ -75,7 +75,7 @@ export default defineComponentDocs({
       'Name the setting, not the action: "Email notifications", not "Turn on email notifications". The switch already says on or off.',
       'Apply the change straight away. If it needs a Save button, use a Checkbox.',
       'Use `description` for extra context. It is linked with `aria-describedby`, so it is read after the name.',
-      'Colour is not the only cue: the thumb position and the ✓ / × icons change too.',
+      'Color is not the only cue: the thumb position and the ✓ / × icons change too.',
     ],
   },
 
@@ -138,7 +138,7 @@ export default defineComponentDocs({
       property: 'State Layer fades in',
       duration: 'motion/duration.base',
       easing: 'motion/easing.standard',
-      reducedMotion: 'Unchanged (colour change only, no movement).',
+      reducedMotion: 'Unchanged (color change only, no movement).',
     },
     {
       trigger: 'Press (pointer or Space)',

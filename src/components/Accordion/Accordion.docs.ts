@@ -42,8 +42,8 @@ export default defineComponentDocs({
 
   variants: {
     tone: {
-      brand: 'Default. Brand-coloured header.',
-      danger: 'Error-coloured header, for a section of destructive actions (e.g. a "Danger Zone" in settings).',
+      brand: 'Default. Brand-colored header.',
+      danger: 'Error-colored header, for a section of destructive actions (e.g. a "Danger Zone" in settings).',
     },
     allowsMultipleExpanded: {
       true: 'AccordionGroup default: several accordions can be open at once.',
@@ -54,7 +54,7 @@ export default defineComponentDocs({
   accessibility: {
     providedByBase: [
       'The header is a <button> inside a heading, with aria-expanded and aria-controls pointing at the content.',
-      'The content is a region labelled by the header.',
+      'The content is a region labeled by the header.',
       'Closed content is hidden with hidden="until-found", so the browser\'s find-in-page can still open it.',
       'Focus ring shown for keyboard focus only (isFocusVisible).',
     ],
@@ -128,7 +128,7 @@ export default defineComponentDocs({
       property: 'State Layer fades in on the header',
       duration: 'motion/duration.base',
       easing: 'motion/easing.standard',
-      reducedMotion: 'Unchanged (colour change only, no movement).',
+      reducedMotion: 'Unchanged (color change only, no movement).',
     },
   ],
 

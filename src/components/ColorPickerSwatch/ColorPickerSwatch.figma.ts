@@ -4,7 +4,7 @@
 import figma from 'figma'
 const instance = figma.selectedInstance
 
-// Focused and pressed are interaction. The colour is the swatch's fill, which templates can't read: `yourColor` is a
+// Focused and pressed are interaction. The color is the swatch's fill, which templates can't read: `yourColor` is a
 // placeholder. "Pick a color" is a placeholder for what pressing does.
 const size = instance.getEnum('size', { small: 'small', medium: 'medium', large: undefined })
 const disabled = instance.getEnum('state', { default: false, focused: false, pressed: false, disabled: true })

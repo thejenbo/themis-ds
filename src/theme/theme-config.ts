@@ -24,7 +24,7 @@ export type ThemeBorderWidth = (typeof THEME_BORDER_WIDTHS)[number];
 export type ThemeRadius = (typeof THEME_RADII)[number];
 
 export interface ThemeSettings {
-  /** The six colours; every other colour token is worked out from them. */
+  /** The six colors; every other color token is worked out from them. */
   colors: ThemeColors;
   /** How heavy borders are across the system. Defaults to `medium`. */
   borderWidth?: ThemeBorderWidth;
@@ -75,7 +75,7 @@ export function parseThemisConfig(value: unknown): { config: ThemisConfig; error
             try {
               parseHex(c);
             } catch {
-              errors.push(`${at}.colors.${key} must be a hex colour like "#7406EB" (got "${c}").`);
+              errors.push(`${at}.colors.${key} must be a hex color like "#7406EB" (got "${c}").`);
             }
           }
         }
@@ -99,7 +99,7 @@ export function parseThemisConfig(value: unknown): { config: ThemisConfig; error
 const property = (stylexVar: string) => /^var\((--[^,)]+)/.exec(stylexVar)?.[1] ?? stylexVar;
 
 /**
- * The CSS custom properties a theme sets: every colour token, and the heading and body fonts. ThemeProvider applies
+ * The CSS custom properties a theme sets: every color token, and the heading and body fonts. ThemeProvider applies
  * these inline; they can also be written into a stylesheet.
  */
 export function themeVariables(theme: ThemeSettings): Record<string, string> {

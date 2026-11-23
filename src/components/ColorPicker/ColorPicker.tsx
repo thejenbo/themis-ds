@@ -10,20 +10,20 @@ import type { ColorPickerSwatchSize } from '../ColorPickerSwatch';
 import { PickerPopover, type PickerPanelOptions } from './picker-popover';
 
 export interface ColorPickerProps extends PickerPanelOptions {
-  /** The current colour (controlled), as a CSS colour string or a parsed `Color`. Use with `onChange`. */
+  /** The current color (controlled), as a CSS color string or a parsed `Color`. Use with `onChange`. */
   value?: AriaColorPickerProps['value'];
-  /** The starting colour (uncontrolled). */
+  /** The starting color (uncontrolled). */
   defaultValue?: AriaColorPickerProps['defaultValue'];
-  /** Called continuously while the colour changes (dragging, arrow keys). */
+  /** Called continuously while the color changes (dragging, arrow keys). */
   onChange?: (value: Color) => void;
   /**
-   * Called once a change is finished: when a slider or the area is let go, or a recent colour is chosen. Add the
-   * colour to your recent colours here.
+   * Called once a change is finished: when a slider or the area is let go, or a recent color is chosen. Add the
+   * color to your recent colors here.
    */
   onChangeEnd?: (value: Color) => void;
   /**
-   * Names the swatch button and the popover for screen readers, after the colour's description ("vibrant purple,
-   * Background color"). Say what the colour is for.
+   * Names the swatch button and the popover for screen readers, after the color's description ("vibrant purple,
+   * Background color"). Say what the color is for.
    */
   'aria-label': string;
   /**
@@ -43,10 +43,10 @@ export interface ColorPickerProps extends PickerPanelOptions {
 }
 
 /**
- * A colour swatch that opens a colour picker: a saturation × brightness area and a hue slider, optional Saturation,
- * Brightness and Hue sliders behind "Advanced", and optional recent colours. Built on React Aria `ColorPicker`, with a
+ * A color swatch that opens a color picker: a saturation × brightness area and a hue slider, optional Saturation,
+ * Brightness and Hue sliders behind "Advanced", and optional recent colors. Built on React Aria `ColorPicker`, with a
  * `DialogTrigger` and `Popover`: clicking outside or pressing Escape closes it and focus returns to the swatch. For a
- * typed colour code next to the swatch, use ColorField.
+ * typed color code next to the swatch, use ColorField.
  */
 export function ColorPicker({
   value,

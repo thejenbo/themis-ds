@@ -23,7 +23,7 @@ const PROJECTS: Project[] = [
   { id: 'web', name: 'Website redesign', updated: '2026-11-02', owner: 'Priya Natarajan' },
   { id: 'app', name: 'Mobile app onboarding', updated: '2026-10-18', owner: 'Tomás Herrera' },
   { id: 'brand', name: 'Brand refresh', updated: '2026-11-09', owner: 'Ama Owusu' },
-  { id: 'docs', name: 'Help centre', updated: '2026-09-27', owner: 'Lena Fischer' },
+  { id: 'docs', name: 'Help center', updated: '2026-09-27', owner: 'Lena Fischer' },
   { id: 'billing', name: 'Billing settings', updated: '2026-10-30', owner: 'Kenji Watanabe' },
 ];
 
@@ -194,7 +194,7 @@ export const Measurements: Story = {
     const headerCell = canvas.getByRole('columnheader', { name: 'Owner' });
     await expect(getComputedStyle(headerCell).fontWeight).toBe('600');
     await expect(getComputedStyle(canvas.getByText('Lena Fischer')).fontWeight).toBe('400');
-    await expect(getComputedStyle(canvas.getByRole('rowheader', { name: 'Help centre' })).fontWeight).toBe('400');
+    await expect(getComputedStyle(canvas.getByRole('rowheader', { name: 'Help center' })).fontWeight).toBe('400');
     await expect(getComputedStyle(headerCell).paddingLeft).toBe('16px');
     // The actions heading is hidden but read out.
     await expect(canvas.getByRole('columnheader', { name: 'Actions' })).toBeInTheDocument();
@@ -277,7 +277,7 @@ export const BorderWidths: Story = {
   },
 };
 
-/** Each colour theme. */
+/** Each color theme. */
 export const ThemeMatrix: Story = {
   tags: ['!autodocs'],
   parameters: { layout: 'fullscreen' },

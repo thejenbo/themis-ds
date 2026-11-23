@@ -244,7 +244,7 @@ export const Gallery: Story = {
     const button = toasts[4]!.querySelector('button')!.getBoundingClientRect().height;
     const h = headingHeight(toasts[0]!);
     await expect(heights).toEqual([h, h, 48, h, Math.max(48, Math.round(button + 16))]);
-    // One line with an action: the × is centred on the message, not at the top of the row.
+    // One line with an action: the × is centered on the message, not at the top of the row.
     const middle = (el: Element) => { const r = el.getBoundingClientRect(); return Math.round(r.top + r.height / 2); };
     const oneLine = toasts[4]!;
     const message = document.getElementById(oneLine.getAttribute('aria-labelledby')!)!;
@@ -252,7 +252,7 @@ export const Gallery: Story = {
   },
 };
 
-/** Each tone in each colour theme. */
+/** Each tone in each color theme. */
 export const ThemeMatrix: Story = {
   tags: ['!autodocs'],
   render: (args) => (

@@ -121,11 +121,11 @@ export const blockPadding = stylex.create({
  * Tones. Each comes from the Figma Button set's `tone` property and supplies:
  *   fill    default variant's Surface
  *   border  outline variant's border
- *   label   outline and subtle label and icon colour (default variant labels use text-inverse on the fill)
- * Hover/press (the State Layer) uses Figma's hover tokens, computed per colour theme:
+ *   label   outline and subtle label and icon color (default variant labels use text-inverse on the fill)
+ * Hover/press (the State Layer) uses Figma's hover tokens, computed per color theme:
  *   default  the solid `*-hover` fill: the fill shifted 7% away from its label, so contrast only goes up
  *   outline  the see-through `*-tint` over the background, so the layer is as opaque as the resting fill
- *   subtle   the see-through `*-tint` alone. Subtle buttons only sit on `background`-coloured surfaces, where
+ *   subtle   the see-through `*-tint` alone. Subtle buttons only sit on `background`-colored surfaces, where
  *            that pair is rated (tokens/contrast-pairs.json)
  */
 const brandSurfaces = stylex.create({

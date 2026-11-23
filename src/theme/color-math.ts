@@ -1,5 +1,5 @@
 /**
- * Small sRGB colour helpers for the theme engine: parsing, mixing, opacity and WCAG contrast. Channels are 0–1.
+ * Small sRGB color helpers for the theme engine: parsing, mixing, opacity and WCAG contrast. Channels are 0–1.
  */
 
 export type RGBA = readonly [r: number, g: number, b: number, a: number];
@@ -8,7 +8,7 @@ export type RGBA = readonly [r: number, g: number, b: number, a: number];
 export function parseHex(input: string): RGBA {
   const h = input.trim().replace(/^#/, '');
   const full = h.length === 3 ? [...h].map((c) => c + c).join('') : h;
-  if (!/^[0-9a-f]{6}([0-9a-f]{2})?$/i.test(full)) throw new Error(`Not a hex colour: "${input}"`);
+  if (!/^[0-9a-f]{6}([0-9a-f]{2})?$/i.test(full)) throw new Error(`Not a hex color: "${input}"`);
   const n = (i: number) => parseInt(full.slice(i, i + 2), 16) / 255;
   return [n(0), n(2), n(4), full.length === 8 ? n(6) : 1];
 }
@@ -28,7 +28,7 @@ export function withAlpha([r, g, b]: RGBA, alpha: number): RGBA {
   return [r, g, b, alpha];
 }
 
-/** A see-through colour laid over an opaque one. */
+/** A see-through color laid over an opaque one. */
 export function over(top: RGBA, base: RGBA): RGBA {
   const a = top[3];
   return [0, 1, 2].map((i) => top[i]! * a + base[i]! * (1 - a)).concat(1) as unknown as RGBA;

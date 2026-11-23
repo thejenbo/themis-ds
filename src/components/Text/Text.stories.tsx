@@ -84,7 +84,7 @@ export const OnAPage: Story = {
   ),
 };
 
-/** Colour is inherited, so text follows each colour theme. */
+/** Color is inherited, so text follows each color theme. */
 export const ThemeMatrix: Story = {
   tags: ['!autodocs'],
   parameters: { layout: 'fullscreen' },
@@ -96,7 +96,7 @@ export const ThemeMatrix: Story = {
             <Heading level={2} size="md">
               {theme}
             </Heading>
-            <Text>Body text inherits the theme&apos;s text colour.</Text>
+            <Text>Body text inherits the theme&apos;s text color.</Text>
             <Text variant="caption">Caption</Text>
           </div>
         </ThemeProvider>

@@ -24,7 +24,7 @@ export type SimView = 'account' | 'subscription';
  */
 interface SettingsSimProps {
   lightenBrandArt?: boolean;
-  /** Tip the scales illustration, as the logomark does, while a theme colour fails contrast. */
+  /** Tip the scales illustration, as the logomark does, while a theme color fails contrast. */
   isUnbalanced?: boolean;
   /** The theme's radius: the stars' points follow it. */
   radius?: ThemeRadius;
@@ -189,8 +189,8 @@ const styles = stylex.create({
     width: `min(27.3rem, calc(100cqw + ${spacing['2xl']} - ${scalesLeft}))`,
     display: { default: 'block', '@container (max-width: 56rem)': 'none' },
   },
-  // Figma: the title, text right on the tinted page, has a 1px outside stroke in the background colour.
-  // CSS strokes are centred on the outline, so 2px painted under the fill leaves 1px showing outside.
+  // Figma: the title, text right on the tinted page, has a 1px outside stroke in the background color.
+  // CSS strokes are centered on the outline, so 2px painted under the fill leaves 1px showing outside.
   title: {
     display: 'flex',
     alignItems: 'flex-start',
@@ -205,9 +205,9 @@ const styles = stylex.create({
   // 24px under the tabs (the panel's own 16px, plus 8px), as between the sections.
   view: { display: 'flex', flexDirection: 'column', gap: spacing.md, paddingBlockStart: spacing.xs },
   toolbar: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: spacing.md, flexWrap: 'wrap' },
-  // After the label, 4px apart (Chip's icon gap), centred on the caption line. 4px of padding all round, taken back
+  // After the label, 4px apart (Chip's icon gap), centered on the caption line. 4px of padding all round, taken back
   // with negative margins: a 20px target, wider than the tooltip's 18px arrow, which React Aria keeps within the
-  // trigger's edges (with just the 12px icon it was pushed 3px off-centre).
+  // trigger's edges (with just the 12px icon it was pushed 3px off-center).
   infoButton: {
     position: 'relative',
     display: 'inline-flex',

@@ -193,7 +193,7 @@ export const WithSelect: Story = {
   },
 };
 
-/** Each colour theme, with an option chosen. */
+/** Each color theme, with an option chosen. */
 export const ThemeMatrix: Story = {
   tags: ['!autodocs'],
   parameters: { layout: 'fullscreen' },

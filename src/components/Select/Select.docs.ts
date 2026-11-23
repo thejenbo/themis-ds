@@ -30,7 +30,7 @@ export default defineComponentDocs({
     { part: 'Description / Error message', description: 'Help text (caption) and the error message, as in TextInput.', required: false },
     { part: 'Dropdown', description: 'The list, 4px below the box and as wide as it: border, radius md, drop shadow, 8px padding and 4px between options (as in ActionMenu). Scrolls when long.', required: true },
     { part: 'Dropdown Option', description: '32px option (`SelectItem`) in the input text style, with an optional decorative `icon` before the label. Pale brand tint when highlighted; ✓ when chosen.', required: true },
-    { part: 'Dropdown Divider', description: '`SelectSeparator`: a 1px line in the border colour (whatever the border-width theme) between groups of options. Screen readers skip it.', required: false },
+    { part: 'Dropdown Divider', description: '`SelectSeparator`: a 1px line in the border color (whatever the border-width theme) between groups of options. Screen readers skip it.', required: false },
   ],
 
   variants: {},
@@ -148,7 +148,7 @@ export default defineComponentDocs({
     'Built on Figma "Input Base" / "Input Box" (shared with TextInput, src/components/TextInput/field-base.ts), "Dropdown" (node 1502-172), "Dropdown Option" (node 1502-145, `iconLeft` variant for `icon`) and "Dropdown Divider" (node 2421-2384).',
     'Figma\'s `empty` variants show the placeholder; `focused` and `opened` come from interaction.',
     'The caret stays the same while the list is open (Figma).',
-    'The highlight tint matches ActionMenu: brand-tint, the brand colour at 7% opacity, over the list.',
+    'The highlight tint matches ActionMenu: brand-tint, the brand color at 7% opacity, over the list.',
     'The box shows the shared focus ring inside it for keyboard focus (as in Figma and the other inputs); options use it inside the option.',
     'React Aria\'s Select would make an `onAction` option the value; Themis keeps the value itself and runs the action instead (only from the open list, so typing a letter on the closed box never runs it).',
     'Not built yet: multiple selection, and option groups with headings.',

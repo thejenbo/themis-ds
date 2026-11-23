@@ -51,7 +51,7 @@ interface IconButtonBaseProps extends Omit<AriaButtonProps, 'className' | 'style
    * @default 'Loading'
    */
   pendingLabel?: string;
-  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colours or size. */
+  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colors or size. */
   xstyle?: stylex.StyleXStyles;
 }
 
@@ -65,7 +65,7 @@ interface IconButtonStandardTone {
    */
   variant?: IconButtonVariant;
   /**
-   * Colour family. Same as Button: `brand` for most actions, `neutral` where the brand colour would compete,
+   * Color family. Same as Button: `brand` for most actions, `neutral` where the brand color would compete,
    * `danger` only for destructive actions, `warning` and `success` inside matching status messages (e.g. a Toast's
    * close button). `neutral-inverse` (subtle only) is for icon buttons on brand or dark
    * fills, such as the close button in a Modal header.
@@ -87,7 +87,7 @@ export type IconButtonProps = IconButtonBaseProps & (IconButtonStandardTone | Ic
  * A button that shows only an icon, for compact actions such as toolbars and table rows.
  * Shares Button's tones, State Layer, focus ring, touch target and press motion.
  *
- * Always pass `aria-label`. Prefer a labelled Button when there is room: icons alone are often ambiguous.
+ * Always pass `aria-label`. Prefer a labeled Button when there is room: icons alone are often ambiguous.
  */
 export function IconButton({
   variant = 'default',
@@ -119,7 +119,7 @@ export function IconButton({
       {composeRenderProps(children, (children, s) => {
         const active = (s.isHovered || s.isPressed) && !s.isDisabled;
         // neutral-inverse sits on filled surfaces (background-inverse, brand, error, warning, success), so its hover
-        // is a see-through tint toward its icon colour: inverse-tint.
+        // is a see-through tint toward its icon color: inverse-tint.
         const look =
           tone === 'neutral-inverse'
             ? [see.inverse, see.inverseLayer, s.isDisabled && see.inverseDisabled]

@@ -9,14 +9,14 @@ listed under **Changed** or **Removed** with what to do.
 
 ### Added
 
-- Theme files: a JSON format (`themis.theme.json`, version 1) holding named themes, each with six colours, a border
+- Theme files: a JSON format (`themis.theme.json`, version 1) holding named themes, each with six colors, a border
   width, a radius and Google Fonts. `<ThemeProvider theme={config.themes.light}>` applies one; the fonts load
   automatically (`loadFonts={false}` to opt out). A JSON Schema ships as `themis-ds/theme.schema.json`.
-- The colour rules behind every Themis theme, in code: `deriveColorTokens` works out all 27 colour tokens from six
-  colours (hovers 7% darker, tints at 7%, muted text at 6:1, …), matching the Figma themes.
+- The color rules behind every Themis theme, in code: `deriveColorTokens` works out all 27 color tokens from six
+  colors (hovers 7% darker, tints at 7%, muted text at 6:1, …), matching the Figma themes.
 - `parseThemisConfig` (checks a theme file and lists every problem), `themeVariables`, `googleFontsHref`, and
   `rateThemeColors` / `contrastLevel` for AAA / AA / AA Large / Fail contrast ratings.
-- Accordion `tone="danger"`: an error-coloured header for a section of destructive actions, as in Figma.
+- Accordion `tone="danger"`: an error-colored header for a section of destructive actions, as in Figma.
 - `SelectSeparator` and `ComboBoxSeparator`: a 1px divider between groups of options.
 - `SelectItem` / `ComboBoxItem` `icon`: a decorative icon before the label.
 - Select options with `onAction` (such as "Add new theme") run the action instead of becoming the value.
@@ -50,9 +50,9 @@ listed under **Changed** or **Removed** with what to do.
 
 ### Fixed
 
-- UnitInput and ColorField: the divider before the unit / format is the box's border colour, so it turns red with an
-  error and grey when disabled (it took the text colour), as in Figma.
-- ColorField: choosing a colour in the picker (or a new `value`) replaces an unreadable typed code and clears its
+- UnitInput and ColorField: the divider before the unit / format is the box's border color, so it turns red with an
+  error and gray when disabled (it took the text color), as in Figma.
+- ColorField: choosing a color in the picker (or a new `value`) replaces an unreadable typed code and clears its
   error.
 - `ActionMenuItem` with an `href` (a link) is no longer underlined.
 
@@ -64,11 +64,11 @@ The first release: the base of the design system, matched to the Themis Figma li
 
 **Foundations**
 
-- Design tokens exported from Figma variables (DTCG) and built into StyleX variables: colour themes, fonts,
-  typography (mobile and desktop), spacing, radius, border width, shadows, motion and system colours.
-- `ThemeProvider`: switch each token collection's mode independently (colour theme, font theme, radius, border width,
+- Design tokens exported from Figma variables (DTCG) and built into StyleX variables: color themes, fonts,
+  typography (mobile and desktop), spacing, radius, border width, shadows, motion and system colors.
+- `ThemeProvider`: switch each token collection's mode independently (color theme, font theme, radius, border width,
   shadows), and nest providers.
-- Shared interaction behaviour: a black-and-white dashed focus ring shown for keyboard focus only, 44px touch targets
+- Shared interaction behavior: a black-and-white dashed focus ring shown for keyboard focus only, 44px touch targets
   on touch screens, a 0.96 press shrink, hover tints from the State Layer tokens, and reduced-motion support.
 - Contrast checking for every text-on-surface pair (`npm run contrast`), targeting WCAG AA.
 
@@ -77,7 +77,7 @@ The first release: the base of the design system, matched to the Themis Figma li
 - Actions: Button, IconButton, ToggleButton.
 - Inputs: Checkbox, ComboBox, NumberInput, RadioGroup, Select, Slider, TextArea, TextInput, UnitInput.
 - Selection: SegmentedControl, Switch.
-- Colour: ColorArea, ColorField, ColorPicker, ColorPickerSwatch, ColorRangeSlider, ColorSlider, ColorSwatch.
+- Color: ColorArea, ColorField, ColorPicker, ColorPickerSwatch, ColorRangeSlider, ColorSlider, ColorSwatch.
 - Data display: Avatar, Chip, Icon, Table.
 - Disclosure: Accordion. Navigation: Tabs. Feedback: Toast. Overlays: ActionMenu, Modal, Tooltip.
 - Typography: Heading, Text.

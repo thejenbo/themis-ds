@@ -34,19 +34,19 @@ import { ColorSlider } from '../ColorSlider';
 import { ColorSwatch } from '../ColorSwatch';
 import { Icon } from '../Icon';
 
-/** Figma: six 40px recent-colour slots, 8px apart, span the panel's 280px exactly. */
+/** Figma: six 40px recent-color slots, 8px apart, span the panel's 280px exactly. */
 export const RECENT_SLOTS = 6;
 
 /** The panel's options, shared by ColorPicker and ColorField. */
 export interface PickerPanelOptions {
   /**
-   * Recent colours, newest first, shown under the sliders. Keep the list in your app (e.g. add the colour from
-   * `onChangeEnd`) and pass it in; the picker doesn't remember colours itself. Up to 6 are shown, and unused slots
+   * Recent colors, newest first, shown under the sliders. Keep the list in your app (e.g. add the color from
+   * `onChangeEnd`) and pass it in; the picker doesn't remember colors itself. Up to 6 are shown, and unused slots
    * show empty placeholders. Leave it out to hide the section.
    */
   recentColors?: (string | Color)[];
   /**
-   * The recent colours' heading. Pass a translation here.
+   * The recent colors' heading. Pass a translation here.
    * @default 'Recently used'
    */
   recentColorsLabel?: string;
@@ -82,12 +82,12 @@ interface PickerPopoverProps extends PickerPanelOptions {
   size: ColorPickerSwatchSize;
   isDisabled?: boolean;
   placement?: PopoverProps['placement'];
-  /** Called once a change is finished (let go of a slider, chose a recent colour). */
+  /** Called once a change is finished (let go of a slider, chose a recent color). */
   onChangeEnd?: (value: Color) => void;
 }
 
 /**
- * The swatch button and the popover it opens. Must be inside a React Aria `ColorPicker`, which holds the colour: every
+ * The swatch button and the popover it opens. Must be inside a React Aria `ColorPicker`, which holds the color: every
  * part here reads and changes it through context.
  */
 export function PickerPopover({
@@ -191,7 +191,7 @@ function PickerPanel({
                 <div {...stylex.props(styles.recentList)}>
                   <ColorSwatchPicker
                     aria-labelledby={recentId}
-                    // React Aria's ColorPicker sets the colour; choosing a recent one also finishes a change, like letting
+                    // React Aria's ColorPicker sets the color; choosing a recent one also finishes a change, like letting
                     // go of a slider.
                     onChange={(c) => onChangeEnd?.(c)}
                     {...stylex.props(styles.recentRow)}
@@ -295,7 +295,7 @@ const styles = stylex.create({
   enter: { animationName: fadeIn },
   exit: { animationName: fadeOut, animationFillMode: 'forwards' },
   dialog: { outline: 'none' },
-  // 24px padding around 280px of content; 16px between the area, the sliders and the recent colours (24px under
+  // 24px padding around 280px of content; 16px between the area, the sliders and the recent colors (24px under
   // the Advanced button while it's closed, so the button doesn't crowd the hue slider).
   panel: {
     display: 'flex',

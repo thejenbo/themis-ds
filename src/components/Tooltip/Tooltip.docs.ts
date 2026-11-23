@@ -34,10 +34,10 @@ export default defineComponentDocs({
 
   variants: {
     placement: {
-      top: 'Above the trigger, centred. The default.',
-      bottom: 'Below the trigger, centred. For triggers at the top of the screen.',
-      left: 'To the left, centred vertically.',
-      right: 'To the right, centred vertically. Good for items in a side navigation.',
+      top: 'Above the trigger, centered. The default.',
+      bottom: 'Below the trigger, centered. For triggers at the top of the screen.',
+      left: 'To the left, centered vertically.',
+      right: 'To the right, centered vertically. Good for items in a side navigation.',
       'top start': 'Above, lined up with the trigger\'s start edge. For triggers near the left of the screen.',
       'top end': 'Above, lined up with the trigger\'s end edge. For triggers near the right of the screen.',
       'bottom start': 'Below, lined up with the trigger\'s start edge.',
@@ -134,6 +134,6 @@ export default defineComponentDocs({
   related: ['IconButton', 'Button', 'Modal'],
   notes: [
     'Figma\'s `position` is `placement` in code, with the same values. Figma\'s `heading` is on when `title` is passed.',
-    'The arrow always points at the middle of the trigger (React Aria\'s behaviour). With start/end placements the box lines up with the trigger\'s edge, so on wide triggers the arrow sits further along the box. It stays at least 8px (spacing.xs) from the box\'s ends, so with very small triggers it can sit slightly off their middle.',
+    'The arrow always points at the middle of the trigger (React Aria\'s behavior). With start/end placements the box lines up with the trigger\'s edge, so on wide triggers the arrow sits further along the box. It stays at least 8px (spacing.xs) from the box\'s ends, so with very small triggers it can sit slightly off their middle.',
   ],
 });

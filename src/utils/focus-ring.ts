@@ -9,11 +9,11 @@ import { spacing } from '../tokens/spacing.stylex';
  * Themis focus ring: 2px dashes alternating black and white, drawn outside the element.
  *
  * - Never changes the element's size: a dashed black `outline`, plus a solid white ring as `::before`
- *   underneath it, so the gaps between dashes show white. One of the two colours always has at least
+ *   underneath it, so the gaps between dashes show white. One of the two colors always has at least
  *   3:1 contrast with any background (WCAG 1.4.11), whatever theme the user picks.
  * - Apply `visible` only for keyboard focus (React Aria `isFocusVisible`), never on mouse clicks.
- * - Windows high-contrast mode replaces custom colours, so the white backing ring is dropped there
- *   and the outline uses the system colour.
+ * - Windows high-contrast mode replaces custom colors, so the white backing ring is dropped there
+ *   and the outline uses the system color.
  * - The element needs `position: relative` and a border radius of `radius.radiusMd` (the ring follows it),
  *   or `radius.radiusSm` together with `radiusSm`.
  *   `base` makes the element a stacking context, so the white ring can sit under the outline.
@@ -56,11 +56,11 @@ export const focusRing = stylex.create({
   },
   /**
    * Add after `visible` to draw the ring just inside the element instead of outside it, for full-width
-   * elements where an outside ring would overlap neighbours or spill out of the container (e.g. Accordion
+   * elements where an outside ring would overlap neighbors or spill out of the container (e.g. Accordion
    * headers). Same 2px gap and black/white dashes. Set the `::before` border radius in the component to
    * the element's radius minus `spacing.3xs`.
    *
-   * Inside the element, the ring has to paint above the element's children, so both colours move onto the
+   * Inside the element, the ring has to paint above the element's children, so both colors move onto the
    * `::before` (white border + black dashed outline on top of it). Windows high-contrast mode drops the
    * `::before`, so the element's own outline is kept there.
    */

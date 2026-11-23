@@ -26,11 +26,11 @@ export interface ColorSliderProps
   extends Omit<AriaColorSliderProps, 'className' | 'style' | 'children' | 'orientation' | 'value' | 'defaultValue' | 'onChange' | 'onChangeEnd'> {
   /** The channel the slider changes: `hue`, `saturation`, `lightness`, `brightness`, `red`, `green`, `blue` or `alpha`. */
   channel: AriaColorSliderProps['channel'];
-  /** The current colour (controlled), as a CSS colour string or a parsed `Color`. Use with `onChange`. */
+  /** The current color (controlled), as a CSS color string or a parsed `Color`. Use with `onChange`. */
   value?: string | Color;
-  /** The starting colour (uncontrolled). */
+  /** The starting color (uncontrolled). */
   defaultValue?: string | Color;
-  /** Called continuously while the colour changes (dragging, arrow keys), with the whole colour. */
+  /** Called continuously while the color changes (dragging, arrow keys), with the whole color. */
   onChange?: (value: Color) => void;
   /** Called once when the person lets go (or after a key press). Use this for anything expensive, like saving. */
   onChangeEnd?: (value: Color) => void;
@@ -44,14 +44,14 @@ export interface ColorSliderProps
    * @default true
    */
   showValue?: boolean;
-  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colours or size. */
+  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colors or size. */
   xstyle?: stylex.StyleXStyles;
 }
 
 /**
- * Changes one channel of a colour, such as its hue or opacity, by dragging a thumb along a track that shows the
- * colours on offer. Built on React Aria `ColorSlider`: arrow keys step, Page Up/Down take bigger steps, Home/End jump
- * to the ends, and clicking the track jumps there. The thumb is filled with the current colour.
+ * Changes one channel of a color, such as its hue or opacity, by dragging a thumb along a track that shows the
+ * colors on offer. Built on React Aria `ColorSlider`: arrow keys step, Page Up/Down take bigger steps, Home/End jump
+ * to the ends, and clicking the track jumps there. The thumb is filled with the current color.
  */
 export function ColorSlider({ label, showValue = true, xstyle, ...props }: ColorSliderProps) {
   const { direction } = useLocale();

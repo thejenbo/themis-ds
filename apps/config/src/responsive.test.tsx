@@ -93,7 +93,7 @@ describe('tablet (48em to 64em)', () => {
     const widths = page.getByRole('tablist', { name: 'Theme settings' }).getByRole('tab').elements().map((t) => Math.round(rect(t).width));
     expect(new Set(widths).size).toBe(1);
     const label = (name: string) => [...document.querySelectorAll('label')].find((l) => l.textContent?.startsWith(name))!;
-    // The colour code control at the start of the row, above the fields.
+    // The color code control at the start of the row, above the fields.
     const control = page.getByRole('radiogroup', { name: 'Color code for every field' }).element();
     expect(Math.round(rect(control).left)).toBe(Math.round(rect(label('Brand')).left));
     // Brand, Text and Background down the left; Error, Warning and Success down the right.
@@ -106,7 +106,7 @@ describe('tablet (48em to 64em)', () => {
       expect(Math.round(r.top)).toBe(Math.round(right[i]!.top));
       if (i > 0) expect(r.top).toBeGreaterThan(left[i - 1]!.top);
     });
-    // A failing colour shows on the Colors tab.
+    // A failing color shows on the Colors tab.
     await page.getByRole('textbox', { name: /^Brand/ }).fill('#FFFF00');
     await userEvent.keyboard('{Tab}');
     await page.getByRole('tab', { name: /^Borders/ }).click();

@@ -70,7 +70,7 @@ export const AddNewOption: Story = {
     const box = canvas.getByRole('button', { name: /Theme/ });
     await userEvent.click(box);
     const separator = await screen.findByRole('separator');
-    // Figma "Dropdown Divider": 1px in the border colour.
+    // Figma "Dropdown Divider": 1px in the border color.
     await expect(separator.getBoundingClientRect().height).toBe(1);
     // Figma "iconLeft": a 16px icon, 8px before the label.
     const addOption = screen.getByRole('option', { name: 'Add new theme' });
@@ -220,7 +220,7 @@ export const InAForm: Story = {
   },
 };
 
-/** Each colour theme, open. */
+/** Each color theme, open. */
 export const ThemeMatrix: Story = {
   tags: ['!autodocs'],
   parameters: { layout: 'fullscreen' },

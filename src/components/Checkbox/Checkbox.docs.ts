@@ -43,7 +43,7 @@ export default defineComponentDocs({
     ],
     requirements: [
       'Write the label as a statement that\'s true when ticked ("Email me about new features"), never a question.',
-      'Say what an error means in the message: the box itself doesn\'t change colour (Figma).',
+      'Say what an error means in the message: the box itself doesn\'t change color (Figma).',
     ],
   },
 

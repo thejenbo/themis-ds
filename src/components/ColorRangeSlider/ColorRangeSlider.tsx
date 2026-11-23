@@ -36,11 +36,11 @@ export interface ColorRangeSliderProps
   /** The channel the range covers: `hue`, `saturation`, `lightness`, `brightness`, `red`, `green`, `blue` or `alpha`. */
   channel: ColorChannel;
   /**
-   * The colour the range is taken from: the track shows it with `channel` running from its minimum to its maximum.
+   * The color the range is taken from: the track shows it with `channel` running from its minimum to its maximum.
    * @default 'hsl(0, 100%, 50%)'
    */
   color?: string | Color;
-  /** Turn `color` into this colour space first, e.g. `hsb` for a brightness range. Defaults to the colour's own space. */
+  /** Turn `color` into this color space first, e.g. `hsb` for a brightness range. Defaults to the color's own space. */
   colorSpace?: ColorSpace;
   /** The start and end of the range, in the channel's units (hue 0–360, saturation 0–100, alpha 0–1…). Controlled. */
   value?: [number, number];
@@ -58,18 +58,18 @@ export interface ColorRangeSliderProps
    */
   showValue?: boolean;
   /**
-   * Show a swatch of each end's colour above its thumb, always visible. Useful when the two ends are what matter,
-   * e.g. the stops of a two-colour gradient. Adds space above the track for them.
+   * Show a swatch of each end's color above its thumb, always visible. Useful when the two ends are what matter,
+   * e.g. the stops of a two-color gradient. Adds space above the track for them.
    * @default false
    */
   showSwatches?: boolean;
-  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colours or size. */
+  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colors or size. */
   xstyle?: stylex.StyleXStyles;
 }
 
 /**
- * Picks a span of one colour channel, such as a range of hues, with a start and an end thumb on a track that shows the
- * colours on offer. Each thumb is filled with the colour at its end. Built on React Aria `Slider` with two thumbs: the
+ * Picks a span of one color channel, such as a range of hues, with a start and an end thumb on a track that shows the
+ * colors on offer. Each thumb is filled with the color at its end. Built on React Aria `Slider` with two thumbs: the
  * thumbs can't cross, arrow keys step, Page Up/Down take bigger steps, and Home/End jump as far as the other thumb
  * allows.
  */

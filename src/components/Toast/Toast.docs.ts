@@ -27,9 +27,9 @@ export default defineComponentDocs({
 
   anatomy: [
     { part: 'Toast Region', description: 'The landmark that holds the toasts, fixed in one corner (`ToastRegion`). Render once near the app root.', required: true },
-    { part: 'Toast', description: 'One message: background fill, 2px border in the tone colour, drop shadow, 8px top and bottom, 16px on the left and right (8px on the right with the close button). Focusable, so keyboard users can reach its buttons.', required: true },
+    { part: 'Toast', description: 'One message: background fill, 2px border in the tone color, drop shadow, 8px top and bottom, 16px on the left and right (8px on the right with the close button). Focusable, so keyboard users can reach its buttons.', required: true },
     { part: 'Status Icon', description: 'The tone\'s icon (info, circle-alert, triangle-alert or circle-check) before the first line. Decorative.', required: false },
-    { part: 'Heading', description: 'Optional `title`, in the tone colour (label style).', required: false },
+    { part: 'Heading', description: 'Optional `title`, in the tone color (label style).', required: false },
     { part: 'Content', description: 'The message (`description`, body style).', required: true },
     { part: 'Action Button', description: 'Optional small outline Button in the tone. Pressing it also closes the toast.', required: false },
     { part: 'Close Button', description: 'Micro subtle IconButton (×) in the tone. Always shown on toasts that don\'t close by themselves.', required: false },
@@ -38,7 +38,7 @@ export default defineComponentDocs({
   variants: {
     tone: {
       info: 'Neutral. General updates that need no attention. Closes after 5 seconds.',
-      brand: 'Product messages in the brand colour, such as "New: dark mode". Closes after 5 seconds. No icon by default.',
+      brand: 'Product messages in the brand color, such as "New: dark mode". Closes after 5 seconds. No icon by default.',
       success: 'Something worked ("Project published"). Closes after 5 seconds.',
       warning: 'Something needs attention but nothing failed ("Storage almost full"). Closes after 5 seconds.',
       danger: 'Something failed ("Couldn\'t save changes"). Stays until closed, so it can\'t be missed.',
@@ -68,7 +68,7 @@ export default defineComponentDocs({
       'Keep messages short: they may be read aloud as soon as they appear.',
       'Don\'t put the only way to do something in a toast. A toast can close before someone reaches it, so offer the action elsewhere too.',
       'Danger toasts and toasts with an action stay until closed by default. Only shorten that if the action is also available elsewhere.',
-      'Status is not conveyed by colour alone: each tone has an icon, and screen readers hear a status word first ("Error: …"). Translate those words with `statusLabels`.',
+      'Status is not conveyed by color alone: each tone has an icon, and screen readers hear a status word first ("Error: …"). Translate those words with `statusLabels`.',
     ],
   },
 

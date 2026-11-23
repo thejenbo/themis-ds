@@ -44,7 +44,7 @@ export interface SwitchProps extends Omit<AriaSwitchProps, 'className' | 'style'
    * @default 'small'
    */
   size?: SwitchSize;
-  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colours or size. */
+  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colors or size. */
   xstyle?: stylex.StyleXStyles;
 }
 
@@ -274,7 +274,7 @@ const styles = stylex.create({
   textDisabled: { color: system.textDisabledDefault },
 });
 
-/** Track colours. The ✓ icon takes the track's text colour; the × icon uses the brand colour. */
+/** Track colors. The ✓ icon takes the track's text color; the × icon uses the brand color. */
 const trackLooks = stylex.create({
   on: { backgroundColor: color.brand, color: color.background },
   off: { backgroundColor: color.background, color: color.brand },

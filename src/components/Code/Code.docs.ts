@@ -19,9 +19,9 @@ export default defineComponentDocs({
 
   variants: {
     language: {
-      text: 'One colour (the default).',
-      json: 'Keys, strings, numbers and booleans coloured.',
-      tsx: 'TypeScript and JSX: tags, attributes, strings, keywords, functions and comments coloured.',
+      text: 'One color (the default).',
+      json: 'Keys, strings, numbers and booleans colored.',
+      tsx: 'TypeScript and JSX: tags, attributes, strings, keywords, functions and comments colored.',
     },
   },
 
@@ -29,7 +29,7 @@ export default defineComponentDocs({
     providedByBase: [],
     keyboard: [],
     requirements: [
-      'Every Monokai colour has at least 4.5:1 contrast on the Monokai background (pink and the comment grey are lightened from the classic palette to get there).',
+      'Every Monokai color has at least 4.5:1 contrast on the Monokai background (pink and the comment gray are lightened from the classic palette to get there).',
       'Screen readers read it as part of the sentence; say what it is in the text around it.',
     ],
   },
@@ -66,8 +66,8 @@ export default defineComponentDocs({
 
   related: ['CodeBlock', 'Text'],
   notes: [
-    'The colours and font don\'t change with the theme: they come from the system collection (color/code/*, aliased to the color/monokai/* primitives) and font/family/code. Only the corner radius follows the theme.',
+    'The colors and font don\'t change with the theme: they come from the system collection (color/code/*, aliased to the color/monokai/* primitives) and font/family/code. Only the corner radius follows the theme.',
     'Loads Space Mono from Google Fonts once; turn off with `loadFont={false}` when the app hosts it.',
-    'The highlighter is small on purpose: it colours JSON and TSX snippets well, and anything else as plain text.',
+    'The highlighter is small on purpose: it colors JSON and TSX snippets well, and anything else as plain text.',
   ],
 });

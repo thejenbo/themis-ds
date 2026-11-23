@@ -256,7 +256,7 @@ const styles = stylex.create({
     paddingBlockStart: spacing.xs,
   },
   planWrap: { position: 'relative', display: 'flex' },
-  // A query container, so the card's content can fill the button's width (the button centres its content).
+  // A query container, so the card's content can fill the button's width (the button centers its content).
   planButton: { flexGrow: 1, containerType: 'inline-size', borderRadius: radius.radiusMd },
   planCard: {
     display: 'flex',
@@ -270,7 +270,7 @@ const styles = stylex.create({
     whiteSpace: 'normal',
     fontWeight: font.weightRegular,
   },
-  // Figma: cards that aren't chosen have the text colour (the outline toggle's label is brand-coloured).
+  // Figma: cards that aren't chosen have the text color (the outline toggle's label is brand-colored).
   planCardIdle: { color: color.text },
   // Figma type/heading/md.
   planName: { fontFamily: fontTheme.familyHeading, fontSize: font.size2xl, lineHeight: font.lineHeightLg, fontWeight: font.weightBold },
@@ -299,7 +299,7 @@ const styles = stylex.create({
   cardDetails: { gap: spacing.sm },
   // …and stays there when it wraps onto a line of its own.
   pushEnd: { marginInlineStart: { default: null, '@container (max-width: 40rem)': 'auto' } },
-  // Figma: the card brand in a brand-coloured block, type/heading/md in the inverse text colour.
+  // Figma: the card brand in a brand-colored block, type/heading/md in the inverse text color.
   brand: {
     paddingBlock: spacing.xs,
     paddingInline: spacing.sm,

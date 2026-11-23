@@ -172,7 +172,7 @@ export function cardBrand(value: string): string {
 }
 
 /** "4/29" → "04/29". */
-export function normaliseExpiry(value: string): string {
+export function normalizeExpiry(value: string): string {
   const [month = '', year = ''] = value.split('/').map((part) => part.trim());
   return `${month.padStart(2, '0')}/${year}`;
 }

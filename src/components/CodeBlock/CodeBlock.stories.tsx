@@ -46,13 +46,13 @@ type Story = StoryObj<typeof meta>;
 /** Use the controls to change the code and its language. */
 export const Playground: Story = {
   play: async ({ canvas }) => {
-    // Monokai: tags and keywords pink, attributes and functions green, strings yellow, comments grey.
-    const colour = (text: string) => getComputedStyle(canvas.getAllByText(text)[0]!).color;
+    // Monokai: tags and keywords pink, attributes and functions green, strings yellow, comments gray.
+    const color = (text: string) => getComputedStyle(canvas.getAllByText(text)[0]!).color;
     // The first ThemeProvider is the import (a name, blue); the second is the JSX tag.
     await expect(getComputedStyle(canvas.getAllByText('ThemeProvider')[1]!).color).toBe('rgb(255, 74, 141)');
-    await expect(colour('theme')).toBe('rgb(166, 226, 46)');
-    await expect(colour("'themis-ds'")).toBe('rgb(230, 219, 116)');
-    await expect(colour('// Every Themis component inside takes the theme.')).toBe('rgb(149, 144, 119)');
+    await expect(color('theme')).toBe('rgb(166, 226, 46)');
+    await expect(color("'themis-ds'")).toBe('rgb(230, 219, 116)');
+    await expect(color('// Every Themis component inside takes the theme.')).toBe('rgb(149, 144, 119)');
   },
 };
 
@@ -60,10 +60,10 @@ export const Playground: Story = {
 export const Json: Story = {
   args: { children: THEME_FILE, language: 'json', 'aria-label': 'Theme file' },
   play: async ({ canvas }) => {
-    const colour = (text: string) => getComputedStyle(canvas.getAllByText(text)[0]!).color;
-    await expect(colour('"brand"')).toBe('rgb(102, 217, 239)');
-    await expect(colour('"#7406EB"')).toBe('rgb(230, 219, 116)');
-    await expect(colour('true')).toBe('rgb(174, 129, 255)');
+    const color = (text: string) => getComputedStyle(canvas.getAllByText(text)[0]!).color;
+    await expect(color('"brand"')).toBe('rgb(102, 217, 239)');
+    await expect(color('"#7406EB"')).toBe('rgb(230, 219, 116)');
+    await expect(color('true')).toBe('rgb(174, 129, 255)');
   },
 };
 

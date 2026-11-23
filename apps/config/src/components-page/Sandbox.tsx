@@ -14,7 +14,7 @@ export const SandboxTheme = createContext<ThemeSettings | null>(null);
 
 /**
  * A component's sandbox: a framed box in the config tool's style, with the theme being edited applied inside (its
- * colours, fonts, border width and radius). Overlays opened from it (a modal, a menu) portal into it, so they keep the
+ * colors, fonts, border width and radius). Overlays opened from it (a modal, a menu) portal into it, so they keep the
  * theme too.
  */
 export function Sandbox({ name, children }: { name: string; children: ReactNode }) {
@@ -31,7 +31,7 @@ export function Sandbox({ name, children }: { name: string; children: ReactNode 
 }
 
 const styles = stylex.create({
-  // The frame is the tool's: its border colour and width, a medium radius, clipping the theme's background to it.
+  // The frame is the tool's: its border color and width, a medium radius, clipping the theme's background to it.
   frame: {
     borderStyle: 'solid',
     borderWidth: borderWidth.widthSm,
@@ -39,7 +39,7 @@ const styles = stylex.create({
     borderRadius: radius.radiusMd,
     overflow: 'hidden',
   },
-  // Inside, everything is the theme's. Loose text in the stories (a tab panel's sentence) takes its body font and colour.
+  // Inside, everything is the theme's. Loose text in the stories (a tab panel's sentence) takes its body font and color.
   themed: {
     backgroundColor: color.background,
     color: color.text,

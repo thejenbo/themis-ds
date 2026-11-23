@@ -23,10 +23,10 @@ export default defineComponentDocs({
 
   anatomy: [
     { part: 'Label', description: 'The field\'s name (`label`), label style. "(optional)" is added with `isOptional`.', required: true },
-    { part: 'Input Box', description: '40px on every screen: background, 2px border (error colour when invalid), radius md, input text style. Grey when disabled.', required: true },
+    { part: 'Input Box', description: '40px on every screen: background, 2px border (error color when invalid), radius md, input text style. Gray when disabled.', required: true },
     { part: 'Icon Right', description: 'Optional decorative icon (`icon`); the error icon replaces it while the field is invalid.', required: false },
     { part: 'Context', description: 'Caption row under the box: description on the left, character count on the right.', required: false },
-    { part: 'Error message', description: 'Shown below the context row when the field is invalid, in the error colour.', required: false },
+    { part: 'Error message', description: 'Shown below the context row when the field is invalid, in the error color.', required: false },
   ],
 
   variants: {
@@ -116,7 +116,7 @@ export default defineComponentDocs({
     'Figma\'s `empty` variants show the placeholder; `focused` is interaction; `charLimitErrored` is typing past `characterLimit`.',
     'The shared black/white focus ring sits inside the box, 2px in from the border (Figma "Focus Ring"), and shows whenever the field has focus. Inside, it never crowds the label or help text, and containers that clip overflow can\'t cut it off.',
     'The box stays 40px on every screen (type/input/base is a fixed 16/24), so it lines up with a medium Button.',
-    'Disabled fields keep the label in color/text (Figma); only the box goes grey.',
+    'Disabled fields keep the label in color/text (Figma); only the box goes gray.',
     'Not built yet: password show/hide, a search clear button, and the dropdown (that\'s Select).',
   ],
 });

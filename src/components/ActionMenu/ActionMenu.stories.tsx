@@ -116,7 +116,7 @@ export const Keyboard: Story = {
     await waitFor(() => expect(rename).toHaveFocus());
     // Keyboard focus: highlighted and the dashed ring.
     await expect(getComputedStyle(rename, '::before').outlineStyle).toBe('dashed');
-    // brand-tint: the brand colour (#7406EB in light demo) at 7% opacity.
+    // brand-tint: the brand color (#7406EB in light demo) at 7% opacity.
     await expect(getComputedStyle(rename, '::after').backgroundColor).toMatch(/^rgba\(116, 6, 235, 0\.07\d*\)$/);
     await waitFor(() => expect(getComputedStyle(rename, '::after').opacity).toBe('1'));
     await user.keyboard('{ArrowDown}{ArrowDown}');
@@ -131,7 +131,7 @@ export const Keyboard: Story = {
   },
 };
 
-/** Disabled items use the "on background" disabled text colour and can't be chosen. */
+/** Disabled items use the "on background" disabled text color and can't be chosen. */
 export const DisabledItem: Story = {
   tags: ['test-only', '!autodocs'],
   play: async ({ args, canvas }) => {
@@ -160,7 +160,7 @@ export const WithButton: Story = {
   ),
 };
 
-/** Open in each colour theme. */
+/** Open in each color theme. */
 export const ThemeMatrix: Story = {
   tags: ['!autodocs'],
   parameters: { layout: 'fullscreen' },

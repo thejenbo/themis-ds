@@ -113,7 +113,7 @@ export const InATable: Story = {
   ),
 };
 
-/** Every tone and variant in each colour theme. */
+/** Every tone and variant in each color theme. */
 export const ThemeMatrix: Story = {
   tags: ['!autodocs'],
   parameters: { layout: 'fullscreen' },

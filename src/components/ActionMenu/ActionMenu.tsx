@@ -79,7 +79,7 @@ export interface ActionMenuItemProps extends Omit<MenuItemProps, 'className' | '
   children: ReactNode;
   /** Decorative icon before the label (hidden from screen readers). */
   icon?: ReactNode;
-  /** A destructive action, such as "Delete". Shown in the error colour. Put it last. */
+  /** A destructive action, such as "Delete". Shown in the error color. Put it last. */
   isDanger?: boolean;
 }
 
@@ -182,13 +182,13 @@ const styles = stylex.create({
   },
   highlighted: { '::after': { opacity: 1 } },
   disabled: { color: color.textDisabledOnBackground },
-  // The ring is drawn inside the item, so it doesn't run into its neighbours.
+  // The ring is drawn inside the item, so it doesn't run into its neighbors.
   ringCorners: { '::before': { borderRadius: `max(0px, calc(${radius.radiusMd} - ${spacing['3xs']}))` } },
   icon: { display: 'inline-flex', flexShrink: 0, alignItems: 'center', justifyContent: 'center', width: '1rem', height: '1rem' },
   label: { overflow: 'hidden', textOverflow: 'ellipsis' },
 });
 
-/** Label colour, and the highlight tint (hovered or keyboard-highlighted): the tone's see-through tint over the menu. */
+/** Label color, and the highlight tint (hovered or keyboard-highlighted): the tone's see-through tint over the menu. */
 const tone = stylex.create({
   default: {
     color: color.text,

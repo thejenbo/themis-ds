@@ -10,7 +10,7 @@ afterEach(cleanup);
 const scales = () => document.querySelector('[data-sim-part="scales"] svg')!;
 
 describe('scales illustration', () => {
-  test('tips like the logomark while a colour fails contrast: the arms turn and the pans move with them', async () => {
+  test('tips like the logomark while a color fails contrast: the arms turn and the pans move with them', async () => {
     renderApp();
     await preview();
     const arms = () => scales().querySelector('[data-part="arms"]')!;

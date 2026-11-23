@@ -4,7 +4,7 @@
 
 | Concern | Tool |
 | --- | --- |
-| Behaviour and accessibility | [React Aria Components](https://react-spectrum.adobe.com/react-aria/) |
+| Behavior and accessibility | [React Aria Components](https://react-spectrum.adobe.com/react-aria/) |
 | Styling | [StyleX](https://stylexjs.com) (compiled to atomic CSS) |
 | Design tokens | Figma variables, exported as [DTCG](https://www.designtokens.org/) and compiled to StyleX vars |
 | Docs and source of truth | Storybook 10, with the docs, a11y, vitest and MCP addons |

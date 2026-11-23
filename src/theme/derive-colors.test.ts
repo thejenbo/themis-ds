@@ -31,7 +31,7 @@ const figmaThemes = readdirSync(dir).map((file) => {
   return { name: file.replace('.tokens.json', ''), tokens };
 });
 
-// Colours a hair apart (Figma's own rounding) count as the same.
+// Colors a hair apart (Figma's own rounding) count as the same.
 function close(a: string, b: string, tolerance = 2 / 255) {
   const [x, y] = [parseHex(a), parseHex(b)];
   return x.every((v, i) => Math.abs(v - y[i]!) <= tolerance);
@@ -48,7 +48,7 @@ describe('deriveColorTokens reproduces the Figma themes', () => {
       success: tokens.stateSuccess,
     });
     for (const key of Object.keys(tokens) as (keyof ColorTokens)[]) {
-      // Disabled and placeholder greys follow the new 6:1 rule instead of Figma's hand-picked greys.
+      // Disabled and placeholder grays follow the new 6:1 rule instead of Figma's hand-picked grays.
       if (key === 'textDisabledOnBackground' || key === 'textPlaceholderDefault') continue;
       expect.soft(close(derived[key], tokens[key]), `${key}: derived ${derived[key]}, Figma ${tokens[key]}`).toBe(true);
     }
@@ -70,7 +70,7 @@ describe('muted text', () => {
     expect(ratio).toBeLessThan(COLOR_RULES.mutedTextContrast + 0.3);
   });
 
-  it('stays as the text colour when text and background are already close', () => {
+  it('stays as the text color when text and background are already close', () => {
     const t = deriveColorTokens({ brand: '#000000', text: '#777777', background: '#FFFFFF', error: '#AF0E0E', warning: '#A35104', success: '#2C6E2F' });
     expect(t.textDisabledOnBackground).toBe('#777777');
   });

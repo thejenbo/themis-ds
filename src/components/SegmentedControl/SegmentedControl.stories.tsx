@@ -80,7 +80,7 @@ export const SelectsOnClick: Story = {
   },
 };
 
-/** Interaction test: Tab lands on the selected item, arrow keys move, Space selects; the ring sits above neighbours. */
+/** Interaction test: Tab lands on the selected item, arrow keys move, Space selects; the ring sits above neighbors. */
 export const Keyboard: Story = {
   tags: ['test-only', '!autodocs'],
   play: async ({ canvas }) => {
@@ -189,7 +189,7 @@ export const NextToButton: Story = {
   },
 };
 
-/** Every size, enabled and disabled, mirroring the Figma "Segmented Control" frame, in each colour theme. */
+/** Every size, enabled and disabled, mirroring the Figma "Segmented Control" frame, in each color theme. */
 export const ThemeMatrix: Story = {
   tags: ['!autodocs'],
   parameters: { layout: 'fullscreen' },

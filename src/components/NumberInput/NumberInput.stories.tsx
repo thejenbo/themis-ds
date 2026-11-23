@@ -28,7 +28,7 @@ type Story = StoryObj<typeof meta>;
 /** Type a number, use the buttons, or Up/Down arrows. */
 export const Playground: Story = { args: { defaultValue: 2, description: 'Up to 8 guests.' } };
 
-/** Interaction test: the buttons step and grey out at the limits; the box stays 40px. */
+/** Interaction test: the buttons step and gray out at the limits; the box stays 40px. */
 export const Steppers: Story = {
   tags: ['test-only', '!autodocs'],
   args: { defaultValue: 7 },
@@ -43,7 +43,7 @@ export const Steppers: Story = {
     await expect(args.onChange).toHaveBeenLastCalledWith(8);
     await expect(input).toHaveValue('8');
     await waitFor(() => expect(up).toBeDisabled());
-    // Greyed out at the limit, like Select's disabled caret.
+    // Grayed out at the limit, like Select's disabled caret.
     await expect(getComputedStyle(up).color).not.toBe(getComputedStyle(down).color);
     await userEvent.click(down);
     await expect(input).toHaveValue('7');
@@ -121,7 +121,7 @@ export const WithTextInput: Story = {
   ),
 };
 
-/** Each colour theme. */
+/** Each color theme. */
 export const ThemeMatrix: Story = {
   tags: ['!autodocs'],
   parameters: { layout: 'fullscreen' },

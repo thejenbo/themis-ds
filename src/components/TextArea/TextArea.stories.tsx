@@ -113,7 +113,7 @@ export const InAForm: Story = {
   },
 };
 
-/** Each colour theme. */
+/** Each color theme. */
 export const ThemeMatrix: Story = {
   tags: ['!autodocs'],
   parameters: { layout: 'fullscreen' },

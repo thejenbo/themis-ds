@@ -39,7 +39,7 @@ export default defineComponentDocs({
     {
       part: 'State Layer',
       description:
-        'Overlay shown on hover and press. Its colour is calculated from the Surface: lightening on dark colours, darkening on light ones.',
+        'Overlay shown on hover and press. Its color is calculated from the Surface: lightening on dark colors, darkening on light ones.',
       required: true,
     },
     { part: 'Icon', description: 'The icon, passed as children. Decorative: `aria-label` names the button.', required: true },
@@ -49,7 +49,7 @@ export default defineComponentDocs({
     variant: {
       default: 'Filled. The main action in a region.',
       outline: 'Bordered. Secondary actions next to a default button.',
-      subtle: 'No fill or border until hovered. Toolbars and repeated row actions. Only on `background`-coloured surfaces, except neutral-inverse.',
+      subtle: 'No fill or border until hovered. Toolbars and repeated row actions. Only on `background`-colored surfaces, except neutral-inverse.',
     },
     size: {
       micro: '24px square, small radius. Dense UIs. On touch screens, leave at least 20px between micro icon buttons in every direction (see Touch targets).',
@@ -57,11 +57,11 @@ export default defineComponentDocs({
       medium: '40px square. Lines up with a medium Button.',
     },
     tone: {
-      brand: 'The brand colour of the current colour theme. The default.',
-      neutral: 'Black and white (inverted in dark themes), for actions that should not compete with the brand colour.',
-      danger: 'The error colour. Only for destructive actions, such as deleting a row.',
-      warning: 'The warning colour, for icon buttons inside a warning message (e.g. a Toast\'s close button).',
-      success: 'The success colour, for icon buttons inside a success message (e.g. a Toast\'s close button).',
+      brand: 'The brand color of the current color theme. The default.',
+      neutral: 'Black and white (inverted in dark themes), for actions that should not compete with the brand color.',
+      danger: 'The error color. Only for destructive actions, such as deleting a row.',
+      warning: 'The warning color, for icon buttons inside a warning message (e.g. a Toast\'s close button).',
+      success: 'The success color, for icon buttons inside a success message (e.g. a Toast\'s close button).',
       'neutral-inverse':
         'Subtle only. An icon in `text-inverse` with a see-through hover, for icon buttons on filled surfaces: `background-inverse`, `brand`, `error`, `warning` or `success`, such as the Modal header close button.',
     },
@@ -81,7 +81,7 @@ export default defineComponentDocs({
     ],
     requirements: [
       '`aria-label` is required (TypeScript enforces it). Name the action, not the icon: "Delete project", not "Trash can".',
-      'Icons alone are ambiguous for many people. Add a tooltip with the same text once Tooltip exists, or use a labelled Button.',
+      'Icons alone are ambiguous for many people. Add a tooltip with the same text once Tooltip exists, or use a labeled Button.',
       'Micro icon buttons are 24px: on touch screens, keep at least 20px between them in every direction so their 44px touch areas do not overlap.',
       'Pass a localised `pendingLabel` when using `isPending`.',
     ],
@@ -89,10 +89,10 @@ export default defineComponentDocs({
 
   guidelines: {
     do: [
-      'Use widely recognised icons (close, edit, delete, more, search).',
+      'Use widely recognized icons (close, edit, delete, more, search).',
       'Keep the same icon for the same action across the product.',
       'Match sizes in a row: a small IconButton next to a small Button.',
-      'Put subtle icon buttons on `background`-coloured surfaces, and neutral-inverse ones on `background-inverse`, `brand`, `error`, `warning` or `success` surfaces. Those are the pairs whose icon and hover colours are rated.',
+      'Put subtle icon buttons on `background`-colored surfaces, and neutral-inverse ones on `background-inverse`, `brand`, `error`, `warning` or `success` surfaces. Those are the pairs whose icon and hover colors are rated.',
     ],
     dont: [
       'Use an IconButton for an action people need to read to understand.',
@@ -154,7 +154,7 @@ export default defineComponentDocs({
       property: 'State Layer fades in',
       duration: 'motion/duration.base',
       easing: 'motion/easing.standard',
-      reducedMotion: 'Unchanged (colour change only, no movement).',
+      reducedMotion: 'Unchanged (color change only, no movement).',
     },
     {
       trigger: 'Press (pointer, Space or Enter)',
@@ -186,8 +186,8 @@ export default defineComponentDocs({
 
   related: ['Button', 'ToggleButton', 'Tooltip'],
   notes: [
-    'Shares its styles with Button (src/components/Button/button-base.ts), so tones, disabled colours and the State Layer stay identical.',
-    'Subtle hovers are see-through tints toward the icon colour: the tone\'s `*-tint` (`background-hover` for neutral), and `inverse-tint` for neutral-inverse. Filled hovers use the solid `*-hover` tokens, as in Button.',
+    'Shares its styles with Button (src/components/Button/button-base.ts), so tones, disabled colors and the State Layer stay identical.',
+    'Subtle hovers are see-through tints toward the icon color: the tone\'s `*-tint` (`background-hover` for neutral), and `inverse-tint` for neutral-inverse. Filled hovers use the solid `*-hover` tokens, as in Button.',
     'Figma\'s `state` property also has `hovered` and `focused`. In code these come from interaction, not props.',
   ],
 });

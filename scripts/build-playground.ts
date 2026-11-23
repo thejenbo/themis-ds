@@ -27,7 +27,7 @@ interface ManifestComponent {
 
 // State props that a switch shows off well. Left out: ones the person drives by using the component (isSelected,
 // isOpen, isExpanded, isAdvancedOpen), ones that only make sense in code (isDecorative, isRowHeader), and fine
-// behaviour details that change nothing you can see (allowsEmptyCollection, isWheelDisabled…).
+// behavior details that change nothing you can see (allowsEmptyCollection, isWheelDisabled…).
 const SKIP = new Set([
   'as',
   'role',

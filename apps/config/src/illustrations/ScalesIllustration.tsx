@@ -26,7 +26,7 @@ export interface ScalesIllustrationProps {
   width?: number | string;
   /** Lighten the brand fills by 50%, for dark brands. */
   lightenBrand?: boolean;
-  /** Tip the scales, as the logomark does while a theme colour fails contrast. */
+  /** Tip the scales, as the logomark does while a theme color fails contrast. */
   isUnbalanced?: boolean;
   /**
    * `rocking`: the scales tip back and forth and the stars twinkle, over and over (a loading screen). Still with
@@ -63,7 +63,7 @@ const TIPPED = [panShift(0, -TILT_DEG), panShift(1, -TILT_DEG)];
 
 /**
  * The Themis scales (Figma 2484:2768): a finial, curved arms and pans hung on strings, a stepped base, sparkles and
- * highlights. The logomark's drawing in full, and it moves the same way: the arms turn 8° when a colour fails contrast
+ * highlights. The logomark's drawing in full, and it moves the same way: the arms turn 8° when a color fails contrast
  * and each pan moves with the end of its arm. The stars twinkle when the theme changes. Decoration only: hidden from
  * assistive tech.
  */

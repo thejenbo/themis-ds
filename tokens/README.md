@@ -5,14 +5,14 @@ The token files are the source of truth for design decisions. They are exported 
 | File | Status |
 | --- | --- |
 | `primitives/default.tokens.json` | Real Figma export (primitives collection, single mode). Keep it byte-for-byte as exported. |
-| `colorTheme/{light demo,dark demo,themis config}.tokens.json` | Real Figma export (colour theme collection). End users pick a theme; these are the demo and config-UI modes. |
+| `colorTheme/{light demo,dark demo,themis config}.tokens.json` | Real Figma export (color theme collection). End users pick a theme; these are the demo and config-UI modes. |
 | `radius/{none,small,medium,large}.tokens.json` | Real Figma export (radius collection). Sets how rounded corners are across the system. Also holds `components.avatar.indicator-offset`, which moves with the radius mode. |
 | `components/Mode 1.tokens.json` | Real Figma export (Component Tokens collection, single mode). Fixed component geometry: Avatar initials sizes and the Tabs indicator height. |
 | `borderWidth/{none,small,medium,large}.tokens.json` | Real Figma export (border width collection). Sets how heavy strokes are across the system. |
-| `system/default.tokens.json` | Real Figma export (system collection, single mode). Fixed colours for disabled and placeholder states that users can't theme. |
+| `system/default.tokens.json` | Real Figma export (system collection, single mode). Fixed colors for disabled and placeholder states that users can't theme. |
 | `fontTheme/{demo,inkling,themis}.tokens.json` | Real Figma export (font theme collection). Heading and body font families users can choose between. |
 | `spacing/default.tokens.json` | Real Figma export (semantic spacing, single mode for now). Add e.g. `compact.tokens.json` plus a `collections.json` entry to make density switchable. |
-| `shadows/{default,off}.tokens.json` | Real Figma export (shadows collection). Drop shadow parts: x, y, blur and colour; `off` removes shadows. |
+| `shadows/{default,off}.tokens.json` | Real Figma export (shadows collection). Drop shadow parts: x, y, blur and color; `off` removes shadows. |
 | `motion/default.tokens.json` | Real Figma export (motion collection). Durations (ms), easing curve and pressed scale. |
 | `typography/{mobile,desktop}.tokens.json` | Real Figma export (typography collection). **Responsive**, not themed: mobile is the base and desktop applies at `(min-width: 48em)` (768px, set in `collections.json`). |
 
@@ -35,7 +35,7 @@ Never edit the generated files by hand.
 
 ## Supported `$type`s
 
-`color` (string or DTCG colour object), `dimension`, `number`, `fontFamily`, `fontWeight`, `duration`,
+`color` (string or DTCG color object), `dimension`, `number`, `fontFamily`, `fontWeight`, `duration`,
 `cubicBezier`, `shadow` and `typography`.
 
 Figma exports font-family variables as `$type: "string"`. Strings with the `FONT_FAMILY` scope, or under a `font.family` group, compile as `fontFamily` (quoted when the name has spaces).

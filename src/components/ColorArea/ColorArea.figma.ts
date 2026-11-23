@@ -5,12 +5,12 @@ import figma from 'figma'
 
 const instance = figma.selectedInstance
 
-// `focused` is interaction. aria-label is required in code but Figma has no name for it: "Colour" is a placeholder,
-// e.g. "Background colour". `yourColor` is a placeholder for any CSS colour string or React Aria `Color`.
+// `focused` is interaction. aria-label is required in code but Figma has no name for it: "Color" is a placeholder,
+// e.g. "Background color". `yourColor` is a placeholder for any CSS color string or React Aria `Color`.
 const disabled = instance.getEnum('state', { default: false, focused: false, disabled: true })
 
 export default {
-  example: figma.code`<ColorArea aria-label="Colour" defaultValue={yourColor}${disabled ? ' isDisabled' : ''} />`,
+  example: figma.code`<ColorArea aria-label="Color" defaultValue={yourColor}${disabled ? ' isDisabled' : ''} />`,
   imports: ['import { ColorArea } from "themis-ds"'],
   id: 'color-area',
   metadata: { nestable: true },

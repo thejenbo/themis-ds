@@ -51,7 +51,7 @@ export default defineComponentDocs({
     ],
     requirements: [
       'Always give the group a `label` that asks the question; the options\' labels answer it.',
-      'Say what an error means in the message: the circles themselves don\'t change colour (Figma).',
+      'Say what an error means in the message: the circles themselves don\'t change color (Figma).',
     ],
   },
 
@@ -103,7 +103,7 @@ export default defineComponentDocs({
   motion: [
     {
       trigger: 'Option chosen',
-      property: 'The dot grows in from the centre',
+      property: 'The dot grows in from the center',
       duration: 'motion/duration.fast',
       easing: 'motion/easing.standard',
       reducedMotion: 'The dot appears instantly.',
@@ -133,6 +133,6 @@ export default defineComponentDocs({
     'Figma "Radio Input" is a RadioGroup with a label; "Radio Button Group" (node 1342-6478) is one without a visible label (give it an `aria-label`); "Radio Button" (node 1342-6439) is `Radio`.',
     'Errored groups look like the default ones apart from the error message (Figma). `disabledErrored` looks disabled.',
     'The focus ring is the shared black/white ring around the whole row (circle and label), with radius sm corners, for keyboard focus only.',
-    'On touch screens each row\'s target is 44px tall; with 16px between 28px rows, neighbouring targets meet without overlapping.',
+    'On touch screens each row\'s target is 44px tall; with 16px between 28px rows, neighboring targets meet without overlapping.',
   ],
 });

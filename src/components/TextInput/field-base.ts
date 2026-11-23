@@ -89,7 +89,7 @@ export const fieldStyles = stylex.create({
   description: { flexGrow: 1, minWidth: 0 },
   count: { marginInlineStart: 'auto', flexShrink: 0, fontVariantNumeric: 'tabular-nums' },
   countOver: { color: color.stateError },
-  // Figma: the error message is body/base in the error colour, below the context row.
+  // Figma: the error message is body/base in the error color, below the context row.
   error: {
     display: { default: 'block', ':empty': 'none' },
     fontFamily: fontTheme.familyBody,

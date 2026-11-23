@@ -38,7 +38,7 @@ export const Values: Story = {
     </div>
   ),
   play: async ({ canvas }) => {
-    // The thumb stays inside the track at both ends, and its centre is on the value.
+    // The thumb stays inside the track at both ends, and its center is on the value.
     const geometry = (name: string) => {
       const input = canvas.getByRole('slider', { name });
       const thumb = input.closest('[data-themis-touch-target]')!.getBoundingClientRect();
@@ -126,7 +126,7 @@ export const Controlled: Story = {
   },
 };
 
-/** Disabled: grey fill and thumb, not-allowed cursor; it can't be changed. */
+/** Disabled: gray fill and thumb, not-allowed cursor; it can't be changed. */
 export const Disabled: Story = {
   args: { isDisabled: true },
   play: async ({ canvas }) => {
@@ -134,7 +134,7 @@ export const Disabled: Story = {
   },
 };
 
-/** Each colour theme. */
+/** Each color theme. */
 export const ThemeMatrix: Story = {
   tags: ['!autodocs'],
   parameters: { layout: 'fullscreen' },

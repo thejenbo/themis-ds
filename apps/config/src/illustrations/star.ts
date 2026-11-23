@@ -10,7 +10,7 @@ const ROUNDING: Record<ThemeRadius, number> = { none: 0, small: 0.1, medium: 0.2
 /** How far the inner corners sit from the middle, as a share of the points' reach (Figma's stars: about 0.4). */
 const INNER = 0.4;
 
-/** A star centred on (cx, cy) reaching `r` to each point, with its corners rounded for the theme radius. */
+/** A star centered on (cx, cy) reaching `r` to each point, with its corners rounded for the theme radius. */
 export function starPath(cx: number, cy: number, r: number, radius: ThemeRadius = 'medium'): string {
   const cut = ROUNDING[radius] ?? ROUNDING.medium;
   const corners = Array.from({ length: 8 }, (_, k) => {

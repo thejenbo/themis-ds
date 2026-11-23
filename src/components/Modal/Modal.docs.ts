@@ -40,7 +40,7 @@ export default defineComponentDocs({
     },
     tone: {
       brand: 'Brand header. The default.',
-      danger: 'Error-colour header for destructive confirmations. Becomes an alert dialog that clicks outside don\'t close.',
+      danger: 'Error-color header for destructive confirmations. Becomes an alert dialog that clicks outside don\'t close.',
     },
   },
 

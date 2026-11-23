@@ -47,7 +47,7 @@ interface TextInputBaseProps extends Omit<TextFieldProps, 'className' | 'style' 
    * @default 'text'
    */
   type?: 'text' | 'email' | 'tel' | 'url' | 'search' | 'password';
-  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colours or size. */
+  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colors or size. */
   xstyle?: stylex.StyleXStyles;
 }
 

@@ -8,7 +8,7 @@
  * Output (all generated — never edit by hand):
  *   src/tokens/<collection>.stylex.ts  one `stylex.defineVars` per top-level group, default-mode values
  *   src/tokens/themes.ts               per multi-mode collection: its modes and one `stylex.createTheme` per mode
- *   src/tokens/tokens.json             flat catalogue (all modes, alias chains, $extensions) for
+ *   src/tokens/tokens.json             flat catalog (all modes, alias chains, $extensions) for
  *                                      Storybook docs, the Figma manifest and AI tooling
  *
  * Aliases (`{group.token}`) are resolved first within the same collection + mode, then across other
@@ -308,7 +308,7 @@ const ident = (s: string) => {
   return /^[0-9]/.test(c) ? `_${c}` : c;
 };
 
-interface CatalogueEntry {
+interface CatalogEntry {
   id: string; // "colorTheme/color.background-inverse"
   collection: string;
   path: string;
@@ -319,7 +319,7 @@ interface CatalogueEntry {
   extensions?: JsonObject;
 }
 
-const catalogue: CatalogueEntry[] = [];
+const catalog: CatalogEntry[] = [];
 // collection → group → key → mode → css
 const vars = new Map<string, Map<string, Map<string, Map<string, string>>>>();
 
@@ -339,7 +339,7 @@ for (const t of raw) {
     m.set(t.mode, css);
 
     const id = `${t.collection}/${t.path.join('.')}${suffix ? `#${suffix}` : ''}`;
-    let entry = catalogue.find((e) => e.id === id);
+    let entry = catalog.find((e) => e.id === id);
     if (!entry) {
       entry = {
         id,
@@ -351,7 +351,7 @@ for (const t of raw) {
         modes: {},
         extensions: t.extensions,
       };
-      catalogue.push(entry);
+      catalog.push(entry);
     }
     // Keep Figma's px next to converted rem values so docs can show both.
     const px = cssType === 'remDimension' && css.endsWith('rem') ? `${resolved.value}px` : undefined;
@@ -458,7 +458,7 @@ fs.writeFileSync(
     {
       $generated: 'scripts/build-tokens.ts',
       collections: Object.fromEntries([...modesByCollection].map(([c, modes]) => [c, { modes, defaultMode: defaultMode(c) }])),
-      tokens: catalogue,
+      tokens: catalog,
     },
     null,
     2,
@@ -466,7 +466,7 @@ fs.writeFileSync(
 );
 
 console.log(
-  `✓ tokens: ${catalogue.length} tokens · ${modesByCollection.size} collections (${[...modesByCollection]
+  `✓ tokens: ${catalog.length} tokens · ${modesByCollection.size} collections (${[...modesByCollection]
     .map(([c, m]) => `${c}: ${m.join('/')}`)
     .join(', ')}) → src/tokens/`,
 );

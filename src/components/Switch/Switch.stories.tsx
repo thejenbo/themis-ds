@@ -151,15 +151,15 @@ export const Controlled: Story = {
   },
 };
 
-/** Disabled switches keep showing on or off, using the fixed system colours. */
+/** Disabled switches keep showing on or off, using the fixed system colors. */
 export const Disabled: Story = {
   render: (args) =>
     row(
       <>
-        <Switch {...args} isDisabled description="Managed by your organisation.">
+        <Switch {...args} isDisabled description="Managed by your organization.">
           Off
         </Switch>
-        <Switch {...args} isDisabled defaultSelected description="Managed by your organisation.">
+        <Switch {...args} isDisabled defaultSelected description="Managed by your organization.">
           On
         </Switch>
       </>,
@@ -195,7 +195,7 @@ export const NextToButton: Story = {
   },
 };
 
-/** Every size, on and off, enabled and disabled, mirroring the Figma "Switch" frame, in each colour theme. */
+/** Every size, on and off, enabled and disabled, mirroring the Figma "Switch" frame, in each color theme. */
 export const ThemeMatrix: Story = {
   tags: ['!autodocs'],
   parameters: { layout: 'fullscreen' },

@@ -11,10 +11,10 @@ drawn just outside the control.
   mouse clicks or taps.
 - **Never changes size.** The ring is drawn outside the element (a dashed outline over a white backing ring),
   so focusing a control never moves anything. Figma draws it with extra padding; code doesn't.
-- **Works on any background.** Every colour has at least 3:1 contrast with either black or white, so one of the
-  two dash colours always stands out, whatever theme a user picks.
-- **High-contrast mode.** Windows high-contrast mode replaces custom colours, so there the ring becomes a dashed
-  outline in the system colour.
+- **Works on any background.** Every color has at least 3:1 contrast with either black or white, so one of the
+  two dash colors always stands out, whatever theme a user picks.
+- **High-contrast mode.** Windows high-contrast mode replaces custom colors, so there the ring becomes a dashed
+  outline in the system color.
 - **Width** comes from `borderWidth/border.width.focus ring` (2px in every mode).
 
 Use `focusRing` from `src/utils/focus-ring.ts`.
@@ -26,4 +26,4 @@ Use `focusRing` from `src/utils/focus-ring.ts`.
 | 2.4.7 Focus Visible | AA | Passes. |
 | 1.4.11 Non-text Contrast | AA | Passes on any background (see above). |
 | 2.4.11 Focus Not Obscured (Minimum) | AA | Depends on the page: sticky headers and footers must not cover a focused control. Use `scroll-padding`. |
-| 2.4.13 Focus Appearance | AAA | Not met by default. On pure white or black pages only half the dashes change colour, so the ring needs to be about 4px wide to pass. A system setting for ring width is planned for teams that need AAA. |
+| 2.4.13 Focus Appearance | AAA | Not met by default. On pure white or black pages only half the dashes change color, so the ring needs to be about 4px wide to pass. A system setting for ring width is planned for teams that need AAA. |

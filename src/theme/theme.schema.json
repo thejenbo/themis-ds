@@ -39,7 +39,7 @@
               "warning",
               "success"
             ],
-            "description": "The six colours; every other colour token is worked out from them.",
+            "description": "The six colors; every other color token is worked out from them.",
             "properties": {
               "brand": {
                 "type": "string",
@@ -47,7 +47,7 @@
                 "examples": [
                   "#7406EB"
                 ],
-                "description": "Brand colour: buttons, links, selection."
+                "description": "Brand color: buttons, links, selection."
               },
               "text": {
                 "type": "string",

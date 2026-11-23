@@ -15,13 +15,13 @@ export interface ChipProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'classN
   /** The label: a word or two, such as "Paid" or "Overdue". It carries the meaning, so never leave it out. */
   children: ReactNode;
   /**
-   * Colour and meaning. `success`, `warning` and `danger` for statuses; `brand` to highlight; `neutral` for
+   * Color and meaning. `success`, `warning` and `danger` for statuses; `brand` to highlight; `neutral` for
    * everything else.
    * @default 'neutral'
    */
   tone?: ChipTone;
   /**
-   * `outline`: coloured border and text on the background, for most chips. `solid`: filled with the tone, for
+   * `outline`: colored border and text on the background, for most chips. `solid`: filled with the tone, for
    * the one status that should stand out most.
    * @default 'outline'
    */
@@ -30,7 +30,7 @@ export interface ChipProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'classN
   iconLeft?: ReactNode;
   /** Icon after the label. Decorative: hidden from screen readers. */
   iconRight?: ReactNode;
-  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colours or size. */
+  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colors or size. */
   xstyle?: stylex.StyleXStyles;
 }
 

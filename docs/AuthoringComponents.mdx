@@ -17,12 +17,12 @@ Each component lives in `src/components/<Name>/` and contains exactly these file
 
 1. **Start from React Aria.** If a RAC component exists, wrap it. Do not reimplement keyboard handling, focus or ARIA.
 2. **Style interaction states through RAC render props.** Use `racStyles()` from `src/utils/stylex-rac.ts`, not StyleX `:hover` or `:focus`.
-3. **Use tokens only.** Import variables from `src/tokens/*.stylex.ts`. Prefer semantic tokens, and never hard-code colours.
+3. **Use tokens only.** Import variables from `src/tokens/*.stylex.ts`. Prefer semantic tokens, and never hard-code colors.
 4. **Write JSDoc on every prop.** It becomes the prop table, the Storybook manifest and the Figma manifest.
 5. **Keep docs in sync.** List every token the component uses in `tokens` and every Figma property in `figma.properties`.
    `npm run manifest` fails when any of them refers to something that does not exist.
-6. **Write one story per meaningful state.** Add `play` functions for behaviour. Every story runs axe, and a violation fails `npm test`.
-7. **Use `xstyle` for layout only.** Consumers may set margin, flex and grid placement through it, never colour or type.
+6. **Write one story per meaningful state.** Add `play` functions for behavior. Every story runs axe, and a violation fails `npm test`.
+7. **Use `xstyle` for layout only.** Consumers may set margin, flex and grid placement through it, never color or type.
 8. **Reuse the shared interaction helpers** in `src/utils/` instead of restyling states by hand:
 
    | Helper | What it does | Uses |
@@ -32,8 +32,8 @@ Each component lives in `src/components/<Name>/` and contains exactly these file
    | `pressMotion` (`press-motion.ts`) | Shrinks the visible layers to `scale.pressed` while pressed. See Foundations / Motion. | The Surface's `transform` |
    | `interactiveCursor` (`interactive-cursor.ts`) | `pointer` when enabled, `not-allowed` when disabled, `progress` while pending. | The element's `cursor` |
 
-   Hover and press colours come from tokens, not helpers: a filled Surface's hover is its solid `*-hover` token
-   (`brand-hover`, `state.error-hover`…), and anything transparent or `background`-coloured gets the tone's see-through
+   Hover and press colors come from tokens, not helpers: a filled Surface's hover is its solid `*-hover` token
+   (`brand-hover`, `state.error-hover`…), and anything transparent or `background`-colored gets the tone's see-through
    `*-tint` (`brand-tint`, `background-hover`, `inverse-tint`…). Draw it on the Surface's `::before` and fade its
    opacity. Add each new text-on-hover pair to `tokens/contrast-pairs.json`.
 

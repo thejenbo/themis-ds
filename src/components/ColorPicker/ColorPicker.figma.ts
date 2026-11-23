@@ -4,7 +4,7 @@
 import figma from 'figma'
 const instance = figma.selectedInstance
 
-// Figma shows the open panel; in code it opens from a swatch. "Brand color" is a placeholder for what the colour is
+// Figma shows the open panel; in code it opens from a swatch. "Brand color" is a placeholder for what the color is
 // for, and `recentColors` comes from your app's state.
 const recent = instance.getEnum('recentSwatches', { true: true, false: false })
 const advanced = instance.getEnum('showAdvanced', { true: true, false: false })

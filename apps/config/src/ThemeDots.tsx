@@ -5,7 +5,7 @@ import { color } from '../../../src/tokens/colorTheme.stylex';
 import { spacing } from '../../../src/tokens/spacing.stylex';
 
 /**
- * A theme's main colours as three 8px dots (brand, background, text), each with a 1px outline so a dot that matches
+ * A theme's main colors as three 8px dots (brand, background, text), each with a 1px outline so a dot that matches
  * the surface behind it still shows. Decorative: the theme's name says which theme it is.
  */
 export function ThemeDots({ colors }: { colors: ThemeColors }) {

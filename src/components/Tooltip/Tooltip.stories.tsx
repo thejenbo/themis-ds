@@ -11,7 +11,7 @@ import docs from './Tooltip.docs';
 
 const PLACEMENTS: TooltipPlacement[] = ['top', 'bottom', 'left', 'right', 'top start', 'top end', 'bottom start', 'bottom end'];
 
-const centre = { display: 'grid', placeItems: 'center', minHeight: 260 } as const;
+const center = { display: 'grid', placeItems: 'center', minHeight: 260 } as const;
 
 const meta = {
   title: 'Overlays/Tooltip',
@@ -29,7 +29,7 @@ const meta = {
     children: { control: 'text' },
   },
   render: (args) => (
-    <div style={centre}>
+    <div style={center}>
       <TooltipTrigger>
         <IconButton aria-label="Copy link" variant="outline">
           <Icon name="copy" />
@@ -50,7 +50,7 @@ export const Playground: Story = {};
 export const Open: Story = {
   args: { title: 'Copy link', children: 'Anyone with the link can view this page.' },
   render: (args) => (
-    <div style={centre}>
+    <div style={center}>
       <TooltipTrigger defaultOpen>
         <Button variant="outline" iconLeft={<Icon name="copy" />}>
           Share
@@ -182,7 +182,7 @@ export const NoBorderWidth: Story = {
   },
 };
 
-/** Open in each colour theme. */
+/** Open in each color theme. */
 export const ThemeMatrix: Story = {
   tags: ['!autodocs'],
   parameters: { layout: 'fullscreen' },

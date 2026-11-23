@@ -26,7 +26,7 @@ export interface TextProps extends Omit<HTMLAttributes<HTMLElement>, 'className'
 }
 
 /**
- * Body text, labels and captions in the body font, using the Figma text styles. Colour is inherited, so it follows
+ * Body text, labels and captions in the body font, using the Figma text styles. Color is inherited, so it follows
  * the theme (or whatever it sits in).
  */
 export function Text({ variant = 'body-base', as, children, xstyle, ...props }: TextProps) {

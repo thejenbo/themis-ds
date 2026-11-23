@@ -55,7 +55,7 @@ export default defineComponentDocs({
       'Give each `Tab` an `id`, and its `TabPanel` the same `id`.',
       'When a page has more than one set of tabs, name each `TabList` with `aria-label` (e.g. "Project sections").',
       'Keep labels short and distinct; they\'re read out as the tab names.',
-      'The indicator bar is the selected cue (a shape, not a colour), so it works without colour vision.',
+      'The indicator bar is the selected cue (a shape, not a color), so it works without color vision.',
     ],
   },
 

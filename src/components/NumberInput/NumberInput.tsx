@@ -47,7 +47,7 @@ interface NumberInputBaseProps extends Omit<NumberFieldProps, 'className' | 'sty
    * @default { increment: 'Increase', decrement: 'Decrease' }
    */
   stepperLabels?: { increment: string; decrement: string };
-  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colours or size. */
+  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colors or size. */
   xstyle?: stylex.StyleXStyles;
 }
 
@@ -98,7 +98,7 @@ export function NumberInput({
             ])}
           >
             <Input placeholder={placeholder} {...stylex.props(fieldStyles.input, isDisabled && fieldStyles.inputDisabled)} />
-            {/* Figma "Icon Right": up and down, out of the tab order (Up/Down arrows do the same). Each greys out at
+            {/* Figma "Icon Right": up and down, out of the tab order (Up/Down arrows do the same). Each grays out at
                 its limit. */}
             <span {...stylex.props(styles.steppers)}>
               <Button slot="increment" aria-label={stepperLabels.increment} data-themis-touch-target="" {...racStyles<ButtonRenderProps>((b) => stepperStyles(b, 'up'))}>

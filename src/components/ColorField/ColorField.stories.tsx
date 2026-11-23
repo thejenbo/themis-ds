@@ -38,7 +38,7 @@ export const States: Story = {
     </div>
   ),
   play: async ({ canvas }) => {
-    // The divider before the format is the box's border colour: red when errored, grey when disabled (as in Figma).
+    // The divider before the format is the box's border color: red when errored, gray when disabled (as in Figma).
     for (const name of ['Errored, with formats', 'Disabled, with formats']) {
       const box = canvas.getByRole('textbox', { name }).parentElement!.parentElement!;
       const format = box.querySelector('button')!;
@@ -47,7 +47,7 @@ export const States: Story = {
   },
 };
 
-/** Interaction test: forgiving codes are read on Enter; unreadable ones show the error and keep the colour. */
+/** Interaction test: forgiving codes are read on Enter; unreadable ones show the error and keep the color. */
 export const Typing: Story = {
   tags: ['test-only', '!autodocs'],
   play: async ({ args, canvas }) => {
@@ -57,13 +57,13 @@ export const Typing: Story = {
     await userEvent.type(input, '1f4feb{Enter}');
     await expect(input).toHaveValue('#1F4FEB');
     await expect(args.onChangeEnd).toHaveBeenCalled();
-    // The swatch shows the new colour.
+    // The swatch shows the new color.
     await expect(canvas.getByRole('button', { name: /Pick a color/ })).toHaveAccessibleName(expect.stringMatching(/blue/i));
     await userEvent.clear(input);
     await userEvent.type(input, 'not a color{Enter}');
     await expect(input).toHaveAttribute('aria-invalid', 'true');
     await expect(canvas.getByText('Enter a color code, e.g. #7A1FEB')).toBeInTheDocument();
-    // Leaving the field without fixing it keeps the last colour in the swatch.
+    // Leaving the field without fixing it keeps the last color in the swatch.
     await expect(canvas.getByRole('button', { name: /Pick a color/ })).toHaveAccessibleName(expect.stringMatching(/blue/i));
   },
 };
@@ -95,7 +95,7 @@ export const Formats: Story = {
   },
 };
 
-/** The swatch opens the picker; picking updates the code. Recent colours come from the app. */
+/** The swatch opens the picker; picking updates the code. Recent colors come from the app. */
 export const WithPicker: Story = {
   render: function Render(args) {
     const [recent, setRecent] = useState<string[]>(['#7A1FEB', '#1F4FEB']);
@@ -119,7 +119,7 @@ export const WithPicker: Story = {
     await userEvent.clear(input);
     await userEvent.type(input, 'nope{Enter}');
     await expect(input).toHaveAttribute('aria-invalid', 'true');
-    // Picking a colour replaces it with the new code and clears the error.
+    // Picking a color replaces it with the new code and clears the error.
     await userEvent.click(canvas.getByRole('button', { name: /Pick a color/ }));
     await screen.findByRole('dialog');
     await userEvent.click(screen.getByRole('option', { name: /blue/i }));

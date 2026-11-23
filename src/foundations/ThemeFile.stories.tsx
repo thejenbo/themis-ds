@@ -61,8 +61,8 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 /**
- * Both themes from a theme file, side by side: `<ThemeProvider theme={config.themes.light}>`. Every colour token is
- * worked out from each theme's six colours; the fonts load from Google Fonts.
+ * Both themes from a theme file, side by side: `<ThemeProvider theme={config.themes.light}>`. Every color token is
+ * worked out from each theme's six colors; the fonts load from Google Fonts.
  */
 export const LightAndDark: Story = {
   render: () => {
@@ -83,7 +83,7 @@ export const LightAndDark: Story = {
   play: async ({ canvasElement }) => {
     const light = canvasElement.querySelector('[data-testid="light"]')!;
     const dark = canvasElement.querySelector('[data-testid="dark"]')!;
-    // The brand colour reaches a filled Button.
+    // The brand color reaches a filled Button.
     const surface = (root: Element) => root.querySelector('button [data-themis-part="surface"]')!;
     await expect(getComputedStyle(surface(light)).backgroundColor).toBe('rgb(11, 110, 79)');
     await expect(getComputedStyle(surface(dark)).backgroundColor).toBe('rgb(142, 227, 200)');

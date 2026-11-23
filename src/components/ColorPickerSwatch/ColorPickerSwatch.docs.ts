@@ -4,7 +4,7 @@ export default defineComponentDocs({
   name: 'ColorPickerSwatch',
   status: 'beta',
   category: 'Color',
-  summary: 'A colour swatch you can press, e.g. the button that opens a ColorPicker, or a recent colour inside one.',
+  summary: 'A color swatch you can press, e.g. the button that opens a ColorPicker, or a recent color inside one.',
   base: {
     package: 'react-aria-components',
     component: 'Button',
@@ -12,10 +12,10 @@ export default defineComponentDocs({
   },
 
   usage: {
-    whenToUse: ['Opening a colour picker from the colour it will change.', 'A choosable colour in a list of swatches (ColorPickerSwatchItem).'],
+    whenToUse: ['Opening a color picker from the color it will change.', 'A choosable color in a list of swatches (ColorPickerSwatchItem).'],
     whenNotToUse: [
-      { scenario: 'Showing a colour that can\'t be pressed.', useInstead: 'ColorSwatch' },
-      { scenario: 'An empty slot with no colour yet.', useInstead: 'ColorSwatch variant="empty"' },
+      { scenario: 'Showing a color that can\'t be pressed.', useInstead: 'ColorSwatch' },
+      { scenario: 'An empty slot with no color yet.', useInstead: 'ColorSwatch variant="empty"' },
     ],
   },
 
@@ -26,12 +26,12 @@ export default defineComponentDocs({
 
   variants: {
     size: { small: '24px.', medium: '32px.', large: '40px, the height of an input box. The default.' },
-    isDisabled: { false: 'Shows the colour. The default.', true: 'Shows the disabled grey (color/background-disabled-inverse, border-disabled) instead of the colour, and can\'t be pressed.' },
+    isDisabled: { false: 'Shows the color. The default.', true: 'Shows the disabled gray (color/background-disabled-inverse, border-disabled) instead of the color, and can\'t be pressed.' },
   },
 
   accessibility: {
     providedByBase: [
-      'A native button, named by the colour\'s description followed by `aria-label` ("vibrant purple, Pick a color").',
+      'A native button, named by the color\'s description followed by `aria-label` ("vibrant purple, Pick a color").',
       'ColorPickerSwatchItem is an option in a ColorSwatchPicker listbox; the chosen one is announced as selected.',
     ],
     keyboard: [{ keys: 'Enter / Space', action: 'Presses it.' }],
@@ -39,8 +39,8 @@ export default defineComponentDocs({
   },
 
   guidelines: {
-    do: ['Keep the swatch\'s colour in sync with the colour it changes.'],
-    dont: ['Add a hover tint; it would change the colour shown.'],
+    do: ['Keep the swatch\'s color in sync with the color it changes.'],
+    dont: ['Add a hover tint; it would change the color shown.'],
   },
 
   tokens: [
@@ -77,5 +77,5 @@ export default defineComponentDocs({
   },
 
   related: ['ColorSwatch', 'ColorPicker', 'ColorField'],
-  notes: ['No hover state on purpose: a hover tint would change the colour the swatch shows.'],
+  notes: ['No hover state on purpose: a hover tint would change the color the swatch shows.'],
 });

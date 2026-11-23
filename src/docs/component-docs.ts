@@ -30,11 +30,11 @@ export interface FigmaPropertyMapping {
  * One way the coded component differs from its Figma component, so the two can be kept in line.
  *
  * - `update-figma`: Figma can show it; change the Figma component to match code, then delete the entry.
- * - `annotate-figma`: Figma can't show it (behaviour, motion, keyboard, responsive). Add a note to the Figma
- *   component and keep the entry, with `done` set, since it still documents the behaviour.
+ * - `annotate-figma`: Figma can't show it (behavior, motion, keyboard, responsive). Add a note to the Figma
+ *   component and keep the entry, with `done` set, since it still documents the behavior.
  */
 export interface FigmaDifference {
-  /** The part or behaviour it's about, e.g. "Box size" or "Row hover". */
+  /** The part or behavior it's about, e.g. "Box size" or "Row hover". */
   topic: string;
   /** What the Figma component shows today. */
   figma: string;

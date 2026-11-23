@@ -11,7 +11,7 @@ export interface CodeBlockProps {
   /** The code, as plain text. Line breaks and indentation are kept as written. */
   children: string;
   /**
-   * The language to colour it as. `text` leaves it in one colour.
+   * The language to color it as. `text` leaves it in one color.
    * @default 'text'
    */
   language?: CodeLanguage;
@@ -26,7 +26,7 @@ export interface CodeBlockProps {
    * @default true
    */
   loadFont?: boolean;
-  /** Layout-only StyleX overrides (margin, max height, grid placement). Do not restyle colour or type. */
+  /** Layout-only StyleX overrides (margin, max height, grid placement). Do not restyle color or type. */
   xstyle?: stylex.StyleXStyles;
 }
 

@@ -1,10 +1,10 @@
 /**
- * Rates every text/surface pair in tokens/contrast-pairs.json in every colour theme (WCAG 2 contrast).
+ * Rates every text/surface pair in tokens/contrast-pairs.json in every color theme (WCAG 2 contrast).
  *
  *   npm run contrast             report only
  *   npm run contrast -- --strict exit 1 if a required pair is under its minimum
  *
- * Reads the generated catalogue (src/tokens/tokens.json), so run `npm run tokens` first.
+ * Reads the generated catalog (src/tokens/tokens.json), so run `npm run tokens` first.
  *
  * A pair's `overlay` is a see-through token (a `*-tint`) composited over its `surface` the way browsers draw it:
  * an alpha blend of the sRGB values. Hover fills (`*-hover`) are solid tokens, so they are plain surfaces.
@@ -30,12 +30,12 @@ interface Token {
 }
 
 const config = JSON.parse(fs.readFileSync(path.join(ROOT, 'tokens/contrast-pairs.json'), 'utf8')) as { minimum: number; pairs: Pair[] };
-const catalogue = JSON.parse(fs.readFileSync(path.join(ROOT, 'src/tokens/tokens.json'), 'utf8')) as {
+const catalog = JSON.parse(fs.readFileSync(path.join(ROOT, 'src/tokens/tokens.json'), 'utf8')) as {
   collections: Record<string, { modes: string[] }>;
   tokens: Token[];
 };
-const byId = new Map(catalogue.tokens.map((t) => [t.id, t]));
-const themes = catalogue.collections.colorTheme!.modes;
+const byId = new Map(catalog.tokens.map((t) => [t.id, t]));
+const themes = catalog.collections.colorTheme!.modes;
 
 type RGBA = [number, number, number, number];
 
@@ -45,7 +45,7 @@ function parseHex(hex: string): RGBA {
   return [n(0), n(2), n(4), h.length === 8 ? n(6) : 1];
 }
 
-/** A token's value in a colour theme. Collections without that mode (system, primitives) use their only value. */
+/** A token's value in a color theme. Collections without that mode (system, primitives) use their only value. */
 function valueIn(id: string, theme: string): RGBA {
   const token = byId.get(id);
   if (!token) throw new Error(`contrast-pairs.json: no token "${id}"`);

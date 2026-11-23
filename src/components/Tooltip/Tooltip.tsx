@@ -62,14 +62,14 @@ export interface TooltipProps
    * @default 'top'
    */
   placement?: TooltipPlacement;
-  /** Layout-only StyleX overrides. Do not restyle colours, type or size. */
+  /** Layout-only StyleX overrides. Do not restyle colors, type or size. */
   xstyle?: stylex.StyleXStyles;
 }
 
 // Figma: the arrow is 18×12, its tip 8px outside the box and its base 4px inside, over the border.
 const ARROW_OUT = 8;
 // The arrow stays at least spacing.xs from the box's ends, so it doesn't sit on a rounded corner. Any larger and
-// it no longer fits centred on the side of a one-line (40px) tooltip.
+// it no longer fits centered on the side of a one-line (40px) tooltip.
 const ARROW_EDGE = 8;
 // Space between the trigger and the arrow tip: spacing.2xs.
 const GAP = 4;

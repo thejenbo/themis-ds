@@ -58,13 +58,13 @@ export function saveCollapsed(collapsed: ReadonlySet<SectionId>) {
   }
 }
 
-/** The colour code each field shows (HEX, RGB…), per theme. A field that isn't listed shows HEX. */
+/** The color code each field shows (HEX, RGB…), per theme. A field that isn't listed shows HEX. */
 export type ColorFormats = Partial<Record<keyof ThemeColors, ColorFormat>>;
 const FORMATS_KEY = 'themis-config:color-formats';
 const FORMAT_VALUES: readonly string[] = ['hex', 'rgb', 'hsl', 'hsb'];
 const COLOR_KEYS: readonly string[] = ['brand', 'text', 'background', 'error', 'warning', 'success'];
 
-/** Each theme's colour codes from last time, by theme name. */
+/** Each theme's color codes from last time, by theme name. */
 export function loadColorFormats(): Record<string, ColorFormats> {
   try {
     const data = JSON.parse(localStorage.getItem(FORMATS_KEY) ?? '{}') as unknown;

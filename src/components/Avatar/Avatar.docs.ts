@@ -35,7 +35,7 @@ export default defineComponentDocs({
     },
     variant: {
       solid: 'Brand fill with light initials. The default.',
-      outline: 'Background fill with a brand border and brand initials. Quieter; works on brand-coloured surfaces too.',
+      outline: 'Background fill with a brand border and brand initials. Quieter; works on brand-colored surfaces too.',
     },
     status: {
       online: 'Green dot. Read out as part of the name ("Taylor Brooks, online").',
@@ -48,7 +48,7 @@ export default defineComponentDocs({
     requirements: [
       'Always pass `name`: it\'s the accessible name (role="img"), so screen readers say who it is. The initials and photo are hidden from them.',
       'If the name is shown right next to the avatar, set `isDecorative` so it isn\'t read twice.',
-      'The status dot is not colour alone: its meaning is included in the accessible name. Translate it with `statusLabels`.',
+      'The status dot is not color alone: its meaning is included in the accessible name. Translate it with `statusLabels`.',
       'The avatar isn\'t interactive. To link to a profile, wrap it in a link or Button with its own accessible name.',
     ],
   },

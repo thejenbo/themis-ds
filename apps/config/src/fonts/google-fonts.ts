@@ -9,17 +9,17 @@ export interface GoogleFont {
 
 type Entry = [family: string, category: string, weights: number[]];
 
-let catalogue: Promise<GoogleFont[]> | null = null;
+let catalog: Promise<GoogleFont[]> | null = null;
 
 /**
  * Every Latin-script Google Fonts family, most popular first (built by `npm run fonts`). Loaded on first use, so it
  * isn't part of the tool's first download.
  */
 export function loadGoogleFonts(): Promise<GoogleFont[]> {
-  catalogue ??= import('./google-fonts.json').then(({ default: entries }) =>
+  catalog ??= import('./google-fonts.json').then(({ default: entries }) =>
     (entries as Entry[]).map(([family, category, weights]) => ({ family, category, weights })),
   );
-  return catalogue;
+  return catalog;
 }
 
 /** The weights Themis uses: regular, semibold (labels, buttons) and bold (headings). */

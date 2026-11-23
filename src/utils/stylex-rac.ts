@@ -14,7 +14,7 @@ type StyleArg = stylex.StyleXArray<stylex.CompiledStyles | stylex.StyleXStyles |
  *   <AriaButton {...racStyles<ButtonRenderProps>((s) => [styles.base, s.isPressed && styles.pressed])} />
  *
  * Always use this (rather than StyleX `:hover`/`:focus` pseudo-classes) for interactive state, so
- * behaviour matches RAC exactly (e.g. no sticky hover on touch, keyboard-only focus rings).
+ * behavior matches RAC exactly (e.g. no sticky hover on touch, keyboard-only focus rings).
  */
 export function racStyles<State>(resolve: (state: State) => StyleArg[]) {
   return {

@@ -4,7 +4,7 @@ export default defineComponentDocs({
   name: 'ColorField',
   status: 'beta',
   category: 'Color',
-  summary: 'A colour typed as a code (hex, optionally RGB, HSL or HSB), with a swatch beside it that opens a ColorPicker.',
+  summary: 'A color typed as a code (hex, optionally RGB, HSL or HSB), with a swatch beside it that opens a ColorPicker.',
   base: {
     package: 'react-aria-components',
     component: 'TextField',
@@ -12,7 +12,7 @@ export default defineComponentDocs({
   },
 
   usage: {
-    whenToUse: ['Any form field for a colour, where people may type, paste or pick it.'],
+    whenToUse: ['Any form field for a color, where people may type, paste or pick it.'],
     whenNotToUse: [
       { scenario: 'Picking visually with no code shown.', useInstead: 'ColorPicker' },
       { scenario: 'One channel only (e.g. a hue).', useInstead: 'ColorSlider' },
@@ -24,7 +24,7 @@ export default defineComponentDocs({
     { part: 'Label accessory', description: 'Optional (`labelAccessory`): something after the label on its line, 8px from it but outside the <label>, such as a contrast rating button.', required: false },
     { part: 'Box', description: 'TextInput\'s box: the code in the input text style.', required: true },
     { part: 'Format button', description: 'With more than one of `formats`: UnitInput\'s unit button (a divider, the format name, the caret), opening a list of formats.', required: false },
-    { part: 'Swatch', description: 'A 40px ColorPickerSwatch 8px to the right of the box, showing the colour and opening the picker.', required: true },
+    { part: 'Swatch', description: 'A 40px ColorPickerSwatch 8px to the right of the box, showing the color and opening the picker.', required: true },
     { part: 'Help and error', description: 'As TextInput: description, then the error message when invalid.', required: false },
   ],
 
@@ -38,7 +38,7 @@ export default defineComponentDocs({
   accessibility: {
     providedByBase: [
       'A native text input with its label, description and error linked for screen readers; invalid codes set aria-invalid.',
-      'The format button is labelled "<label> format, <format>"; the swatch is a button that opens the picker dialog.',
+      'The format button is labeled "<label> format, <format>"; the swatch is a button that opens the picker dialog.',
     ],
     keyboard: [
       { keys: 'Enter', action: 'Reads the typed code.' },
@@ -48,8 +48,8 @@ export default defineComponentDocs({
   },
 
   guidelines: {
-    do: ['Offer the formats your audience uses; hex alone is fine for most.', 'Keep recent colours in your app and pass them in.'],
-    dont: ['Change the colour while the person is still typing; it\'s read on Enter or when leaving the field.'],
+    do: ['Offer the formats your audience uses; hex alone is fine for most.', 'Keep recent colors in your app and pass them in.'],
+    dont: ['Change the color while the person is still typing; it\'s read on Enter or when leaving the field.'],
   },
 
   tokens: [
@@ -69,10 +69,10 @@ export default defineComponentDocs({
       formats: { figmaProperty: 'formats', type: 'VARIANT', values: { "['hex', 'rgb', 'hsl', 'hsb']": 'true' } },
     },
     differences: [
-      { topic: 'Reading the code', figma: 'Not shown.', code: 'The code is read on Enter or when leaving the field; forgiving ("7A1FEB", "122 31 235" in RGB and "226 84 52" in HSL work, as does the full "rgb(…)" form). Unreadable codes show the error and keep the colour.', action: 'annotate-figma', done: '2026-11-16' },
+      { topic: 'Reading the code', figma: 'Not shown.', code: 'The code is read on Enter or when leaving the field; forgiving ("7A1FEB", "122 31 235" in RGB and "226 84 52" in HSL work, as does the full "rgb(…)" form). Unreadable codes show the error and keep the color.', action: 'annotate-figma', done: '2026-11-16' },
     ],
   },
 
   related: ['ColorPicker', 'ColorPickerSwatch', 'TextInput', 'UnitInput'],
-  notes: ['The code, the swatch and the picker share one colour through React Aria\'s `ColorPicker`.'],
+  notes: ['The code, the swatch and the picker share one color through React Aria\'s `ColorPicker`.'],
 });

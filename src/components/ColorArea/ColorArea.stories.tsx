@@ -14,7 +14,7 @@ const meta = {
   component: ColorArea,
   tags: ['autodocs'],
   parameters: { themis: docs, docs: { description: { component: docs.summary } } },
-  args: { 'aria-label': 'Brand colour', defaultValue: 'hsl(345, 70%, 55%)', onChange: fn(), onChangeEnd: fn() },
+  args: { 'aria-label': 'Brand color', defaultValue: 'hsl(345, 70%, 55%)', onChange: fn(), onChangeEnd: fn() },
   render: (args) => (
     <div style={{ maxWidth: 345 }}>
       <ColorArea {...args} />
@@ -28,13 +28,13 @@ type Story = StoryObj<typeof meta>;
 /** Drag the thumb or use the arrow keys. Use the controls for every prop, and the toolbar to switch themes. */
 export const Playground: Story = {};
 
-/** With a hue ColorSlider and a ColorSwatch preview: every colour is reachable. */
+/** With a hue ColorSlider and a ColorSwatch preview: every color is reachable. */
 export const WithHueSlider: Story = {
   render: () => {
     const [value, setValue] = useState<Color>(parseColor('hsl(345, 70%, 55%)'));
     return (
       <div style={{ display: 'grid', gap: 16, maxWidth: 345 }}>
-        <ColorArea aria-label="Brand colour" value={value} onChange={setValue} />
+        <ColorArea aria-label="Brand color" value={value} onChange={setValue} />
         <ColorSlider channel="hue" aria-label="Brand hue" value={value} onChange={setValue} />
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <ColorSwatch color={value} variant="outline" />
@@ -45,7 +45,7 @@ export const WithHueSlider: Story = {
   },
 };
 
-/** Interaction test: arrows change saturation (x) and lightness (y), the thumb shows the colour, callbacks fire. */
+/** Interaction test: arrows change saturation (x) and lightness (y), the thumb shows the color, callbacks fire. */
 export const Keyboard: Story = {
   tags: ['test-only', '!autodocs'],
   play: async ({ args, canvas }) => {
@@ -64,13 +64,13 @@ export const Keyboard: Story = {
     const thumb = x.closest('[data-themis-touch-target]') as HTMLElement;
     await expect(Math.round(thumb.getBoundingClientRect().width)).toBe(32);
     await expect(getComputedStyle(thumb).outlineStyle).toBe('dashed');
-    const centre = thumb.querySelectorAll('span[aria-hidden="true"]')[1] as HTMLElement;
-    const shown = parseColor(getComputedStyle(centre).backgroundColor).toFormat('hsl');
+    const center = thumb.querySelectorAll('span[aria-hidden="true"]')[1] as HTMLElement;
+    const shown = parseColor(getComputedStyle(center).backgroundColor).toFormat('hsl');
     await expect(Math.round(shown.getChannelValue('hue'))).toBe(345);
   },
 };
 
-/** Disabled: grey area and thumb, and it can't be focused. */
+/** Disabled: gray area and thumb, and it can't be focused. */
 export const Disabled: Story = {
   args: { isDisabled: true },
   play: async ({ canvas }) => {

@@ -34,7 +34,7 @@ export interface ToggleButtonProps extends Omit<AriaToggleButtonProps, 'classNam
    * @default true
    */
   isDeselectable?: boolean;
-  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colours or type. */
+  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colors or type. */
   xstyle?: stylex.StyleXStyles;
 }
 

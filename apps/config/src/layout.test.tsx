@@ -14,7 +14,8 @@ const rect = (el: Element) => el.getBoundingClientRect();
 const near = (a: number, b: number) => Math.abs(a - b) <= 1;
 
 describe('header', () => {
-  test('the current page is marked and underlined; the underline slides to the other link', async () => {
+  // It ends on the components page, which loads every story: that can take most of the default 15s in a full run.
+  test('the current page is marked and underlined; the underline slides to the other link', { timeout: 45000 }, async () => {
     renderApp();
     const simulator = page.getByRole('link', { name: 'simulator' });
     const docs = page.getByRole('link', { name: 'components' });
@@ -62,12 +63,12 @@ describe('header links', () => {
     expect(docs.element().getAttribute('aria-current')).toBeNull();
   });
 
-  test('the logomark is filled with the theme’s brand and tips while a colour fails contrast', async () => {
+  test('the logomark is filled with the theme’s brand and tips while a color fails contrast', async () => {
     renderApp();
     const mark = () => document.querySelector('header svg')!;
     const fills = () => mark().querySelector('[data-part="fill"]')!;
     await expect.poll(() => fills()?.querySelectorAll('path').length).toBeGreaterThan(0);
-    // The parts take the brand; their outline (drawn under them) is the text colour; the strings are the brand too.
+    // The parts take the brand; their outline (drawn under them) is the text color; the strings are the brand too.
     expect(fills().querySelector('path')!.getAttribute('fill')?.toLowerCase()).toBe('#7406eb');
     const strings = mark().querySelector('[data-part="strings"]')!;
     expect(strings.getAttribute('stroke')?.toLowerCase()).toBe('#7406eb');
@@ -149,7 +150,7 @@ describe('sidebar', () => {
     await expect.element(page.getByRole('button', { name: 'Borders No width • No radius' })).toBeVisible();
   });
 
-  test('a closed Colors section still says when a colour fails contrast', async () => {
+  test('a closed Colors section still says when a color fails contrast', async () => {
     renderApp();
     await page.getByRole('textbox', { name: /^Brand/ }).fill('#FFFF00');
     await userEvent.keyboard('{Tab}');
@@ -260,7 +261,7 @@ describe('sidebar', () => {
     expect(getComputedStyle(borders, '::after').width).toBe('0px');
   });
 
-  test('nothing in a section draws over the sticky headings (the colour code control did)', async () => {
+  test('nothing in a section draws over the sticky headings (the color code control did)', async () => {
     renderApp();
     await sidebar();
     const control = page.getByRole('radiogroup', { name: 'Color code for every field' }).element();
@@ -307,7 +308,7 @@ describe('sidebar', () => {
       // Then 16px to the next title.
       if (headings[i + 1]) expect(Math.round(titles[i + 1]!.top - rect(section).bottom)).toBe(16);
     }
-    // The chevron is centred on the title and summary together.
+    // The chevron is centered on the title and summary together.
     const chevron = rect(headings[1]!.querySelector('[aria-hidden="true"]')!);
     expect(Math.abs((chevron.top + chevron.bottom) / 2 - (titles[1]!.top + summaries[1]!.bottom) / 2)).toBeLessThan(1);
   });
@@ -470,7 +471,7 @@ describe('simulator', () => {
     expect(string.getAttribute('vector-effect')).toBeNull();
   });
 
-  test('the title has a 1px outline in the background colour, painted under the letters', async () => {
+  test('the title has a 1px outline in the background color, painted under the letters', async () => {
     renderApp();
     const title = page.getByRole('heading', { name: 'Settings Sim', level: 1 });
     await expect.element(title).toBeVisible();

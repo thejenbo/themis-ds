@@ -39,7 +39,7 @@ type Naming =
       name: string;
       theme: ThemeSettings;
       original: ThemeSettings;
-      /** The colour codes its fields show; kept under the theme's name once it's confirmed. */
+      /** The color codes its fields show; kept under the theme's name once it's confirmed. */
       formats: ColorFormats;
       error?: string;
     }
@@ -90,7 +90,7 @@ export function App() {
   const [naming, setNaming] = useState<Naming | null>(null);
   const [dialog, setDialog] = useState<'export' | 'delete' | 'discard' | 'start-over' | null>(null);
   const [page, setPage] = useState<Page>(pageFromHash);
-  // Which colour code (HEX, RGB…) each field shows, per theme. Remembered in this browser, not part of the file.
+  // Which color code (HEX, RGB…) each field shows, per theme. Remembered in this browser, not part of the file.
   const [colorFormats, setColorFormats] = useState(loadColorFormats);
   useEffect(() => saveColorFormats(colorFormats), [colorFormats]);
   const selectRef = useRef<HTMLDivElement>(null);
@@ -131,7 +131,7 @@ export function App() {
   const theme = draft ? draft.theme : config.themes[selected]!;
   // The preview follows a step behind while a slider or field is changing, so they stay quick to use.
   const previewTheme = useDeferredValue(theme);
-  // The logomark's scales tip while any colour in the theme fails contrast; pressing them opens the first failing one.
+  // The logomark's scales tip while any color in the theme fails contrast; pressing them opens the first failing one.
   const firstFailing = useMemo(() => {
     const ratings = rateThemeColors(theme.colors);
     return COLOR_KEYS.find((k) => ratings[k].level === 'Fail') ?? null;
@@ -381,7 +381,7 @@ export function App() {
         colors={theme.colors}
         colorFormats={formats}
         tab={contrastTab}
-        onTabChange={setContrastTab}
+        onClose={() => setContrastTab(null)}
         onApply={(key, hex) => updateTheme({ ...theme, colors: { ...theme.colors, [key]: hex } })}
         showTokens={showContrastTokens}
         onShowTokensChange={setShowContrastTokens}
@@ -412,7 +412,7 @@ export function App() {
           </>
         )}
       >
-        <Text variant="body-base">Its colours, borders and fonts will be removed from the theme file.</Text>
+        <Text variant="body-base">Its colors, borders and fonts will be removed from the theme file.</Text>
       </Modal>
 
       <Modal
@@ -518,7 +518,7 @@ const styles = stylex.create({
   preview: { overflowY: 'auto' },
   // Mobile: in the column's flow, filling the space between the theme row and Export.
   previewMobile: { overflowY: 'visible', flexGrow: 1 },
-  // Decorative and only in this tool: the components themselves still sit on the plain background colour.
+  // Decorative and only in this tool: the components themselves still sit on the plain background color.
   // A decorative brand tint behind the simulator, so components stand out even with borders off. 7% is enough on
   // light backgrounds; on very dark ones it barely shows, so it goes up to 10%.
   previewTheme: { minHeight: '100%', backgroundColor: `color-mix(in srgb, ${color.brand} 7%, ${color.background})` },
@@ -544,7 +544,7 @@ const styles = stylex.create({
     borderInlineEndStyle: 'solid',
     borderInlineEndColor: color.brand,
   },
-  // Sticks to the top of the sidebar, with a full-width line under it in the sidebar's border width and colour.
+  // Sticks to the top of the sidebar, with a full-width line under it in the sidebar's border width and color.
   themeBar: {
     position: 'sticky',
     insetBlockStart: 0,

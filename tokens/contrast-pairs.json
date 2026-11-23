@@ -1,5 +1,5 @@
 {
-  "$description": "Every text (or icon) colour the components put on a surface, at rest and on hover. `npm run contrast` rates each pair in every colour theme. Add a pair whenever a component puts text on a new surface or tint. `overlay` is a see-through colorTheme token composited over `surface`, the way the browser draws it. Subtle buttons are only rated on the surfaces their guidelines allow (Button / IconButton docs). `minimum` overrides the default for a pair (3 for icons); `level: advisory` pairs (disabled text, which WCAG exempts) are reported but never fail.",
+  "$description": "Every text (or icon) color the components put on a surface, at rest and on hover. `npm run contrast` rates each pair in every color theme. Add a pair whenever a component puts text on a new surface or tint. `overlay` is a see-through colorTheme token composited over `surface`, the way the browser draws it. Subtle buttons are only rated on the surfaces their guidelines allow (Button / IconButton docs). `minimum` overrides the default for a pair (3 for icons); `level: advisory` pairs (disabled text, which WCAG exempts) are reported but never fail.",
   "minimum": 4.5,
   "pairs": [
     {

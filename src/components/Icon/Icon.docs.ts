@@ -9,7 +9,7 @@ export default defineComponentDocs({
 
   usage: {
     whenToUse: [
-      'Next to a label, to help people find or recognise an action (Button `iconLeft`/`iconRight`).',
+      'Next to a label, to help people find or recognize an action (Button `iconLeft`/`iconRight`).',
       'On its own in an IconButton, when the action is well known (close, more, delete) and the button has an `aria-label`.',
       'Status beside text, e.g. a warning icon before an error message.',
     ],
@@ -21,7 +21,7 @@ export default defineComponentDocs({
   },
 
   anatomy: [
-    { part: 'Icon', description: 'A 24 × 24 line drawing scaled to 12, 16, 20, 24 or 32px, in the current text colour (`currentColor`).', required: true },
+    { part: 'Icon', description: 'A 24 × 24 line drawing scaled to 12, 16, 20, 24 or 32px, in the current text color (`currentColor`).', required: true },
   ],
 
   variants: {
@@ -43,7 +43,7 @@ export default defineComponentDocs({
     requirements: [
       'Decorative by default (hidden from screen readers). When the icon carries meaning that no visible text gives, pass `aria-label`: it becomes an image with that name.',
       'Inside Button, IconButton and inputs, leave `aria-label` out; name the control instead.',
-      'Colour comes from the surrounding text, so icons get the same contrast as their text.',
+      'Color comes from the surrounding text, so icons get the same contrast as their text.',
     ],
   },
 
@@ -54,7 +54,7 @@ export default defineComponentDocs({
       'Ask for a new icon to be added to the set (it gets checked with every border width and radius) rather than drawing one inline.',
     ],
     dont: [
-      'Set the icon\'s colour or stroke yourself; it follows the text colour and the theme.',
+      'Set the icon\'s color or stroke yourself; it follows the text color and the theme.',
       'Use an icon in place of a word people need to read.',
     ],
   },
@@ -90,7 +90,7 @@ export default defineComponentDocs({
 
   related: ['Button', 'IconButton'],
   notes: [
-    'Icons are drawn from Lucide\'s shape data (https://lucide.dev, ISC licence), not from Lucide\'s React components, so Themis controls every line.',
+    'Icons are drawn from Lucide\'s shape data (https://lucide.dev, ISC license), not from Lucide\'s React components, so Themis controls every line.',
     'Small marks inside an outline (TriangleAlert\'s "!") are at most 2 grid units thick, so they keep clear of thick outlines.',
     '`caret-down` is drawn for Themis (it isn\'t in Lucide): the wider arrow on Select, ComboBox and UnitInput triggers.',
   ],

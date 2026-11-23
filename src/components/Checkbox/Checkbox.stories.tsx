@@ -51,7 +51,7 @@ export const Toggles: Story = {
   },
 };
 
-/** Interaction test: 24px box, 8px to the label, the label's first line centred on the box. */
+/** Interaction test: 24px box, 8px to the label, the label's first line centered on the box. */
 export const Measurements: Story = {
   tags: ['test-only', '!autodocs'],
   play: async ({ canvas }) => {
@@ -161,12 +161,12 @@ export const WithRadios: Story = {
         <Radio value="standard">Standard (3–5 days)</Radio>
         <Radio value="express">Express (next day)</Radio>
       </RadioGroup>
-      <Checkbox defaultSelected>Leave it with a neighbour if I'm out</Checkbox>
+      <Checkbox defaultSelected>Leave it with a neighbor if I'm out</Checkbox>
     </div>
   ),
 };
 
-/** Each colour theme. */
+/** Each color theme. */
 export const ThemeMatrix: Story = {
   tags: ['!autodocs'],
   parameters: { layout: 'fullscreen' },

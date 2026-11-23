@@ -55,7 +55,7 @@ interface ModalBaseProps extends Omit<ModalOverlayProps, 'className' | 'style' |
    */
   size?: ModalSize;
   /**
-   * Header colour. `danger` (error colour) is for destructive confirmations such as "Delete project?"; it also
+   * Header color. `danger` (error color) is for destructive confirmations such as "Delete project?"; it also
    * makes the modal an alert dialog and stops clicks outside from closing it.
    * @default 'brand'
    */

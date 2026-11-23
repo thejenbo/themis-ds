@@ -13,7 +13,7 @@ import {
   checkExpiry,
   checkSecurityCode,
   checkZip,
-  normaliseExpiry,
+  normalizeExpiry,
 } from './simData';
 import { showInvalidToast, type UpdateSimData } from './useSimData';
 
@@ -68,7 +68,7 @@ export function PaymentModal({ isOpen, onOpenChange, card, update }: PaymentModa
     const next: Card = {
       brand: cardBrand(fields.number),
       last4: cardLast4(fields.number),
-      expiry: normaliseExpiry(fields.expiry),
+      expiry: normalizeExpiry(fields.expiry),
       name: fields.name.trim(),
       zip: fields.zip.trim(),
     };

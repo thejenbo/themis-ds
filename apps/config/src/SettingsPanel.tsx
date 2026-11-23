@@ -61,19 +61,19 @@ const RADIUS_LABELS: Record<ThemeRadius, string> = {
 interface ThemeSettingsFormProps {
   theme: ThemeSettings;
   onChange: (theme: ThemeSettings) => void;
-  /** The colour code each field shows; a field that isn't listed shows HEX. */
+  /** The color code each field shows; a field that isn't listed shows HEX. */
   colorFormats: ColorFormats;
   onColorFormatsChange: (formats: ColorFormats) => void;
   /**
    * `sections`: Colors, Borders and Fonts open and close, one under the other (the desktop sidebar and mobile).
-   * `tabs`: one tab each, labelled with what's set inside, and the fields in two columns (tablet).
+   * `tabs`: one tab each, labeled with what's set inside, and the fields in two columns (tablet).
    */
   layout?: 'sections' | 'tabs';
-  /** Opens the contrast modal, on a colour or on the explanation of the ratings. Keep it stable (a state setter). */
+  /** Opens the contrast modal, on a color or on the explanation of the ratings. Keep it stable (a state setter). */
   onOpenContrast: (tab: ContrastTab) => void;
 }
 
-/** One theme's colours, borders and fonts: the sidebar below the theme row. */
+/** One theme's colors, borders and fonts: the sidebar below the theme row. */
 export function ThemeSettingsForm({
   theme,
   onChange,
@@ -149,8 +149,8 @@ export function ThemeSettingsForm({
     </>
   );
 
-  // Borders and Fonts don't change while a colour does, so the same elements are reused and React skips them on
-  // colour slider steps (keeps those steps quick; see the lag test in colors.test.tsx).
+  // Borders and Fonts don't change while a color does, so the same elements are reused and React skips them on
+  // color slider steps (keeps those steps quick; see the lag test in colors.test.tsx).
   const bordersSection = useMemo(
     () => (
       <SidebarSection
@@ -180,7 +180,7 @@ export function ThemeSettingsForm({
   );
 
   const columns = layout === 'tabs';
-  // In the sidebar it sits right under the Colors heading; on tablet, at the end of the colour code row.
+  // In the sidebar it sits right under the Colors heading; on tablet, at the end of the color code row.
   const aboutLink = (
     <AriaButton
       onPress={() => onOpenContrast('about')}
@@ -265,7 +265,7 @@ const firstWord = (label: string) => label.split(' ')[0]!;
 /** The closed Borders summary's wording for a level: "No width", "Small radius". */
 const summaryLevel = (label: string) => (firstWord(label) === 'None' ? 'No' : firstWord(label));
 
-/** A closed Colors section: the six colours as dots, and a warning if any of them fails contrast. */
+/** A closed Colors section: the six colors as dots, and a warning if any of them fails contrast. */
 function ColorsSummary({ colors, failing }: { colors: ThemeColors; failing: (keyof ThemeColors)[] }): ReactNode {
   return (
     <span {...stylex.props(styles.colorsSummary)}>
@@ -284,7 +284,7 @@ function ColorsSummary({ colors, failing }: { colors: ThemeColors; failing: (key
 }
 
 /**
- * HEX / RGB / HSL / HSB for every colour field at once. Memoised (with a stable `onChange`) so slider steps don't
+ * HEX / RGB / HSL / HSB for every color field at once. Memoised (with a stable `onChange`) so slider steps don't
  * re-render it.
  */
 const ColorCodeControl = memo(function ColorCodeControl({
@@ -326,9 +326,9 @@ interface ColorRowProps {
   onOpenContrast: (tab: ContrastTab) => void;
 }
 
-/** One colour, with its contrast rating: a chip that opens the contrast modal on this colour. */
+/** One color, with its contrast rating: a chip that opens the contrast modal on this color. */
 const ColorRow = memo(function ColorRow({ colorKey, format, onFormatChange, hex, level, ratio, worstPair, onChange, onOpenContrast }: ColorRowProps) {
-  // The file stores hex, but the field gets back the exact colour it sent: rounding to hex on every step would
+  // The file stores hex, but the field gets back the exact color it sent: rounding to hex on every step would
   // nudge the sliders (a hue step of 1° could land on 0.8° or 1.2°).
   const [exact, setExact] = useState<Color | null>(null);
   const value = exact && exact.toString('hex').toLowerCase() === hex.toLowerCase() ? exact : hex;
@@ -340,7 +340,7 @@ const ColorRow = memo(function ColorRow({ colorKey, format, onFormatChange, hex,
       formats={FORMATS}
       format={format}
       onFormatChange={(f) => onFormatChange(colorKey, f)}
-      // Six fields share the sidebar, so each picker button says which colour it's for.
+      // Six fields share the sidebar, so each picker button says which color it's for.
       pickerLabel={`Pick the ${COLOR_LABELS[colorKey].toLowerCase()} color`}
       onChange={(c) => {
         if (!c) return;
@@ -455,9 +455,9 @@ const styles = stylex.create({
     borderColor: color.border,
   },
   fields: { display: 'flex', flexDirection: 'column', gap: spacing.md },
-  // Two columns (tablet tabs); the colour code control keeps a row of its own.
+  // Two columns (tablet tabs); the color code control keeps a row of its own.
   columns: { display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', columnGap: spacing.md },
-  // The colours fill down each column: brand, text and background on the left; error, warning and success on the
+  // The colors fill down each column: brand, text and background on the left; error, warning and success on the
   // right. The code control takes the first row.
   colorColumns: { gridTemplateRows: 'repeat(4, auto)', gridAutoFlow: 'column' },
   // Figma 2434:39151: the micro control at the end of the row, above the fields.

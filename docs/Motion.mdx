@@ -30,12 +30,12 @@ code and prototypes stay in step.
   take a little longer (`duration.slow`). A CSS transition uses the duration of the state it's moving *to*.
 - **One curve.** Use `easing.standard` for every state transition, so everything moves with the same character.
 - **Animate opacity and transform only.** They're cheap for the browser and don't shift the layout.
-- **Theme changes don't animate.** Switching colour theme or picking a new brand colour changes things instantly.
+- **Theme changes don't animate.** Switching color theme or picking a new brand color changes things instantly.
 
 ## Pressed controls
 
 A pressed control shrinks to `scale.pressed` (0.96), for pointer and keyboard presses alike. Only the visible
-layers shrink: the clickable area keeps its size, so a press near the edge isn't cancelled. Use `pressMotion`
+layers shrink: the clickable area keeps its size, so a press near the edge isn't canceled. Use `pressMotion`
 from `src/utils/press-motion.ts`.
 
 Figma can't scale variables, so pressed states aren't drawn as variants. Each component's docs list what it
@@ -44,7 +44,7 @@ animates under **Motion**.
 ## Reduced motion
 
 When the user asks for reduced motion (`prefers-reduced-motion: reduce`), nothing moves or changes size.
-Colour and opacity changes stay, because they carry meaning (such as "this is hovered") without movement.
+Color and opacity changes stay, because they carry meaning (such as "this is hovered") without movement.
 
 ## Matching it in Figma prototypes
 

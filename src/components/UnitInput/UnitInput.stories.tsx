@@ -129,7 +129,7 @@ export const States: Story = {
     </div>
   ),
   play: async ({ canvas }) => {
-    // The divider before the unit is the box's border colour: red when invalid, grey when disabled (as in Figma).
+    // The divider before the unit is the box's border color: red when invalid, gray when disabled (as in Figma).
     for (const name of ['Invalid', 'Disabled', 'Filled']) {
       const box = canvas.getByRole('textbox', { name }).closest('[role="group"]')!;
       const unit = box.querySelector('button')!;
@@ -154,7 +154,7 @@ export const WithTextInput: Story = {
   },
 };
 
-/** Each colour theme. */
+/** Each color theme. */
 export const ThemeMatrix: Story = {
   tags: ['!autodocs'],
   parameters: { layout: 'fullscreen' },

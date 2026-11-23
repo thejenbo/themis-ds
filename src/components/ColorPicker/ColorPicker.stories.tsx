@@ -20,7 +20,7 @@ type Story = StoryObj<typeof meta>;
 /** Press the swatch. Use the controls for every prop, and the toolbar to switch themes. */
 export const Playground: Story = {};
 
-/** Starts open with every part: the advanced sliders and recent colours (Figma's fullest variant). */
+/** Starts open with every part: the advanced sliders and recent colors (Figma's fullest variant). */
 export const Everything: Story = {
   args: { showAdvanced: true, defaultAdvancedOpen: true, recentColors: ['#7A1FEB', '#1F4FEB', '#EB1F4F'] },
   play: async ({ canvas }) => {
@@ -30,7 +30,7 @@ export const Everything: Story = {
 };
 
 /**
- * Recent colours are kept by the app: `onChangeEnd` adds the finished colour, and the list is passed back in. Up to 6
+ * Recent colors are kept by the app: `onChangeEnd` adds the finished color, and the list is passed back in. Up to 6
  * show; unused slots are empty placeholders.
  */
 export const RecentColors: Story = {
@@ -54,11 +54,11 @@ export const RecentColors: Story = {
   play: async ({ canvas }) => {
     await userEvent.click(canvas.getByRole('button', { name: /Brand color/ }));
     const dialog = await screen.findByRole('dialog');
-    // One recent colour (the current one, chosen) and five placeholders.
+    // One recent color (the current one, chosen) and five placeholders.
     const options = await screen.findAllByRole('option');
     await expect(options).toHaveLength(1);
     await expect(options[0]).toHaveAttribute('aria-selected', 'true');
-    // Moving the hue and letting go adds the new colour to the front of the list.
+    // Moving the hue and letting go adds the new color to the front of the list.
     const hue = screen.getByRole('slider', { name: 'Hue' });
     hue.focus();
     await userEvent.keyboard('{PageUp}');
@@ -108,7 +108,7 @@ export const HueTrackStaysPut: Story = {
     const hue = screen.getByRole('slider', { name: 'Hue' });
     const track = () => getComputedStyle(hue.closest('[data-themis-touch-target]')!.parentElement!.parentElement!).backgroundImage;
     const before = track();
-    // Move the area's thumb towards grey and black.
+    // Move the area's thumb towards gray and black.
     const area = screen.getAllByRole('slider').find((s) => s !== hue)!;
     area.focus();
     await userEvent.keyboard('{PageDown}{PageDown}{Home}');
@@ -116,7 +116,7 @@ export const HueTrackStaysPut: Story = {
   },
 };
 
-/** Disabled: the swatch shows the disabled grey and can't be pressed. */
+/** Disabled: the swatch shows the disabled gray and can't be pressed. */
 export const Disabled: Story = {
   args: { isDisabled: true },
   play: async ({ canvas }) => {

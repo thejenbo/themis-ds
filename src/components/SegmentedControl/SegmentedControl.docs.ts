@@ -57,7 +57,7 @@ export default defineComponentDocs({
     requirements: [
       'Name the control with `aria-label` or `aria-labelledby` (TypeScript enforces one of them), e.g. "Units".',
       'Icon-only items need their own `aria-label`.',
-      'Colour is not the only cue: the selected item is filled, the others are not.',
+      'Color is not the only cue: the selected item is filled, the others are not.',
     ],
   },
 
@@ -106,7 +106,7 @@ export default defineComponentDocs({
   motion: [
     {
       trigger: 'Select an item',
-      property: 'Fill and label colour fade to the selected look',
+      property: 'Fill and label color fade to the selected look',
       duration: 'motion/duration.base',
       easing: 'motion/easing.standard',
       reducedMotion: 'Changes instantly.',
@@ -116,7 +116,7 @@ export default defineComponentDocs({
       property: 'State Layer fades in',
       duration: 'motion/duration.base',
       easing: 'motion/easing.standard',
-      reducedMotion: 'Unchanged (colour change only, no movement).',
+      reducedMotion: 'Unchanged (color change only, no movement).',
     },
   ],
 

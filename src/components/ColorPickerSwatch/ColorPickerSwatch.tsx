@@ -23,8 +23,8 @@ export type ColorPickerSwatchSize = 'small' | 'medium' | 'large';
 
 export interface ColorPickerSwatchProps extends Omit<ButtonProps, 'className' | 'style' | 'children'> {
   /**
-   * The colour shown, as a CSS colour string or a parsed `Color`. Inside a ColorPicker it can be left out: it shows
-   * the picker's colour.
+   * The color shown, as a CSS color string or a parsed `Color`. Inside a ColorPicker it can be left out: it shows
+   * the picker's color.
    */
   color?: string | Color;
   /**
@@ -33,25 +33,25 @@ export interface ColorPickerSwatchProps extends Omit<ButtonProps, 'className' | 
    */
   size?: ColorPickerSwatchSize;
   /**
-   * What pressing it does, added after the colour's description, e.g. "Pick a color" → "vibrant purple, Pick a color".
+   * What pressing it does, added after the color's description, e.g. "Pick a color" → "vibrant purple, Pick a color".
    * The description alone doesn't say it's a button for something.
    */
   'aria-label'?: string;
-  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colours or size. */
+  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colors or size. */
   xstyle?: stylex.StyleXStyles;
 }
 
 /**
- * A colour swatch you can press, e.g. the button that opens a ColorPicker. Built on React Aria `Button` with a
- * ColorSwatch inside, so screen readers hear the colour's description and what pressing does. It shows the keyboard
- * focus ring and shrinks while pressed, but has no hover tint: a tint would change the colour it shows. Disabled, it
- * shows the disabled grey instead of the colour.
+ * A color swatch you can press, e.g. the button that opens a ColorPicker. Built on React Aria `Button` with a
+ * ColorSwatch inside, so screen readers hear the color's description and what pressing does. It shows the keyboard
+ * focus ring and shrinks while pressed, but has no hover tint: a tint would change the color it shows. Disabled, it
+ * shows the disabled gray instead of the color.
  */
 export function ColorPickerSwatch({ color, size = 'large', 'aria-label': ariaLabel, xstyle, ...props }: ColorPickerSwatchProps) {
   return (
     <Button
       {...props}
-      // Disabled, the colour isn't shown (so it isn't described either): the button is named by `aria-label` alone.
+      // Disabled, the color isn't shown (so it isn't described either): the button is named by `aria-label` alone.
       aria-label={props.isDisabled ? ariaLabel : undefined}
       data-themis-touch-target=""
       {...racStyles<ButtonRenderProps>((s) => [
@@ -90,7 +90,7 @@ export interface ColorPickerSwatchItemProps extends Omit<ColorSwatchPickerItemPr
 }
 
 /**
- * One choosable colour in a React Aria `ColorSwatchPicker` (e.g. ColorPicker's recent colours), styled as
+ * One choosable color in a React Aria `ColorSwatchPicker` (e.g. ColorPicker's recent colors), styled as
  * ColorPickerSwatch: a focus ring and a press shrink, no hover tint. The chosen one is announced as selected.
  */
 export function ColorPickerSwatchItem({ size = 'large', ...props }: ColorPickerSwatchItemProps) {
@@ -127,7 +127,7 @@ export const pickerSwatch = stylex.create({
     backgroundColor: 'transparent',
     outlineStyle: 'none',
   },
-  // Disabled: the disabled grey, like ColorArea's disabled thumb, so a disabled control doesn't show a live colour.
+  // Disabled: the disabled gray, like ColorArea's disabled thumb, so a disabled control doesn't show a live color.
   disabled: {
     boxSizing: 'border-box',
     borderRadius: radius.radiusMd,

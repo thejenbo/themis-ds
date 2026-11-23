@@ -72,6 +72,6 @@ export default defineComponentDocs({
     'Variant names follow the Figma styles: type/body/bold (base size, bold) is `body-bold`.',
     'The styles are also exported as StyleX styles (`textStyles` from themis-ds) for use inside other components.',
     'type/button/base and type/button/micro are left out: only Button uses them.',
-    'Colour is inherited (the ThemeProvider sets color/text).',
+    'Color is inherited (the ThemeProvider sets color/text).',
   ],
 });

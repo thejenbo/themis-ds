@@ -38,7 +38,7 @@ interface SliderBaseProps
    * @default true
    */
   showValue?: boolean;
-  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colours or size. */
+  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colors or size. */
   xstyle?: stylex.StyleXStyles;
 }
 
@@ -109,7 +109,7 @@ const styles = stylex.create({
   label: { minWidth: 0 },
   output: { marginInlineStart: 'auto', fontVariantNumeric: 'tabular-nums' },
   /*
-   * The track's own box is inset by half a thumb at each end, so the thumb (centred on the value) stays inside the
+   * The track's own box is inset by half a thumb at each end, so the thumb (centered on the value) stays inside the
    * pill at 0 and 100%, as in Figma, and pointer positions still map exactly onto values. The pill is drawn by
    * ::before, which reaches back out to the full width.
    */
@@ -133,7 +133,7 @@ const styles = stylex.create({
     },
   },
   trackDisabled: { cursor: 'not-allowed', '::before': { backgroundColor: system.backgroundDisabledDefault } },
-  // From the start of the pill (inside its border) to the thumb's centre; the thumb covers its rounded end.
+  // From the start of the pill (inside its border) to the thumb's center; the thumb covers its rounded end.
   fill: {
     position: 'absolute',
     insetBlock: borderWidth.widthSm,

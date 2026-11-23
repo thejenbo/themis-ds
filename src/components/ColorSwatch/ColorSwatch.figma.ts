@@ -8,8 +8,8 @@ const instance = figma.selectedInstance
 const size = instance.getEnum('size', { small: 'small', medium: undefined, large: 'large' })
 const variant = instance.getEnum('variant', { solid: undefined, outline: 'outline', empty: 'empty' })
 
-// The colour is the "Swatch Content" fill, which templates can't read: `yourColor` is a placeholder for any CSS
-// colour string or React Aria `Color`.
+// The color is the "Swatch Content" fill, which templates can't read: `yourColor` is a placeholder for any CSS
+// color string or React Aria `Color`.
 export default {
   example:
     variant === 'empty'

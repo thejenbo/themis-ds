@@ -8,7 +8,7 @@ export interface CodeProps {
   /** The code, as plain text, e.g. "themis.theme.json" or "<ThemeProvider theme={theme}>". */
   children: string;
   /**
-   * The language to colour it as. `text` leaves it in one colour.
+   * The language to color it as. `text` leaves it in one color.
    * @default 'text'
    */
   language?: CodeLanguage;
@@ -18,7 +18,7 @@ export interface CodeProps {
    * @default true
    */
   loadFont?: boolean;
-  /** Layout-only StyleX overrides (margin). Do not restyle colour or type. */
+  /** Layout-only StyleX overrides (margin). Do not restyle color or type. */
   xstyle?: stylex.StyleXStyles;
 }
 

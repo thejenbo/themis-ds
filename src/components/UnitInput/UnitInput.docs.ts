@@ -25,7 +25,7 @@ export default defineComponentDocs({
 
   anatomy: [
     { part: 'Label', description: 'The field\'s name (`label`), label style. "(optional)" is added with `isOptional`.', required: true },
-    { part: 'Input Box', description: 'The 40px box shared with TextInput and Select, split in two by a divider in the border colour (red when invalid, grey when disabled).', required: true },
+    { part: 'Input Box', description: 'The 40px box shared with TextInput and Select, split in two by a divider in the border color (red when invalid, gray when disabled).', required: true },
     { part: 'Number', description: 'The number, in the input text style. Formatted for the locale; placeholder while empty.', required: true },
     { part: 'Unit', description: 'A button showing the chosen unit and the caret. As wide as the widest unit, so the divider never moves.', required: true },
     { part: 'Description / Error message', description: 'Help text (caption) and the error message, as in TextInput.', required: false },
@@ -128,6 +128,6 @@ export default defineComponentDocs({
   notes: [
     'Figma "Unit Select Input". Shares its box with TextInput and its dropdown with Select and ComboBox.',
     'Each half shows the shared focus ring inside the box (Figma `inputFocused` / `selectFocused`): the number whenever it has focus, the unit for keyboard focus.',
-    'Disabled keeps the label in color/text, like every input; only the box goes grey.',
+    'Disabled keeps the label in color/text, like every input; only the box goes gray.',
   ],
 });

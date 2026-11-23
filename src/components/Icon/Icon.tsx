@@ -32,12 +32,12 @@ export interface IconProps {
    * instantly under reduced motion). Leave it out for an icon that's simply shown. Checkbox uses it for its tick.
    */
   drawn?: boolean;
-  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colour or size. */
+  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle color or size. */
   xstyle?: stylex.StyleXStyles;
 }
 
 /**
- * An icon from the Themis set, drawn in the current text colour. Its lines follow the theme: they're as thick as the
+ * An icon from the Themis set, drawn in the current text color. Its lines follow the theme: they're as thick as the
  * component borders (`border/width/mandatory`, from 1.25px up to a cap per size so small icons never clog), and with
  * radius `none` corners turn sharp, line ends flat, and a few icons switch to hand-drawn sharp versions.
  */
@@ -81,7 +81,7 @@ function draw(shapes: IconShape[], size: IconSize, drawn: boolean | undefined) {
       ...attributes,
       // Drawing in: each line's length counts as 1, so a dash offset of 1 hides it and 0 shows it all. Dots fade instead.
       ...(drawn !== undefined && !dot && { pathLength: 1 }),
-      // A tiny circle only looks solid while the stroke covers its centre; below a 2-unit stroke it shows a hole.
+      // A tiny circle only looks solid while the stroke covers its center; below a 2-unit stroke it shows a hole.
       ...(isDotCircle(tag, attributes) && { fill: 'currentColor' }),
       ...stylex.props(
         isDotLine(tag, attributes) && styles.dotLine,

@@ -5,7 +5,7 @@ export type ContrastLevel = 'AAA' | 'AA' | 'Fail';
 
 /**
  * WCAG levels for text: 7:1 AAA, 4.5:1 AA, below that a fail. WCAG's 3:1 for large text doesn't apply: every pair a
- * theme colour is rated in has normal-size text on it (button labels, chips, error messages).
+ * theme color is rated in has normal-size text on it (button labels, chips, error messages).
  */
 export function contrastLevel(ratio: number): ContrastLevel {
   return ratio >= 7 ? 'AAA' : ratio >= 4.5 ? 'AA' : 'Fail';
@@ -23,7 +23,7 @@ export interface RatedPair {
 }
 
 /**
- * The text-on-surface pairs from `tokens/contrast-pairs.json` that each of the six colours takes part in (a unit test
+ * The text-on-surface pairs from `tokens/contrast-pairs.json` that each of the six colors takes part in (a unit test
  * keeps these in step with that file).
  */
 export const RATED_PAIRS: Record<keyof ThemeColors, RatedPair[]> = {
@@ -63,26 +63,26 @@ export const RATED_PAIRS: Record<keyof ThemeColors, RatedPair[]> = {
   ],
 };
 
-/** One pair a colour is checked in, measured. */
+/** One pair a color is checked in, measured. */
 export interface ContrastCheck extends RatedPair {
   ratio: number;
   level: ContrastLevel;
-  /** The text colour, and the surface it's on (with any see-through layer composited), as hex. */
+  /** The text color, and the surface it's on (with any see-through layer composited), as hex. */
   textHex: string;
   surfaceHex: string;
 }
 
 export interface ColorRating {
-  /** The lowest contrast among the pairs this colour is rated in (advisory ones left out). */
+  /** The lowest contrast among the pairs this color is rated in (advisory ones left out). */
   ratio: number;
   level: ContrastLevel;
   /** The pair with that lowest contrast, from `tokens/contrast-pairs.json`. */
   worstPair: string;
-  /** Every pair this colour is checked in, advisory ones included. */
+  /** Every pair this color is checked in, advisory ones included. */
   checks: ContrastCheck[];
 }
 
-/** Rates each of a theme's six colours by its worst text contrast, for the config tool's badges. */
+/** Rates each of a theme's six colors by its worst text contrast, for the config tool's badges. */
 export function rateThemeColors(colors: ThemeColors): Record<keyof ThemeColors, ColorRating> {
   const tokens = deriveColorTokens(colors);
   const rgba = (key: keyof ColorTokens): RGBA => parseHex(tokens[key]);
@@ -100,8 +100,8 @@ export function rateThemeColors(colors: ThemeColors): Record<keyof ThemeColors, 
 }
 
 /**
- * The nearest lighter or darker shade of a colour (same hue and saturation, in HSL) that brings it to AA (4.5:1)
- * everywhere it's rated, with the theme's other colours as they are. Null when no shade gets there (e.g. a mid-grey
+ * The nearest lighter or darker shade of a color (same hue and saturation, in HSL) that brings it to AA (4.5:1)
+ * everywhere it's rated, with the theme's other colors as they are. Null when no shade gets there (e.g. a mid-gray
  * background, where neither black nor white text has room).
  */
 export function suggestPassingColor(colors: ThemeColors, key: keyof ThemeColors): string | null {

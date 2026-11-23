@@ -56,7 +56,7 @@ export interface TableProps {
    * Modal. The rounded corners and the lines between rows stay. Figma: Table `border` off.
    */
   hideBorder?: boolean;
-  /** Layout-only StyleX overrides for the outer frame (margin, width, grid placement). Do not restyle colours. */
+  /** Layout-only StyleX overrides for the outer frame (margin, width, grid placement). Do not restyle colors. */
   xstyle?: stylex.StyleXStyles;
 }
 
@@ -66,7 +66,7 @@ export interface TableProps {
  * controls in cells such as an ActionMenu). Columns size to their content; on narrow screens the table scrolls
  * sideways inside its rounded border.
  */
-export function Table({ children, sortDescriptor, onSortChange, onRowAction, hideBorder = false, xstyle, ...labelling }: TableProps) {
+export function Table({ children, sortDescriptor, onSortChange, onRowAction, hideBorder = false, xstyle, ...labeling }: TableProps) {
   const header = Children.toArray(children).find(
     (c): c is ReactElement<TableHeaderProps> => isValidElement(c) && c.type === TableHeader,
   );
@@ -74,7 +74,7 @@ export function Table({ children, sortDescriptor, onSortChange, onRowAction, hid
   return (
     <div {...stylex.props(styles.frame, hideBorder && styles.frameBorderless, xstyle)}>
       <TableContext.Provider value={{ sortDescriptor, onSortChange, onRowAction, columnCount }}>
-        <table {...labelling} {...stylex.props(styles.table)}>
+        <table {...labeling} {...stylex.props(styles.table)}>
           {children}
         </table>
       </TableContext.Provider>
@@ -87,7 +87,7 @@ export interface TableHeaderProps {
   children: ReactNode;
 }
 
-/** The brand-coloured header row. */
+/** The brand-colored header row. */
 export function TableHeader({ children }: TableHeaderProps) {
   return (
     <thead>
@@ -199,7 +199,7 @@ export interface RowProps {
 }
 
 /**
- * A row of `Cell`s, 56px, with a brand-coloured line below every row but the last. When the table has an
+ * A row of `Cell`s, 56px, with a brand-colored line below every row but the last. When the table has an
  * `onRowAction`, the row tints on hover (brand-tint), shows the pointer cursor, and runs the action when clicked
  * anywhere that isn't another control.
  */
@@ -404,6 +404,6 @@ const styles = stylex.create({
   },
   // Headings are square, so the inside focus ring is too.
   squareRing: { '::before': { borderRadius: 0 } },
-  // The empty state, like Select's "no results": the option text style in the disabled-on-background colour.
+  // The empty state, like Select's "no results": the option text style in the disabled-on-background color.
   empty: { color: color.textDisabledOnBackground },
 });

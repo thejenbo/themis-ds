@@ -5,7 +5,7 @@ import { addStylesheet } from '../../theme/add-stylesheet';
 import { color as system } from '../../tokens/system.stylex';
 import { font } from '../../tokens/typography.stylex';
 
-/** The languages Code and CodeBlock colour. Anything else is shown as plain text. */
+/** The languages Code and CodeBlock color. Anything else is shown as plain text. */
 export type CodeLanguage = 'json' | 'tsx' | 'text';
 
 type TokenKind = 'comment' | 'string' | 'number' | 'keyword' | 'function' | 'property' | 'parameter' | 'text';
@@ -25,7 +25,7 @@ const KEYWORDS =
 const TSX_RULES: [TokenKind, RegExp][] = [
   ['comment', /\/\/[^\n]*|\/\*[\s\S]*?\*\//y],
   ['string', /"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`/y],
-  // JSX tag names, after < or </ (Monokai colours tags like keywords).
+  // JSX tag names, after < or </ (Monokai colors tags like keywords).
   ['keyword', /(?<=<\/?)[A-Za-z][\w.]*/y],
   // JSX attributes, before =.
   ['function', /[A-Za-z][\w-]*(?==[{"'])/y],
@@ -63,7 +63,7 @@ function tokenize(code: string, language: CodeLanguage): [TokenKind, string][] {
   return tokens;
 }
 
-/** The code, coloured with the Monokai tokens (system/color.code.*). */
+/** The code, colored with the Monokai tokens (system/color.code.*). */
 export function highlight(code: string, language: CodeLanguage): ReactNode {
   if (language === 'text') return code;
   return tokenize(code, language).map(([kind, value], i) =>

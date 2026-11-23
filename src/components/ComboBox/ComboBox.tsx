@@ -44,7 +44,7 @@ interface ComboBoxBaseProps<T extends object>
    * @default 'optional'
    */
   optionalText?: string;
-  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colours or size. */
+  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colors or size. */
   xstyle?: stylex.StyleXStyles;
 }
 

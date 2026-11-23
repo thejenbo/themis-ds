@@ -21,11 +21,11 @@ export default defineComponentDocs({
 
   anatomy: [
     { part: 'Label', description: 'The field\'s name (`label`), label style.', required: true },
-    { part: 'Input Box', description: 'The TextInput box: 40px, background, 2px border (error colour when invalid), radius md, input text style.', required: true },
+    { part: 'Input Box', description: 'The TextInput box: 40px, background, 2px border (error color when invalid), radius md, input text style.', required: true },
     { part: 'Search icon', description: 'At the start of the box, 8px before the text. Hide it with `hideIcon`.', required: false },
     { part: 'Clear button', description: 'A 20px circle in background-inverse with an X in text-inverse, 8px after the text. Shows once something is typed; pointer cursor; 44px touch area on touch screens.', required: false },
     { part: 'Context', description: 'Caption row under the box with the description.', required: false },
-    { part: 'Error message', description: 'Shown below when the field is invalid, in the error colour.', required: false },
+    { part: 'Error message', description: 'Shown below when the field is invalid, in the error color.', required: false },
   ],
 
   variants: {},
@@ -33,7 +33,7 @@ export default defineComponentDocs({
   accessibility: {
     providedByBase: [
       'The input is a searchbox, linked to its label, description and error message.',
-      'The clear button is labelled "Clear search" (translated by React Aria) and kept out of the tab order, since Escape clears from the keyboard.',
+      'The clear button is labeled "Clear search" (translated by React Aria) and kept out of the tab order, since Escape clears from the keyboard.',
       'Clearing moves focus back to the input.',
     ],
     keyboard: [
@@ -57,7 +57,7 @@ export default defineComponentDocs({
       property: 'Its fill fades to background-inverse-hover',
       duration: 'motion/duration.fast',
       easing: 'motion/easing.standard',
-      reducedMotion: 'The colour changes instantly.',
+      reducedMotion: 'The color changes instantly.',
     },
     {
       trigger: 'Clear button pressed',

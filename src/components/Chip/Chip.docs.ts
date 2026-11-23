@@ -10,7 +10,7 @@ export default defineComponentDocs({
   usage: {
     whenToUse: [
       'Showing the status of an item in a list or table ("Paid", "Overdue", "Declined").',
-      'Labelling a category or type next to a title ("Beta", "Draft").',
+      'Labeling a category or type next to a title ("Beta", "Draft").',
     ],
     whenNotToUse: [
       { scenario: 'Something people click to filter or select.', useInstead: 'SegmentedControl, ToggleButton, or a TagGroup (coming later)' },
@@ -30,7 +30,7 @@ export default defineComponentDocs({
   variants: {
     tone: {
       neutral: 'Black and white (inverted in dark themes). Categories and statuses with no particular meaning ("Draft", "Pending").',
-      brand: 'The brand colour. Highlights something new or featured ("Beta", "New").',
+      brand: 'The brand color. Highlights something new or featured ("Beta", "New").',
       success: 'Something is done or healthy ("Paid", "Active").',
       warning: 'Something needs attention soon ("Overdue", "Expiring").',
       danger: 'Something failed or was refused ("Declined", "Failed").',
@@ -45,7 +45,7 @@ export default defineComponentDocs({
     providedByBase: [],
     keyboard: [],
     requirements: [
-      'The text carries the meaning, so colour is never the only cue. Always write the status as a word.',
+      'The text carries the meaning, so color is never the only cue. Always write the status as a word.',
       'Icons are hidden from screen readers; don\'t put meaning only in an icon.',
       'A chip isn\'t focusable or clickable. If it needs to do something, use a Button or a TagGroup instead.',
       'In a table, the column header says what the chip describes (e.g. "Payment status"), so the chip can stay short.',

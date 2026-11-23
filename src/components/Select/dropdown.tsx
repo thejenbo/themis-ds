@@ -110,7 +110,7 @@ export function DropdownItem({ children, icon, textValue, ...props }: DropdownIt
   );
 }
 
-/** Figma "Dropdown Divider": a 1px line in the border colour between groups of options. */
+/** Figma "Dropdown Divider": a 1px line in the border color between groups of options. */
 export function DropdownSeparator() {
   return <Separator {...stylex.props(styles.separator)} />;
 }
@@ -197,7 +197,7 @@ const styles = stylex.create({
   },
   highlighted: { '::after': { opacity: 1 } },
   optionDisabled: { color: color.textDisabledOnBackground },
-  // Figma "no results": option text style, disabled-on-background colour, nothing to choose.
+  // Figma "no results": option text style, disabled-on-background color, nothing to choose.
   empty: { color: color.textDisabledOnBackground, cursor: 'default' },
   optionLabel: {
     flexGrow: 1,
@@ -208,7 +208,7 @@ const styles = stylex.create({
   },
   check: { display: 'inline-flex', flexShrink: 0 },
   content: { display: 'flex', alignItems: 'center', gap: spacing.xs, flexGrow: 1, minWidth: 0 },
-  // At least 16px (an Icon); wider content, such as the config tool's colour dots, keeps its own width.
+  // At least 16px (an Icon); wider content, such as the config tool's color dots, keeps its own width.
   icon: { display: 'inline-flex', flexShrink: 0, alignItems: 'center', justifyContent: 'center', minWidth: '1rem', height: '1rem' },
   // 1px whatever the border-width theme, so it still shows with borders set to none. Hidden when filtering leaves
   // it at the start or end of the list.

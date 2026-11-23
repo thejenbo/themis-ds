@@ -40,7 +40,7 @@ interface SearchFieldBaseProps extends Omit<AriaSearchFieldProps, 'className' | 
   placeholder?: string;
   /** Hide the search icon at the start of the box, e.g. when the label or the layout already says it's a search. */
   hideIcon?: boolean;
-  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colours or size. */
+  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colors or size. */
   xstyle?: stylex.StyleXStyles;
 }
 

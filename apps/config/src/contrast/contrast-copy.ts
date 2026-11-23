@@ -10,7 +10,7 @@ export const COLOR_LABELS: Record<keyof ThemeColors, string> = {
 };
 export const COLOR_KEYS = Object.keys(COLOR_LABELS) as (keyof ThemeColors)[];
 
-/** What the contrast modal shows: one of the six colours, or the explanation of the ratings. */
+/** What the contrast modal shows: one of the six colors, or the explanation of the ratings. */
 export type ContrastTab = keyof ThemeColors | 'about';
 
 /**
@@ -81,7 +81,7 @@ export const PAIR_COPY: Record<string, PairCopy> = {
   ...statePairs('success', 'Success', 'Success'),
 };
 
-/** A colour token's Figma/CSS name: `stateErrorTint` → `state.error-tint`, `textInverse` → `text-inverse`. */
+/** A color token's Figma/CSS name: `stateErrorTint` → `state.error-tint`, `textInverse` → `text-inverse`. */
 export function tokenName(key: keyof ColorTokens): string {
   const kebab = (s: string) => s.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`);
   return key.startsWith('state') ? `state.${kebab(key.slice(5)).slice(1)}` : kebab(key);

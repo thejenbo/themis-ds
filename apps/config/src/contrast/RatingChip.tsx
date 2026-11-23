@@ -18,8 +18,8 @@ export const LEVEL_TONE: Record<ContrastLevel, ChipTone> = { AAA: 'success', AA:
 export const ratioText = (ratio: number) => `${ratio.toFixed(2)}:1`;
 
 /**
- * A colour's contrast rating, beside its field's label: a chip that's a button. Hovering or focusing it shows the
- * lowest contrast in a sentence; pressing it opens the contrast modal on that colour.
+ * A color's contrast rating, beside its field's label: a chip that's a button. Hovering or focusing it shows the
+ * lowest contrast in a sentence; pressing it opens the contrast modal on that color.
  */
 export function RatingChip({
   colorKey,
@@ -80,7 +80,7 @@ const styles = stylex.create({
     borderRadius: radius.radiusXs,
   },
   surface: { position: 'relative', display: 'inline-flex' },
-  // An invisible box centred on the info icon (the chip's 8px padding plus half the 12px icon in from its end), 24px
+  // An invisible box centered on the info icon (the chip's 8px padding plus half the 12px icon in from its end), 24px
   // wide: React Aria keeps the arrow within its trigger's edges, so it needs more room than the 18px arrow.
   iconAnchor: {
     position: 'absolute',

@@ -41,12 +41,12 @@ export interface AccordionProps extends Omit<DisclosureProps, 'className' | 'sty
    */
   headingLevel?: 1 | 2 | 3 | 4 | 5 | 6;
   /**
-   * The header colour. `danger` (the error colour) marks a section with destructive actions, such as deleting an
+   * The header color. `danger` (the error color) marks a section with destructive actions, such as deleting an
    * account.
    * @default 'brand'
    */
   tone?: AccordionTone;
-  /** Layout-only StyleX overrides (margin, width, grid placement). Do not restyle colours or type. */
+  /** Layout-only StyleX overrides (margin, width, grid placement). Do not restyle colors or type. */
   xstyle?: stylex.StyleXStyles;
 }
 

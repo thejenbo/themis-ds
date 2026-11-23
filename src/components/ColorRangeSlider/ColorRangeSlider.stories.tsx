@@ -24,7 +24,7 @@ type Story = StoryObj<typeof meta>;
 /** Drag either thumb or use the arrow keys. Use the controls for every prop. */
 export const Playground: Story = {};
 
-/** Other channels take their colours from `color`: a lightness range of a violet, and an opacity range. */
+/** Other channels take their colors from `color`: a lightness range of a violet, and an opacity range. */
 export const OtherChannels: Story = {
   render: () => (
     <div style={{ display: 'grid', gap: 32, maxWidth: 400 }}>
@@ -55,7 +55,7 @@ export const Keyboard: Story = {
     await expect(end).toHaveValue('90');
     await user.keyboard('{End}');
     await expect(args.onChangeEnd).toHaveBeenLastCalledWith([90, 360]);
-    // Each thumb is filled with the colour at its end.
+    // Each thumb is filled with the color at its end.
     const fill = (input: HTMLElement) => getComputedStyle(input.closest('[data-themis-touch-target]')!.querySelector('span[aria-hidden="true"]')!).backgroundColor;
     await expect(fill(end)).toBe('rgb(255, 0, 0)');
     await expect(fill(start)).not.toBe(fill(end));
@@ -63,7 +63,7 @@ export const Keyboard: Story = {
 };
 
 /**
- * `showSwatches`: each end's colour in a swatch above its thumb, e.g. for the two stops of a gradient. Below, the
+ * `showSwatches`: each end's color in a swatch above its thumb, e.g. for the two stops of a gradient. Below, the
  * gradient between them.
  */
 export const Swatches: Story = {
@@ -81,16 +81,16 @@ export const Swatches: Story = {
   play: async ({ canvas }) => {
     const [start, end] = canvas.getAllByRole('slider') as [HTMLElement, HTMLElement];
     const swatch = (input: HTMLElement) => input.closest('[data-themis-touch-target]')!.querySelectorAll('span[aria-hidden="true"]')[1] as HTMLElement;
-    // One swatch per thumb, filled with that end's colour, 24px, above the thumb.
+    // One swatch per thumb, filled with that end's color, 24px, above the thumb.
     await expect(getComputedStyle(swatch(start)).backgroundColor).toBe(getComputedStyle(start.closest('[data-themis-touch-target]')!.querySelector('span')!).backgroundColor);
     await expect(getComputedStyle(swatch(end)).backgroundColor).not.toBe(getComputedStyle(swatch(start)).backgroundColor);
     await expect(Math.round(swatch(start).getBoundingClientRect().width)).toBe(24);
     // The swatches stay clear of the label row and inside the component.
     const label = canvas.getByText('Gradient stops');
     await expect(swatch(start).getBoundingClientRect().top).toBeGreaterThanOrEqual(label.getBoundingClientRect().bottom);
-    const unlabelled = canvas.getAllByRole('slider')[2]!;
-    const group = unlabelled.closest('[role="group"]')!;
-    await expect(swatch(unlabelled).getBoundingClientRect().top).toBeGreaterThanOrEqual(group.getBoundingClientRect().top);
+    const unlabeled = canvas.getAllByRole('slider')[2]!;
+    const group = unlabeled.closest('[role="group"]')!;
+    await expect(swatch(unlabeled).getBoundingClientRect().top).toBeGreaterThanOrEqual(group.getBoundingClientRect().top);
   },
 };
 
@@ -102,7 +102,7 @@ export const NoLabel: Story = {
   },
 };
 
-/** Disabled: grey track and thumbs, and they can't be focused. */
+/** Disabled: gray track and thumbs, and they can't be focused. */
 export const Disabled: Story = {
   args: { isDisabled: true },
   play: async ({ canvas }) => {

@@ -137,7 +137,7 @@ export const WithoutVisibleLabel: Story = {
   args: { label: undefined, 'aria-label': 'Delivery', orientation: 'horizontal', defaultValue: 'standard' },
 };
 
-/** Each colour theme. */
+/** Each color theme. */
 export const ThemeMatrix: Story = {
   tags: ['!autodocs'],
   parameters: { layout: 'fullscreen' },

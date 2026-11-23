@@ -40,7 +40,7 @@ export default defineComponentDocs({
 
   accessibility: {
     providedByBase: [
-      'The thumb is a native range input (role="slider") with its value, minimum and maximum, labelled by the label.',
+      'The thumb is a native range input (role="slider") with its value, minimum and maximum, labeled by the label.',
       'Arrow keys change the value by one step, Page Up/Down by bigger steps, and Home/End jump to the ends.',
       'The value is announced with its formatting (e.g. "50%") when `formatOptions` is set.',
       'Clicking or tapping the track jumps the thumb there.',

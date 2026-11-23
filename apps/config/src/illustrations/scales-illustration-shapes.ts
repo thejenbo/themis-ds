@@ -12,7 +12,7 @@ export const POST_FULL = 'M13.0456 0C20.2505 0.000117952 26.0911 6.92189 26.0911
 export interface Pan {
   /** The three strings, as filled shapes (drawn lines). */
   strings: string[];
-  /** The bowl (an inside stroke), and the rim across its top (a centred stroke). */
+  /** The bowl (an inside stroke), and the rim across its top (a centered stroke). */
   bowl: string;
   rim: { x: number; y: number; width: number; height: number; rx: number };
   /** White highlights on the bowl and the rim. */

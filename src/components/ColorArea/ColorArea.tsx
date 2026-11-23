@@ -22,16 +22,16 @@ import { touchTarget } from '../../utils/touch-target';
 
 export interface ColorAreaProps
   extends Omit<AriaColorAreaProps, 'className' | 'style' | 'children' | 'value' | 'defaultValue' | 'onChange' | 'onChangeEnd'> {
-  /** The current colour (controlled), as a CSS colour string or a parsed `Color`. Use with `onChange`. */
+  /** The current color (controlled), as a CSS color string or a parsed `Color`. Use with `onChange`. */
   value?: string | Color;
-  /** The starting colour (uncontrolled). */
+  /** The starting color (uncontrolled). */
   defaultValue?: string | Color;
-  /** Called continuously while the colour changes (dragging, arrow keys), with the whole colour. */
+  /** Called continuously while the color changes (dragging, arrow keys), with the whole color. */
   onChange?: (value: Color) => void;
   /** Called once when the person lets go (or after a key press). Use this for anything expensive, like saving. */
   onChangeEnd?: (value: Color) => void;
   /**
-   * The channel that changes left to right. With `yChannel`, pick two channels of the colour's space (`colorSpace`).
+   * The channel that changes left to right. With `yChannel`, pick two channels of the color's space (`colorSpace`).
    * Defaults to saturation (hsl/hsb) or red (rgb).
    */
   xChannel?: AriaColorAreaProps['xChannel'];
@@ -39,19 +39,19 @@ export interface ColorAreaProps
   yChannel?: AriaColorAreaProps['yChannel'];
   /**
    * Size and layout-only StyleX overrides (width, height, aspect ratio, margin, flex, grid placement). It fills its
-   * container's width at Figma's 345 × 284 proportions by default. Do not restyle colours.
+   * container's width at Figma's 345 × 284 proportions by default. Do not restyle colors.
    */
   xstyle?: stylex.StyleXStyles;
 }
 
 /**
- * Picks a colour by dragging a thumb over a square of colours that changes along two channels, such as saturation
+ * Picks a color by dragging a thumb over a square of colors that changes along two channels, such as saturation
  * (left to right) and lightness (bottom to top). Built on React Aria `ColorArea`: arrow keys move the thumb (Left/Right
  * for the x channel, Up/Down for the y channel), Page Up/Down and Shift+arrows take bigger steps, and clicking jumps
- * there. Pair it with a hue ColorSlider to reach every colour.
+ * there. Pair it with a hue ColorSlider to reach every color.
  */
 export function ColorArea({ xstyle, xChannel, yChannel, ...props }: ColorAreaProps) {
-  // React Aria defaults to the colour space's first two channels (hue and saturation for hsl). Themis defaults to the
+  // React Aria defaults to the color space's first two channels (hue and saturation for hsl). Themis defaults to the
   // two that pair with a hue slider: saturation and lightness (hsl) or brightness (hsb).
   const start = props.value ?? props.defaultValue;
   const space = props.colorSpace ?? (start == null ? undefined : (typeof start === 'string' ? parseColor(start) : start).getColorSpace());
@@ -62,7 +62,7 @@ export function ColorArea({ xstyle, xChannel, yChannel, ...props }: ColorAreaPro
       xChannel={xChannel ?? (yChannel ? undefined : pair?.[0])}
       yChannel={yChannel ?? (xChannel ? undefined : pair?.[1])}
       className={(s: ColorAreaRenderProps) => stylex.props(styles.area, s.isDisabled && styles.areaDisabled, xstyle).className ?? ''}
-      // React Aria paints the two-channel gradient here; disabled, the grey fill shows instead.
+      // React Aria paints the two-channel gradient here; disabled, the gray fill shows instead.
       style={({ defaultStyle, isDisabled }) => (isDisabled ? { ...defaultStyle, background: 'none' } : defaultStyle)}
     >
       <ColorThumb
@@ -94,7 +94,7 @@ export function ColorArea({ xstyle, xChannel, yChannel, ...props }: ColorAreaPro
 }
 
 // The bullseye's rings are always 3px (the large border width), whatever the border-width mode: thinner rings make
-// the thumb hard to see on busy colours.
+// the thumb hard to see on busy colors.
 const ring = borderPrimitive.width3;
 
 const styles = stylex.create({
@@ -110,8 +110,8 @@ const styles = stylex.create({
   },
   areaDisabled: { backgroundColor: system.backgroundDisabledDefault },
   /*
-   * Figma "Thumb", bullseye: 32px, a 3px black border, a 3px white ring inside it, then the colour in a 22px circle
-   * with its own 3px black border. One of black or white always shows against the colours around it.
+   * Figma "Thumb", bullseye: 32px, a 3px black border, a 3px white ring inside it, then the color in a 22px circle
+   * with its own 3px black border. One of black or white always shows against the colors around it.
    */
   thumb: {
     zIndex: 1,

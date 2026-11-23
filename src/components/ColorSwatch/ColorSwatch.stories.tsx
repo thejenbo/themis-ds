@@ -43,7 +43,7 @@ export const SizesAndVariants: Story = {
   },
 };
 
-/** Outline keeps colours close to the background visible. */
+/** Outline keeps colors close to the background visible. */
 export const LightAndDark: Story = {
   render: () => (
     <div style={row}>
@@ -55,7 +55,7 @@ export const LightAndDark: Story = {
   ),
 };
 
-/** See-through colours show a checkerboard behind them; opaque ones don't. */
+/** See-through colors show a checkerboard behind them; opaque ones don't. */
 export const Transparency: Story = {
   render: () => (
     <div style={row}>
@@ -72,7 +72,7 @@ export const Transparency: Story = {
   },
 };
 
-/** Screen readers hear a description of the colour, or `colorName` when given, followed by any `aria-label`. */
+/** Screen readers hear a description of the color, or `colorName` when given, followed by any `aria-label`. */
 export const Names: Story = {
   render: () => (
     <div style={row}>
@@ -82,14 +82,14 @@ export const Names: Story = {
     </div>
   ),
   play: async ({ canvas }) => {
-    const [described, named, labelled] = canvas.getAllByRole('img') as [HTMLElement, HTMLElement, HTMLElement];
+    const [described, named, labeled] = canvas.getAllByRole('img') as [HTMLElement, HTMLElement, HTMLElement];
     await expect(described.getAttribute('aria-label')).toMatch(/blue/i);
     await expect(named).toHaveAccessibleName(expect.stringContaining('Themis violet'));
-    await expect(labelled).toHaveAccessibleName(expect.stringMatching(/, Error$/));
+    await expect(labeled).toHaveAccessibleName(expect.stringMatching(/, Error$/));
   },
 };
 
-/** `variant="empty"`: a placeholder for an unused slot (e.g. ColorPicker's recent colours), hidden from screen readers. */
+/** `variant="empty"`: a placeholder for an unused slot (e.g. ColorPicker's recent colors), hidden from screen readers. */
 export const Empty: Story = {
   render: () => (
     <div style={row}>

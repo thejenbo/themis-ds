@@ -44,11 +44,11 @@ export interface ButtonProps extends Omit<AriaButtonProps, 'className' | 'style'
    */
   size?: ButtonSize;
   /**
-   * Colour family.
-   * `brand`: the theme's brand colour, for most actions.
-   * `neutral`: black and white (inverted in dark themes), for actions that shouldn't draw on the brand colour.
-   * `danger`: the error colour, for destructive actions such as deleting.
-   * `warning`, `success`: the status colours, for actions inside a matching status message such as a Toast.
+   * Color family.
+   * `brand`: the theme's brand color, for most actions.
+   * `neutral`: black and white (inverted in dark themes), for actions that shouldn't draw on the brand color.
+   * `danger`: the error color, for destructive actions such as deleting.
+   * `warning`, `success`: the status colors, for actions inside a matching status message such as a Toast.
    * @default 'brand'
    */
   tone?: ButtonTone;
@@ -61,7 +61,7 @@ export interface ButtonProps extends Omit<AriaButtonProps, 'className' | 'style'
    * @default 'Loading'
    */
   pendingLabel?: string;
-  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colours or type. */
+  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colors or type. */
   xstyle?: stylex.StyleXStyles;
 }
 

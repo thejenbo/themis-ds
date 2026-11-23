@@ -25,12 +25,12 @@ export default defineComponentDocs({
 
   anatomy: [
     { part: 'Label', description: 'The field\'s name (`label`), label style. "(optional)" is added with `isOptional`.', required: true },
-    { part: 'Input Box', description: 'The 40px box (shared with TextInput and Select) with a text field and the caret button. Red border when invalid, grey when disabled.', required: true },
+    { part: 'Input Box', description: 'The 40px box (shared with TextInput and Select) with a text field and the caret button. Red border when invalid, gray when disabled.', required: true },
     { part: 'Caret', description: 'A button that shows every option. Out of the tab order (Down arrow does the same). The same in every state.', required: true },
     { part: 'Description / Error message', description: 'Help text (caption) and the error message, as in TextInput.', required: false },
     { part: 'Dropdown', description: 'The filtered list, shared with Select: 4px below the box and as wide as it, 8px padding, 4px between options, scrolls when long.', required: true },
-    { part: 'Dropdown Divider', description: '`ComboBoxSeparator`: a 1px line in the border colour between groups of options (e.g. recently used, then all). Hidden when filtering leaves it at the start or end of the list.', required: false },
-    { part: 'No results', description: 'Shown in the list when nothing matches (`emptyText`), in the disabled-on-background colour.', required: false },
+    { part: 'Dropdown Divider', description: '`ComboBoxSeparator`: a 1px line in the border color between groups of options (e.g. recently used, then all). Hidden when filtering leaves it at the start or end of the list.', required: false },
+    { part: 'No results', description: 'Shown in the list when nothing matches (`emptyText`), in the disabled-on-background color.', required: false },
   ],
 
   variants: {},

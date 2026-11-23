@@ -23,7 +23,7 @@ export default defineComponentDocs({
     { part: 'Label', description: 'The field\'s name (`label`), label style. "(optional)" is added with `isOptional`.', required: true },
     { part: 'Textarea Box', description: '130px tall to start, then grows with the text up to `maxRows` lines and scrolls inside. Same border, radius, padding and text style as TextInput\'s box.', required: true },
     { part: 'Context', description: 'Caption row under the box: description on the left, character count on the right (red over the limit).', required: false },
-    { part: 'Error message', description: 'Shown below the context row when the field is invalid, in the error colour.', required: false },
+    { part: 'Error message', description: 'Shown below the context row when the field is invalid, in the error color.', required: false },
   ],
 
   variants: {},

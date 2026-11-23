@@ -1,6 +1,6 @@
 import { BLACK, contrast, luminance, mix, parseHex, type RGBA, toHex, WHITE, withAlpha } from './color-math';
 
-/** The six colours a theme is made from. Hex codes (`#RRGGBB`). */
+/** The six colors a theme is made from. Hex codes (`#RRGGBB`). */
 export interface ThemeColors {
   brand: string;
   text: string;
@@ -53,7 +53,7 @@ export const COLOR_RULES = {
   overlayAlpha: 0.6,
   /** border-brand-hover: this much of the way from brand to the background. */
   borderBrandHoverMix: 0.6,
-  /** Disabled and placeholder text: a grey from text toward the background, stopping at this contrast. */
+  /** Disabled and placeholder text: a gray from text toward the background, stopping at this contrast. */
   mutedTextContrast: 6,
 } as const;
 
@@ -64,7 +64,7 @@ function hover(fill: RGBA): RGBA {
 }
 
 /**
- * The muted grey for disabled and placeholder text: from `text` toward `background`, as far as it can go while
+ * The muted gray for disabled and placeholder text: from `text` toward `background`, as far as it can go while
  * keeping `mutedTextContrast` against the background (or `text` itself, if even that is lower).
  */
 function mutedText(text: RGBA, background: RGBA): RGBA {
@@ -77,14 +77,14 @@ function mutedText(text: RGBA, background: RGBA): RGBA {
     else hi = mid;
   }
   // Round to whole channel values, then step back toward text until the contrast holds after rounding.
-  let grey = parseHex(toHex(mix(text, background, lo)));
-  for (let t = lo; contrast(grey, background) < COLOR_RULES.mutedTextContrast && t > 0; t -= 0.002) {
-    grey = parseHex(toHex(mix(text, background, t)));
+  let gray = parseHex(toHex(mix(text, background, lo)));
+  for (let t = lo; contrast(gray, background) < COLOR_RULES.mutedTextContrast && t > 0; t -= 0.002) {
+    gray = parseHex(toHex(mix(text, background, t)));
   }
-  return grey;
+  return gray;
 }
 
-/** Every colour token of a theme, worked out from its six colours with the Themis rules. */
+/** Every color token of a theme, worked out from its six colors with the Themis rules. */
 export function deriveColorTokens(colors: ThemeColors): ColorTokens {
   const brand = parseHex(colors.brand);
   const text = parseHex(colors.text);

@@ -37,7 +37,7 @@ export interface CheckboxProps extends Omit<CheckboxFieldProps, 'className' | 's
    * A function receives React Aria's validation result.
    */
   errorMessage?: ReactNode | ((validation: ValidationResult) => ReactNode);
-  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colours or size. */
+  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colors or size. */
   xstyle?: stylex.StyleXStyles;
 }
 

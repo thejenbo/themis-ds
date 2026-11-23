@@ -16,8 +16,8 @@ export interface ThemeProviderProps {
    */
   modes?: Modes;
   /**
-   * A theme from a Themis theme file (`themis.theme.json`, made with the Themis config tool): its six colours (every
-   * other colour is worked out from them), border width, radius and fonts. Use `modes` to override any of its
+   * A theme from a Themis theme file (`themis.theme.json`, made with the Themis config tool): its six colors (every
+   * other color is worked out from them), border width, radius and fonts. Use `modes` to override any of its
    * collections, e.g. `shadows`.
    */
   theme?: ThemeSettings;
@@ -33,13 +33,13 @@ export interface ThemeProviderProps {
 }
 
 /**
- * Applies Themis token modes (e.g. colour theme, font theme, radius and border width severity) to everything inside it.
+ * Applies Themis token modes (e.g. color theme, font theme, radius and border width severity) to everything inside it.
  * Each collection is switched independently. Providers can be nested; the innermost one wins per collection.
  *
  * Overlays opened inside it (Modal, and later popovers and tooltips) are rendered into this provider's element
  * rather than at the end of <body>, so they keep its theme.
  *
- * With `theme`, it applies a theme from a Themis theme file: the colours and fonts as CSS variables on its element, and
+ * With `theme`, it applies a theme from a Themis theme file: the colors and fonts as CSS variables on its element, and
  * the border width and radius as modes.
  */
 export function ThemeProvider({ modes: modesProp = {}, theme, loadFonts = true, children, xstyle }: ThemeProviderProps) {

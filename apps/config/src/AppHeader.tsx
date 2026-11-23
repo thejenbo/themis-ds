@@ -28,11 +28,11 @@ interface AppHeaderProps {
   compact?: boolean;
   /** Desktop, with the sidebar on the left: the page links start 24px after the sidebar's divider. */
   besideSidebar?: boolean;
-  /** The brand colour of the theme being edited: the logomark is filled with it. */
+  /** The brand color of the theme being edited: the logomark is filled with it. */
   brand?: string;
-  /** A colour in the theme fails contrast: the logomark's scales tip. */
+  /** A color in the theme fails contrast: the logomark's scales tip. */
   isUnbalanced?: boolean;
-  /** Pressing the tipped scales: opens the contrast details on the first failing colour. */
+  /** Pressing the tipped scales: opens the contrast details on the first failing color. */
   onReviewContrast?: () => void;
 }
 
@@ -64,13 +64,13 @@ export function AppHeader({ page, compact = false, besideSidebar = false, brand,
         {isUnbalanced && onReviewContrast && (
           <TooltipTrigger>
             <Button
-              aria-label="A colour fails contrast. Review it"
+              aria-label="A color fails contrast. Review it"
               onPress={onReviewContrast}
               {...racStyles<ButtonRenderProps>((s) => [styles.scalesButton, interactiveCursor.enabled, focusRing.base, s.isFocusVisible && focusRing.visible])}
             >
               {logomark}
             </Button>
-            <Tooltip placement="bottom start">The scales tip when a colour fails contrast. Select to see which.</Tooltip>
+            <Tooltip placement="bottom start">The scales tip when a color fails contrast. Select to see which.</Tooltip>
           </TooltipTrigger>
         )}
         <Link href="#simulator" aria-label="Themis config" {...racStyles<LinkRenderProps>((s) => [styles.brandLink, focusRing.base, s.isFocusVisible && focusRing.visible])}>
@@ -239,7 +239,7 @@ const styles = stylex.create({
   menuExternal: { display: 'inline-flex', alignItems: 'center', gap: spacing['2xs'] },
   // No gap: the menu button pushes itself to the end.
   headerCompact: { gap: 0 },
-  // Hover: a paler line than the current page's, fading in, like the Tabs hover indicator (40% of the line colour).
+  // Hover: a paler line than the current page's, fading in, like the Tabs hover indicator (40% of the line color).
   hovered: { '::after': { opacity: 0.4 } },
   indicator: {
     position: 'absolute',

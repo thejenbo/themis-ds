@@ -14,13 +14,13 @@ export default defineComponentDocs({
   usage: {
     whenToUse: [
       'The user needs to perform an action on the current page (save, submit, delete, open).',
-      'Confirming or cancelling a dialog or form.',
+      'Confirming or canceling a dialog or form.',
     ],
     whenNotToUse: [
       { scenario: 'Navigating to another page or URL.', useInstead: 'Link' },
       { scenario: 'The button shows only an icon, with no visible label.', useInstead: 'IconButton' },
       { scenario: 'Toggling a setting on or off.', useInstead: 'Switch' },
-      { scenario: 'Signalling an error without an action (e.g. a failed save).', useInstead: 'an inline message, not a danger Button' },
+      { scenario: 'Signaling an error without an action (e.g. a failed save).', useInstead: 'an inline message, not a danger Button' },
     ],
   },
 
@@ -39,7 +39,7 @@ export default defineComponentDocs({
     {
       part: 'State Layer',
       description:
-        'Overlay shown on hover and press. Its colour is calculated from the Surface: lightening on dark colours, darkening on light ones.',
+        'Overlay shown on hover and press. Its color is calculated from the Surface: lightening on dark colors, darkening on light ones.',
       required: true,
     },
     { part: 'Icon Left', description: 'Optional decorative icon before the label.', required: false },
@@ -51,7 +51,7 @@ export default defineComponentDocs({
     variant: {
       default: 'Filled. The main action in a region. Use at most one per region.',
       outline: 'Bordered. Secondary actions next to a default button, such as "Cancel".',
-      subtle: 'No fill or border until hovered. Low-priority or repeated actions, such as in toolbars and lists. Only on `background`-coloured surfaces, in every tone.',
+      subtle: 'No fill or border until hovered. Low-priority or repeated actions, such as in toolbars and lists. Only on `background`-colored surfaces, in every tone.',
     },
     size: {
       micro: 'Dense UIs such as tables and toolbars. Keep enough space around it on touch screens (see Touch targets).',
@@ -59,11 +59,11 @@ export default defineComponentDocs({
       medium: 'Prominent calls to action.',
     },
     tone: {
-      brand: 'The brand colour of the current colour theme. The default for most actions.',
-      neutral: 'Black and white (inverted in dark themes). For actions that should not compete with the brand colour, such as toolbars and secondary flows.',
-      danger: 'The error colour. Only for destructive or irreversible actions, such as "Delete project". Pair with a confirmation step.',
-      warning: 'The warning colour. For an action inside a warning message, such as "Review" in a warning Toast.',
-      success: 'The success colour. For an action inside a success message, such as "View" in a success Toast.',
+      brand: 'The brand color of the current color theme. The default for most actions.',
+      neutral: 'Black and white (inverted in dark themes). For actions that should not compete with the brand color, such as toolbars and secondary flows.',
+      danger: 'The error color. Only for destructive or irreversible actions, such as "Delete project". Pair with a confirmation step.',
+      warning: 'The warning color. For an action inside a warning message, such as "Review" in a warning Toast.',
+      success: 'The success color. For an action inside a success message, such as "View" in a success Toast.',
     },
   },
 
@@ -93,14 +93,14 @@ export default defineComponentDocs({
       'Start labels with a verb: "Save changes", "Add member".',
       'Pair a default button with an outline "Cancel".',
       'Use `isPending` instead of disabling while an action is in progress, unless the action must not be retried.',
-      'Put subtle buttons on `background`-coloured surfaces. That is where their label and hover colours are rated.',
+      'Put subtle buttons on `background`-colored surfaces. That is where their label and hover colors are rated.',
     ],
     dont: [
       'Place more than one default button in the same region.',
       'Use the danger tone for anything that is not destructive. Its meaning wears off if it is used for emphasis.',
       'Use a Button to navigate. Use Link.',
       'Put a subtle button on a brand, inverse or tinted surface: its label and hover are not rated there. Use a default or outline button instead.',
-      'Override colours via `xstyle`; it is for layout only.',
+      'Override colors via `xstyle`; it is for layout only.',
     ],
   },
 
@@ -162,7 +162,7 @@ export default defineComponentDocs({
       property: 'State Layer fades in',
       duration: 'motion/duration.base',
       easing: 'motion/easing.standard',
-      reducedMotion: 'Unchanged (colour change only, no movement).',
+      reducedMotion: 'Unchanged (color change only, no movement).',
     },
     {
       trigger: 'Press (pointer, Space or Enter)',

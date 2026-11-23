@@ -47,12 +47,12 @@ export interface ToastAction {
 
 export interface ToastProps {
   /**
-   * Colour and meaning. `info` (neutral) for general updates, `brand` for product messages, `success` when
+   * Color and meaning. `info` (neutral) for general updates, `brand` for product messages, `success` when
    * something worked, `warning` when something needs attention, `danger` when something failed.
    * @default 'info'
    */
   tone?: ToastTone;
-  /** Short heading, e.g. "Changes saved". Shown in the tone colour. */
+  /** Short heading, e.g. "Changes saved". Shown in the tone color. */
   title?: ReactNode;
   /** The message. If there is no `title`, this is also the toast's accessible name. */
   description: ReactNode;
@@ -147,7 +147,7 @@ export function createToastQueue({ maxVisibleToasts = 3 }: ToastQueueOptions = {
  */
 export const toast: ToastQueue = createToastQueue();
 
-/** Status words read before each toast, so the status isn't conveyed by colour alone. */
+/** Status words read before each toast, so the status isn't conveyed by color alone. */
 export type ToastStatusLabels = Partial<Record<ToastTone, string>>;
 
 const defaultStatusLabels: ToastStatusLabels = { info: 'Info', success: 'Success', warning: 'Warning', danger: 'Error' };
@@ -416,7 +416,7 @@ const styles = stylex.create({
     gap: spacing.xs,
   },
   line: { display: 'flex', alignItems: 'flex-start', gap: spacing.xs },
-  // As tall as the line it sits on (heading or message), so it's centred on that line and doesn't stretch it.
+  // As tall as the line it sits on (heading or message), so it's centered on that line and doesn't stretch it.
   icon: {
     flexShrink: 0,
     display: 'inline-flex',
@@ -439,7 +439,7 @@ const styles = stylex.create({
   action: { flexShrink: 0 },
   // Figma "Close Button Alignment": as tall as the row, with the × at the top, level with the heading.
   closeSlot: { flexShrink: 0, alignSelf: 'stretch', display: 'flex', alignItems: 'flex-start' },
-  // One-line toasts: the × is centred on the text, which the row centres too (Figma has it 4px higher).
+  // One-line toasts: the × is centered on the text, which the row centers too (Figma has it 4px higher).
   closeCentered: { alignItems: 'center' },
   visuallyHidden: {
     position: 'absolute',
@@ -473,7 +473,7 @@ const toastBorders = stylex.create({
   success: { '::after': { borderColor: color.stateSuccess } },
 });
 
-/** Heading and icon colour. */
+/** Heading and icon color. */
 const toneText = stylex.create({
   info: { color: color.text },
   brand: { color: color.textBrand },

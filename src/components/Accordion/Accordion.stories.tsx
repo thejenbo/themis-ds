@@ -66,7 +66,7 @@ export const Keyboard: Story = {
     const header = canvas.getByRole('button');
     await user.tab();
     await expect(header).toHaveFocus();
-    // The ring is drawn inside the header (on its ::before, above the header's fill), so it never overlaps neighbours.
+    // The ring is drawn inside the header (on its ::before, above the header's fill), so it never overlaps neighbors.
     const ring = getComputedStyle(header, '::before');
     await expect(ring.outlineStyle).toBe('dashed');
     await expect(ring.zIndex).toBe('1');
@@ -91,7 +91,7 @@ export const LongTitle: Story = {
   },
 };
 
-/** `tone="danger"` gives the header the error colour, for a section of destructive actions. */
+/** `tone="danger"` gives the header the error color, for a section of destructive actions. */
 export const DangerTone: Story = {
   args: {
     tone: 'danger',
@@ -101,12 +101,12 @@ export const DangerTone: Story = {
   },
   play: async ({ canvasElement }) => {
     const surface = canvasElement.querySelector('[data-themis-part="surface"]')!;
-    // The header uses the theme's error colour (light demo: #AF0E0E).
+    // The header uses the theme's error color (light demo: #AF0E0E).
     await expect(getComputedStyle(surface).backgroundColor).toBe('rgb(175, 14, 14)');
   },
 };
 
-/** Disabled accordions can't be opened or closed, and use the fixed system colours. */
+/** Disabled accordions can't be opened or closed, and use the fixed system colors. */
 export const Disabled: Story = {
   render: (args) => (
     <AccordionGroup defaultExpandedKeys={['returns']}>
@@ -189,7 +189,7 @@ export const ControlledGroup: Story = {
   },
 };
 
-/** Open, closed and disabled, mirroring the Figma "Accordion" frame, in each colour theme. */
+/** Open, closed and disabled, mirroring the Figma "Accordion" frame, in each color theme. */
 export const ThemeMatrix: Story = {
   tags: ['!autodocs'],
   parameters: { layout: 'fullscreen' },

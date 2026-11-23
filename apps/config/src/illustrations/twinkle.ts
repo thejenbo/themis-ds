@@ -3,7 +3,7 @@ import { type RefObject, useEffect } from 'react';
 /**
  * The stars twinkle when the theme changes. The app announces each change with a window event, and each star plays a
  * short animation on its own element when it hears one, so nothing re-renders: the Settings Sim stays memoised, and a
- * colour slider stays quick. A star that's mid-twinkle carries on rather than restarting, so dragging a slider gives
+ * color slider stays quick. A star that's mid-twinkle carries on rather than restarting, so dragging a slider gives
  * a steady sparkle rather than a stutter.
  */
 const EVENT = 'themis:theme-change';

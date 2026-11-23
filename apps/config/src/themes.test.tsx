@@ -6,7 +6,7 @@ import { chooseMenuItem, cleanup, menuItem, nameField, renderApp, themeActions, 
 afterEach(cleanup);
 
 describe('theme switcher', () => {
-  test('lists every theme with its colour dots, then a divider and "Add new theme"', async () => {
+  test('lists every theme with its color dots, then a divider and "Add new theme"', async () => {
     renderApp();
     await themeSelect().click();
     await expect.element(page.getByRole('option', { name: 'light' })).toBeVisible();
@@ -119,7 +119,7 @@ describe('theme actions', () => {
     await expect.poll(themeNames).toEqual(['daylight', 'dark']);
   });
 
-  test('Delete asks first, then selects the neighbouring theme; the last theme can’t be deleted', async () => {
+  test('Delete asks first, then selects the neighboring theme; the last theme can’t be deleted', async () => {
     renderApp();
     await chooseMenuItem('Delete');
     await expect.element(page.getByRole('alertdialog', { name: 'Delete the light theme?' })).toBeVisible();

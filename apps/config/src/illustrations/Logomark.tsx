@@ -5,9 +5,9 @@ import { duration } from '../../../../src/tokens/motion.stylex';
 import { BASE, BOWLS, HANG, LEFT_ARM, type MarkPart, PIVOT, POST, RIGHT_ARM, RIM, VIEW_BOX } from './logomark-shapes';
 
 interface LogomarkProps {
-  /** The fill: the brand colour of the theme being edited. Without it the mark is drawn in the text colour. */
+  /** The fill: the brand color of the theme being edited. Without it the mark is drawn in the text color. */
   brand?: string;
-  /** Tip the scales, as when a colour in the theme fails contrast: the arms tilt and the pans drop and rise with them. */
+  /** Tip the scales, as when a color in the theme fails contrast: the arms tilt and the pans drop and rise with them. */
   isUnbalanced?: boolean;
   xstyle?: stylex.StyleXStyles;
 }
@@ -37,7 +37,7 @@ const PAN_SHIFT = HANG.map((h) => {
 
 /**
  * The Themis logomark: a pair of scales with a finial, curved arms and pans hung on strings (Figma "Logomark Scales"
- * 2471:2779, style=tilting; drawn in 2485:3004). Filled with the theme's brand colour and outlined in the text colour,
+ * 2471:2779, style=tilting; drawn in 2485:3004). Filled with the theme's brand color and outlined in the text color,
  * so a pale brand still reads. When the theme fails contrast the arms tip, as if the scales were no longer equal.
  * Decorative; the wordmark names it.
  *

@@ -19,7 +19,7 @@ type Story = StoryObj<typeof meta>;
 /** Use the controls for every prop. Tab to it to see the focus ring; press and hold to see it shrink. */
 export const Playground: Story = {};
 
-/** Figma's set: three sizes, enabled and disabled. Disabled shows the disabled grey instead of the colour. */
+/** Figma's set: three sizes, enabled and disabled. Disabled shows the disabled gray instead of the color. */
 export const SizesAndStates: Story = {
   render: (args) => (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, auto)', gap: 16, justifyContent: 'start', alignItems: 'center' }}>
@@ -36,7 +36,7 @@ export const SizesAndStates: Story = {
   },
 };
 
-/** Interaction test: named by the colour and what it does; Enter presses it; no hover tint. */
+/** Interaction test: named by the color and what it does; Enter presses it; no hover tint. */
 export const Keyboard: Story = {
   tags: ['test-only', '!autodocs'],
   play: async ({ args, canvas }) => {
@@ -50,7 +50,7 @@ export const Keyboard: Story = {
   },
 };
 
-/** ColorPickerSwatchItem: choosable colours in a React Aria ColorSwatchPicker. Arrow keys move; the chosen one is selected. */
+/** ColorPickerSwatchItem: choosable colors in a React Aria ColorSwatchPicker. Arrow keys move; the chosen one is selected. */
 export const InASwatchPicker: Story = {
   render: () => (
     <ColorSwatchPicker aria-label="Recent colors" defaultValue="#1F4FEB" style={{ display: 'flex', gap: 16 }}>

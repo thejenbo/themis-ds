@@ -70,6 +70,6 @@ export default defineComponentDocs({
   notes: [
     'The Figma text styles are also exported as StyleX styles (`headingStyles` from themis-ds) for components that need a heading look on another element.',
     'Sizes and line heights switch to the desktop scale at 48em, from the typography tokens.',
-    'Colour is inherited (the ThemeProvider sets color/text).',
+    'Color is inherited (the ThemeProvider sets color/text).',
   ],
 });

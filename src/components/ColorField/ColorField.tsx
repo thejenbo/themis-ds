@@ -35,19 +35,19 @@ export type ColorFormat = 'hex' | 'rgb' | 'hsl' | 'hsb';
 const FORMAT_NAMES: Record<ColorFormat, string> = { hex: 'HEX', rgb: 'RGB', hsl: 'HSL', hsb: 'HSB' };
 
 interface ColorFieldBaseProps extends PickerPanelOptions {
-  /** The current colour (controlled), as a CSS colour string or a parsed `Color`. Use with `onChange`. */
+  /** The current color (controlled), as a CSS color string or a parsed `Color`. Use with `onChange`. */
   value?: AriaColorPickerProps['value'];
-  /** The starting colour (uncontrolled). */
+  /** The starting color (uncontrolled). */
   defaultValue?: AriaColorPickerProps['defaultValue'];
-  /** Called whenever the colour changes: a valid code is entered, or the picker moves. */
+  /** Called whenever the color changes: a valid code is entered, or the picker moves. */
   onChange?: (value: Color) => void;
   /**
    * Called once a change is finished: a code is entered (Enter or leaving the field), a picker slider is let go, or a
-   * recent colour is chosen. Add the colour to your recent colours here.
+   * recent color is chosen. Add the color to your recent colors here.
    */
   onChangeEnd?: (value: Color) => void;
   /**
-   * The colour codes people can type. With more than one, a format button in the box switches between them (like
+   * The color codes people can type. With more than one, a format button in the box switches between them (like
    * UnitInput's unit), and the code is shown in the chosen format.
    * @default ['hex']
    */
@@ -64,7 +64,7 @@ interface ColorFieldBaseProps extends PickerPanelOptions {
    */
   formatLabel?: string;
   /**
-   * Names the swatch button that opens the picker, after the colour's description. Pass a translation here.
+   * Names the swatch button that opens the picker, after the color's description. Pass a translation here.
    * @default 'Pick a color'
    */
   pickerLabel?: string;
@@ -73,7 +73,7 @@ interface ColorFieldBaseProps extends PickerPanelOptions {
   /** Help text under the box. Linked to the field for screen readers. */
   description?: ReactNode;
   /**
-   * Shown under the box when the code can't be read as a colour, or when `isInvalid` is set. Pass a translation here.
+   * Shown under the box when the code can't be read as a color, or when `isInvalid` is set. Pass a translation here.
    * @default 'Enter a color code, e.g. #7A1FEB'
    */
   errorMessage?: ReactNode;
@@ -102,7 +102,7 @@ interface ColorFieldBaseProps extends PickerPanelOptions {
    * @default 'bottom end'
    */
   placement?: PopoverProps['placement'];
-  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colours or size. */
+  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colors or size. */
   xstyle?: stylex.StyleXStyles;
 }
 
@@ -111,9 +111,9 @@ export type ColorFieldProps = ColorFieldBaseProps &
   ({ /** The field's name, shown above the box, e.g. "Color". */ label: ReactNode; 'aria-label'?: string } | { label?: undefined; 'aria-label': string });
 
 /**
- * A colour typed as a code (hex, and optionally RGB, HSL or HSB), with a ColorPickerSwatch beside the box that shows
- * the colour and opens a ColorPicker. The code, the swatch and the picker share one colour. Codes are read when the
- * person presses Enter or leaves the field; ones that can't be read show `errorMessage` and keep the colour as it was.
+ * A color typed as a code (hex, and optionally RGB, HSL or HSB), with a ColorPickerSwatch beside the box that shows
+ * the color and opens a ColorPicker. The code, the swatch and the picker share one color. Codes are read when the
+ * person presses Enter or leaves the field; ones that can't be read show `errorMessage` and keep the color as it was.
  * Forgiving input: "7A1FEB" without a "#", and "122 31 235" in the RGB format, both work.
  */
 export function ColorField({ value, defaultValue, onChange, ...props }: ColorFieldProps) {
@@ -151,7 +151,7 @@ function ColorFieldInner({
   const state = useContext(ColorPickerStateContext)!;
   const [formatState, setFormatState] = useState<ColorFormat>(defaultFormat ?? formats[0] ?? 'hex');
   const format = formatProp ?? formatState;
-  // While typing, the box shows what was typed; otherwise the colour in the chosen format.
+  // While typing, the box shows what was typed; otherwise the color in the chosen format.
   const [draft, setDraft] = useState<string | null>(null);
   const [unreadable, setUnreadable] = useState(false);
   const [codeFocused, setCodeFocused] = useState(false);
@@ -160,8 +160,8 @@ function ColorFieldInner({
   const formatWordId = useId();
   const formatValueId = useId();
 
-  // A colour chosen elsewhere (the picker, or a new `value`) replaces whatever is typed in the box, invalid or not:
-  // the box shows the new colour's code and any "can't read this" error goes. (Typing only changes the draft, and a
+  // A color chosen elsewhere (the picker, or a new `value`) replaces whatever is typed in the box, invalid or not:
+  // the box shows the new color's code and any "can't read this" error goes. (Typing only changes the draft, and a
   // commit clears it itself, so this only runs for outside changes.)
   const colorKey = state.color.toString('hexa');
   const lastColorKey = useRef(colorKey);
@@ -319,7 +319,7 @@ function ColorFieldInner({
   );
 }
 
-/** The colour as a code in the chosen format. HSL and HSB are rounded to whole numbers, as people type them. */
+/** The color as a code in the chosen format. HSL and HSB are rounded to whole numbers, as people type them. */
 export function formatColor(c: Color, format: ColorFormat): string {
   if (format === 'hex') return c.toString('hex');
   // Just the values: the format button already says which format it is, and "rgb(255, 255, 255)" doesn't fit.
@@ -330,7 +330,7 @@ export function formatColor(c: Color, format: ColorFormat): string {
 
 /**
  * Reads a typed code, forgivingly: a hex code without "#", values without the format's name ("122 31 235" in RGB,
- * "226 84 52" in HSL), and spaces instead of commas all work. Returns null when it isn't a colour.
+ * "226 84 52" in HSL), and spaces instead of commas all work. Returns null when it isn't a color.
  */
 export function readColor(text: string, format: ColorFormat): Color | null {
   let t = text.trim();

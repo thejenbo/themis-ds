@@ -21,15 +21,15 @@ describe('parseThemisConfig', () => {
     const { config, errors } = parseThemisConfig({
       version: 2,
       theme: {},
-      themes: { dark: { colors: { ...light.colors, brand: 'purple' }, radius: 'huge', colour: {} } },
+      themes: { dark: { colors: { ...light.colors, brand: 'purple' }, radius: 'huge', color: {} } },
     });
     expect(config).toBeNull();
     expect(errors).toEqual(
       expect.arrayContaining([
         '"version" must be 1.',
         'Unknown key "theme".',
-        'themes.dark: unknown key "colour".',
-        'themes.dark.colors.brand must be a hex colour like "#7406EB" (got "purple").',
+        'themes.dark: unknown key "color".',
+        'themes.dark.colors.brand must be a hex color like "#7406EB" (got "purple").',
         'themes.dark.radius must be one of none, small, medium, large.',
       ]),
     );
@@ -37,7 +37,7 @@ describe('parseThemisConfig', () => {
 });
 
 describe('themeVariables', () => {
-  it('sets every colour token and the fonts', () => {
+  it('sets every color token and the fonts', () => {
     const vars = themeVariables(light);
     const brandProperty = /var\((--[^)]+)\)/.exec(color.brand as unknown as string)![1]!;
     expect(vars[brandProperty]).toBe('#7406EB');

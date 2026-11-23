@@ -51,7 +51,7 @@ export const InText: Story = {
   },
 };
 
-/** Monokai and Space Mono in every colour and font theme; only the corners follow the theme's radius. */
+/** Monokai and Space Mono in every color and font theme; only the corners follow the theme's radius. */
 export const InEveryTheme: Story = {
   render: () => (
     <div style={{ display: 'grid', gap: 8 }}>
@@ -66,7 +66,7 @@ export const InEveryTheme: Story = {
   ),
   play: async ({ canvas }) => {
     const codes = canvas.getAllByText('Button');
-    const colours = new Set(codes.map((c) => getComputedStyle(c.closest('code')!).backgroundColor));
-    await expect([...colours]).toEqual(['rgb(39, 40, 34)']);
+    const colors = new Set(codes.map((c) => getComputedStyle(c.closest('code')!).backgroundColor));
+    await expect([...colors]).toEqual(['rgb(39, 40, 34)']);
   },
 };

@@ -220,7 +220,7 @@ const styles = stylex.create({
     transitionTimingFunction: easing.standard,
   },
   headingStuck: { '::after': { width: '100%' } },
-  // A grid: the title, the summary under it while closed, and the chevron at the end, centred on both.
+  // A grid: the title, the summary under it while closed, and the chevron at the end, centered on both.
   trigger: {
     position: 'relative',
     display: 'grid',
@@ -264,7 +264,7 @@ const styles = stylex.create({
   action: { display: 'flex', paddingInline: spacing['2xs'], paddingBlockEnd: spacing['2xs'] },
   // What collapses: no padding of its own, so it can reach zero height.
   summaryClip: { minHeight: 0, overflow: 'hidden' },
-  // Caption text in the muted colour (6:1 on the background), 4px under the title.
+  // Caption text in the muted color (6:1 on the background), 4px under the title.
   summary: {
     paddingBlockStart: spacing['2xs'],
     display: 'flex',
@@ -280,7 +280,7 @@ const styles = stylex.create({
     fontWeight: font.weightRegular,
     color: color.textPlaceholderDefault,
   },
-  // Centred on the title and summary together (just the title while open, as the summary's row is then empty).
+  // Centered on the title and summary together (just the title while open, as the summary's row is then empty).
   chevron: {
     gridColumn: 2,
     gridRow: '1 / span 2',
@@ -292,7 +292,7 @@ const styles = stylex.create({
   chevronClosed: { transform: 'rotate(-90deg)' },
   // Opens and closes by animating its height (React Aria sets --disclosure-panel-height), pushing the section's line
   // down or up with it, like the DS Accordion. Clipped while it does, so it reaches 8px past the fields on each side:
-  // their focus rings sit outside them. Its own stacking context, so raised parts of the fields inside (the colour code
+  // their focus rings sit outside them. Its own stacking context, so raised parts of the fields inside (the color code
   // control's border) can't draw over the sticky headings.
   panel: {
     isolation: 'isolate',

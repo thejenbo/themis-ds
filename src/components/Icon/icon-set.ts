@@ -48,7 +48,7 @@ export interface IconDefinition {
 }
 
 /**
- * The Themis icon set: a chosen subset of Lucide (https://lucide.dev, ISC licence). Names are Lucide's, without
+ * The Themis icon set: a chosen subset of Lucide (https://lucide.dev, ISC license). Names are Lucide's, without
  * version numbers. Check every new icon with radius `none` and each border width before adding it, and add a `sharp`
  * version when its corners stay round there.
  */

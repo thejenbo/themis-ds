@@ -165,7 +165,7 @@
           "alpha": 1,
           "hex": "#F8F8F2"
         },
-        "$description": "Code text colour (Monokai), the same in every theme.",
+        "$description": "Code text color (Monokai), the same in every theme.",
         "$extensions": {
           "com.figma.variableId": "VariableID:2474:142",
           "com.figma.scopes": [
@@ -192,7 +192,7 @@
           "alpha": 1,
           "hex": "#959077"
         },
-        "$description": "Code comment colour (Monokai), the same in every theme.",
+        "$description": "Code comment color (Monokai), the same in every theme.",
         "$extensions": {
           "com.figma.variableId": "VariableID:2474:143",
           "com.figma.scopes": [
@@ -219,7 +219,7 @@
           "alpha": 1,
           "hex": "#E6DB74"
         },
-        "$description": "Code string colour (Monokai), the same in every theme.",
+        "$description": "Code string color (Monokai), the same in every theme.",
         "$extensions": {
           "com.figma.variableId": "VariableID:2474:144",
           "com.figma.scopes": [
@@ -246,7 +246,7 @@
           "alpha": 1,
           "hex": "#AE81FF"
         },
-        "$description": "Code number colour (Monokai), the same in every theme.",
+        "$description": "Code number color (Monokai), the same in every theme.",
         "$extensions": {
           "com.figma.variableId": "VariableID:2474:145",
           "com.figma.scopes": [
@@ -273,7 +273,7 @@
           "alpha": 1,
           "hex": "#FF4A8D"
         },
-        "$description": "Code keyword colour (Monokai), the same in every theme.",
+        "$description": "Code keyword color (Monokai), the same in every theme.",
         "$extensions": {
           "com.figma.variableId": "VariableID:2474:146",
           "com.figma.scopes": [
@@ -300,7 +300,7 @@
           "alpha": 1,
           "hex": "#A6E22E"
         },
-        "$description": "Code function colour (Monokai), the same in every theme.",
+        "$description": "Code function color (Monokai), the same in every theme.",
         "$extensions": {
           "com.figma.variableId": "VariableID:2474:147",
           "com.figma.scopes": [
@@ -327,7 +327,7 @@
           "alpha": 1,
           "hex": "#66D9EF"
         },
-        "$description": "Code property colour (Monokai), the same in every theme.",
+        "$description": "Code property color (Monokai), the same in every theme.",
         "$extensions": {
           "com.figma.variableId": "VariableID:2474:148",
           "com.figma.scopes": [
@@ -354,7 +354,7 @@
           "alpha": 1,
           "hex": "#FD971F"
         },
-        "$description": "Code parameter colour (Monokai), the same in every theme.",
+        "$description": "Code parameter color (Monokai), the same in every theme.",
         "$extensions": {
           "com.figma.variableId": "VariableID:2474:149",
           "com.figma.scopes": [

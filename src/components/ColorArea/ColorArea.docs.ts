@@ -4,7 +4,7 @@ export default defineComponentDocs({
   name: 'ColorArea',
   status: 'beta',
   category: 'Color',
-  summary: 'Picks a colour by dragging a thumb over a square of colours that changes along two channels.',
+  summary: 'Picks a color by dragging a thumb over a square of colors that changes along two channels.',
   base: {
     package: 'react-aria-components',
     component: 'ColorArea',
@@ -13,31 +13,31 @@ export default defineComponentDocs({
 
   usage: {
     whenToUse: [
-      'Free colour choice, usually saturation and lightness (or brightness) for the hue chosen in a ColorSlider.',
-      'The main surface of a colour picker.',
+      'Free color choice, usually saturation and lightness (or brightness) for the hue chosen in a ColorSlider.',
+      'The main surface of a color picker.',
     ],
     whenNotToUse: [
       { scenario: 'Changing a single channel.', useInstead: 'ColorSlider' },
-      { scenario: 'Choosing from a fixed set of colours.', useInstead: 'a swatch picker (coming later)' },
+      { scenario: 'Choosing from a fixed set of colors.', useInstead: 'a swatch picker (coming later)' },
     ],
   },
 
   anatomy: [
     { part: 'Area', description: 'The two-channel gradient (x channel left to right, y channel bottom to top), with border/radius/md corners and a border/width/md border in color/border drawn inside it. Fills its container\'s width at 345 × 284 proportions.', required: true },
-    { part: 'Thumb', description: '"Bullseye": a 32px circle with a black border, a white ring inside it, and the current colour in the middle with its own black border (3px each, primitives/border.width.3, in every border-width mode, so the thumb stays easy to see).', required: true },
+    { part: 'Thumb', description: '"Bullseye": a 32px circle with a black border, a white ring inside it, and the current color in the middle with its own black border (3px each, primitives/border.width.3, in every border-width mode, so the thumb stays easy to see).', required: true },
   ],
 
   variants: {
     'xChannel / yChannel': {
-      'saturation / lightness': 'The default for hsl colours.',
-      'saturation / brightness': 'The default for hsb colours.',
-      'red / green (or any two RGB channels)': 'For rgb colours; the third channel stays fixed.',
+      'saturation / lightness': 'The default for hsl colors.',
+      'saturation / brightness': 'The default for hsb colors.',
+      'red / green (or any two RGB channels)': 'For rgb colors; the third channel stays fixed.',
     },
   },
 
   accessibility: {
     providedByBase: [
-      'The thumb holds two native range inputs, one per channel, described as a "2D slider", with the colour announced as it changes.',
+      'The thumb holds two native range inputs, one per channel, described as a "2D slider", with the color announced as it changes.',
       'Left/Right arrows change the x channel and Up/Down the y channel; Page Up/Down and Shift+arrows take bigger steps; Home/End jump.',
       'Clicking or tapping the area moves the thumb there.',
       'On touch screens, swiping changes one channel at a time.',
@@ -49,8 +49,8 @@ export default defineComponentDocs({
       { keys: 'Home / End', action: 'Jump the x channel to its minimum / maximum.' },
     ],
     requirements: [
-      'Give it an `aria-label` that says what the colour is for, e.g. "Background colour".',
-      'Show the chosen colour as text (e.g. its hex value) next to it, for people who can\'t judge colours by eye.',
+      'Give it an `aria-label` that says what the color is for, e.g. "Background color".',
+      'Show the chosen color as text (e.g. its hex value) next to it, for people who can\'t judge colors by eye.',
     ],
   },
 

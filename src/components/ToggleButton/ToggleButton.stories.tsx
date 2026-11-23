@@ -138,7 +138,7 @@ export const Controlled: Story = {
   },
 };
 
-/** Disabled toggles keep showing whether they are on or off, using the fixed system colours. */
+/** Disabled toggles keep showing whether they are on or off, using the fixed system colors. */
 /**
  * `isDeselectable={false}`: three plans, one always chosen. The chosen one ignores presses and shows no hover tint,
  * press shrink or pointer cursor.
@@ -231,7 +231,7 @@ export const NextToButton: Story = {
   },
 };
 
-/** Every size, on and off, enabled and disabled, mirroring the Figma "Toggle Button" frame, in each colour theme. */
+/** Every size, on and off, enabled and disabled, mirroring the Figma "Toggle Button" frame, in each color theme. */
 export const ThemeMatrix: Story = {
   tags: ['!autodocs'],
   parameters: { layout: 'fullscreen' },

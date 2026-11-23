@@ -43,7 +43,7 @@ export interface AvatarProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'clas
    * twice. If there's a status, make sure it's said elsewhere too.
    */
   isDecorative?: boolean;
-  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colours or size. */
+  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colors or size. */
   xstyle?: stylex.StyleXStyles;
 }
 
@@ -97,7 +97,7 @@ export function Avatar({
 }
 
 /*
- * The status dot sits on the corner's curve: its centre is where a 45° line from the square corner meets the rounded
+ * The status dot sits on the corner's curve: its center is where a 45° line from the square corner meets the rounded
  * edge, (1 − 1/√2) × the radius in from each side (capped at half the avatar). Figma stores that distance per radius
  * mode and size (radius collection: components/avatar/indicator-offset), so the dot moves with the radius mode.
  */

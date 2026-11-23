@@ -52,7 +52,7 @@ interface RadioGroupBaseProps extends Omit<AriaRadioGroupProps, 'className' | 's
    * @default 'optional'
    */
   optionalText?: string;
-  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colours or size. */
+  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colors or size. */
   xstyle?: stylex.StyleXStyles;
 }
 
@@ -197,7 +197,7 @@ const styles = stylex.create({
     backgroundColor: system.backgroundDisabledInverse,
     '::after': { backgroundColor: system.backgroundDisabledDefault },
   },
-  // Figma type/input/base. The 24px line sits 2px down, centred on the 28px circle; long labels wrap under it.
+  // Figma type/input/base. The 24px line sits 2px down, centered on the 28px circle; long labels wrap under it.
   label: {
     paddingBlockStart: `calc((${circleSize} - ${font.lineHeightInput}) / 2)`,
     fontFamily: fontTheme.familyBody,

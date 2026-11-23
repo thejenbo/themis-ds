@@ -30,7 +30,7 @@ const projectTabs = (
       <p style={text}>Notifications are on for this project.</p>
     </TabPanel>
     <TabPanel id="billing">
-      <p style={text}>Billing is managed by your organisation.</p>
+      <p style={text}>Billing is managed by your organization.</p>
     </TabPanel>
   </>
 );
@@ -142,7 +142,7 @@ export const FullWidth: Story = {
           <Tab id="fonts">Fonts</Tab>
         </TabList>
         <TabPanel id="colors">
-          <p style={text}>Six colours, all passing.</p>
+          <p style={text}>Six colors, all passing.</p>
         </TabPanel>
         <TabPanel id="borders">
           <p style={text}>Medium width, medium radius.</p>
@@ -201,7 +201,7 @@ export const ManyTabs: Story = {
   },
 };
 
-/** Each colour theme, with the second tab hovered in the gallery below. */
+/** Each color theme, with the second tab hovered in the gallery below. */
 export const ThemeMatrix: Story = {
   tags: ['!autodocs'],
   parameters: { layout: 'fullscreen' },

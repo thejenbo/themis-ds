@@ -62,7 +62,7 @@ export const Sizes: Story = {
 };
 
 /**
- * `brand` for most actions, `neutral` where the brand colour would compete, `danger` only for destructive actions.
+ * `brand` for most actions, `neutral` where the brand color would compete, `danger` only for destructive actions.
  */
 export const Tones: Story = {
   render: (args) => (
@@ -98,7 +98,7 @@ export const WithIcons: Story = {
 };
 
 /**
- * Every variant and size, mirroring the Figma "Button - Brand/Neutral/Danger" frames, in each colour theme.
+ * Every variant and size, mirroring the Figma "Button - Brand/Neutral/Danger" frames, in each color theme.
  * Use the `tone` control to switch tone. Hover and focus come from interaction: hover a button or Tab to it.
  */
 export const ThemeMatrix: Story = {
@@ -131,7 +131,7 @@ export const ThemeMatrix: Story = {
   ),
 };
 
-/** Disabled buttons can't be focused or pressed, and use the fixed system colours in every theme. */
+/** Disabled buttons can't be focused or pressed, and use the fixed system colors in every theme. */
 export const Disabled: Story = {
   render: (args) => row(VARIANTS.map((v) => <Button key={v} {...args} variant={v} isDisabled>Click me</Button>)),
   play: async ({ args, canvas }) => {
@@ -165,7 +165,7 @@ export const DefaultWithCancel: Story = {
 };
 
 /**
- * Interaction test: hover colours come from each colour theme's hover tokens. Filled buttons use the solid
+ * Interaction test: hover colors come from each color theme's hover tokens. Filled buttons use the solid
  * brand-hover (shifted away from the label: darker in light demo, lighter in dark demo); subtle buttons use the
  * see-through brand-tint.
  */
@@ -194,10 +194,10 @@ export const HoverTokens: Story = {
 };
 
 /**
- * Interaction test: status tones colour the outline/subtle label and icon alike, and both switch to the disabled
- * colour when disabled.
+ * Interaction test: status tones color the outline/subtle label and icon alike, and both switch to the disabled
+ * color when disabled.
  */
-export const StatusToneColour: Story = {
+export const StatusToneColor: Story = {
   tags: ['test-only', '!autodocs'],
   render: (args) => row(
     <>
@@ -206,14 +206,14 @@ export const StatusToneColour: Story = {
     </>,
   ),
   play: async ({ canvas }) => {
-    const colours = (name: string) => {
+    const colors = (name: string) => {
       const [icon, label] = surfaceOf(canvas.getByRole('button', { name })).children as unknown as HTMLElement[];
       return { icon: getComputedStyle(icon!).color, label: getComputedStyle(label!).color };
     };
-    const enabled = colours('Delete');
+    const enabled = colors('Delete');
     await expect(enabled.icon).toBe(enabled.label);
     await expect(enabled.label).not.toBe(getComputedStyle(document.body).color);
-    const disabled = colours('Delete disabled');
+    const disabled = colors('Delete disabled');
     await expect(disabled.icon).toBe(disabled.label);
     await expect(disabled.label).not.toBe(enabled.label);
   },

@@ -7,7 +7,7 @@ import { font } from '../tokens/typography.stylex';
  * The Figma text styles (`type/…`), as StyleX styles. Heading and Text use these; other components can too, so a
  * label in a component matches `type/label/base` exactly.
  *
- * Sizes and line heights come from the typography tokens, so they switch to the desktop scale at 48em. Colour is
+ * Sizes and line heights come from the typography tokens, so they switch to the desktop scale at 48em. Color is
  * inherited. Button labels (`type/button/*`) are left out: only Button uses them.
  */
 export const headingStyles = stylex.create({

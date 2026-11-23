@@ -36,7 +36,7 @@ const icon =
     : instance.getSlot('Button Content')
 
 // aria-label is required in code but Figma has no name for it: "Action" is a placeholder.
-// Replace it with what the button does, e.g. "Add to favourites".
+// Replace it with what the button does, e.g. "Add to favorites".
 export default {
   example: figma.code`<IconButton aria-label="Action"${tone ? ` tone="${tone}"` : ''}${variant ? ` variant="${variant}"` : ''}${
     size ? ` size="${size}"` : ''

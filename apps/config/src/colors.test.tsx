@@ -6,7 +6,7 @@ import { chooseMenuItem, cleanup, nameField, renderApp, themeSelect, wait } from
 
 afterEach(cleanup);
 
-/** Opens the brand colour's picker and focuses its hue slider. */
+/** Opens the brand color's picker and focuses its hue slider. */
 async function focusBrandHue() {
   await page.getByRole('button', { name: /Pick the brand color/ }).click();
   const hue = page.getByRole('slider').nth(1);
@@ -15,15 +15,15 @@ async function focusBrandHue() {
   return hue;
 }
 
-describe('colour fields', () => {
-  test('each picker button says which colour it is for', async () => {
+describe('color fields', () => {
+  test('each picker button says which color it is for', async () => {
     renderApp();
     for (const name of ['brand', 'text', 'background', 'error', 'warning', 'success']) {
       await expect.element(page.getByRole('button', { name: new RegExp(`Pick the ${name} color`) })).toBeInTheDocument();
     }
   });
 
-  test('typing a colour updates the theme and its contrast badges', async () => {
+  test('typing a color updates the theme and its contrast badges', async () => {
     renderApp();
     const brand = page.getByRole('textbox', { name: /Brand/ });
     await brand.fill('#FFFF00');
@@ -60,9 +60,9 @@ describe('colour fields', () => {
     const updates = commits.filter((c) => c.phase === 'update');
     const actual = updates.reduce((sum, c) => sum + c.actual, 0);
     const base = updates.reduce((sum, c) => sum + c.base, 0);
-    // `base` is what rendering the whole tree would cost. Each step should render the stepped colour field, the
+    // `base` is what rendering the whole tree would cost. Each step should render the stepped color field, the
     // theme row and the preview's theme variables — not the other five fields, the selects or the simulator.
-    // Measured: about 0.09 with the memoisation; 0.25 without the memoised colour rows, 0.28 without the memoised
+    // Measured: about 0.09 with the memoisation; 0.25 without the memoised color rows, 0.28 without the memoised
     // simulator (that was the keyboard lag).
     expect(updates.length).toBeGreaterThan(0);
     expect(actual / base).toBeLessThan(0.17);
@@ -70,12 +70,12 @@ describe('colour fields', () => {
 });
 
 const field = (name: string) => page.getByRole('textbox', { name: new RegExp(`^${name}`) });
-/** The colour code typed in a field, as shown. */
+/** The color code typed in a field, as shown. */
 const code = (name: string) => (field(name).element() as HTMLInputElement).value;
 const formatButton = (name: string) => page.getByRole('button', { name: new RegExp(`^${name}.*format`) });
 const codeControl = () => page.getByRole('radiogroup', { name: 'Color code for every field' });
 
-describe('colour code control (HEX, RGB, HSL, HSB)', () => {
+describe('color code control (HEX, RGB, HSL, HSB)', () => {
   test('choosing a code switches every field; one field can then differ', async () => {
     renderApp();
     await expect.element(codeControl().getByRole('radio', { name: 'HEX' })).toBeChecked();

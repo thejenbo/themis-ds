@@ -27,7 +27,7 @@ type Story = StoryObj<typeof meta>;
 /** Drag the thumb or use the arrow keys. Use the controls for every prop, and the toolbar to switch themes. */
 export const Playground: Story = {};
 
-/** One slider per channel of the same colour. Alpha shows a checkerboard behind its colours. */
+/** One slider per channel of the same color. Alpha shows a checkerboard behind its colors. */
 export const Channels: Story = {
   render: () => {
     const [value, setValue] = useState('hsla(270, 80%, 50%, 0.8)');
@@ -41,7 +41,7 @@ export const Channels: Story = {
     );
   },
   play: async ({ canvas }) => {
-    // The alpha track's pill has the checkerboard under its colours; the hue track's doesn't.
+    // The alpha track's pill has the checkerboard under its colors; the hue track's doesn't.
     const pill = (name: string) => canvas.getByRole('slider', { name }).closest('[data-themis-touch-target]')!.parentElement!.parentElement!;
     await expect(getComputedStyle(pill('Alpha')).backgroundImage).toContain('conic-gradient');
     await expect(getComputedStyle(pill('Hue')).backgroundImage).not.toContain('conic-gradient');
@@ -67,7 +67,7 @@ export const NoLabel: Story = {
   },
 };
 
-/** Interaction test: keys change the hue, the thumb fills with the new colour, and the callbacks fire. */
+/** Interaction test: keys change the hue, the thumb fills with the new color, and the callbacks fire. */
 export const Keyboard: Story = {
   tags: ['test-only', '!autodocs'],
   play: async ({ args, canvas }) => {
@@ -91,7 +91,7 @@ export const Keyboard: Story = {
   },
 };
 
-/** Disabled: grey track and thumb, and it can't be focused. */
+/** Disabled: gray track and thumb, and it can't be focused. */
 export const Disabled: Story = {
   args: { isDisabled: true, defaultValue: 'hsl(180, 100%, 50%)' },
   play: async ({ canvas }) => {

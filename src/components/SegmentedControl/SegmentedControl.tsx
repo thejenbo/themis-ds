@@ -61,7 +61,7 @@ interface SegmentedControlBaseProps
   size?: SegmentedControlSize;
   /** Stretch to the container's width, with every item the same width. */
   isFullWidth?: boolean;
-  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colours or size. */
+  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colors or size. */
   xstyle?: stylex.StyleXStyles;
 }
 
@@ -213,13 +213,13 @@ const styles = stylex.create({
   groupDisabled: { '::after': { borderColor: system.borderDisabled } },
   item: {
     borderRadius: 0,
-    // On touch screens, keep each item at least 44px wide so neighbouring touch areas don't overlap.
+    // On touch screens, keep each item at least 44px wide so neighboring touch areas don't overlap.
     minWidth: { default: '24px', '@media (pointer: coarse)': '44px' },
   },
   // Figma (small and medium): 4px between the selected fill or hover tint and the control's border; micro fills it.
   itemInset: { padding: spacing['2xs'] },
   itemFull: { flexGrow: 1, flexBasis: 0 },
-  // Lift the focused item (and its ring) above its neighbours and the outer border.
+  // Lift the focused item (and its ring) above its neighbors and the outer border.
   itemFocused: { zIndex: 2 },
   cursorSelected: { cursor: 'default' },
   layerOffAtOnce: { '::before': { transitionDuration: '0s' } },

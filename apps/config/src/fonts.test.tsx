@@ -6,7 +6,7 @@ import { cleanup, renderApp } from './test-utils';
 
 afterEach(cleanup);
 
-describe('the Google Fonts catalogue', () => {
+describe('the Google Fonts catalog', () => {
   test('has the whole library, most popular first, with each family’s weights', async () => {
     const fonts = await loadGoogleFonts();
     expect(fonts.length).toBeGreaterThan(1000);
@@ -56,7 +56,7 @@ describe('the font fields', () => {
     const name = [...document.querySelectorAll('[role=option] span')].find((el) => el.textContent === 'Lobster' && el.children.length === 0)!;
     expect(getComputedStyle(name).fontFamily).toMatch(/^"Themis preview Lobster", /);
     // Choose it from the keyboard: an exact name is listed first. (A click can land while the list redraws as the
-    // catalogue finishes loading under test load.)
+    // catalog finishes loading under test load.)
     await heading.fill('Lobster');
     await expect.poll(() => page.getByRole('option').first().query()?.textContent ?? '').toBe('Lobsterdisplay');
     await userEvent.keyboard('{ArrowDown}{Enter}');

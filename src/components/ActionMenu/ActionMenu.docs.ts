@@ -32,7 +32,7 @@ export default defineComponentDocs({
 
   variants: {
     isDanger: {
-      true: 'Destructive actions such as "Delete": error-coloured label and icon, error-tinted highlight. Put them last.',
+      true: 'Destructive actions such as "Delete": error-colored label and icon, error-tinted highlight. Put them last.',
       false: 'Every other action. The default.',
     },
     placement: {

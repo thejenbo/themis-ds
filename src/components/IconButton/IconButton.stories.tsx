@@ -32,7 +32,7 @@ const meta = {
     docs: { description: { component: docs.summary } },
   },
   args: {
-    'aria-label': 'Add to favourites',
+    'aria-label': 'Add to favorites',
     children: <Icon name="heart" />,
     onPress: fn(),
   },
@@ -55,7 +55,7 @@ export const AccessibleName: Story = {
   tags: ['test-only', '!autodocs'],
   play: async ({ args, canvas }) => {
     // The accessible name comes from aria-label; the icon itself is hidden from screen readers.
-    const button = canvas.getByRole('button', { name: 'Add to favourites' });
+    const button = canvas.getByRole('button', { name: 'Add to favorites' });
     await userEvent.click(button);
     await expect(args.onPress).toHaveBeenCalledOnce();
     await expect(getComputedStyle(button).cursor).toBe('pointer');
@@ -115,7 +115,7 @@ export const OnSurfaces: Story = {
   },
 };
 
-/** Every variant and size, mirroring the Figma "Icon Button" frame, in each colour theme. */
+/** Every variant and size, mirroring the Figma "Icon Button" frame, in each color theme. */
 export const ThemeMatrix: Story = {
   tags: ['!autodocs'],
   parameters: { layout: 'fullscreen' },
@@ -167,7 +167,7 @@ export const NextToButton: Story = {
   },
 };
 
-/** Disabled icon buttons can't be pressed and use the fixed system colours in every theme. */
+/** Disabled icon buttons can't be pressed and use the fixed system colors in every theme. */
 export const Disabled: Story = {
   render: (args) => row(VARIANTS.map((v) => <IconButton key={v} {...std(args)} variant={v} aria-label={`Like (${v})`} isDisabled />)),
   play: async ({ args, canvas }) => {
@@ -185,7 +185,7 @@ export const Pending: Story = {
   play: async ({ args, canvas }) => {
     await expect(canvas.getByRole('progressbar', { name: 'Loading' })).toBeInTheDocument();
     // While pending, React Aria adds the progress label to the name, so screen readers announce both.
-    await userEvent.click(canvas.getByRole('button', { name: 'Add to favourites Loading' }));
+    await userEvent.click(canvas.getByRole('button', { name: 'Add to favorites Loading' }));
     await expect(args.onPress).not.toHaveBeenCalled();
   },
 };

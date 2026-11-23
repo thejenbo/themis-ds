@@ -64,7 +64,7 @@ interface UnitInputBaseProps extends Omit<NumberFieldProps, 'className' | 'style
    * @default 'optional'
    */
   optionalText?: string;
-  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colours or size. */
+  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colors or size. */
   xstyle?: stylex.StyleXStyles;
 }
 
@@ -235,9 +235,9 @@ export const unitBoxStyles = stylex.create({
       borderEndEndRadius: 0,
     },
   },
-  // Passes the box's border colour on to the divider (the button's `inherit` would otherwise get the text colour).
+  // Passes the box's border color on to the divider (the button's `inherit` would otherwise get the text color).
   unitField: { display: 'flex', flexShrink: 0, borderColor: 'inherit' },
-  // Figma "Select Box": a divider on its left in the box's border colour (red when invalid, grey when disabled).
+  // Figma "Select Box": a divider on its left in the box's border color (red when invalid, gray when disabled).
   unit: {
     position: 'relative',
     display: 'flex',

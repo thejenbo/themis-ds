@@ -56,7 +56,7 @@ export const Gallery: Story = {
         const avatar = canvas.getByRole('img', { name: `Taylor Brooks ${variant} ${size}` });
         await expect(avatar.getBoundingClientRect().width).toBe(px);
         await expect(avatar.getBoundingClientRect().height).toBe(px);
-        // The dot's centre is on the rounded corner's curve.
+        // The dot's center is on the rounded corner's curve.
         const withDot = canvas.getByRole('img', { name: `Taylor ${variant} ${size}, online` });
         const box = withDot.getBoundingClientRect();
         const dot = withDot.querySelector('[data-themis-part="status"]')!.getBoundingClientRect();
@@ -94,7 +94,7 @@ export const Photo: Story = {
   render: (args) => row(VARIANTS.map((variant) => <Avatar key={variant} {...args} variant={variant} />)),
   play: async ({ canvas }) => {
     const [solid] = canvas.getAllByRole('img', { name: 'Bug, online' });
-    // The photo is decorative inside the labelled avatar, and fills it.
+    // The photo is decorative inside the labeled avatar, and fills it.
     const img = solid!.querySelector('img')!;
     await expect(img).toHaveAttribute('alt', '');
     await expect(img.getBoundingClientRect().width).toBe(56);
@@ -125,7 +125,7 @@ export const WithName: Story = {
   },
 };
 
-/** Every variant in each colour theme. */
+/** Every variant in each color theme. */
 export const ThemeMatrix: Story = {
   tags: ['!autodocs'],
   parameters: { layout: 'fullscreen' },

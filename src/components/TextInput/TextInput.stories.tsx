@@ -54,7 +54,7 @@ export const States: Story = {
     const input = canvas.getByRole('textbox', { name: 'Filled' });
     const box = input.parentElement!.getBoundingClientRect();
     await expect(Math.round(box.height)).toBe(40);
-    // Disabled: the label keeps the text colour (only the box goes grey) and the border is border-disabled.
+    // Disabled: the label keeps the text color (only the box goes gray) and the border is border-disabled.
     const disabled = canvas.getByRole('textbox', { name: 'Disabled' });
     await expect(disabled).toBeDisabled();
     await expect(getComputedStyle(canvas.getByText('Disabled')).color).toBe(getComputedStyle(canvas.getByText('Filled')).color);
@@ -98,7 +98,7 @@ export const CharacterLimit: Story = {
     await expect(input).toHaveValue('Hello!!');
     await expect(input).toHaveAttribute('aria-invalid', 'true');
     await expect(canvas.getByText('2 characters over the limit')).toBeInTheDocument();
-    // The count and the border both switch to the error colour; the label stays the text colour.
+    // The count and the border both switch to the error color; the label stays the text color.
     const count = canvas.getByText('7/5').parentElement!;
     const border = getComputedStyle(input.parentElement!).borderTopColor;
     await expect(getComputedStyle(count).color).toBe(border);
@@ -138,7 +138,7 @@ export const Controlled: Story = {
   },
 };
 
-/** Each colour theme. */
+/** Each color theme. */
 export const ThemeMatrix: Story = {
   tags: ['!autodocs'],
   parameters: { layout: 'fullscreen' },

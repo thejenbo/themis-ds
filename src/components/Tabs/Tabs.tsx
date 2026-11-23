@@ -38,7 +38,7 @@ export interface TabsProps extends Omit<AriaTabsProps, 'className' | 'style' | '
    * @default false
    */
   isFullWidth?: boolean;
-  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colours or size. */
+  /** Layout-only StyleX overrides (margin, flex, grid placement). Do not restyle colors or size. */
   xstyle?: stylex.StyleXStyles;
 }
 

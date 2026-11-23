@@ -38,7 +38,7 @@ export default defineComponentDocs({
     {
       part: 'State Layer',
       description:
-        'Overlay shown on hover and press. Its colour is calculated from the Surface: lightening on dark colours, darkening on light ones.',
+        'Overlay shown on hover and press. Its color is calculated from the Surface: lightening on dark colors, darkening on light ones.',
       required: true,
     },
     { part: 'Label', description: 'The text. Stays the same whether the button is on or off.', required: true },
@@ -47,7 +47,7 @@ export default defineComponentDocs({
 
   variants: {
     isSelected: {
-      true: 'On: filled with the brand colour, like a default Button.',
+      true: 'On: filled with the brand color, like a default Button.',
       false: 'Off: outlined, like an outline Button. Control it with `isSelected` and `onChange`, or let it manage itself with `defaultSelected`.',
     },
     isDeselectable: {
@@ -76,7 +76,7 @@ export default defineComponentDocs({
     requirements: [
       'Keep the label the same in both states. Changing it (e.g. "Follow" to "Following") as well as the pressed state makes screen readers announce something confusing like "Following, pressed".',
       'Name what the button turns on, not the action: "In stock only", not "Filter".',
-      'Colour is not the only cue: on is filled and off is outlined, so the difference survives greyscale and high-contrast modes.',
+      'Color is not the only cue: on is filled and off is outlined, so the difference survives grayscale and high-contrast modes.',
     ],
   },
 
@@ -131,7 +131,7 @@ export default defineComponentDocs({
       property: 'State Layer fades in',
       duration: 'motion/duration.base',
       easing: 'motion/easing.standard',
-      reducedMotion: 'Unchanged (colour change only, no movement).',
+      reducedMotion: 'Unchanged (color change only, no movement).',
     },
     {
       trigger: 'Press (pointer, Space or Enter)',

@@ -175,7 +175,7 @@
   },
   "ColorArea": {
     "category": "Color",
-    "summary": "Picks a colour by dragging a thumb over a square of colours that changes along two channels.",
+    "summary": "Picks a color by dragging a thumb over a square of colors that changes along two channels.",
     "enums": {
       "xChannel": {
         "values": [
@@ -210,7 +210,7 @@
   },
   "ColorField": {
     "category": "Color",
-    "summary": "A colour typed as a code (hex, optionally RGB, HSL or HSB), with a swatch beside it that opens a ColorPicker.",
+    "summary": "A color typed as a code (hex, optionally RGB, HSL or HSB), with a swatch beside it that opens a ColorPicker.",
     "enums": {
       "defaultFormat": {
         "values": [
@@ -268,7 +268,7 @@
   },
   "ColorPicker": {
     "category": "Color",
-    "summary": "A colour swatch that opens a picker: a saturation × brightness area and a hue slider, with optional advanced sliders and recent colours.",
+    "summary": "A color swatch that opens a picker: a saturation × brightness area and a hue slider, with optional advanced sliders and recent colors.",
     "enums": {
       "placement": {
         "values": [
@@ -313,7 +313,7 @@
   },
   "ColorPickerSwatch": {
     "category": "Color",
-    "summary": "A colour swatch you can press, e.g. the button that opens a ColorPicker, or a recent colour inside one.",
+    "summary": "A color swatch you can press, e.g. the button that opens a ColorPicker, or a recent color inside one.",
     "enums": {
       "size": {
         "values": [
@@ -330,7 +330,7 @@
   },
   "ColorRangeSlider": {
     "category": "Color",
-    "summary": "Picks a span of one colour channel, such as a range of hues, with a start and an end thumb.",
+    "summary": "Picks a span of one color channel, such as a range of hues, with a start and an end thumb.",
     "enums": {
       "channel": {
         "values": [
@@ -362,7 +362,7 @@
   },
   "ColorSlider": {
     "category": "Color",
-    "summary": "Changes one channel of a colour, such as its hue or opacity, along a track that shows the colours on offer.",
+    "summary": "Changes one channel of a color, such as its hue or opacity, along a track that shows the colors on offer.",
     "enums": {
       "channel": {
         "values": [
@@ -385,7 +385,7 @@
   },
   "ColorSwatch": {
     "category": "Color",
-    "summary": "Shows a colour as a small square, e.g. next to a colour's name or value.",
+    "summary": "Shows a color as a small square, e.g. next to a color's name or value.",
     "enums": {
       "size": {
         "values": [

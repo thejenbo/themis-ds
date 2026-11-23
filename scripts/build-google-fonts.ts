@@ -1,5 +1,5 @@
 /**
- * Builds the config tool's Google Fonts catalogue (apps/config/src/fonts/google-fonts.json) from Google's public font
+ * Builds the config tool's Google Fonts catalog (apps/config/src/fonts/google-fonts.json) from Google's public font
  * metadata, so the font fields can search every family. Run with `npm run fonts` now and then to pick up new fonts;
  * the output is committed, since the metadata can't be fetched from the browser (no CORS).
  *
