@@ -47,7 +47,7 @@ export const InText: Story = {
   play: async ({ canvas }) => {
     const code = canvas.getAllByText('themis.theme.json')[1]!;
     await expect(getComputedStyle(code).fontFamily).toMatch(/^"?Space Mono"?/);
-    await expect(getComputedStyle(code).backgroundColor).toBe('rgb(39, 40, 34)');
+    await expect(getComputedStyle(code).backgroundColor).toBe('rgb(0, 0, 0)');
   },
 };
 
@@ -67,6 +67,6 @@ export const InEveryTheme: Story = {
   play: async ({ canvas }) => {
     const codes = canvas.getAllByText('Button');
     const colors = new Set(codes.map((c) => getComputedStyle(c.closest('code')!).backgroundColor));
-    await expect([...colors]).toEqual(['rgb(39, 40, 34)']);
+    await expect([...colors]).toEqual(['rgb(0, 0, 0)']);
   },
 };

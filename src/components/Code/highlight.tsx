@@ -87,7 +87,7 @@ export function useCodeFont(load: boolean) {
 }
 
 export const codeStyles = stylex.create({
-  // Monokai on every theme. Space Mono, with the system monospace font while it loads.
+  // Monokai colors on black, in every theme. Space Mono, with the system monospace font while it loads.
   base: {
     fontFamily: `${font.familyCode}, ui-monospace, SFMono-Regular, Menlo, monospace`,
     fontWeight: font.weightRegular,

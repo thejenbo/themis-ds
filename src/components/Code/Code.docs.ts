@@ -4,7 +4,7 @@ export default defineComponentDocs({
   name: 'Code',
   status: 'beta',
   category: 'Typography',
-  summary: 'Code inside a sentence, such as a file name, prop or short snippet, in Space Mono on Monokai in every theme.',
+  summary: 'Code inside a sentence, such as a file name, prop or short snippet, in Space Mono, Monokai colors on black, in every theme.',
   base: null,
 
   usage: {
@@ -15,7 +15,7 @@ export default defineComponentDocs({
     ],
   },
 
-  anatomy: [{ part: 'Code', description: 'A <code> element: Monokai background, Space Mono at 87.5% of the text around it, 2px × 4px padding, radius xs.', required: true }],
+  anatomy: [{ part: 'Code', description: 'A <code> element: black background, Space Mono at 87.5% of the text around it, 2px × 4px padding, radius xs.', required: true }],
 
   variants: {
     language: {
@@ -29,7 +29,7 @@ export default defineComponentDocs({
     providedByBase: [],
     keyboard: [],
     requirements: [
-      'Every Monokai color has at least 4.5:1 contrast on the Monokai background (pink and the comment gray are lightened from the classic palette to get there).',
+      'Every Monokai color has at least 6.5:1 contrast on the black background.',
       'Screen readers read it as part of the sentence; say what it is in the text around it.',
     ],
   },
@@ -66,7 +66,7 @@ export default defineComponentDocs({
 
   related: ['CodeBlock', 'Text'],
   notes: [
-    'The colors and font don\'t change with the theme: they come from the system collection (color/code/*, aliased to the color/monokai/* primitives) and font/family/code. Only the corner radius follows the theme.',
+    'The colors and font don\'t change with the theme: they come from the system collection (color/code/*: the Monokai primitives for the text, black for the background) and font/family/code. Only the corner radius follows the theme.',
     'Loads Space Mono from Google Fonts once; turn off with `loadFont={false}` when the app hosts it.',
     'The highlighter is small on purpose: it colors JSON and TSX snippets well, and anything else as plain text.',
   ],

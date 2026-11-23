@@ -8,7 +8,7 @@ export const color = stylex.defineVars({
   "backgroundDisabledInverse": "#DDDDDD",
   "backgroundDisabledDefault": "#444444",
   "borderDisabled": "#333333",
-  "codeBackground": "#272822",
+  "codeBackground": "#000000",
   "codeText": "#F8F8F2",
   "codeComment": "#959077",
   "codeString": "#E6DB74",

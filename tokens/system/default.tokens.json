@@ -131,14 +131,14 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.15294117647058825,
-            0.1568627450980392,
-            0.13333333333333333
+            0,
+            0,
+            0
           ],
           "alpha": 1,
-          "hex": "#272822"
+          "hex": "#000000"
         },
-        "$description": "Code and CodeBlock background (Monokai), the same in every theme.",
+        "$description": "Code and CodeBlock background: black, the same in every theme, under the Monokai text colors.",
         "$extensions": {
           "com.figma.variableId": "VariableID:2474:141",
           "com.figma.scopes": [
@@ -146,8 +146,8 @@
             "SHAPE_FILL"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:2474:132",
-            "targetVariableName": "color/monokai/background",
+            "targetVariableId": "VariableID:1631:198",
+            "targetVariableName": "color/grayscale/1000",
             "targetVariableSetId": "VariableCollectionId:1627:175",
             "targetVariableSetName": "Primitives"
           }

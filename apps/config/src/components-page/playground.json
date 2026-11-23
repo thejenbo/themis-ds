@@ -145,7 +145,7 @@
   },
   "Code": {
     "category": "Typography",
-    "summary": "Code inside a sentence, such as a file name, prop or short snippet, in Space Mono on Monokai in every theme.",
+    "summary": "Code inside a sentence, such as a file name, prop or short snippet, in Space Mono, Monokai colors on black, in every theme.",
     "enums": {
       "language": {
         "values": [
@@ -160,7 +160,7 @@
   },
   "CodeBlock": {
     "category": "Typography",
-    "summary": "A block of code, such as a file or a snippet to copy, in Space Mono on Monokai in every theme.",
+    "summary": "A block of code, such as a file or a snippet to copy, in Space Mono, Monokai colors on black, in every theme.",
     "enums": {
       "language": {
         "values": [

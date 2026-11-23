@@ -4,7 +4,7 @@ export default defineComponentDocs({
   name: 'CodeBlock',
   status: 'beta',
   category: 'Typography',
-  summary: 'A block of code, such as a file or a snippet to copy, in Space Mono on Monokai in every theme.',
+  summary: 'A block of code, such as a file or a snippet to copy, in Space Mono, Monokai colors on black, in every theme.',
   base: null,
 
   usage: {
@@ -13,7 +13,7 @@ export default defineComponentDocs({
   },
 
   anatomy: [
-    { part: 'Block', description: 'A <pre>: Monokai background, 16px padding, radius md. Long lines scroll sideways; set a max height with `xstyle` to scroll down too.', required: true },
+    { part: 'Block', description: 'A <pre>: black background, 16px padding, radius md. Long lines scroll sideways; set a max height with `xstyle` to scroll down too.', required: true },
     { part: 'Code', description: 'Space Mono at font/size/code (14/22), colored by `language`.', required: true },
   ],
 
@@ -30,7 +30,7 @@ export default defineComponentDocs({
     keyboard: [{ keys: 'Tab', action: 'Focuses the block, so the arrow keys scroll it.' }],
     requirements: [
       'Give it an `aria-label` that says what the code is ("Theme file"). It\'s a focusable region, so keyboard users can scroll it.',
-      'Every Monokai color has at least 4.5:1 contrast on the Monokai background (pink and the comment gray are lightened from the classic palette to get there).',
+      'Every Monokai color has at least 6.5:1 contrast on the black background.',
       'Offer a copy button nearby for code people need to copy.',
     ],
   },
@@ -69,7 +69,7 @@ export default defineComponentDocs({
 
   related: ['Code'],
   notes: [
-    'The colors and font don\'t change with the theme: they come from the system collection (color/code/*, aliased to the color/monokai/* primitives) and font/family/code. Only the corner radius follows the theme.',
+    'The colors and font don\'t change with the theme: they come from the system collection (color/code/*: the Monokai primitives for the text, black for the background) and font/family/code. Only the corner radius follows the theme.',
     'Shows the focus ring when it\'s focused from the keyboard.',
     'Loads Space Mono from Google Fonts once; turn off with `loadFont={false}` when the app hosts it.',
   ],

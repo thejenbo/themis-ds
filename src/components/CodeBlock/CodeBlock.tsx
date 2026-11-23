@@ -31,7 +31,7 @@ export interface CodeBlockProps {
 }
 
 /**
- * A block of code: a file, or a snippet to copy. In Space Mono on Monokai in every theme. Long lines scroll sideways
+ * A block of code: a file, or a snippet to copy. In Space Mono, Monokai colors on black, in every theme. Long lines scroll sideways
  * rather than wrap, and the block scrolls (with the keyboard too) when it's taller than its max height.
  */
 export function CodeBlock({ children, language = 'text', 'aria-label': ariaLabel, loadFont = true, xstyle }: CodeBlockProps) {

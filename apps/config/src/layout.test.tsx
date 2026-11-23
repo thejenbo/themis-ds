@@ -515,12 +515,12 @@ describe('export', () => {
     renderApp();
     await page.getByRole('button', { name: 'Export' }).click();
     const block = page.getByRole('region', { name: 'Theme file' }).element();
-    expect(getComputedStyle(block).backgroundColor).toBe('rgb(39, 40, 34)');
+    expect(getComputedStyle(block).backgroundColor).toBe('rgb(0, 0, 0)');
     expect(getComputedStyle(block).fontFamily).toMatch(/^"?Space Mono"?/);
     // JSON keys in Monokai blue.
     expect(getComputedStyle(page.getByRole('region', { name: 'Theme file' }).getByText('"themes"').element()).color).toBe('rgb(102, 217, 239)');
     const inline = page.getByRole('dialog').getByText('themis.theme.json', { exact: true }).element();
     expect(inline.tagName).toBe('CODE');
-    expect(getComputedStyle(inline).backgroundColor).toBe('rgb(39, 40, 34)');
+    expect(getComputedStyle(inline).backgroundColor).toBe('rgb(0, 0, 0)');
   });
 });

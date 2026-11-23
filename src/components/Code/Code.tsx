@@ -23,7 +23,7 @@ export interface CodeProps {
 }
 
 /**
- * Code inside a sentence: a file name, a prop, a short snippet. In Space Mono on Monokai in every theme, so it reads as
+ * Code inside a sentence: a file name, a prop, a short snippet. In Space Mono, Monokai colors on black, in every theme, so it reads as
  * code whatever the theme looks like, at 87.5% of the text around it (Space Mono is wide).
  */
 export function Code({ children, language = 'text', loadFont = true, xstyle }: CodeProps) {
