@@ -78,4 +78,22 @@ describe('scales illustration', () => {
       host.remove();
     }
   });
+
+  // At loading-screen size a large border covered the bowls' rims and the base's top step: they came out black.
+  test('drawn small with a thick border, the thin parts keep their outline under their height, so the fill shows', async () => {
+    const host = document.createElement('div');
+    document.body.append(host);
+    const root = createRoot(host);
+    root.render(<ScalesIllustration brand="#7406EB" lineWidth="3px" width={240} />);
+    try {
+      await expect.poll(() => host.querySelector('svg rect[vector-effect]')).toBeTruthy();
+      const pxPerUnit = 240 / 438;
+      const rim = host.querySelector<SVGRectElement>('svg rect[vector-effect]')!;
+      const rimPx = Number(rim.getAttribute('height')) * pxPerUnit;
+      await expect.poll(() => parseFloat(getComputedStyle(rim).strokeWidth)).toBeLessThanOrEqual(rimPx * 0.4 + 0.01);
+    } finally {
+      root.unmount();
+      host.remove();
+    }
+  });
 });

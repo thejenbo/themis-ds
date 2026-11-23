@@ -1,5 +1,5 @@
 import * as stylex from '@stylexjs/stylex';
-import { type ReactNode, useId, useRef } from 'react';
+import { type ReactNode, useId, useLayoutEffect, useRef, useState } from 'react';
 
 import { border as borderWidth } from '../../../../src/tokens/borderWidth.stylex';
 import { color } from '../../../../src/tokens/colorTheme.stylex';
@@ -88,6 +88,20 @@ export function ScalesIllustration({
   xstyle,
 }: ScalesIllustrationProps) {
   const uid = useId().replace(/[^a-zA-Z0-9_-]/g, '');
+  // How many screen pixels a drawing unit takes at the size it's shown, so the thin parts' outlines can be capped.
+  const svgRef = useRef<SVGSVGElement>(null);
+  const [pxPerUnit, setPxPerUnit] = useState(1);
+  useLayoutEffect(() => {
+    const svg = svgRef.current;
+    if (!svg) return;
+    const measure = () => svg.clientWidth > 0 && setPxPerUnit(svg.clientWidth / VIEW_WIDTH);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(svg);
+    return () => observer.disconnect();
+  }, []);
+  /** The outline width, capped at this many screen pixels (a CSS length either way). */
+  const capped = (px: number) => `min(${width}, ${px.toFixed(2)}px)`;
   const shine = { fill: 'white', fillOpacity: 0.5 };
   const brand = brandColor ?? (lightenBrand ? lightBrand : c.brand);
   // With an explicit fill the outlines take the surrounding text color, as the logomark does.
@@ -99,14 +113,14 @@ export function ScalesIllustration({
 
   // A shape with an inside stroke (the Figma export's): twice the width, masked to the shape. Anything in `shine` is
   // drawn between the fill and the outline, so it stays inside the outline's edge.
-  const inside = (key: string, d: string, shine?: ReactNode, evenOdd = false) => (
+  const inside = (key: string, d: string, shine?: ReactNode, evenOdd = false, lineWidth = width) => (
     <g key={key}>
       <path d={d} fillRule={evenOdd ? 'evenodd' : undefined} style={{ fill: brand }} />
       {shine}
       <mask id={`${uid}${key}`} fill="white">
         <path d={d} fillRule={evenOdd ? 'evenodd' : undefined} />
       </mask>
-      <path d={d} mask={`url(#${uid}${key})`} vectorEffect="non-scaling-stroke" style={{ stroke: line, strokeWidth: `calc(2 * ${width})` }} />
+      <path d={d} mask={`url(#${uid}${key})`} vectorEffect="non-scaling-stroke" style={{ stroke: line, strokeWidth: `calc(2 * ${lineWidth})` }} />
     </g>
   );
   const at = ({ at: [x, y] }: MarkPart, d: string, attrs: React.SVGProps<SVGPathElement>) => (
@@ -132,7 +146,7 @@ export function ScalesIllustration({
   );
 
   return (
-    <svg viewBox="0 0 438 455" width={renderWidth} fill="none" aria-hidden="true" focusable="false" {...stylex.props(styles.svg, xstyle)}>
+    <svg ref={svgRef} viewBox={`0 0 ${VIEW_WIDTH} 455`} width={renderWidth} fill="none" aria-hidden="true" focusable="false" {...stylex.props(styles.svg, xstyle)}>
       {STAR_SPOTS.map(({ cx, cy, r }) => starPath(cx, cy, r, radius)).map((d, i) => (
         <g key={i} ref={stars[i]} data-part="star" {...stylex.props(styles.star, rocking && styles.starTwinkling, rocking && STAR_DELAY[i])}>
           {inside(`star${i}`, d)}
@@ -165,7 +179,9 @@ export function ScalesIllustration({
       <rect {...ROD_SHINE} {...shine} />
       <path d={FINIAL_SHINE} {...shine} />
       {/* The base over the bottom of the rod, its outline included. */}
-      {BASE_STEPS.map((d, i) => inside(`base${i}`, d, <path d={BASE_SHINES[i]} {...shine} />))}
+      {BASE_STEPS.map((d, i) =>
+        inside(`base${i}`, d, <path d={BASE_SHINES[i]} {...shine} />, false, i === 0 ? capped(TOP_STEP_HEIGHT * pxPerUnit * THIN_INSIDE) : width),
+      )}
       {PANS.map((p, i) =>
         pan(
           i,
@@ -174,7 +190,7 @@ export function ScalesIllustration({
             {/* The rim: its fill, its shine, then its outline over both. */}
             <rect {...p.rim} style={{ fill: brand }} />
             <rect {...p.rimShine} {...shine} />
-            <rect {...p.rim} vectorEffect="non-scaling-stroke" style={{ fill: 'none', stroke: line, strokeWidth: width }} />
+            <rect {...p.rim} vectorEffect="non-scaling-stroke" style={{ fill: 'none', stroke: line, strokeWidth: capped(p.rim.height * pxPerUnit * THIN_CENTERED) }} />
           </>,
         ),
       )}
@@ -193,6 +209,18 @@ const twinkle = stylex.keyframes({
   '38%': { transform: 'scale(0.92) rotate(0deg)', opacity: 1 },
   '50%, 100%': { transform: 'scale(1) rotate(0deg)', opacity: 1 },
 });
+const VIEW_WIDTH = 438;
+/** The top step of the base (BASE_STEPS[0]), in drawing units. */
+const TOP_STEP_HEIGHT = 11.23;
+/*
+ * The outlines keep their width on screen however small the scales are drawn, so at loading-screen size a thick
+ * border would cover the thin parts and turn them black. Their outlines are capped at a share of their height on
+ * screen, so some brand always shows: the rims (a centered stroke) at 40%, the base's top step (an inside stroke, at
+ * its top and bottom) at 30%. Large drawings and thin borders never reach the caps.
+ */
+const THIN_CENTERED = 0.4;
+const THIN_INSIDE = 0.3;
+
 /** One swing of the rocking scales, in seconds; they swing there and back (`alternate`), so a full round is twice this. */
 export const ROCK_SECONDS = 1.4;
 const ROCK = `${ROCK_SECONDS}s`;

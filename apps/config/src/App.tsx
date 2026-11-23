@@ -551,6 +551,8 @@ const styles = stylex.create({
     justifyContent: 'center',
     gap: spacing.md,
     padding: spacing['2xl'],
+    // Centered lines too, for when "Loading the components…" wraps on a narrow screen.
+    textAlign: 'center',
   },
   loadingScales: { width: 'min(16rem, 60%)' },
   // A column, so the Export footer sits at the bottom when the settings are short.
