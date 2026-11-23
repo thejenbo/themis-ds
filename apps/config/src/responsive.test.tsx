@@ -66,6 +66,50 @@ describe('mobile (under 48em, Figma 2443:14356)', () => {
     expect(column.scrollTop).toBeGreaterThan(0);
     expect(Math.round(rect(exportButton.element()).bottom)).toBe(874 - 16);
   });
+
+  // Buttons used to drop onto a line of their own under the text beside them.
+  test('in the preview, buttons stay beside their text, which wraps; "Delete Forever" shortens to "Delete"', async () => {
+    await page.viewport(375, 812);
+    renderApp();
+    await page.getByRole('radio', { name: 'Preview' }).click();
+    // Vertically overlapping: on the same line, not stacked.
+    const beside = (a: Element, b: Element) => rect(a).top < rect(b).bottom && rect(b).top < rect(a).bottom;
+
+    const deleteButton = page.getByRole('button', { name: 'Delete Forever' });
+    await expect.element(deleteButton).toBeVisible();
+    expect(deleteButton.element().textContent).toBe('DeleteForever');
+    expect((deleteButton.element() as HTMLElement).innerText.trim()).toBe('Delete');
+    expect(beside(deleteButton.element(), page.getByText('Delete Account', { exact: true }).element())).toBe(true);
+    expect(beside(page.getByRole('button', { name: 'Update', exact: true }).element(), page.getByText('Email', { exact: true }).element())).toBe(true);
+
+    await page.getByRole('tab', { name: 'subscription' }).click();
+    const cardUpdate = page.getByRole('button', { name: 'Update', exact: true });
+    await expect.element(cardUpdate).toBeVisible();
+    expect(beside(cardUpdate.element(), page.getByText('4242', { exact: true }).element())).toBe(true);
+  });
+
+  // A visually hidden Table column label was placed against the page instead of the table, widening the page.
+  test('the components page doesn’t scroll sideways', { timeout: 45000 }, async () => {
+    await page.viewport(375, 812);
+    renderApp();
+    await page.getByRole('button', { name: 'Pages' }).click();
+    await page.getByRole('menuitem', { name: 'components' }).click();
+    await page.getByRole('radio', { name: 'Preview' }).click();
+    await expect.poll(() => document.querySelectorAll('[data-component-stage]').length, { timeout: 15000 }).toBeGreaterThan(30);
+    const preview = page.getByRole('main').element();
+    const column = preview.parentElement!;
+    expect(column.scrollWidth).toBeLessThanOrEqual(column.clientWidth);
+    expect(preview.scrollWidth).toBeLessThanOrEqual(preview.clientWidth);
+    // The cause: anything absolutely placed inside a table must be placed within the table's (scrolling) frame, or
+    // it can sit past the edge of the page.
+    const escaped = [...preview.querySelectorAll('table *')].filter((el) => {
+      if (getComputedStyle(el).position !== 'absolute') return false;
+      const frame = el.closest('table')!.parentElement!;
+      const placedBy = (el as HTMLElement).offsetParent;
+      return !placedBy || !frame.contains(placedBy);
+    });
+    expect(escaped.map((el) => el.textContent)).toEqual([]);
+  });
 });
 
 describe('tablet (48em to 64em)', () => {

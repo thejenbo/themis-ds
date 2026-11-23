@@ -238,7 +238,7 @@ function LoginSection({ data, update }: ViewProps) {
     <Accordion title="Login" defaultExpanded headingLevel={2}>
       <div {...stylex.props(styles.stack)}>
         <div {...stylex.props(styles.row, styles.endOnMobile)}>
-          <div {...stylex.props(styles.minWidth)}>
+          <div {...stylex.props(styles.beside)}>
             {/* Figma "Settings Sim - Account": type/label/base, then the address in type/input/base. */}
             <Text variant="label">Email</Text>
             <p {...stylex.props(styles.emailValue)}>{data.email}</p>
@@ -316,13 +316,14 @@ function DangerZone() {
   const [confirming, setConfirming] = useState(false);
   return (
     <Accordion title="Danger Zone" tone="danger" defaultExpanded headingLevel={2}>
-      <div {...stylex.props(styles.spread)}>
-        <div>
+      <div {...stylex.props(styles.spread, styles.dangerRow)}>
+        <div {...stylex.props(styles.beside)}>
           <Text variant="body-medium-bold">Delete Account</Text>
           <Text variant="caption">This action cannot be undone</Text>
         </div>
-        <Button tone="danger" iconLeft={<Icon name="trash" />} onPress={() => setConfirming(true)}>
-          Delete Forever
+        <Button tone="danger" iconLeft={<Icon name="trash" />} aria-label="Delete Forever" onPress={() => setConfirming(true)}>
+          Delete
+          <span {...stylex.props(styles.foreverWord)}>Forever</span>
         </Button>
       </div>
       {/* Figma 2424:37704 */}
@@ -386,7 +387,12 @@ const styles = stylex.create({
   imageButtons: { display: 'flex', alignItems: 'center', gap: spacing.xs, flexWrap: 'wrap' },
   // "Image" goes when the row is narrower than the avatar and both full-length buttons.
   imageWord: { marginInlineStart: '0.25em', display: { default: null, '@container (max-width: 27rem)': 'none' } },
-  minWidth: { minWidth: 0 },
+  // Text beside a button: it takes the room the button leaves and wraps there, so the button stays on the same line.
+  // Only below 10rem of text does the button drop to a line of its own.
+  beside: { flex: '1 1 10rem', minWidth: 0 },
+  // A query container, so "Delete Forever" can shorten to "Delete" before it wraps.
+  dangerRow: { containerType: 'inline-size' },
+  foreverWord: { marginInlineStart: '0.25em', display: { default: null, '@container (max-width: 26rem)': 'none' } },
   emailValue: {
     margin: 0,
     overflowWrap: 'anywhere',

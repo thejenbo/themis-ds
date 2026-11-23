@@ -296,7 +296,8 @@ const styles = stylex.create({
   // On phones, Update sits at the end of the row, lined up with the switch.
   // Full width (the section lines things up at the start), so Update can sit at the end on phones.
   cardRow: { alignSelf: 'stretch', gap: spacing.md, flexWrap: 'wrap', justifyContent: { default: null, '@container (max-width: 40rem)': 'space-between' } },
-  cardDetails: { gap: spacing.sm },
+  // The card details take the room Update leaves (the text wraps there), so Update stays beside them.
+  cardDetails: { gap: spacing.sm, flex: '1 1 10rem', minWidth: 0 },
   // …and stays there when it wraps onto a line of its own.
   pushEnd: { marginInlineStart: { default: null, '@container (max-width: 40rem)': 'auto' } },
   // Figma: the card brand in a brand-colored block, type/heading/md in the inverse text color.

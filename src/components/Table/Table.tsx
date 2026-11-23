@@ -278,8 +278,10 @@ function RowActionButton({ children, onPress, onFocusVisibleChange }: { children
 
 const styles = stylex.create({
   // Figma "Table": border/width/mandatory in color/border all round, radius md, so the table keeps its edge when
-  // the border-width mode is "none". Scrolls sideways when too narrow.
+  // the border-width mode is "none". Scrolls sideways when too narrow. Positioned, so absolutely placed content (a
+  // visually hidden column label) is placed and clipped within the frame instead of widening the page around it.
   frame: {
+    position: 'relative',
     overflowX: 'auto',
     borderStyle: 'solid',
     borderWidth: borderWidth.widthMandatory,
