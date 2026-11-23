@@ -1,0 +1,56 @@
+# Publishes the Themis config tool and Storybook to GitHub Pages on every push to main:
+#   https://thejenbo.github.io/themis-ds/            the config tool
+#   https://thejenbo.github.io/themis-ds/storybook/  Storybook (the tool's "docs" link)
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deploy at a time; a newer push replaces one that's waiting.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      # Storybook (also builds the tokens and the manifest the config tool reads).
+      - run: npm run build-storybook
+      # The config tool, served from the repo's Pages path, with its "docs" link pointing at Storybook.
+      - run: npm run config:build
+        env:
+          CONFIG_BASE: /themis-ds/
+          VITE_STORYBOOK_URL: /themis-ds/storybook/
+      - name: Put the two together
+        run: |
+          mkdir -p site
+          cp -R apps/config/dist/. site/
+          cp -R storybook-static site/storybook
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -16,6 +16,8 @@ const repoRoot = path.resolve(dirname, '../..');
  */
 export default defineConfig({
   root: dirname,
+  // Where the built tool is served from: `/` locally, `/themis-ds/` on GitHub Pages (set by the deploy workflow).
+  base: process.env.CONFIG_BASE ?? '/',
   plugins: [
     stylex.vite({
       dev: process.env.NODE_ENV !== 'production',
