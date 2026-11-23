@@ -139,7 +139,7 @@ export default defineComponentDocs({
   related: ['Button', 'IconButton'],
   notes: [
     'Figma\'s Header, Primary Action and Secondary Action variants map to `title` and the buttons passed to `actions`. "Swap Actions" isn\'t a prop: the order is the order you pass them, and Themis recommends secondary first, primary last.',
-    'The danger tone is a separate Figma set (Modal - Danger, node 2128-20396).',
+    'The danger tone is the Figma `tone` variant (brand | danger) on the Modal set.',
     'The modal renders inside the nearest ThemeProvider, so it keeps that provider\'s theme.',
   ],
 });

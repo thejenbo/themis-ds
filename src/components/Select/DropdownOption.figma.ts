@@ -26,7 +26,7 @@ const children = /[{}<>]/.test(label) ? `{${JSON.stringify(label)}}` : label
 const isDisabled = state === 'disabled'
 
 // iconLeft=true: the "Icon Left" slot holds an Icon (found by Code Connect id) or other decorative content, such as
-// color dots, which falls back to the slot itself.
+// color dots. Reading the slot gives generated frame components, so other content becomes a placeholder.
 const hasIcon = instance.getEnum('iconLeft', { true: true, false: false })
 let icon: string | undefined
 let iconSlot
@@ -36,24 +36,28 @@ if (hasIcon) {
     const meta = iconLayer.executeTemplate().metadata
     icon = meta && meta.props && typeof meta.props.name === 'string' ? meta.props.name : undefined
   } else {
-    iconSlot = instance.getSlot('Icon Left')
+    iconSlot = '<span aria-hidden="true">{/* decorative content */}</span>'
   }
 }
 const iconAttr = icon ? ` icon={<Icon name="${icon}" />}` : ''
 
 // trailing=true: extra content after the label (the "Trailing" slot), e.g. a font's category in muted caption text.
-// It becomes part of the children; a plain text layer is shown as a span, anything else as the slot.
+// It becomes part of the children: text in the slot is shown as a span. findText doesn't look inside slots, so the
+// text layers are found with findLayers (the label is the "option" layer, outside the slot). Reading the slot itself
+// gives generated frame components, so anything that isn't text is left as a placeholder comment.
 const hasTrailing = instance.getBoolean('trailing')
-const detailLayer = hasTrailing ? instance.findText('detail') : undefined
+const detailLayer = hasTrailing
+  ? instance.findLayers((node) => node.type === 'TEXT' && node.name !== 'option')[0]
+  : undefined
 const detail = detailLayer && detailLayer.type === 'TEXT' ? detailLayer.textContent : undefined
 
 export default {
   example: hasTrailing
-    ? figma.code`<SelectItem id="${id}" textValue="${label}"${iconAttr}${iconSlot ? figma.code` icon={${iconSlot}}` : ''}${isDisabled ? ' isDisabled' : ''}>
+    ? figma.code`<SelectItem id="${id}" textValue="${label}"${iconAttr}${iconSlot ? ` icon={${iconSlot}}` : ''}${isDisabled ? ' isDisabled' : ''}>
   ${children}
-  ${detail !== undefined ? `<span>${detail}</span>` : instance.getSlot('Trailing')}
+  ${detail !== undefined ? `<span>${detail}</span>` : '{/* trailing content */}'}
 </SelectItem>`
-    : figma.code`<SelectItem id="${id}"${iconAttr}${iconSlot ? figma.code` icon={${iconSlot}}` : ''}${isDisabled ? ' isDisabled' : ''}>${children}</SelectItem>`,
+    : figma.code`<SelectItem id="${id}"${iconAttr}${iconSlot ? ` icon={${iconSlot}}` : ''}${isDisabled ? ' isDisabled' : ''}>${children}</SelectItem>`,
   imports: [icon ? 'import { Icon, SelectItem } from "themis-ds"' : 'import { SelectItem } from "themis-ds"'],
   id: 'dropdown-option',
   // Select, ComboBox and UnitInput read these to render their own item component (SelectItem, ComboBoxItem,

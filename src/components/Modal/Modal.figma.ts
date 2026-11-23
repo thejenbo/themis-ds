@@ -4,7 +4,8 @@
 import figma from 'figma'
 const instance = figma.selectedInstance
 
-// Modal - Brand is the default tone, so no tone prop.
+// tone=danger is an alert dialog that clicks outside don't close; brand is the default, so it's left out.
+const tone = instance.getEnum('tone', { brand: undefined, danger: 'danger' })
 // "Swap Actions" is left out: the order is the order the buttons are passed in.
 const size = instance.getEnum('size', { small: 'small', medium: undefined, large: 'large' })
 const hasHeader = instance.getEnum('Header', { true: true, false: false })
@@ -32,7 +33,7 @@ if (hasClose && hasActions) closeProp = ' showCloseButton'
 if (!hasClose && !hasActions) closeProp = ' showCloseButton={false}'
 
 export default {
-  example: figma.code`<Modal${hasHeader ? ` title="${title}"` : ' aria-label="Describe this modal"'}${size ? ` size="${size}"` : ''}${closeProp}${
+  example: figma.code`<Modal${hasHeader ? ` title="${title}"` : ' aria-label="Describe this modal"'}${tone ? ` tone="${tone}"` : ''}${size ? ` size="${size}"` : ''}${closeProp}${
     hideActionBorder && hasActions ? ' hideActionBorder' : ''
   }${
     controls
@@ -48,6 +49,6 @@ export default {
   ${content}
 </Modal>`,
   imports: ['import { Modal } from "themis-ds"'],
-  id: 'modal-brand',
+  id: 'modal',
   metadata: { nestable: true },
 }
