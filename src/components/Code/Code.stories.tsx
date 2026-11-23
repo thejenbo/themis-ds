@@ -56,7 +56,7 @@ export const InEveryTheme: Story = {
   render: () => (
     <div style={{ display: 'grid', gap: 8 }}>
       {collectionModes.colorTheme.map((mode) => (
-        <ThemeProvider key={mode} modes={{ colorTheme: mode, fontTheme: 'inkling' }}>
+        <ThemeProvider key={mode} modes={{ colorTheme: mode, fontTheme: 'demo' }}>
           <Text variant="body-base">
             {mode}: <Code language="tsx">{'<Button variant="outline">'}</Code>
           </Text>

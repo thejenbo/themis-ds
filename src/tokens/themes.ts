@@ -142,44 +142,9 @@ const colorTheme_color_themisConfig = stylex.createTheme(colorTheme_color, {
   "stateSuccessTint": "#2C6E2F12",
 });
 
-const colorTheme_color_inkling = stylex.createTheme(colorTheme_color, {
-  "brand": "#000000",
-  "background": "#FFFFFF",
-  "backgroundInverse": "#000000",
-  "text": "#000000",
-  "textBrand": "#000000",
-  "textInverse": "#FFFFFF",
-  "border": "#000000",
-  "borderBrand": "#000000",
-  "borderInverse": "#FFFFFF",
-  "overlayTint": "#FFFFFF99",
-  "textDisabledOnBackground": "#555555",
-  "textPlaceholderDefault": "#555555",
-  "brandHover": "#121212",
-  "backgroundInverseHover": "#121212",
-  "brandTint": "#00000012",
-  "backgroundHover": "#00000012",
-  "borderBrandHover": "#999999",
-  "inverseTint": "#FFFFFF12",
-  "stateError": "#AF0E0E",
-  "stateWarning": "#A35104",
-  "stateSuccess": "#2C6E2F",
-  "stateErrorHover": "#A30D0D",
-  "stateWarningHover": "#984C04",
-  "stateSuccessHover": "#29662C",
-  "stateErrorTint": "#AF0E0E12",
-  "stateWarningTint": "#A3510412",
-  "stateSuccessTint": "#2C6E2F12",
-});
-
 const fontTheme_font_demo = stylex.createTheme(fontTheme_font, {
   "familyHeading": "\"Playfair Display\"",
   "familyBody": "Montserrat",
-});
-
-const fontTheme_font_inkling = stylex.createTheme(fontTheme_font, {
-  "familyHeading": "\"Fredoka One\"",
-  "familyBody": "Outfit",
 });
 
 const fontTheme_font_themis = stylex.createTheme(fontTheme_font, {
@@ -284,8 +249,8 @@ const shadows_dropShadow_off = stylex.createTheme(shadows_dropShadow, {
 /** Modes of each multi-mode collection, in Figma order. */
 export const collectionModes = {
   "borderWidth": ["none","small","medium","large","themis config"],
-  "colorTheme": ["light demo","dark demo","themis config","inkling"],
-  "fontTheme": ["demo","inkling","themis"],
+  "colorTheme": ["light demo","dark demo","themis config"],
+  "fontTheme": ["demo","themis"],
   "radius": ["none","small","medium","large","themis config"],
   "shadows": ["default","off"],
 } as const;
@@ -317,11 +282,9 @@ export const themes: { [C in ThemeCollection]: Record<ModeOf<C>, readonly stylex
     "light demo": [colorTheme_color_lightDemo],
     "dark demo": [colorTheme_color_darkDemo],
     "themis config": [colorTheme_color_themisConfig],
-    "inkling": [colorTheme_color_inkling],
   },
   "fontTheme": {
     "demo": [fontTheme_font_demo],
-    "inkling": [fontTheme_font_inkling],
     "themis": [fontTheme_font_themis],
   },
   "radius": {

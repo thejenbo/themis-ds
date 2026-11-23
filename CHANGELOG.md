@@ -55,6 +55,13 @@ listed under **Changed** or **Removed** with what to do.
 - ColorField: choosing a color in the picker (or a new `value`) replaces an unreadable typed code and clears its
   error.
 - `ActionMenuItem` with an `href` (a link) is no longer underlined.
+- Table: its visually hidden column labels stay inside the table's scrolling frame, so a narrow layout no longer
+  scrolls sideways.
+
+### Removed
+
+- The `inkling` color and font modes (`colorTheme: 'inkling'`, `fontTheme: 'inkling'`). They belonged to a separate
+  project. Use a theme file (`ThemeProvider theme`) for a custom look instead.
 
 ## [0.1.0] - 2026-11-17
 

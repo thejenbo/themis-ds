@@ -1,12 +1,29 @@
 import '../src/styles/base.css';
+import './docs.css';
 
 import type { Decorator, Preview } from '@storybook/react-vite';
+import { create } from 'storybook/theming';
 
 import { ThemeProvider } from '../src/theme/ThemeProvider';
 import { collectionModes, defaultModes, type Modes, type ThemeCollection } from '../src/tokens/themes';
 import { ThemisDocsPage } from './blocks/ThemisDocsPage';
 
-const collections = Object.keys(collectionModes) as ThemeCollection[];
+// Shadows stay at their default: the config tool can't change them yet, so there's no toolbar control for them.
+const HIDDEN: ThemeCollection[] = ['shadows'];
+/** Docs pages in the config tool's style: Space Mono, black on white (details in docs.css). */
+const docsTheme = create({
+  base: 'light',
+  fontBase: '"Space Mono", monospace',
+  fontCode: '"Space Mono", monospace',
+  textColor: '#000000',
+  colorPrimary: '#000000',
+  colorSecondary: '#000000',
+  appContentBg: '#ffffff',
+  appBorderColor: '#000000',
+  appBorderRadius: 4,
+});
+
+const collections = (Object.keys(collectionModes) as ThemeCollection[]).filter((c) => !HIDDEN.includes(c));
 
 // One toolbar global per multi-mode Figma collection, named after the collection.
 const withTheme: Decorator = (Story, { globals }) => (
@@ -50,11 +67,11 @@ const preview: Preview = {
       },
     ]),
   ),
-  initialGlobals: { ...defaultModes },
+  initialGlobals: Object.fromEntries(collections.map((c) => [c, defaultModes[c]])),
   parameters: {
     layout: 'fullscreen',
     controls: { expanded: true, sort: 'requiredFirst' },
-    docs: { page: ThemisDocsPage, toc: true },
+    docs: { page: ThemisDocsPage, toc: true, theme: docsTheme },
     // Accessibility checks run on every story; violations fail `npm test`.
     a11y: { test: 'error' },
     options: {

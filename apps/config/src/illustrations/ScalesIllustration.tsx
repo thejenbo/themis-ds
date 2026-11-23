@@ -19,13 +19,23 @@ export const lightBrand = `color-mix(in srgb, ${c.brand} 50%, white)`;
  * large) and stay that width on screen whatever size the illustration is drawn at. The strings keep their drawn
  * lines in every theme.
  */
-const width = borderWidth.widthSm as unknown as string;
+const themeWidth = borderWidth.widthSm as unknown as string;
 
 export interface ScalesIllustrationProps {
   /** Rendered width; the height follows the drawing's proportions. */
   width?: number | string;
-  /** Lighten the brand fills by 50%, for dark brands. */
+  /**
+   * The fill, as a CSS color: drawn like the logomark, in this color with the outlines in the surrounding text color
+   * (black in the tool), instead of in the theme's brand and border colors. Without it the theme's brand fills it.
+   */
+  brand?: string;
+  /** Lighten the brand fills by 50%, for dark brands. Ignored when `brand` is given. */
   lightenBrand?: boolean;
+  /**
+   * The outline width, as a CSS length, instead of the theme's border/width/sm. Used with `brand`, e.g. the theme's
+   * width but never under 1px, so a white or near-white brand still shows against a white page.
+   */
+  lineWidth?: string;
   /** Tip the scales, as the logomark does while a theme color fails contrast. */
   isUnbalanced?: boolean;
   /**
@@ -69,7 +79,9 @@ const TIPPED = [panShift(0, -TILT_DEG), panShift(1, -TILT_DEG)];
  */
 export function ScalesIllustration({
   width: renderWidth,
+  brand: brandColor,
   lightenBrand = false,
+  lineWidth,
   isUnbalanced = false,
   motion = 'still',
   radius = 'medium',
@@ -77,7 +89,10 @@ export function ScalesIllustration({
 }: ScalesIllustrationProps) {
   const uid = useId().replace(/[^a-zA-Z0-9_-]/g, '');
   const shine = { fill: 'white', fillOpacity: 0.5 };
-  const brand = lightenBrand ? lightBrand : c.brand;
+  const brand = brandColor ?? (lightenBrand ? lightBrand : c.brand);
+  // With an explicit fill the outlines take the surrounding text color, as the logomark does.
+  const line = brandColor ? 'currentColor' : c.line;
+  const width = lineWidth ?? themeWidth;
   const rocking = motion === 'rocking';
   const stars = [useRef<SVGGElement>(null), useRef<SVGGElement>(null), useRef<SVGGElement>(null)];
   useTwinkleOnThemeChange(stars, !rocking);
@@ -91,14 +106,14 @@ export function ScalesIllustration({
       <mask id={`${uid}${key}`} fill="white">
         <path d={d} fillRule={evenOdd ? 'evenodd' : undefined} />
       </mask>
-      <path d={d} mask={`url(#${uid}${key})`} vectorEffect="non-scaling-stroke" style={{ stroke: c.line, strokeWidth: `calc(2 * ${width})` }} />
+      <path d={d} mask={`url(#${uid}${key})`} vectorEffect="non-scaling-stroke" style={{ stroke: line, strokeWidth: `calc(2 * ${width})` }} />
     </g>
   );
   const at = ({ at: [x, y] }: MarkPart, d: string, attrs: React.SVGProps<SVGPathElement>) => (
     <path d={d} transform={`translate(${x} ${y})`} vectorEffect="non-scaling-stroke" {...attrs} />
   );
   // The arms and post join without a seam: their outlines first (a stroke under the fill), then their fills.
-  const outline = { style: { fill: c.line, stroke: c.line, strokeWidth: `calc(2 * ${width})`, strokeLinejoin: 'round' as const } };
+  const outline = { style: { fill: line, stroke: line, strokeWidth: `calc(2 * ${width})`, strokeLinejoin: 'round' as const } };
   const fill = { style: { fill: brand } };
   const arms = (content: ReactNode) => (
     <g data-part="arms" {...stylex.props(styles.turning, styles.arms, rocking ? styles.armsRocking : isUnbalanced && styles.armsTipped)}>
@@ -127,7 +142,7 @@ export function ScalesIllustration({
       {PANS.map((p, i) =>
         pan(
           i,
-          p.strings.map((d) => <path key={d} d={d} fillRule="evenodd" style={{ fill: c.line }} />),
+          p.strings.map((d) => <path key={d} d={d} fillRule="evenodd" style={{ fill: line }} />),
         ),
       )}
       {arms(
@@ -159,7 +174,7 @@ export function ScalesIllustration({
             {/* The rim: its fill, its shine, then its outline over both. */}
             <rect {...p.rim} style={{ fill: brand }} />
             <rect {...p.rimShine} {...shine} />
-            <rect {...p.rim} vectorEffect="non-scaling-stroke" style={{ fill: 'none', stroke: c.line, strokeWidth: width }} />
+            <rect {...p.rim} vectorEffect="non-scaling-stroke" style={{ fill: 'none', stroke: line, strokeWidth: width }} />
           </>,
         ),
       )}

@@ -53,4 +53,29 @@ describe('scales illustration', () => {
       host.remove();
     }
   });
+
+  // The loading screen drew the scales in the theme, on the theme's background: a box that clashed with the tool's
+  // white. Now it's drawn like the logomark, and a white brand in a borderless theme still has an outline.
+  test('with a brand color: filled with it, outlined in the surrounding text color at the given width', async () => {
+    const host = document.createElement('div');
+    host.style.color = 'rgb(0, 0, 0)';
+    document.body.append(host);
+    const root = createRoot(host);
+    root.render(<ScalesIllustration brand="#FFFFFF" lineWidth="1px" width={240} />);
+    try {
+      await expect.poll(() => host.querySelector('svg path')).toBeTruthy();
+      const paths = [...host.querySelectorAll<SVGPathElement>('svg path')];
+      const fills = paths.map((p) => getComputedStyle(p).fill);
+      expect(fills).toContain('rgb(255, 255, 255)');
+      const outlined = paths.filter((p) => p.style.stroke);
+      expect(outlined.length).toBeGreaterThan(0);
+      for (const p of outlined) {
+        expect(getComputedStyle(p).stroke).toBe('rgb(0, 0, 0)');
+        expect(parseFloat(getComputedStyle(p).strokeWidth)).toBeGreaterThanOrEqual(1);
+      }
+    } finally {
+      root.unmount();
+      host.remove();
+    }
+  });
 });

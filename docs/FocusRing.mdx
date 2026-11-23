@@ -1,29 +1,77 @@
 import { Meta } from '@storybook/addon-docs/blocks';
 
+import { RingOnBackgrounds, TryIt } from './focus-ring-demos';
+
 <Meta title="Foundations/Focus ring" />
 
 # Focus ring
 
-Every focusable Themis control shows the same focus ring: a **2px ring of alternating black and white dashes**,
-drawn just outside the control.
+When someone moves through a page with the keyboard, the focus ring shows where they are. Every focusable Themis
+control draws the same one: **2px dashes, alternating black and white, just outside the control.**
 
-- **Keyboard only.** It appears when focus comes from the keyboard (React Aria's `isFocusVisible`), not on
-  mouse clicks or taps.
-- **Never changes size.** The ring is drawn outside the element (a dashed outline over a white backing ring),
-  so focusing a control never moves anything. Figma draws it with extra padding; code doesn't.
-- **Works on any background.** Every color has at least 3:1 contrast with either black or white, so one of the
-  two dash colors always stands out, whatever theme a user picks.
-- **High-contrast mode.** Windows high-contrast mode replaces custom colors, so there the ring becomes a dashed
-  outline in the system color.
-- **Width** comes from `borderWidth/border.width.focus ring` (2px in every mode).
+<RingOnBackgrounds />
 
-Use `focusRing` from `src/utils/focus-ring.ts`.
+One of the two dash colors always has at least 3:1 contrast with the background, so the ring shows whatever colors a
+theme uses, including ones nobody planned for.
+
+## Try it
+
+Click in the box below, then press **Tab** and **Shift+Tab**. The ring follows the keyboard. Click a control with the
+mouse and it doesn't appear: a pointer already shows where you are.
+
+<TryIt />
+
+## How it's drawn
+
+<table>
+  <thead>
+    <tr><th>Part</th><th>What it is</th><th>Why</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Dashed outline</td><td>A 2px black <code>{"outline"}</code>, 2px out from the control</td><td>Outlines don't take up space, so focusing a control never moves anything</td></tr>
+    <tr><td>White backing ring</td><td>A solid 2px white ring under the outline (the control's <code>{"::before"}</code>)</td><td>Fills the gaps between the dashes, giving the second color</td></tr>
+    <tr><td>Gap</td><td>2px (<code>{"spacing.3xs"}</code>) between the control and the ring</td><td>Keeps the ring readable against the control's own border</td></tr>
+    <tr><td>Corners</td><td>The control's radius plus the gap</td><td>The ring follows the shape of what it surrounds</td></tr>
+  </tbody>
+</table>
+
+The width comes from the `border.width.focus ring` token, which is 2px in every border-width mode, so even a
+borderless theme keeps a full ring.
+
+**Windows high-contrast mode** replaces custom colors with the user's system colors. There the white ring is dropped
+and the outline takes the system color.
+
+## Using it in a component
+
+Use `focusRing` from `src/utils/focus-ring.ts`, and apply `visible` only for keyboard focus (React Aria's
+`isFocusVisible`), with `racStyles()`:
+
+```tsx
+{...racStyles<ButtonRenderProps>(({ isFocusVisible }) => [
+  styles.base,
+  focusRing.base,
+  isFocusVisible && focusRing.visible,
+])}
+```
+
+- The element needs `position: relative` (the white ring is positioned against it) and the `radius.md` corners. For
+  `radius.sm` corners add `focusRing.radiusSm` too.
+- The ring uses the element's `::before`, so don't use `::before` for anything else on it.
+- Where an outside ring would spill out of its container or overlap neighbors, draw it just inside the element with
+  `focusRing.inset` instead: Accordion headers, and text fields (which show it while anything inside them has focus).
 
 ## WCAG
 
-| Criterion | Level | Status |
-| --- | --- | --- |
-| 2.4.7 Focus Visible | AA | Passes. |
-| 1.4.11 Non-text Contrast | AA | Passes on any background (see above). |
-| 2.4.11 Focus Not Obscured (Minimum) | AA | Depends on the page: sticky headers and footers must not cover a focused control. Use `scroll-padding`. |
-| 2.4.13 Focus Appearance | AAA | Not met by default. On pure white or black pages only half the dashes change color, so the ring needs to be about 4px wide to pass. A system setting for ring width is planned for teams that need AAA. |
+AA is the WCAG level Themis supports.
+
+<table>
+  <thead>
+    <tr><th>Criterion</th><th>Level</th><th>Status</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>2.4.7 Focus Visible</td><td>AA</td><td>Passes.</td></tr>
+    <tr><td>1.4.11 Non-text Contrast</td><td>AA</td><td>Passes on any background: one dash color always reaches 3:1.</td></tr>
+    <tr><td>2.4.11 Focus Not Obscured (Minimum)</td><td>AA</td><td>Depends on your page: a sticky header or footer mustn't cover a focused control. <code>{"scroll-padding"}</code> keeps it in view.</td></tr>
+    <tr><td>2.4.13 Focus Appearance</td><td>AAA</td><td>Not met by default. On a pure white or black page only half the dashes stand out, so the ring would need to be about 4px wide. A ring-width setting is planned for teams that need AAA.</td></tr>
+  </tbody>
+</table>

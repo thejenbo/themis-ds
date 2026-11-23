@@ -6,12 +6,17 @@ import { Meta } from '@storybook/addon-docs/blocks';
 
 Each component lives in `src/components/<Name>/` and contains exactly these files:
 
-| File | Purpose |
-| --- | --- |
-| `<Name>.tsx` | The component. It wraps a React Aria Components primitive and is styled with StyleX. |
-| `<Name>.docs.ts` | The documentation contract (`defineComponentDocs`), shared by Storybook, AI agents and Figma. |
-| `<Name>.stories.tsx` | Stories. Pass `parameters: { themis: docs }`. Stories are also browser tests. |
-| `index.ts` | Public exports. Also re-export these from `src/index.ts`. |
+<table>
+  <thead>
+    <tr><th>File</th><th>Purpose</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>{"<Name>.tsx"}</code></td><td>The component. It wraps a React Aria Components primitive and is styled with StyleX.</td></tr>
+    <tr><td><code>{"<Name>.docs.ts"}</code></td><td>The documentation contract (<code>{"defineComponentDocs"}</code>), shared by Storybook, AI agents and Figma.</td></tr>
+    <tr><td><code>{"<Name>.stories.tsx"}</code></td><td>Stories. Pass <code>{"parameters: { themis: docs }"}</code>. Stories are also browser tests.</td></tr>
+    <tr><td><code>{"index.ts"}</code></td><td>Public exports. Also re-export these from <code>{"src/index.ts"}</code>.</td></tr>
+  </tbody>
+</table>
 
 ## Rules
 

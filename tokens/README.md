@@ -10,7 +10,7 @@ The token files are the source of truth for design decisions. They are exported 
 | `components/Mode 1.tokens.json` | Real Figma export (Component Tokens collection, single mode). Fixed component geometry: Avatar initials sizes and the Tabs indicator height. |
 | `borderWidth/{none,small,medium,large}.tokens.json` | Real Figma export (border width collection). Sets how heavy strokes are across the system. |
 | `system/default.tokens.json` | Real Figma export (system collection, single mode). Fixed colors for disabled and placeholder states that users can't theme. |
-| `fontTheme/{demo,inkling,themis}.tokens.json` | Real Figma export (font theme collection). Heading and body font families users can choose between. |
+| `fontTheme/{demo,themis}.tokens.json` | Real Figma export (font theme collection). Heading and body font families users can choose between. |
 | `spacing/default.tokens.json` | Real Figma export (semantic spacing, single mode for now). Add e.g. `compact.tokens.json` plus a `collections.json` entry to make density switchable. |
 | `shadows/{default,off}.tokens.json` | Real Figma export (shadows collection). Drop shadow parts: x, y, blur and color; `off` removes shadows. |
 | `motion/default.tokens.json` | Real Figma export (motion collection). Durations (ms), easing curve and pressed scale. |

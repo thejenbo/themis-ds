@@ -6,6 +6,7 @@ import {
   SegmentedControl,
   SegmentedControlItem,
   Text,
+  type ThemeBorderWidth,
   type ThemeSettings,
   rateThemeColors,
   ThemeProvider,
@@ -47,6 +48,8 @@ type Naming =
 
 /** What a new theme starts from: the light theme the tool opens with. */
 const NEW_THEME: ThemeSettings = initialConfig.themes.light!;
+/** The loading scales' outline: the theme's border/width/sm (1, 2 or 3px), and 1px for a borderless theme. */
+const LOADING_LINE_WIDTH: Record<ThemeBorderWidth, string> = { none: '1px', small: '1px', medium: '2px', large: '3px' };
 
 const PAGES: Page[] = ['simulator', 'components'];
 
@@ -296,12 +299,17 @@ export function App() {
         // every component's stories with it.
         <Suspense
           fallback={
-            // The scales rock and the stars twinkle until the components arrive: the scales in the theme being edited,
-            // the words in the tool's own style.
+            // The scales rock and the stars twinkle until the components arrive. Drawn like the logomark, on the tool's
+            // own white: filled with the theme's brand and outlined in black at the theme's border width, never under
+            // 1px (a borderless theme with a white brand would otherwise vanish).
             <div {...stylex.props(styles.loading)}>
-              <ThemeProvider theme={previewTheme} xstyle={styles.loadingScales}>
-                <ScalesIllustration motion="rocking" lightenBrand={darkBrand} radius={previewTheme.radius ?? 'medium'} />
-              </ThemeProvider>
+              <ScalesIllustration
+                motion="rocking"
+                brand={previewTheme.colors.brand}
+                lineWidth={LOADING_LINE_WIDTH[previewTheme.borderWidth ?? 'medium']}
+                radius={previewTheme.radius ?? 'medium'}
+                xstyle={styles.loadingScales}
+              />
               <Text variant="body-large">Loading the components…</Text>
             </div>
           }

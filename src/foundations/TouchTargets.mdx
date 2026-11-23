@@ -26,11 +26,16 @@ Neighboring touch areas must not overlap, or a tap between two controls could hi
 area reaches `(44 − visible size) ÷ 2` beyond its edge, so the gap between two stacked controls must be at least
 **44px minus their height** (for two controls of the same size).
 
-| Size | Height (mobile / desktop) | Minimum gap (mobile / desktop) | Use spacing token |
-| --- | --- | --- | --- |
-| micro | 24px / 28px | 20px / 16px | `spacing.md` (24px) |
-| small | 32px / 36px | 12px / 8px | `spacing.sm` (16px) |
-| medium | 40px / 44px | 4px / 0px | `spacing.2xs` (4px) or more |
+<table>
+  <thead>
+    <tr><th>Size</th><th>Height (mobile / desktop)</th><th>Minimum gap (mobile / desktop)</th><th>Use spacing token</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>micro</td><td>24px / 28px</td><td>20px / 16px</td><td><code>{"spacing.md"}</code> (24px)</td></tr>
+    <tr><td>small</td><td>32px / 36px</td><td>12px / 8px</td><td><code>{"spacing.sm"}</code> (16px)</td></tr>
+    <tr><td>medium</td><td>40px / 44px</td><td>4px / 0px</td><td><code>{"spacing.2xs"}</code> (4px) or more</td></tr>
+  </tbody>
+</table>
 
 Side by side, labeled buttons are usually wider than 44px, so their areas only extend vertically. Controls
 narrower than 44px, such as icon-only buttons, need the same gap horizontally.

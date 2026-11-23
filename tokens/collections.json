@@ -4,8 +4,7 @@
     "modes": [
       "light demo",
       "dark demo",
-      "themis config",
-      "inkling"
+      "themis config"
     ],
     "defaultMode": "light demo"
   },
@@ -32,7 +31,6 @@
   "fontTheme": {
     "modes": [
       "demo",
-      "inkling",
       "themis"
     ],
     "defaultMode": "demo"

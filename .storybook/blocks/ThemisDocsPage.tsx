@@ -14,19 +14,21 @@ import tokenData from '../../src/tokens/tokens.json';
 const tokenById = new Map(tokenData.tokens.map((t) => [t.id, t]));
 
 const s = {
-  badge: (status: string): CSSProperties => ({
+  // An outlined chip in the config tool's style (its contrast-rating chips): 2px black border, no fill.
+  badge: (): CSSProperties => ({
     display: 'inline-block',
-    padding: '2px 8px',
-    borderRadius: 999,
+    padding: '0 6px',
+    border: '2px solid #000',
+    borderRadius: 4,
     fontSize: 12,
-    fontWeight: 600,
+    lineHeight: '18px',
+    fontWeight: 700,
     textTransform: 'uppercase',
-    letterSpacing: 0.4,
-    background: { stable: '#dcfce7', beta: '#dbeafe', draft: '#fef9c3', deprecated: '#fee2e2' }[status] ?? '#eee',
-    color: '#1f2937',
+    color: '#000',
   }),
   table: { width: '100%', borderCollapse: 'collapse', fontSize: 14 } as CSSProperties,
-  cell: { textAlign: 'left', padding: '8px 12px', borderBottom: '1px solid #e5e7eb', verticalAlign: 'top' } as CSSProperties,
+  // Padding and the black rules come from docs.css.
+  cell: { textAlign: 'left', verticalAlign: 'top' } as CSSProperties,
   swatch: (value: string): CSSProperties => ({
     display: 'inline-block',
     width: 14,
@@ -35,10 +37,16 @@ const s = {
     marginRight: 6,
     verticalAlign: 'middle',
     background: value,
-    border: '1px solid rgba(0,0,0,.15)',
+    border: '1px solid #000',
   }),
   cols: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 24 } as CSSProperties,
 };
+
+/** Docs text with `backticks` shown as code, as Markdown would. */
+function md(text: string): ReactNode {
+  if (!text.includes('`')) return text;
+  return text.split(/`([^`]+)`/).map((part, i) => (i % 2 ? <code key={i}>{part}</code> : part));
+}
 
 function Section({ id, title, children }: { id: string; title: string; children: ReactNode }) {
   return (
@@ -71,14 +79,14 @@ function ThemisSections({ docs }: { docs: ComponentDocs }) {
         <div style={s.cols}>
           <div>
             <h3>When to use</h3>
-            <ul>{docs.usage.whenToUse.map((x) => <li key={x}>{x}</li>)}</ul>
+            <ul>{docs.usage.whenToUse.map((x) => <li key={x}>{md(x)}</li>)}</ul>
           </div>
           <div>
             <h3>When not to use</h3>
             <ul>
               {docs.usage.whenNotToUse.map((x) => (
                 <li key={x.scenario}>
-                  {x.scenario}
+                  {md(x.scenario)}
                   {x.useInstead && <> Use <strong>{x.useInstead}</strong> instead.</>}
                 </li>
               ))}
@@ -91,7 +99,7 @@ function ThemisSections({ docs }: { docs: ComponentDocs }) {
         {Object.entries(docs.variants).map(([prop, values]) => (
           <div key={prop}>
             <h3><code>{prop}</code></h3>
-            <Table head={['Value', 'When to choose it']} rows={Object.entries(values).map(([v, d]) => [<code>{v}</code>, d])} />
+            <Table head={['Value', 'When to choose it']} rows={Object.entries(values).map(([v, d]) => [<code>{v}</code>, md(d)])} />
           </div>
         ))}
       </Section>
@@ -99,7 +107,7 @@ function ThemisSections({ docs }: { docs: ComponentDocs }) {
       <Section id="anatomy" title="Anatomy">
         <Table
           head={['Part', 'Description', 'Required']}
-          rows={docs.anatomy.map((a) => [<strong>{a.part}</strong>, a.description, a.required ? 'Yes' : 'Optional'])}
+          rows={docs.anatomy.map((a) => [<strong>{a.part}</strong>, md(a.description), a.required ? 'Yes' : 'Optional'])}
         />
       </Section>
 
@@ -107,17 +115,17 @@ function ThemisSections({ docs }: { docs: ComponentDocs }) {
         <div style={s.cols}>
           <div>
             <h3>✅ Do</h3>
-            <ul>{docs.guidelines.do.map((x) => <li key={x}>{x}</li>)}</ul>
+            <ul>{docs.guidelines.do.map((x) => <li key={x}>{md(x)}</li>)}</ul>
           </div>
           <div>
             <h3>⛔ Don’t</h3>
-            <ul>{docs.guidelines.dont.map((x) => <li key={x}>{x}</li>)}</ul>
+            <ul>{docs.guidelines.dont.map((x) => <li key={x}>{md(x)}</li>)}</ul>
           </div>
         </div>
         {docs.content && (
           <>
             <h3>Content</h3>
-            <ul>{docs.content.guidance.map((x) => <li key={x}>{x}</li>)}</ul>
+            <ul>{docs.content.guidance.map((x) => <li key={x}>{md(x)}</li>)}</ul>
           </>
         )}
       </Section>
@@ -128,11 +136,11 @@ function ThemisSections({ docs }: { docs: ComponentDocs }) {
             Built on React Aria <a href={docs.base.docsUrl}><code>{docs.base.component}</code></a>, which provides:
           </p>
         )}
-        <ul>{docs.accessibility.providedByBase.map((x) => <li key={x}>{x}</li>)}</ul>
+        <ul>{docs.accessibility.providedByBase.map((x) => <li key={x}>{md(x)}</li>)}</ul>
         <h3>Keyboard</h3>
-        <Table head={['Keys', 'Action']} rows={docs.accessibility.keyboard.map((k) => [<kbd>{k.keys}</kbd>, k.action])} />
+        <Table head={['Keys', 'Action']} rows={docs.accessibility.keyboard.map((k) => [<kbd>{k.keys}</kbd>, md(k.action)])} />
         <h3>Your responsibilities</h3>
-        <ul>{docs.accessibility.requirements.map((x) => <li key={x}>{x}</li>)}</ul>
+        <ul>{docs.accessibility.requirements.map((x) => <li key={x}>{md(x)}</li>)}</ul>
       </Section>
 
       <Section id="tokens" title="Design tokens">
@@ -160,7 +168,7 @@ function ThemisSections({ docs }: { docs: ComponentDocs }) {
         <Section id="motion" title="Motion">
           <Table
             head={['Trigger', 'What moves', 'Duration', 'Easing', 'Reduced motion']}
-            rows={docs.motion.map((m) => [m.trigger, m.property, <code>{m.duration}</code>, <code>{m.easing}</code>, m.reducedMotion])}
+            rows={docs.motion.map((m) => [md(m.trigger), md(m.property), <code>{m.duration}</code>, <code>{m.easing}</code>, md(m.reducedMotion)])}
           />
         </Section>
       ) : null}
@@ -185,8 +193,8 @@ function ThemisSections({ docs }: { docs: ComponentDocs }) {
               head={['Topic', 'Figma', 'Code', 'In Figma']}
               rows={docs.figma.differences.map((d) => [
                 d.topic,
-                d.figma,
-                d.code,
+                md(d.figma),
+                md(d.code),
                 d.action === 'update-figma' ? 'To update' : d.done ? `Annotated (${d.done})` : 'To annotate',
               ])}
             />
@@ -197,7 +205,7 @@ function ThemisSections({ docs }: { docs: ComponentDocs }) {
       {(docs.related?.length || docs.notes?.length) && (
         <Section id="related" title="Related & notes">
           {docs.related?.length ? <p>Related: {docs.related.join(', ')}</p> : null}
-          {docs.notes?.length ? <ul>{docs.notes.map((n) => <li key={n}>{n}</li>)}</ul> : null}
+          {docs.notes?.length ? <ul>{docs.notes.map((n) => <li key={n}>{md(n)}</li>)}</ul> : null}
         </Section>
       )}
     </>
@@ -213,8 +221,8 @@ export function ThemisDocsPage() {
       <Title />
       {docs && (
         <p>
-          <span style={s.badge(docs.status)}>{docs.status}</span>{' '}
-          <span style={{ color: '#6b7280', fontSize: 14 }}>
+          <span style={s.badge()}>{docs.status}</span>{' '}
+          <span style={{ fontSize: 14 }}>
             {docs.category} · <code>{`import { ${docs.name} } from 'themis-ds'`}</code>
           </span>
         </p>

@@ -1,40 +1,12 @@
 import { Meta } from '@storybook/addon-docs/blocks';
-import tokenData from '../src/tokens/tokens.json';
+
+import { TokensPage } from './TokensPage';
 
 <Meta title="Foundations/Design tokens" />
 
 # Design tokens
 
-Tokens come from Figma variables. They are exported as DTCG JSON into `/tokens/<collection>/<mode>.tokens.json`,
-and `npm run tokens` compiles them into StyleX variables.
+The named values every Themis component is styled with. Change a token's mode and every component that uses it
+follows: that's how one set of components takes on any theme.
 
-<table>
-  <thead>
-    <tr><th>Token</th><th>Type</th>{Object.keys(tokenData.collections).flatMap((c) => tokenData.collections[c].modes).filter((m, i, a) => a.indexOf(m) === i).map((m) => <th key={m}>{m}</th>)}</tr>
-  </thead>
-  <tbody>
-    {tokenData.tokens.map((t) => {
-      const allModes = Object.values(tokenData.collections).flatMap((c) => c.modes).filter((m, i, a) => a.indexOf(m) === i);
-      return (
-        <tr key={t.id}>
-          <td><code>{t.id}</code></td>
-          <td>{t.type}</td>
-          {allModes.map((m) => {
-            const v = t.modes[m];
-            return (
-              <td key={m}>
-                {v ? (
-                  <>
-                    {t.type === 'color' && <span style={{ display: 'inline-block', width: 12, height: 12, marginRight: 6, borderRadius: 2, border: '1px solid #0002', background: v.value }} />}
-                    <code>{v.value}</code>{v.px && <span style={{ opacity: 0.7 }}> ({v.px})</span>}
-                    {v.aliasOf && <div style={{ fontSize: 11, opacity: 0.7 }}>→ {v.aliasOf.join(' → ')}</div>}
-                  </>
-                ) : '—'}
-              </td>
-            );
-          })}
-        </tr>
-      );
-    })}
-  </tbody>
-</table>
+<TokensPage />

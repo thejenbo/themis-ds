@@ -1,0 +1,92 @@
+/*
+ * Docs pages in the Themis config tool's style (as on the Introduction page): Space Mono, black on white, 2px rules
+ * between sections, black code chips and black-ruled tables. Docs text only: stories (.docs-story), the controls
+ * table (.docblock-argstable) and Unstyled blocks (.sb-unstyled) keep their own styles.
+ */
+.sbdocs.sbdocs-wrapper {
+  background: #fff;
+}
+
+.sbdocs.sbdocs-content {
+  max-width: 62rem;
+  color: #000;
+  font-family: 'Space Mono', monospace;
+}
+
+.sbdocs.sbdocs-content :is(h1, h2, h3, h4, p, li, td, th, dt, dd, blockquote):not(.docs-story *, .sb-unstyled *, .docblock-argstable *) {
+  font-family: 'Space Mono', monospace;
+  color: #000;
+  letter-spacing: 0;
+}
+
+.sbdocs.sbdocs-content h1:not(.docs-story *, .sb-unstyled *) {
+  margin: 0 0 1rem;
+  font-size: 2.5rem;
+  line-height: 1.15;
+  font-weight: 700;
+}
+
+/* Sections start on a 2px rule, like the config tool's sidebar sections. */
+.sbdocs.sbdocs-content h2:not(.docs-story *, .sb-unstyled *, .docblock-argstable *) {
+  margin: 2.5rem 0 1rem;
+  padding: 2rem 0 0;
+  border-top: 2px solid #000;
+  border-bottom: 0;
+  font-size: 1.75rem;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+.sbdocs.sbdocs-content h3:not(.docs-story *, .sb-unstyled *, .docblock-argstable *) {
+  margin: 1.5rem 0 0.5rem;
+  font-size: 1.125rem;
+  line-height: 1.5;
+  font-weight: 700;
+}
+
+.sbdocs.sbdocs-content :is(p, li):not(.docs-story *, .sb-unstyled *, .docblock-argstable *) {
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.sbdocs.sbdocs-content a:not(.docs-story *, .sb-unstyled *, .docblock-argstable *, .sb-anchor *, .sb-anchor) {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+/* Inline code: a black chip with white text, like the Code component in the config tool's style. */
+.sbdocs.sbdocs-content :not(pre) > code:not(.docs-story *, .sb-unstyled *, .docblock-argstable *) {
+  padding: 0.1em 0.35em;
+  border: 0;
+  border-radius: 4px;
+  background: #000;
+  color: #fff;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.875em;
+}
+
+/* Tables: black rules, no stripes or cell borders. */
+.sbdocs.sbdocs-content table:not(.docs-story *, .sb-unstyled *, .docblock-argstable) {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+}
+
+.sbdocs.sbdocs-content table:not(.docs-story *, .sb-unstyled *, .docblock-argstable) :is(tr, tr:nth-of-type(2n)) {
+  background: #fff;
+  border: 0;
+}
+
+.sbdocs.sbdocs-content table:not(.docs-story *, .sb-unstyled *, .docblock-argstable) :is(th, td) {
+  padding: 0.75rem 1rem 0.75rem 0;
+  border: 0;
+  border-bottom: 1px solid #000;
+  text-align: left;
+  vertical-align: top;
+}
+
+.sbdocs.sbdocs-content table:not(.docs-story *, .sb-unstyled *, .docblock-argstable) th {
+  border-bottom-width: 2px;
+  font-weight: 700;
+}
