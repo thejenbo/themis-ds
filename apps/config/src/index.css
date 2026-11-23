@@ -1,0 +1,7 @@
+/*
+ * The config tool's one stylesheet. Besides this reset, the StyleX plugin appends every StyleX style to it in
+ * production builds: without a stylesheet of the app's own, it wrote a separate stylex.css that nothing linked to.
+ */
+body {
+  margin: 0;
+}
