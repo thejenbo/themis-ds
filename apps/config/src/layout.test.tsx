@@ -65,19 +65,27 @@ describe('header links', () => {
   test('the logomark is filled with the theme’s brand and tips while a colour fails contrast', async () => {
     renderApp();
     const mark = () => document.querySelector('header svg')!;
-    await expect.poll(() => mark()?.querySelectorAll('rect').length).toBeGreaterThan(0);
-    // The fill layer (drawn last) takes the brand; the outline under it is the text colour.
-    const fillRect = [...mark().querySelectorAll('rect')].at(-1)!;
-    expect(fillRect.closest('g')!.getAttribute('fill')?.toLowerCase()).toBe('#7406eb');
+    const fills = () => mark().querySelector('[data-part="fill"]')!;
+    await expect.poll(() => fills()?.querySelectorAll('path').length).toBeGreaterThan(0);
+    // The parts take the brand; their outline (drawn under them) is the text colour; the strings are the brand too.
+    expect(fills().querySelector('path')!.getAttribute('fill')?.toLowerCase()).toBe('#7406eb');
+    const strings = mark().querySelector('[data-part="strings"]')!;
+    expect(strings.getAttribute('stroke')?.toLowerCase()).toBe('#7406eb');
+    // The strings are drawn first, behind the arms and bowls.
+    expect(mark().firstElementChild!.contains(strings)).toBe(true);
+    // At header size the strings keep a minimum width on screen: about 0.9px, not the drawing's 2 units.
+    const unitsPerPx = 395 / mark().clientWidth;
+    expect(Number(strings.getAttribute('stroke-width'))).toBeCloseTo(0.9 * unitsPerPx, 1);
     expect(mark().hasAttribute('data-unbalanced')).toBe(false);
-    const beam = () => [...mark().querySelectorAll('path')].filter((p) => p.getAttribute('d') === 'M5 11.5H43').at(-1)!;
-    expect(getComputedStyle(beam()).transform).toBe('none');
-    // A brand that fails contrast: the scales tip.
+    const arms = () => fills().children[2]!;
+    expect(getComputedStyle(arms()).transform).toBe('none');
+    // A brand that fails contrast: the arms tilt and the pans move with them.
     await page.getByRole('textbox', { name: /^Brand/ }).fill('#FFFF00');
     await userEvent.keyboard('{Tab}');
     await expect.poll(() => mark().hasAttribute('data-unbalanced')).toBe(true);
-    expect(getComputedStyle(beam()).transform).not.toBe('none');
-    expect([...mark().querySelectorAll('rect')].at(-1)!.closest('g')!.getAttribute('fill')?.toLowerCase()).toBe('#ffff00');
+    await expect.poll(() => getComputedStyle(arms()).transform).not.toBe('none');
+    expect((fills().firstElementChild as SVGElement).style.transform).toMatch(/^translate/);
+    expect(fills().querySelector('path')!.getAttribute('fill')?.toLowerCase()).toBe('#ffff00');
   });
 
   test('on desktop the page links start 24px after the sidebar’s divider', async () => {
