@@ -22,6 +22,8 @@ import { DrawerHandle, MAX_SHARE, MIN_SHARE } from './DrawerHandle';
 import { ExportModal } from './ExportModal';
 import { initialConfig } from './initial-config';
 import { type ColorFormats, loadColorFormats, loadPreviewShare, loadSaved, save, saveColorFormats, savePreviewShare } from './storage';
+import { COLOR_KEYS, type ContrastTab } from './contrast/contrast-copy';
+import { ContrastModal } from './contrast/ContrastModal';
 import { ThemeSettingsForm } from './SettingsPanel';
 import { SettingsSim, type SimView } from './SettingsSim';
 
@@ -127,8 +129,15 @@ export function App() {
   const theme = draft ? draft.theme : config.themes[selected]!;
   // The preview follows a step behind while a slider or field is changing, so they stay quick to use.
   const previewTheme = useDeferredValue(theme);
-  // The logomark's scales tip while any colour in the theme fails contrast.
-  const isUnbalanced = useMemo(() => Object.values(rateThemeColors(theme.colors)).some((r) => r.level === 'Fail'), [theme.colors]);
+  // The logomark's scales tip while any colour in the theme fails contrast; pressing them opens the first failing one.
+  const firstFailing = useMemo(() => {
+    const ratings = rateThemeColors(theme.colors);
+    return COLOR_KEYS.find((k) => ratings[k].level === 'Fail') ?? null;
+  }, [theme.colors]);
+  const isUnbalanced = firstFailing != null;
+  // The contrast modal: which tab it's open on (null when closed), and whether its rows show token names.
+  const [contrastTab, setContrastTab] = useState<ContrastTab | null>(null);
+  const [showContrastTokens, setShowContrastTokens] = useState(false);
   const { darkBackground, darkBrand } = useMemo(() => simulatorTones(previewTheme.colors), [previewTheme.colors]);
 
   // Section headings (and tablet's tabs) stick just below the theme row, whose height changes (the name field, its
@@ -241,6 +250,7 @@ export function App() {
         colorFormats={formats}
         onColorFormatsChange={updateFormats}
         layout={layout === 'tablet' ? 'tabs' : 'sections'}
+        onOpenContrast={setContrastTab}
       />
     </div>
   );
@@ -295,6 +305,7 @@ export function App() {
         besideSidebar={layout === 'desktop'}
         brand={theme.colors.brand}
         isUnbalanced={isUnbalanced}
+        onReviewContrast={() => firstFailing && setContrastTab(firstFailing)}
       />
       {layout === 'desktop' && (
         <div {...stylex.props(styles.body)}>
@@ -351,6 +362,16 @@ export function App() {
         </div>
       )}
 
+      <ContrastModal
+        colors={theme.colors}
+        colorFormats={formats}
+        tab={contrastTab}
+        onTabChange={setContrastTab}
+        onApply={(key, hex) => updateTheme({ ...theme, colors: { ...theme.colors, [key]: hex } })}
+        showTokens={showContrastTokens}
+        onShowTokensChange={setShowContrastTokens}
+        compact={layout === 'mobile'}
+      />
       <ExportModal config={config} isOpen={dialog === 'export'} onOpenChange={(open) => setDialog(open ? 'export' : null)} />
 
       <Modal

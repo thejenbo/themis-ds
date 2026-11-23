@@ -28,8 +28,9 @@ describe('colour fields', () => {
     const brand = page.getByRole('textbox', { name: /Brand/ });
     await brand.fill('#FFFF00');
     await userEvent.keyboard('{Tab}');
-    // The badge is part of the field's name. Yellow on white fails.
-    await expect.element(page.getByRole('textbox', { name: /^Brand/ })).toHaveAccessibleName('Brand Fail');
+    // Yellow on white fails. The rating is a button beside the label (not part of the field's name).
+    await expect.element(page.getByRole('button', { name: /^Brand contrast: Fail/ })).toBeVisible();
+    await expect.element(page.getByRole('textbox', { name: /^Brand/ })).toHaveAccessibleName('Brand');
   });
 
   test('the hue slider steps exactly one degree per arrow key (no hex rounding)', async () => {

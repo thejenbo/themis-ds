@@ -173,7 +173,9 @@ describe('sidebar', () => {
     expect(line(colors!).height).toBe('2px');
     expect(line(colors!).backgroundColor).toBe('rgb(0, 0, 0)');
     expect(line(colors!).bottom).toBe('0px');
-    expect(Math.round(rect(colors!).bottom - rect(title).bottom)).toBe(10);
+    // 10px under the last line: the "About contrast ratings" link under the title (4px of room for its focus ring).
+    const about = page.getByRole('button', { name: 'About contrast ratings' }).element();
+    expect(Math.round(rect(colors!).bottom - rect(about).bottom)).toBe(10 + 4);
     // Stuck: across the whole heading (the sidebar's width), on its bottom edge.
     aside.scrollTop = 300;
     await expect.poll(() => line(colors!).width).toBe(`${aside.clientWidth}px`);
@@ -313,7 +315,7 @@ describe('sidebar', () => {
     }
   });
 
-  test('open sections: 16px under the heading, 24px between fields; 24px, a line, then 16px to the next heading', async () => {
+  test('open sections: 16px under the heading (the About link right under the title), 24px between fields; 24px, a line, then 16px to the next heading', async () => {
     renderApp();
     const aside = await sidebar();
     const colors = aside.querySelector('h2')!;
@@ -322,7 +324,13 @@ describe('sidebar', () => {
     const brandLabel = label('Brand');
     const textLabel = label('Text');
     const brandSwatch = page.getByRole('button', { name: /Pick the brand color/ }).element();
-    // 16px from the heading to the first field (24px between fields).
+    // The small "About contrast ratings" link sits right under the title, inside the (sticky) heading but not part of
+    // its name; then 16px from the heading to the first field, 24px between fields.
+    const about = page.getByRole('button', { name: 'About contrast ratings' }).element();
+    expect(colors.contains(about)).toBe(true);
+    expect(page.getByRole('heading', { name: 'Colors', exact: true }).element()).toBe(colors);
+    const title = colors.querySelector('button span')!;
+    expect(Math.round(rect(about).top - rect(title).bottom)).toBe(0);
     expect(Math.round(rect(control).top - rect(colors).bottom)).toBe(16);
     expect(Math.round(rect(brandLabel).top - rect(control).bottom)).toBe(24);
     expect(Math.round(rect(textLabel).top - rect(brandSwatch).bottom)).toBe(24);

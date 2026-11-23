@@ -21,6 +21,7 @@ export default defineComponentDocs({
 
   anatomy: [
     { part: 'Label', description: 'Label style, 4px above the box, as TextInput.', required: false },
+    { part: 'Label accessory', description: 'Optional (`labelAccessory`): something after the label on its line, 8px from it but outside the <label>, such as a contrast rating button.', required: false },
     { part: 'Box', description: 'TextInput\'s box: the code in the input text style.', required: true },
     { part: 'Format button', description: 'With more than one of `formats`: UnitInput\'s unit button (a divider, the format name, the caret), opening a list of formats.', required: false },
     { part: 'Swatch', description: 'A 40px ColorPickerSwatch 8px to the right of the box, showing the colour and opening the picker.', required: true },

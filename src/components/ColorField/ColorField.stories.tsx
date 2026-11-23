@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { expect, fn, screen, userEvent, waitFor } from 'storybook/test';
 
+import { Chip } from '../Chip';
 import { ColorField } from './ColorField';
 import docs from './ColorField.docs';
 
@@ -125,5 +126,16 @@ export const WithPicker: Story = {
     await waitFor(() => expect(input).toHaveValue('#1F4FEB'));
     await expect(input).not.toHaveAttribute('aria-invalid');
     await expect(canvas.queryByText('Enter a color code, e.g. #7A1FEB')).not.toBeInTheDocument();
+  },
+};
+
+/** Something after the label, on its line but outside the label: here, a contrast rating. */
+export const WithLabelAccessory: Story = {
+  args: { label: 'Brand', labelAccessory: <Chip tone="success">AA</Chip> },
+  play: async ({ canvas }) => {
+    const chip = canvas.getByText('AA');
+    // Outside the <label>, so a button there wouldn't be part of the field's name or move focus to the input.
+    await expect(chip.closest('label')).toBeNull();
+    await expect(canvas.getByRole('textbox', { name: 'Brand' })).toBeInTheDocument();
   },
 };

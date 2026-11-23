@@ -54,5 +54,14 @@ export {
   type ThemisConfig,
 } from './theme/theme-config';
 export { COLOR_RULES, type ColorTokens, deriveColorTokens } from './theme/derive-colors';
-export { type ColorRating, type ContrastLevel, contrastLevel, rateThemeColors } from './theme/contrast-rating';
+export {
+  type ColorRating,
+  type ContrastCheck,
+  type ContrastLevel,
+  contrastLevel,
+  RATED_PAIRS,
+  type RatedPair,
+  rateThemeColors,
+  suggestPassingColor,
+} from './theme/contrast-rating';
 export { collectionModes, defaultModes, themes, type Modes, type ModeOf, type ThemeCollection } from './tokens/themes';

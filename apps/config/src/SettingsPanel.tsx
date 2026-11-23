@@ -1,13 +1,13 @@
 import * as stylex from '@stylexjs/stylex';
 import { memo, type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import type { Color } from 'react-aria-components';
+import { Button as AriaButton, type ButtonRenderProps, type Color } from 'react-aria-components';
 import {
   type FontChoice,
   Chip,
-  type ChipTone,
   ColorField,
   type ColorFormat,
   type ContrastLevel,
+  Icon,
   rateThemeColors,
   SegmentedControl,
   SegmentedControlItem,
@@ -26,23 +26,21 @@ import {
 } from 'themis-ds';
 
 import { color } from '../../../src/tokens/colorTheme.stylex';
+import { border as radius } from '../../../src/tokens/radius.stylex';
+import { focusRing } from '../../../src/utils/focus-ring';
+import { interactiveCursor } from '../../../src/utils/interactive-cursor';
+import { racStyles } from '../../../src/utils/stylex-rac';
+import { touchTarget } from '../../../src/utils/touch-target';
 import { font as fontTheme } from '../../../src/tokens/fontTheme.stylex';
 import { spacing } from '../../../src/tokens/spacing.stylex';
 import { font } from '../../../src/tokens/typography.stylex';
+import { COLOR_KEYS, COLOR_LABELS, type ContrastTab } from './contrast/contrast-copy';
+import { RatingChip } from './contrast/RatingChip';
 import { FontField } from './fonts/FontField';
 import { SidebarSection } from './SidebarSection';
 import { type ColorFormats, loadCollapsed, saveCollapsed, type SectionId } from './storage';
 
-const COLOR_LABELS: Record<keyof ThemeColors, string> = {
-  brand: 'Brand',
-  text: 'Text',
-  background: 'Background',
-  error: 'Error',
-  warning: 'Warning',
-  success: 'Success',
-};
 
-const LEVEL_TONE: Record<ContrastLevel, ChipTone> = { AAA: 'success', AA: 'success', 'AA Large': 'warning', Fail: 'danger' };
 
 const BORDER_WIDTH_LABELS: Record<ThemeBorderWidth, string> = {
   none: 'None - Borderless',
@@ -71,6 +69,8 @@ interface ThemeSettingsFormProps {
    * `tabs`: one tab each, labelled with what's set inside, and the fields in two columns (tablet).
    */
   layout?: 'sections' | 'tabs';
+  /** Opens the contrast modal, on a colour or on the explanation of the ratings. Keep it stable (a state setter). */
+  onOpenContrast: (tab: ContrastTab) => void;
 }
 
 /** One theme's colours, borders and fonts: the sidebar below the theme row. */
@@ -80,6 +80,7 @@ export function ThemeSettingsForm({
   colorFormats,
   onColorFormatsChange,
   layout = 'sections',
+  onOpenContrast,
 }: ThemeSettingsFormProps) {
   const ratings = useMemo(() => rateThemeColors(theme.colors), [theme.colors]);
   // Callbacks read the latest theme from a ref, so they never change and the memoised rows below only re-render
@@ -179,9 +180,29 @@ export function ThemeSettingsForm({
   );
 
   const columns = layout === 'tabs';
+  // In the sidebar it sits right under the Colors heading; on tablet, at the end of the colour code row.
+  const aboutLink = (
+    <AriaButton
+      onPress={() => onOpenContrast('about')}
+      {...racStyles<ButtonRenderProps>((s) => [
+        styles.aboutLink,
+        s.isHovered && styles.aboutLinkHovered,
+        interactiveCursor.enabled,
+        touchTarget.area,
+        focusRing.base,
+        s.isFocusVisible && focusRing.visible,
+      ])}
+    >
+      <Icon name="info" size="xsmall" />
+      About contrast ratings
+    </AriaButton>
+  );
   const colorFields = (
     <div {...stylex.props(styles.fields, columns && styles.columns, columns && styles.colorColumns)}>
-      <ColorCodeControl selected={sharedFormat} onChange={setAllFormats} atStart={columns} />
+      <div {...stylex.props(styles.colorTools, columns && styles.colorToolsColumns)}>
+        {columns && aboutLink}
+        <ColorCodeControl selected={sharedFormat} onChange={setAllFormats} atStart={columns} />
+      </div>
       {COLOR_KEYS.map((key) => (
         <ColorRow
           key={key}
@@ -193,6 +214,7 @@ export function ThemeSettingsForm({
           ratio={ratings[key].ratio}
           worstPair={ratings[key].worstPair}
           onChange={setColor}
+          onOpenContrast={onOpenContrast}
         />
       ))}
     </div>
@@ -230,7 +252,7 @@ export function ThemeSettingsForm({
 
   return (
     <div {...stylex.props(styles.sections)}>
-      <SidebarSection title="Colors" summary={colorsSummary} {...section('colors')}>
+      <SidebarSection title="Colors" summary={colorsSummary} action={aboutLink} {...section('colors')}>
         {colorFields}
       </SidebarSection>
       {bordersSection}
@@ -301,24 +323,19 @@ interface ColorRowProps {
   ratio: number;
   worstPair: string;
   onChange: (key: keyof ThemeColors, hex: string) => void;
+  onOpenContrast: (tab: ContrastTab) => void;
 }
 
-/** One colour, with its contrast badge. */
-const ColorRow = memo(function ColorRow({ colorKey, format, onFormatChange, hex, level, ratio, worstPair, onChange }: ColorRowProps) {
+/** One colour, with its contrast rating: a chip that opens the contrast modal on this colour. */
+const ColorRow = memo(function ColorRow({ colorKey, format, onFormatChange, hex, level, ratio, worstPair, onChange, onOpenContrast }: ColorRowProps) {
   // The file stores hex, but the field gets back the exact colour it sent: rounding to hex on every step would
   // nudge the sliders (a hue step of 1° could land on 0.8° or 1.2°).
   const [exact, setExact] = useState<Color | null>(null);
   const value = exact && exact.toString('hex').toLowerCase() === hex.toLowerCase() ? exact : hex;
   return (
     <ColorField
-      label={
-        <span {...stylex.props(styles.colorLabel)}>
-          {COLOR_LABELS[colorKey]}
-          <Chip tone={LEVEL_TONE[level]}>
-            <span title={`Lowest contrast ${ratio.toFixed(2)}:1 (${worstPair})`}>{level}</span>
-          </Chip>
-        </span>
-      }
+      label={COLOR_LABELS[colorKey]}
+      labelAccessory={<RatingChip colorKey={colorKey} level={level} ratio={ratio} worstPair={worstPair} onOpen={onOpenContrast} />}
       value={value}
       formats={FORMATS}
       format={format}
@@ -335,7 +352,6 @@ const ColorRow = memo(function ColorRow({ colorKey, format, onFormatChange, hex,
 });
 
 const FORMATS: ColorFormat[] = ['hex', 'rgb', 'hsl', 'hsb'];
-const COLOR_KEYS = Object.keys(COLOR_LABELS) as (keyof ThemeColors)[];
 /** Matches no item, so the format control shows nothing selected while the fields differ. */
 const MIXED = 'mixed';
 
@@ -447,5 +463,27 @@ const styles = stylex.create({
   // Figma 2434:39151: the micro control at the end of the row, above the fields.
   formatControl: { alignSelf: 'flex-end', gridColumn: '1 / -1', justifySelf: 'end' },
   formatControlStart: { alignSelf: 'flex-start', justifySelf: 'start' },
-  colorLabel: { display: 'inline-flex', alignItems: 'center', gap: spacing.xs },
+  // In the sidebar, the link on its own line at the start, the control under it at the end. On tablet, one row: the
+  // control first, the link at the end.
+  colorTools: { display: 'flex', flexDirection: 'column', gap: spacing.xs },
+  colorToolsColumns: { gridColumn: '1 / -1', flexDirection: 'row-reverse', alignItems: 'center', justifyContent: 'space-between' },
+  // A small text link (caption size) with its icon, lined up with the field labels.
+  aboutLink: {
+    position: 'relative',
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: spacing['2xs'],
+    alignSelf: 'flex-start',
+    padding: 0,
+    borderWidth: 0,
+    backgroundColor: 'transparent',
+    color: color.text,
+    fontFamily: fontTheme.familyBody,
+    fontSize: font.sizeCaption,
+    lineHeight: font.lineHeightCaption,
+    textDecorationLine: 'none',
+    textUnderlineOffset: spacing['3xs'],
+    borderRadius: radius.radiusSm,
+  },
+  aboutLinkHovered: { textDecorationLine: 'underline' },
 });

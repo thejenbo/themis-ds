@@ -86,6 +86,11 @@ interface ColorFieldBaseProps extends PickerPanelOptions {
   /** Adds "(optional)" after the label. */
   isOptional?: boolean;
   /**
+   * Shown after the label, on its line but outside it, e.g. a contrast rating that opens details. Use this rather
+   * than putting a button inside `label`: a button inside a label confuses clicks and screen readers.
+   */
+  labelAccessory?: ReactNode;
+  /**
    * The word added after the label when `isOptional` is set. Pass a translation here.
    * @default 'optional'
    */
@@ -136,6 +141,7 @@ function ColorFieldInner({
   isRequired,
   isOptional = false,
   optionalText = 'optional',
+  labelAccessory,
   name,
   placement = 'bottom end',
   xstyle,
@@ -213,10 +219,13 @@ function ColorFieldInner({
       {({ isDisabled: disabled, isInvalid: invalid }) => (
         <>
           {label != null && (
-            <Label id={labelId} {...stylex.props(fieldStyles.label)}>
-              {label}
-              {isOptional && <span {...stylex.props(fieldStyles.optional)}> ({optionalText})</span>}
-            </Label>
+            <div {...stylex.props(styles.labelRow)}>
+              <Label id={labelId} {...stylex.props(fieldStyles.label)}>
+                {label}
+                {isOptional && <span {...stylex.props(fieldStyles.optional)}> ({optionalText})</span>}
+              </Label>
+              {labelAccessory}
+            </div>
           )}
           <div {...stylex.props(styles.row)}>
             <div
@@ -350,6 +359,8 @@ export function readColor(text: string, format: ColorFormat): Color | null {
 
 const styles = stylex.create({
   // Figma "ColorField": the box, then the swatch 8px to its right, the same height.
+  // The label, and anything shown after it, 8px apart.
+  labelRow: { display: 'flex', alignItems: 'center', gap: spacing.xs, minWidth: 0 },
   row: { display: 'flex', alignItems: 'center', gap: spacing.xs },
   box: { flexGrow: 1, minWidth: 0 },
 });

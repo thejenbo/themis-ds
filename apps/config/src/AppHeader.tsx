@@ -1,8 +1,8 @@
 import * as stylex from '@stylexjs/stylex';
 import { useLayoutEffect, useRef, useState } from 'react';
 import { VisuallyHidden } from 'react-aria';
-import { Link, type LinkRenderProps } from 'react-aria-components';
-import { ActionMenu, ActionMenuItem, ActionMenuTrigger, Icon, IconButton } from 'themis-ds';
+import { Button, type ButtonRenderProps, Link, type LinkRenderProps } from 'react-aria-components';
+import { ActionMenu, ActionMenuItem, ActionMenuTrigger, Icon, IconButton, Tooltip, TooltipTrigger } from 'themis-ds';
 
 import { border as borderWidth } from '../../../src/tokens/borderWidth.stylex';
 import { color } from '../../../src/tokens/colorTheme.stylex';
@@ -12,6 +12,7 @@ import { border as radius } from '../../../src/tokens/radius.stylex';
 import { spacing } from '../../../src/tokens/spacing.stylex';
 import { font } from '../../../src/tokens/typography.stylex';
 import { focusRing } from '../../../src/utils/focus-ring';
+import { interactiveCursor } from '../../../src/utils/interactive-cursor';
 import { racStyles } from '../../../src/utils/stylex-rac';
 import { Logomark } from './illustrations/Logomark';
 
@@ -31,10 +32,12 @@ interface AppHeaderProps {
   brand?: string;
   /** A colour in the theme fails contrast: the logomark's scales tip. */
   isUnbalanced?: boolean;
+  /** Pressing the tipped scales: opens the contrast details on the first failing colour. */
+  onReviewContrast?: () => void;
 }
 
 /** The logo and the page links (Figma 2422:35488). Sticks to the top of the window. */
-export function AppHeader({ page, compact = false, besideSidebar = false, brand, isUnbalanced = false }: AppHeaderProps) {
+export function AppHeader({ page, compact = false, besideSidebar = false, brand, isUnbalanced = false, onReviewContrast }: AppHeaderProps) {
   const links = useRef<Partial<Record<Page, HTMLAnchorElement | null>>>({});
   // Where the current page's underline sits. It slides between links, as the Tabs indicator does; `animate` stays
   // off for the first placement so it doesn't slide in from the left on load.
@@ -52,12 +55,29 @@ export function AppHeader({ page, compact = false, besideSidebar = false, brand,
     // otherwise it kept measuring the removed link and the underline shrank to nothing.
   }, [page, compact]);
 
+  const logomark = <Logomark brand={brand} isUnbalanced={isUnbalanced} xstyle={[styles.logomark, compact && styles.logomarkCompact]} />;
+
   return (
     <header {...stylex.props(styles.header, compact && styles.headerCompact, besideSidebar && styles.headerBesideSidebar)}>
-      <Link href="#simulator" aria-label="Themis config" {...racStyles<LinkRenderProps>((s) => [styles.brand, besideSidebar && styles.brandBesideSidebar, focusRing.base, s.isFocusVisible && focusRing.visible])}>
-        <Logomark brand={brand} isUnbalanced={isUnbalanced} xstyle={[styles.logomark, compact && styles.logomarkCompact]} />
-        <span {...stylex.props(styles.wordmark, compact && styles.wordmarkCompact)}>Themis Config</span>
-      </Link>
+      <div {...stylex.props(styles.brand, besideSidebar && styles.brandBesideSidebar)}>
+        {/* Tipped, the scales are a button of their own (a button can't sit inside the home link). */}
+        {isUnbalanced && onReviewContrast && (
+          <TooltipTrigger>
+            <Button
+              aria-label="A colour fails contrast. Review it"
+              onPress={onReviewContrast}
+              {...racStyles<ButtonRenderProps>((s) => [styles.scalesButton, interactiveCursor.enabled, focusRing.base, s.isFocusVisible && focusRing.visible])}
+            >
+              {logomark}
+            </Button>
+            <Tooltip placement="bottom start">The scales tip when a colour fails contrast. Select to see which.</Tooltip>
+          </TooltipTrigger>
+        )}
+        <Link href="#simulator" aria-label="Themis config" {...racStyles<LinkRenderProps>((s) => [styles.brandLink, focusRing.base, s.isFocusVisible && focusRing.visible])}>
+          {!(isUnbalanced && onReviewContrast) && logomark}
+          <span {...stylex.props(styles.wordmark, compact && styles.wordmarkCompact)}>Themis Config</span>
+        </Link>
+      </div>
       {compact ? (
         <ActionMenuTrigger>
           <IconButton aria-label="Pages" variant="subtle" tone="neutral" size="small" xstyle={styles.menuButton}>
@@ -158,6 +178,8 @@ const styles = stylex.create({
     flexShrink: 0,
   },
   // The scales (48 × 40): 30px tall beside the 32px wordmark line, 24px tall in the compact header.
+  brandLink: { position: 'relative', display: 'flex', alignItems: 'center', gap: spacing.xs, color: color.text, textDecoration: 'none' },
+  scalesButton: { position: 'relative', display: 'inline-flex', padding: 0, borderWidth: 0, backgroundColor: 'transparent' },
   logomark: { width: '2.25rem', height: 'auto' },
   logomarkCompact: { width: '1.8rem' },
   // Figma type/heading/base (bold), held at its 24px size: the typography tokens grow it to 32px on wide screens.

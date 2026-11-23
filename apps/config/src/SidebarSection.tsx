@@ -1,5 +1,5 @@
 import * as stylex from '@stylexjs/stylex';
-import { type ReactNode, useEffect, useRef, useState } from 'react';
+import { type ReactNode, useEffect, useId, useRef, useState } from 'react';
 import { Button, type ButtonRenderProps, Disclosure, DisclosurePanel, Heading } from 'react-aria-components';
 import { Icon } from 'themis-ds';
 
@@ -23,6 +23,11 @@ interface SidebarSectionProps {
   children: ReactNode;
   /** The last section draws no line under itself: Export's line is right below it. */
   isLast?: boolean;
+  /**
+   * Shown right under the title while the section is open, sticking with it: a small link about the section (Colors'
+   * "About contrast ratings"). It isn't part of the heading's name.
+   */
+  action?: ReactNode;
 }
 
 /**
@@ -32,7 +37,8 @@ interface SidebarSectionProps {
  * `--theme-bar-height`); an open section's heading gets a border across its bottom edge while stuck. Built on React Aria `Disclosure`:
  * an h2 holding a button with `aria-expanded`.
  */
-export function SidebarSection({ title, summary, isExpanded, onExpandedChange, children, isLast = false }: SidebarSectionProps) {
+export function SidebarSection({ title, summary, isExpanded, onExpandedChange, children, isLast = false, action }: SidebarSectionProps) {
+  const titleId = useId();
   const headingRef = useRef<HTMLHeadingElement>(null);
   const isStuck = useIsStuck(headingRef);
   // Only an open section's heading gets a border while stuck, between it and the fields scrolling under it. A closed
@@ -51,6 +57,8 @@ export function SidebarSection({ title, summary, isExpanded, onExpandedChange, c
       <Heading
         ref={headingRef}
         level={2}
+        // Named by the title alone, so the action under it (a button of its own) isn't read as part of the heading.
+        aria-labelledby={action ? titleId : undefined}
         data-stuck={isStuck || undefined}
         {...stylex.props(
           headingStyles.sm,
@@ -64,7 +72,7 @@ export function SidebarSection({ title, summary, isExpanded, onExpandedChange, c
           slot="trigger"
           {...racStyles<ButtonRenderProps>((s) => [styles.trigger, focusRing.base, s.isFocusVisible && focusRing.visible])}
         >
-          <span {...stylex.props(styles.title)}>
+          <span id={titleId} {...stylex.props(styles.title)}>
             {title}
           </span>
           {/* Always there, collapsing as the section opens (with the panel, at the same speed), so the section's line
@@ -78,6 +86,14 @@ export function SidebarSection({ title, summary, isExpanded, onExpandedChange, c
             <Icon name="chevron-down" size="small" />
           </span>
         </Button>
+        {action && (
+          // Opens and closes with the panel, at its speed, the reverse of the summary.
+          <span aria-hidden={!isExpanded || undefined} inert={!isExpanded || undefined} {...stylex.props(styles.actionRow, !isExpanded && styles.actionRowClosed)}>
+            <span {...stylex.props(styles.actionClip)}>
+              <span {...stylex.props(styles.action)}>{action}</span>
+            </span>
+          </span>
+        )}
       </Heading>
       <DisclosurePanel {...stylex.props(styles.panel)}>
         <div ref={contentRef} {...stylex.props(styles.content)}>
@@ -233,6 +249,19 @@ const styles = stylex.create({
     transitionTimingFunction: easing.standard,
   },
   summaryRowOpen: { gridTemplateRows: '0fr', opacity: 0 },
+  // The action's row, right under the title: shown while open, collapsing to nothing as the section closes.
+  actionRow: {
+    display: 'grid',
+    gridTemplateRows: '1fr',
+    transitionProperty: 'grid-template-rows, opacity',
+    transitionDuration: { default: `var(--panel-duration, ${duration.base})`, '@media (prefers-reduced-motion: reduce)': '0s' },
+    transitionTimingFunction: easing.standard,
+  },
+  actionRowClosed: { gridTemplateRows: '0fr', opacity: 0 },
+  // What collapses: no padding of its own, so it can reach zero height.
+  actionClip: { minHeight: 0, overflow: 'hidden', marginInline: `calc(-1 * ${spacing['2xs']})` },
+  // Room inside the clip for the action's focus ring while open.
+  action: { display: 'flex', paddingInline: spacing['2xs'], paddingBlockEnd: spacing['2xs'] },
   // What collapses: no padding of its own, so it can reach zero height.
   summaryClip: { minHeight: 0, overflow: 'hidden' },
   // Caption text in the muted colour (6:1 on the background), 4px under the title.
